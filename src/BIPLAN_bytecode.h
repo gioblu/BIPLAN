@@ -74,75 +74,81 @@
 #define BPBC_OR    28 | BPBC_SIGN // ||
 #define BPBC_AND   29 | BPBC_SIGN // &&
 #define BPBC_NOT   30 | BPBC_SIGN // !
+#define BPBC_BAND  31 | BPBC_SIGN // &
+#define BPBC_BOR   32 | BPBC_SIGN // |
+#define BPBC_BXOR  33 | BPBC_SIGN // ^
+#define BPBC_BNOT  34 | BPBC_SIGN // ~
+#define BPBC_BSL   35 | BPBC_SIGN // <<
+#define BPBC_BSR   36 | BPBC_SIGN // >>
 /* BIPLAN Statements ---------------------------------------------------------
    --------------------------------------------------------------------------
    --------------------------------------------------------------------------*/
-#define BPBC_VAR   31 | BPBC_SIGN // var
-#define BPBC_IF    32 | BPBC_SIGN // if
-#define BPBC_WHILE 33 | BPBC_SIGN // while
-#define BPBC_FOR   34 | BPBC_SIGN // for
-#define BPBC_END   35 | BPBC_SIGN // block end
-#define BPBC_GOTO  36 | BPBC_SIGN // goto
-#define BPBC_GOTOF 37 | BPBC_SIGN // goto function
-#define BPBC_RET   38 | BPBC_SIGN // return
-#define BPBC_BRE   39 | BPBC_SIGN // break
-#define BPBC_BOU   40 | BPBC_SIGN // bounce or continue
-#define BPBC_COMM  41 | BPBC_SIGN // // comment
+#define BPBC_VAR   37 | BPBC_SIGN // var
+#define BPBC_IF    38 | BPBC_SIGN // if
+#define BPBC_WHILE 39 | BPBC_SIGN // while
+#define BPBC_FOR   40 | BPBC_SIGN // for
+#define BPBC_END   41 | BPBC_SIGN // block end
+#define BPBC_GOTO  42 | BPBC_SIGN // goto
+#define BPBC_GOTOF 43 | BPBC_SIGN // goto function
+#define BPBC_RET   44 | BPBC_SIGN // return
+#define BPBC_BRE   45 | BPBC_SIGN // break
+#define BPBC_BOU   46 | BPBC_SIGN // bounce or continue
+#define BPBC_COMM  47 | BPBC_SIGN // // comment
 /* BIPLAN Constants ----------------------------------------------------------
    --------------------------------------------------------------------------
    --------------------------------------------------------------------------*/
-#define BPBC_HI    42 | BPBC_SIGN // HIGH
-#define BPBC_LO    43 | BPBC_SIGN // LOW
-#define BPBC_IN    44 | BPBC_SIGN // INPUT
-#define BPBC_INPU  45 | BPBC_SIGN // INPUT PULL UP
-#define BPBC_INPD  46 | BPBC_SIGN // INPUT PULL DOWN
-#define BPBC_OU    47 | BPBC_SIGN // OUTPUT
-#define BPBC_TRUE  48 | BPBC_SIGN // true
-#define BPBC_FALSE 49 | BPBC_SIGN // false
-#define BPBC_PI    50 | BPBC_SIGN // Pi
+#define BPBC_HI    48 | BPBC_SIGN // HIGH
+#define BPBC_LO    49 | BPBC_SIGN // LOW
+#define BPBC_IN    50 | BPBC_SIGN // INPUT
+#define BPBC_INPU  51 | BPBC_SIGN // INPUT PULL UP
+#define BPBC_INPD  52 | BPBC_SIGN // INPUT PULL DOWN
+#define BPBC_OU    53 | BPBC_SIGN // OUTPUT
+#define BPBC_TRUE  54 | BPBC_SIGN // true
+#define BPBC_FALSE 55 | BPBC_SIGN // false
+#define BPBC_PI    56 | BPBC_SIGN // Pi
 /* BIPLAN Methods ------------------------------------------------------------
    ------------------------------------------------------------------------- */
 // Random -------------------------------------------------------------------
-#define BPBC_RAND  51 | BPBC_SIGN // Random
-#define BPBC_RANDS 52 | BPBC_SIGN // Random seed
+#define BPBC_RAND  57 | BPBC_SIGN // Random
+#define BPBC_RANDS 58 | BPBC_SIGN // Random seed
 // Timing --------------------------------------------------------------------
-#define BPBC_DMIL  53 | BPBC_SIGN // Delay milliseconds
-#define BPBC_DMIC  54 | BPBC_SIGN // Delay microseconds
-#define BPBC_MIL   55 | BPBC_SIGN // returns milliseconds from startup
-#define BPBC_MIC   56 | BPBC_SIGN // returns microseconds from startup
+#define BPBC_DMIL  59 | BPBC_SIGN // Delay milliseconds
+#define BPBC_DMIC  60 | BPBC_SIGN // Delay microseconds
+#define BPBC_MIL   61 | BPBC_SIGN // returns milliseconds from startup
+#define BPBC_MIC   62 | BPBC_SIGN // returns microseconds from startup
 // IO pin handling -----------------------------------------------------------
-#define BPBC_DSET  57 | BPBC_SIGN // digitalWrite
-#define BPBC_DGET  58 | BPBC_SIGN // digitalRead
-#define BPBC_DMODE 59 | BPBC_SIGN // pinMode
-#define BPBC_AREAD 60 | BPBC_SIGN // analogRead
-#define BPBC_ASET  61 | BPBC_SIGN // analogWrite
+#define BPBC_DSET  63 | BPBC_SIGN // digitalWrite
+#define BPBC_DGET  64 | BPBC_SIGN // digitalRead
+#define BPBC_DMODE 65 | BPBC_SIGN // pinMode
+#define BPBC_AREAD 66 | BPBC_SIGN // analogRead
+#define BPBC_ASET  67 | BPBC_SIGN // analogWrite
 // Serial --------------------------------------------------------------------
-#define BPBC_SERB  62 | BPBC_SIGN // Serial begin
-#define BPBC_SERP  63 | BPBC_SIGN // Serial print
-#define BPBC_SERR  64 | BPBC_SIGN // Serial read
-#define BPBC_SERA  65 | BPBC_SIGN // Serial available
-#define BPBC_SERF  66 | BPBC_SIGN // Serial flush
+#define BPBC_SERB  68 | BPBC_SIGN // Serial begin
+#define BPBC_SERP  69 | BPBC_SIGN // Serial print
+#define BPBC_SERR  70 | BPBC_SIGN // Serial read
+#define BPBC_SERA  71 | BPBC_SIGN // Serial available
+#define BPBC_SERF  72 | BPBC_SIGN // Serial flush
 // EEPROM --------------------------------------------------------------------
-#define BPBC_ECLR  67 | BPBC_SIGN // Clear EEPROM
-#define BPBC_EGET  68 | BPBC_SIGN // Read EEPROM
-#define BPBC_ESET  69 | BPBC_SIGN // Write EEPROM
+#define BPBC_ECLR  73 | BPBC_SIGN // Clear EEPROM
+#define BPBC_EGET  74 | BPBC_SIGN // Read EEPROM
+#define BPBC_ESET  75 | BPBC_SIGN // Write EEPROM
 // Ethernet ------------------------------------------------------------------
-#define BPBC_ETIP  70 | BPBC_SIGN // Ethernet IP
-#define BPBC_ETMA  71 | BPBC_SIGN // Ethernet maintain
-#define BPBC_ETSV  72 | BPBC_SIGN // Ethernet server instantiation
-#define BPBC_ETSB  73 | BPBC_SIGN // Ethernet server begin
-#define BPBC_ETSA  74 | BPBC_SIGN // Ethernet server available
-#define BPBC_ETSP  75 | BPBC_SIGN // Ethernet server print
-#define BPBC_ETCL  76 | BPBC_SIGN // Ethernet client instantiation
-#define BPBC_ETCB  77 | BPBC_SIGN // Ethernet client begin
-#define BPBC_ETCA  78 | BPBC_SIGN // Ethernet client available
-#define BPBC_ETCP  79 | BPBC_SIGN // Ethernet client print
-#define BPBC_ETCR  80 | BPBC_SIGN // Ethernet client read
-#define BPBC_ETCC  81 | BPBC_SIGN // Ethernet client connect
-#define BPBC_ETCCD 82 | BPBC_SIGN // Ethernet client connected
-#define BPBC_ETCF  83 | BPBC_SIGN // Ethernet client flush
-#define BPBC_ETCS  84 | BPBC_SIGN // Ethernet client stop
+#define BPBC_ETIP  76 | BPBC_SIGN // Ethernet IP
+#define BPBC_ETMA  77 | BPBC_SIGN // Ethernet maintain
+#define BPBC_ETSV  78 | BPBC_SIGN // Ethernet server instantiation
+#define BPBC_ETSB  79 | BPBC_SIGN // Ethernet server begin
+#define BPBC_ETSA  80 | BPBC_SIGN // Ethernet server available
+#define BPBC_ETSP  81 | BPBC_SIGN // Ethernet server print
+#define BPBC_ETCL  82 | BPBC_SIGN // Ethernet client instantiation
+#define BPBC_ETCB  83 | BPBC_SIGN // Ethernet client begin
+#define BPBC_ETCA  84 | BPBC_SIGN // Ethernet client available
+#define BPBC_ETCP  85 | BPBC_SIGN // Ethernet client print
+#define BPBC_ETCR  86 | BPBC_SIGN // Ethernet client read
+#define BPBC_ETCC  87 | BPBC_SIGN // Ethernet client connect
+#define BPBC_ETCCD 88 | BPBC_SIGN // Ethernet client connected
+#define BPBC_ETCF  89 | BPBC_SIGN // Ethernet client flush
+#define BPBC_ETCS  90 | BPBC_SIGN // Ethernet client stop
 // Tones ---------------------------------------------------------------------
-#define BPBC_TONE  85 | BPBC_SIGN // Sound tone
-#define BPBC_TONET 86 | BPBC_SIGN // Sound tone with duration
-#define BPBC_TONED 87 | BPBC_SIGN // Kill all tones
+#define BPBC_TONE  91 | BPBC_SIGN // Sound tone
+#define BPBC_TONET 92 | BPBC_SIGN // Sound tone with duration
+#define BPBC_TONED 93 | BPBC_SIGN // Kill all tones

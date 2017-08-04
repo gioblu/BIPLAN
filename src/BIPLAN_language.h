@@ -66,6 +66,12 @@ const static unsigned char keywords[] PROGMEM = {
   '||'                        | BPBC_SIGN, BPBC_OR,
   '&&'                        | BPBC_SIGN, BPBC_AND,
   '!'                         | BPBC_SIGN, BPBC_NOT,
+  '&'                         | BPBC_SIGN, BPBC_BAND,
+  '|'                         | BPBC_SIGN, BPBC_BOR,
+  '^'                         | BPBC_SIGN, BPBC_BXOR,
+  '!'                         | BPBC_SIGN, BPBC_BNOT,
+  '<<'                        | BPBC_SIGN, BPBC_SL,
+  '>>'                        | BPBC_SIGN, BPBC_SR,
   // BIPLAN STATEMENTS -------------------------------------------------------
   'v','a','r'                 | BPBC_SIGN, BPBC_VAR,
   'i','f'                     | BPBC_SIGN, BPBC_IF,
@@ -105,5 +111,5 @@ const static unsigned char keywords[] PROGMEM = {
   // BIPLAN BUILT IN AUDIO HANDLING ------------------------------------------
   't','o','n','e'             | BPBC_SIGN, BPBC_TONE,
   't','o','n','e','t'         | BPBC_SIGN, BPBC_TONET,
-  't','o','n','e','d'         | BPBC_SIGN, BPBC_TONED,
+  't','o','n','e','d'         | BPBC_SIGN, BPBC_TONED
 };
