@@ -11,7 +11,7 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 
 BIPLAN comes with a modern syntax inspired by Ruby on Rails and Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extended and applied in other architectures or real time operative systems.
 
-## documentation
+## Documentation
 - [Configuration](documentation/configuration.md)
 - [Comments](documentation/comments.md)
 - [Conditions](documentation/conditions.md)

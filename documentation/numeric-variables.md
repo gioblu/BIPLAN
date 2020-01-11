@@ -1,15 +1,15 @@
 ### Documentation
-- [Configuration](documentation/configuration.md)
-- [Comments](documentation/comments.md)
-- [Conditions](documentation/conditions.md)
-- [Constants](documentation/constants.md)
-- [Cycles](documentation/cycles.md)
-- [Functions](documentation/functions.md)
-- **[Numeric variables](documentation/numeric-variables.md)**
-- [Operators](documentation/operators.md)
-- [Strings](documentation/strings.md)
-- [System functions](documentation/system-functions.md)
-- [Unary operators](documentation/unary-operators.md)
+- [Configuration](/documentation/configuration.md)
+- [Comments](/documentation/comments.md)
+- [Conditions](/documentation/conditions.md)
+- [Constants](/documentation/constants.md)
+- [Cycles](/documentation/cycles.md)
+- [Functions](/documentation/functions.md)
+- **[Numeric variables](/documentation/numeric-variables.md)**
+- [Operators](/documentation/operators.md)
+- [Strings](/documentation/strings.md)
+- [System functions](/documentation/system-functions.md)
+- [Unary operators](/documentation/unary-operators.md)
 
 ## Numeric variables
 BIPLAN supports only one numeric variable type that is by default `int32_t` but can be easily changed, see [configuration](documentation/configuration.md). Numeric variables are identified by `$`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each variable is just an entry of a global array of variables. BIPLAN supports a maximum amount of 116 global variables. Variables can be defined using a name:
