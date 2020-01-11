@@ -28,13 +28,6 @@
   limitations under the License. */
 
 #pragma once
-#include "utils/languages/BIPLAN_Languages.h"
-
-/* DEFAULT LANGUAGE - Default english ------------------------------------- */
-
-#ifndef BP_LAN
-  #define BP_LAN BP_LAN_EN
-#endif
 
 #include "utils/errors/BIPLAN_Errors.h"
 
