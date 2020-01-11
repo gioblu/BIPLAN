@@ -1,3 +1,15 @@
+### Documentation
+- [Configuration](documentation/configuration.md)
+- [Comments](documentation/comments.md)
+- [Conditions](documentation/conditions.md)
+- [Constants](documentation/constants.md)
+- [Cycles](documentation/cycles.md)
+- [Functions](documentation/functions.md)
+- [Numeric variables](documentation/numeric-variables.md)
+- [Operators](documentation/operators.md)
+- [Strings](documentation/strings.md)
+- [System functions](documentation/system-functions.md)
+- **[Unary operators](documentation/unary-operators.md)**
 
 ## Unary operators
 BIPLAN supports prefix and postfix increment and decrement unary operators. Prefix unary operators are used to increment or decrement its operand. The increment operator `++` adds 1, the decrement operator `--` subtracts 1. Both `++` and `--` can be used either as prefix operators (before the operand: `++v`) or postfix operators (after the operand: `v++`). For example `++v` increments the value of `v` before it is used, while `v++` increments the value of `v` after it is used.

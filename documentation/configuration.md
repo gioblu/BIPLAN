@@ -1,4 +1,19 @@
-## Numeric variables
+### Documentation
+- **[Configuration](documentation/configuration.md)**
+- [Comments](documentation/comments.md)
+- [Conditions](documentation/conditions.md)
+- [Constants](documentation/constants.md)
+- [Cycles](documentation/cycles.md)
+- [Functions](documentation/functions.md)
+- [Numeric variables](documentation/numeric-variables.md)
+- [Operators](documentation/operators.md)
+- [Strings](documentation/strings.md)
+- [System functions](documentation/system-functions.md)
+- [Unary operators](documentation/unary-operators.md)
+
+## Configuration
+
+### Numeric variables
 BIPLAN supports only one numeric variable type that is by default `int32_t` but can be easily changed with the use of contants:
 ```cpp
 // Sets the BIPLAN numeric type to uint32_t
@@ -18,7 +33,7 @@ The maximum length of variable names can be configured as follows:
 #include "BIPLAN.h"
 ```
 
-## Strings
+### Strings
 BIPLAN has a static buffer of strings, which maximum length can be easily configured as follows:
 ```cpp
 // Sets BIPLAN strings maximum length to 50
@@ -32,7 +47,7 @@ Each string is just an entry of a global array of string. The `BP_STRINGS` const
 ```
 BIPLAN supports a maximum amount of 116 global strings.
 
-## Functions
+### Functions
 Each function is just an entry of a global array of functions. The `BP_FUNCTIONS` constant can be used as shown below to configure the maximum amount of functions available:
 ```cpp
 #define BP_FUNCTIONS 50

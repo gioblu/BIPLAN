@@ -1,3 +1,15 @@
+### Documentation
+- [Configuration](documentation/configuration.md)
+- [Comments](documentation/comments.md)
+- [Conditions](documentation/conditions.md)
+- [Constants](documentation/constants.md)
+- [Cycles](documentation/cycles.md)
+- [Functions](documentation/functions.md)
+- [Numeric variables](documentation/numeric-variables.md)
+- [Operators](documentation/operators.md)
+- **[Strings](documentation/strings.md)**
+- [System functions](documentation/system-functions.md)
+- [Unary operators](documentation/unary-operators.md)
 
 ## Strings
 String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings.
