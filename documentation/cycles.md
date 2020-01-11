@@ -21,7 +21,7 @@ while $i++ < 5
   if $i == 4 continue
   if $i == 5 break
   print $i++
-redo
+next
 
 # Prints 1, 2, 3
 ```

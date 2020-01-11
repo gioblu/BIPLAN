@@ -12,7 +12,7 @@ $a = 0
 print $a++
 # Prints "0" and sets a = 1 in memory
 ```
-BIPLAN unary operators are on steroids, they can be chained:
+BIPLAN unary operators can be chained:
 
 ```php
 $a = 0

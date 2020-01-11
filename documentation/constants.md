@@ -2,7 +2,7 @@
 
 ## Constants
 
-| Constant   | Purpose                     |
+| Constant   | Value                       |
 | ---------- | --------------------------- |
 | `false`    | or `0`                      |
 | `true`     | or `1`                      |
