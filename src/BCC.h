@@ -1,0 +1,325 @@
+
+/* ______     ______           ______   _
+  |      | | |      | |              | | \    |
+  |_____/  | |______| |        ______| |  \   |
+  |     \  | |        |       |      | |   \  |
+  |______| | |        |______ |______| |    \_|
+  Byte coded Interpreted Programming Language
+  Giovanni Blu Mitolo 2017-2020 - gioscarab@gmail.com
+      _____              _________________________
+     |     |            |_________________________|
+     |     |_______________||__________    ___||_________ |
+   __|_____|               ||          |__|   ||         ||
+  /________|_______________||_________________||__       |D
+    o                   |_________________________|______/|
+                                           \_/            |
+                                            O
+  BIPLAN Copyright (c) 2017-2019, Giovanni Blu Mitolo All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. */
+
+#pragma once
+#include "BIPLAN_Defines.h"
+#include "BCC.h"
+
+class BCC {
+public:
+  char var_id = BP_ADDRESS_OFFSET;
+  char string_id = BP_ADDRESS_OFFSET;
+  char fun_id = BP_ADDRESS_OFFSET;
+  char function_keyword[BP_MAX_FUNCTION_NAME_LENGTH];
+  char test_code[BP_MAX_VARIABLE_LENGTH];
+
+  BCC() { };
+
+  /* CHECK IF POINTER IS IN A STRING -------------------------------------- */
+  bool is_in_string(char *program, char *a) {
+    bool in_str = false;
+    char *p = program;
+    while(a > p) {
+      if(*p == BP_STRING) in_str = !in_str;
+      p++;
+    } return in_str;
+  };
+
+  /* REMOVE SPACES FROM PROGRAM ------------------------------------------- */
+  void remove_spaces(char *s) {
+    char *i = s;
+    char *j = s;
+    bool in_str = false;
+    while(*j != 0) {
+      *i = *j++;
+      if(*i == BP_STRING) in_str = !in_str;
+      if(*i != ' ') i++;
+      else if(in_str) i++;
+    } *i = 0;
+  };
+
+  /* REMOVE CARRIAGE RETURN FROM PROGRAM ---------------------------------- */
+  void remove_cr(char *s) {
+    char *i = s;
+    char *j = s;
+    bool in_str = false;
+    while(*j != 0) {
+      *i = *j++;
+      if(*i == BP_STRING) in_str = !in_str;
+      if(*i != '\n') i++;
+      else if(in_str) i++;
+    } *i = 0;
+  };
+
+  /* REMOVE COMMENTS FROM PROGRAM ----------------------------------------- */
+  void remove_comments(char *s) {
+    char *i = s;
+    char *j = s;
+    bool in_str = false;
+    while(*j != 0) {
+      *i = *j++;
+      if(*i == BP_STRING) in_str = !in_str;
+      if(*i != BP_REM) i++;
+      else {
+        if(in_str) i++;
+        else {
+          while(*j != BP_CR) (void)(*j++);
+          //(void)(*j++);
+        }
+      }
+    } *i = 0;
+  };
+
+  /* ENCODE PROGRAM KEYWORD IN BYTECODE ----------------------------------- */
+  char *encode_pass(
+    char *program,
+    char *position,
+    const char *keyword,
+    const char *code
+  ) {
+    char *p;
+    uint8_t kl = strlen(keyword);
+    uint8_t cl = strlen(code);
+    p = strstr(position, keyword);
+    if(p && *p) {
+      if(is_in_string(program, p)) {
+        p = strstr(p + kl, keyword);
+        if(p && *p) return p;
+        else return NULL;
+      }
+      for(uint16_t i = 0; i < kl; i++, p++)
+        if(i < cl && code[i]) *p = code[i];
+        else *p = ' ';
+      return p;
+    } else return NULL;
+  };
+
+  void encode(char *program, const char *keyword, const char *code) {
+    char *position = program;
+    while(position) position =
+      encode_pass(program, position, keyword, code);
+  };
+
+  void encode_char(char *program, const char *keyword, const char code) {
+    char *position = program;
+    const char c[2] = {code, 0};
+    while(position) position =
+      encode_pass(program, position, keyword, (const char *)c);
+  };
+
+  /* ENCODE PROGRAM VARIABLE IN BYTECODE ---------------------------------- */
+  char *minifier_variable_pass(char *program, char *position, bool var_type) {
+    char *p;
+    char str[BP_MAX_VARIABLE_LENGTH];
+    char code[4] = {(var_type) ? BP_ADDRESS : BP_S_ADDRESS, 0, 0, 0};
+    uint8_t n;
+    if((p = find_longest_var_name(program, var_type)) != NULL) {
+      str[0] = (var_type) ? '$' : ':';
+      *p = (var_type) ? BP_ADDRESS : BP_S_ADDRESS;
+      p++;
+      str[1] = *p;
+      *p = (var_type) ? var_id : string_id;
+      p++;
+      n = 2;
+      for(uint16_t i = 0; i < BP_MAX_VARIABLE_LENGTH - 1; i++, p++) {
+        if((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')) {
+          str[n++] = *p;
+          *p = ' ';
+          // Add space instead of keyword (will be removed by remove_spaces)
+        } else break;
+      }
+      if(n) {
+        // Encode variable address followed by space " "
+        str[n] = 0;
+        code[1] = (var_type) ? var_id : string_id;
+        code[2] = 0;
+        encode(position, str, code);
+        p = strstr(position, str);
+        if((p && *p) && !is_in_string(program, p)) return p;
+        if(var_type) var_id++; else string_id++;
+        return (char *)position;
+      } return p;
+    } return NULL;
+  };
+
+  void encode_variables(char *program, bool type) {
+    char *position = program;
+    while(position) position =
+      minifier_variable_pass(program, position, type);
+  };
+
+  char *find_longest_var_name(char *program, bool type) {
+    char   *position = program;
+    uint8_t result = 0;
+    char   *result_position = 0;
+    while(*position != 0) {
+      if(*(position++) == ((type) ? '$' : ':')) {
+        // Avoid substitution in strings
+        if(is_in_string(program, position)) continue;
+        uint8_t i = 0;
+        while(
+          (*position >= 'a' && *position <= 'z') ||
+          (*position >= 'A' && *position <= 'Z')
+        ) {
+          i++;
+          position++;
+        }
+        if(i > result) {
+          result_position = position - (i + 1);
+          result = i;
+        }
+      }
+    }
+    if(result)
+      return (char *)result_position;
+    else return NULL;
+  };
+
+  /* ENCODE FUNCTION IN BYTECODE ------------------------------------------ */
+  char *encode_function_pass(char *program, char *position) {
+    uint8_t n = 0;
+    char *p = strstr(position, "function ");
+    if(p && *p) {
+      if(is_in_string(program, p)) {
+        p = strstr(p + 1, "function ");
+        if(p && *p) return p;
+        else return NULL;
+      }
+      *p = BP_FUN_DEF;
+      p++;
+      *p = fun_id;
+      p++;
+      while(*p != ' ') {
+        *p = ' ';
+        p++;
+      }
+      while(p++ && (*p != BP_L_RPARENT)) {
+        function_keyword[n] = *p;
+        *p = ' ';
+        n++;
+      }
+      if(n) {
+        function_keyword[n] = 0;
+        test_code[0] = BP_FUNCTION;
+        test_code[1] = fun_id++;
+        test_code[2] = 0;
+        encode(program, function_keyword, test_code); // ADDR
+        p = strstr(position, function_keyword);
+        if(p && *p) return p;
+        else return NULL;
+      } return p;
+    } else return NULL;
+  };
+
+  void encode_functions(char *program) {
+    char *position = program;
+    while(position) position = encode_function_pass(program, position);
+  };
+
+  /* BIPLAN MINIFY ------------------------------------------------------- */
+  void compile(char *program) {
+    // Remove comments
+    remove_comments(program);
+    // Minify variables
+    encode_variables(program, false);
+    encode_variables(program, true);
+    // Remove semicolons followed by carriage return
+    encode(program, ";\n", "\n");
+    // Logic
+    encode_char(program, "==", BP_EQ);
+    encode_char(program, "!=", BP_NOT_EQ);
+    encode_char(program, ">=", BP_GTOEQ);
+    encode_char(program, "<=", BP_LTOEQ);
+    encode_char(program, "||", BP_LOGIC_OR);
+    encode_char(program, "&&", BP_LOGIC_AND);
+    // Bitwise
+    encode_char(program, ">>", BP_R_SHIFT);
+    encode_char(program, "<<", BP_L_SHIFT);
+    // Remove syntactic sugar
+    encode(program, "=", "");
+    // Unary
+    encode_char(program, "++", BP_INCREMENT);
+    encode_char(program, "--", BP_DECREMENT);
+    // Minify bitwise not
+    encode_char(program, "~", BP_BITWISE_NOT);
+    // String access
+    encode_char(program, ":[", BP_STR_ACCESS);
+    // Variable access
+    encode_char(program, "$[", BP_VAR_ACCESS);
+    // Minify functions
+    for(uint8_t i = 0; i < BP_MAX_FUNCTIONS; i++)
+      encode_functions(program);
+    // Minify system calls
+    encode_char(program, "analogRead", BP_AGET);
+    encode_char(program, "digitalWrite", BP_DWRITE);
+    encode_char(program, "digitalRead", BP_DREAD);
+    encode_char(program, "pinMode", BP_PINMODE);
+    encode_char(program, "random", BP_RND);
+    encode_char(program, "millis", BP_MILLIS);
+    encode_char(program, "delay", BP_DELAY);
+    encode_char(program, "sqrt", BP_SQRT);
+    // Minify constants
+    encode(program, "OUTPUT", "1");
+    encode(program, "INPUT", "0");
+    encode(program, "HIGH", "1");
+    encode(program, "LOW", "0");
+    encode(program, "false", "0");
+    encode(program, "true", "1");
+    // Minify language syntax
+    encode_char(program, "serialAvailable", BP_SERIAL_AV);
+    encode_char(program, "serialRead", BP_SERIAL_RX);
+    encode_char(program, "serialWrite", BP_SERIAL_TX);
+    encode_char(program, "inputAvailable", BP_INPUT_AV);
+    encode_char(program, "continue", BP_CONTINUE);
+    encode_char(program, "restart", BP_RESTART);
+    encode_char(program, "return", BP_RETURN);
+    encode_char(program, "number", BP_STOI);
+    encode_char(program, "input", BP_INPUT);
+    encode_char(program, "break", BP_BREAK);
+    encode_char(program, "print", BP_PRINT);
+    encode_char(program, "while", BP_WHILE);
+    encode_char(program, "endif", BP_ENDIF);
+    encode_char(program, "sizeof", BP_SIZEOF);
+    encode_char(program, "redo", BP_REDO);
+    encode_char(program, "next", BP_NEXT);
+    encode_char(program, "char ", BP_CHAR);
+    encode_char(program, "else ", BP_ELSE);
+    encode_char(program, "end", BP_END);
+    encode_char(program, "for", BP_FOR);
+    encode_char(program, "if", BP_IF);
+    encode_char(program, "to", BP_COMMA);
+    encode(program, "not", "1-");
+    // Remove spaces
+    remove_spaces(program);
+    // Reset indexes
+    var_id = BP_ADDRESS_OFFSET;
+    string_id = BP_ADDRESS_OFFSET;
+    fun_id = BP_ADDRESS_OFFSET;
+  };
+};
