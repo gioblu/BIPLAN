@@ -29,10 +29,10 @@ next
 The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until a `redo` statement is encountered.   
 ```php
 $i = 0
-while $i++ < 5
+while $i++ < 10
   if $i == 4 continue
   if $i == 5 break
-  print $i++
+  print $i
 next
 
 # Prints 1, 2, 3
