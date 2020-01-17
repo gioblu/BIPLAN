@@ -523,7 +523,7 @@ class BIPLAN_Interpreter {
   void continue_call() {
     uint16_t id = cycle_id;
     while(cycle_id >= id) {
-      if(decoder_get() == BP_NEXT || decoder_get() == BP_REDO)
+      if(decoder_get() == BP_NEXT)
         if(cycle_id == id--) break;
       if(decoder_get() == BP_WHILE || decoder_get() == BP_FOR) id++;
       decoder_next();
@@ -559,18 +559,29 @@ class BIPLAN_Interpreter {
   void next_call() {
     decoder_next();
     if(cycle_id) {
-      int vi = cycles[cycle_id - 1].var_id;
-      BP_VAR_TYPE v = get_variable(vi);
-      bool d = cycles[cycle_id - 1].direction;
-      if(
-        ((d)  && v < cycles[cycle_id - 1].to) ||
-        ((!d) && v > cycles[cycle_id - 1].to)
-      ) {
+      if(cycles[cycle_id - 1].var_id == BP_VARIABLES) {
+        char *end = decoder_position();
         decoder_goto(cycles[cycle_id - 1].address);
-        set_variable(vi, (d) ? ++v : --v);
-      } else { // Set back global variable and reset cycle variable buffer
-        if(vi != BP_VARIABLES) set_variable(vi, cycles[cycle_id - 1].var);
-        cycles[--cycle_id].var_id = BP_VARIABLES;
+        decoder_next();
+        if(relation()) decoder_next();
+        else {
+          decoder_goto(end);
+          cycle_id--;
+        }
+      } else {
+        int vi = cycles[cycle_id - 1].var_id;
+        BP_VAR_TYPE v = get_variable(vi);
+        bool d = cycles[cycle_id - 1].direction;
+        if(
+          ((d)  && v < cycles[cycle_id - 1].to) ||
+          ((!d) && v > cycles[cycle_id - 1].to)
+        ) {
+          decoder_goto(cycles[cycle_id - 1].address);
+          set_variable(vi, (d) ? ++v : --v);
+        } else { // Set back global variable and reset cycle variable buffer
+          if(vi != BP_VARIABLES) set_variable(vi, cycles[cycle_id - 1].var);
+          cycles[--cycle_id].var_id = BP_VARIABLES;
+        }
       }
     } else error(decoder_position(), BP_ERROR_CYCLE_NEXT);
   };
@@ -584,27 +595,12 @@ class BIPLAN_Interpreter {
       else error(decoder_position(), BP_ERROR_WHILE_MAX);
     } else {
       uint16_t c = 1;
-      while(decoder_get() != BP_REDO && (c > 0)) {
-        if(decoder_get() == BP_WHILE) c++;
-        if(decoder_get() == BP_REDO) c--;
+      while(decoder_get() != BP_NEXT && (c > 0)) {
+        if((decoder_get() == BP_WHILE) || (decoder_get() == BP_FOR)) c++;
+        if(decoder_get() == BP_NEXT) c--;
         decoder_next();
       }
     }
-  };
-
-  /* REDO ------------------------------------------------------------------ */
-  void redo_call() {
-    decoder_next();
-    char *end = decoder_position();
-    if(cycle_id) {
-      decoder_goto(cycles[cycle_id - 1].address);
-      decoder_next();
-      if(relation()) decoder_next();
-      else {
-        decoder_goto(end);
-        cycle_id--;
-      }
-    } else error(decoder_position(), BP_ERROR_REDO);
   };
 
   /* DIGITAL WRITE --------------------------------------------------------- */
@@ -719,7 +715,6 @@ class BIPLAN_Interpreter {
       case BP_ELSE:       return else_call();
       case BP_FOR:        return for_call();
       case BP_WHILE:      return while_call();
-      case BP_REDO:       return redo_call();
       case BP_NEXT:       return next_call();
       case BP_BREAK:      return break_call();
       case BP_CONTINUE:   return continue_call();

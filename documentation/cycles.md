@@ -26,7 +26,7 @@ next
 # Prints 0, 1, 3, 4
 ```
 
-The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until a `redo` statement is encountered.   
+The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until a `next` statement is encountered.   
 ```php
 $i = 0
 while $i++ < 10

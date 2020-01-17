@@ -14,7 +14,7 @@ void error_callback(char *position, const char *string) {
 };
 
 char program[] =
-"print \"BIPLAN v0.0 prime calculator \n Digit the test range: \" \n\
+"print \"BIPLAN v0.0 fibonacci calculator \n Digit the test range: \" \n\
 $index = 0 \n\
 $range = 0 \n\
 while true \n\
@@ -26,11 +26,12 @@ while true \n\
     restart \n\
   endif \n\
   :str[$index++] = $value \n\
-redo \n\
+next \n\
 print :str, \"\n\" \n\
 $range = number :str \n\
 for $i = 0 to $range \n\
-  print($i, \" prime: \", prime($i), \"\n\"); \n\
+
+  print($i, \" Fibonacci: \", prime($i), \"\n\"); \n\
 next \n\
 $time = millis \n\
 for $i = 0 to $range \n\

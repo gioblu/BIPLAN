@@ -27,7 +27,7 @@ while true \n\
     restart \n\
   endif \n\
   :str[$index++] = $value \n\
-redo \n\
+next \n\
 print :str, \"\n\" \n\
 $range = number :str \n\
 for $i = 0 to $range \n\

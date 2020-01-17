@@ -306,7 +306,6 @@ public:
     encode_char(program, "while", BP_WHILE);
     encode_char(program, "endif", BP_ENDIF);
     encode_char(program, "sizeof", BP_SIZEOF);
-    encode_char(program, "redo", BP_REDO);
     encode_char(program, "next", BP_NEXT);
     encode_char(program, "char ", BP_CHAR);
     encode_char(program, "else ", BP_ELSE);

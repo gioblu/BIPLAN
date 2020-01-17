@@ -27,8 +27,8 @@ $inc = 0\n\
 $time = millis\n\
 while $inc < 10000 \n\
   ++$inc \n\
-redo \n\
-print \"while redo: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
+next \n\
+print \"while: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
 print \"BIPLAN cycles test ended.\n\" \n\
 end\n";
 

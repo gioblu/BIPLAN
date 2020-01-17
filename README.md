@@ -27,6 +27,5 @@ BIPLAN comes with a modern syntax inspired by Ruby on Rails and Python and it is
 ## TODO
 
 - REMOVE CR
-- next - redo becomes only next
 - function must have end statement
 - reset variable functions loops and registers states on reset

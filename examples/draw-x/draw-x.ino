@@ -18,7 +18,7 @@ char program[] =
 $res = 0 \n\
 while $res < 3 \n\
   if serialAvailable $res (serialRead - 48) endif \n\
-redo \n\
+next \n\
 print \" \", $res--, \"\n\" \n\
 for $y = 0 to $res \n\
   for $x = 0 to $res \n\
