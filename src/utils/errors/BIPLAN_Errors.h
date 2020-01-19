@@ -11,4 +11,5 @@
 #define BP_ERROR_CYCLE_MAX           "cycle maximum depth exceeded"
 #define BP_ERROR_CYCLE_NEXT          "non matching next"
 #define BP_ERROR_WHILE_MAX           "while maximum depth exceeded"
-#define BP_ERROR_BLOCK               "expected condition end not found"
+#define BP_ERROR_BLOCK               "non matching condition delimiter"
+#define BP_ERROR_ROUND_PARENTHESIS   "non matching round parenthesis"

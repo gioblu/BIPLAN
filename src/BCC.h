@@ -38,8 +38,27 @@ public:
   char fun_id = BP_ADDRESS_OFFSET;
   char function_keyword[BP_MAX_FUNCTION_NAME_LENGTH];
   char test_code[BP_MAX_VARIABLE_LENGTH];
+  error_type error_callback = NULL;
 
   BCC() { };
+
+  /* ERROR ----------------------------------------------------------------- */
+  void error(char *position, const char *string) {
+    error_callback(position, string);
+  };
+
+  /* CHECK DELIMETERS ------------------------------------------------------ */
+  bool check_delimeter(char *program, char a, char b) {
+    uint16_t ia = 0;
+    uint16_t ib = 0;
+    bool in_str = false;
+    char *p = program;
+    while(*p != 0) {
+      if((*p == a) && !is_in_string(program, p)) ia++;
+      if((*p == b) && !is_in_string(program, p)) ib++;
+      p++;
+    } return (ia == ib);
+  };
 
   /* CHECK IF POINTER IS IN A STRING -------------------------------------- */
   bool is_in_string(char *program, char *a) {
@@ -242,8 +261,8 @@ public:
     while(position) position = encode_function_pass(program, position);
   };
 
-  /* BIPLAN MINIFY ------------------------------------------------------- */
-  void compile(char *program) {
+  /* RUN COMPILATION ------------------------------------------------------ */
+  void run(char *program) {
     // Remove comments
     remove_comments(program);
     // Minify variables
@@ -316,6 +335,12 @@ public:
     encode(program, "not", "1-");
     // Remove spaces
     remove_spaces(program);
+    remove_cr(program);
+    // Program consistency checks
+    if(!check_delimeter(program, BP_L_RPARENT, BP_R_RPARENT))
+      error(0, BP_ERROR_ROUND_PARENTHESIS);
+    if(!check_delimeter(program, BP_IF, BP_ENDIF))
+      error(0, BP_ERROR_BLOCK);
     // Reset indexes
     var_id = BP_ADDRESS_OFFSET;
     string_id = BP_ADDRESS_OFFSET;

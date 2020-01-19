@@ -137,7 +137,6 @@ class BIPLAN_Interpreter {
     while(definitions[d].params[p++] != BP_PARAMS);
     if(p < BP_PARAMS) return p;
     error(decoder_position(), BP_ERROR_PARAMETERS);
-    ended = true;
     return 0;
   }
 
