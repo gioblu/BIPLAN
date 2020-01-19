@@ -25,7 +25,7 @@ Each variable is just an entry of a global array of variables. The `BP_VARIABLES
 #define BP_VARIABLES 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports a maximum amount of 116 global variables.
+BIPLAN supports a maximum amount of 125 global variables.
 
 The maximum length of variable names can be configured as follows:
 ```cpp
@@ -45,7 +45,7 @@ Each string is just an entry of a global array of string. The `BP_STRINGS` const
 #define BP_STRINGS 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports a maximum amount of 116 global strings.
+BIPLAN supports a maximum amount of 125 global strings.
 
 ### Functions
 Each function is just an entry of a global array of functions. The `BP_FUNCTIONS` constant can be used as shown below to configure the maximum amount of functions available:

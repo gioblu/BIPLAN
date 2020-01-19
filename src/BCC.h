@@ -51,7 +51,6 @@ public:
   bool check_delimeter(char *program, char a, char b) {
     uint16_t ia = 0;
     uint16_t ib = 0;
-    bool in_str = false;
     char *p = program;
     while(*p != 0) {
       if((*p == a) && !is_in_string(program, p)) ia++;

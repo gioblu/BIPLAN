@@ -1,6 +1,6 @@
 
 # BIPLAN v0.0
-BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programming language based on a recursive descent parser that uses only static memory allocation and operates a completely software-defined architecture that does not require a garbage collector.
+BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programming language based on a recursive descent parser that uses only static memory allocation and operates a completely software-defined 7bit virtual machine that does not require a garbage collector.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -25,7 +25,5 @@ BIPLAN comes with a modern syntax inspired by Ruby on Rails and Python and it is
 - [Unary operators](documentation/unary-operators.md)
 
 ## TODO
-
-- REMOVE CR
 - function must have end statement
-- reset variable functions loops and registers states on reset
+- reset functions loops and registers states on reset

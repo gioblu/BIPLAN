@@ -87,7 +87,7 @@ void decoder_next() {
   decoder_current = get_next_code();
 };
 
-/* DECODER 1 CHRACTER FORWARD --------------------------------------------- */
+/* DECODER 1 CHARACTER FORWARD --------------------------------------------- */
 void decoder_step() {
   decoder_ptr++;
   decoder_current = get_next_code();
