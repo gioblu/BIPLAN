@@ -111,10 +111,10 @@ void setup() {
     interpreter.ended = true;
     Serial.println("Fix your code and retry.");
   }
-}
+};
 
 void loop() {
   while(!interpreter.ended)
     interpreter.run();
   while(true);
-}
+};
