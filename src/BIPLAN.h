@@ -518,11 +518,10 @@ class BIPLAN_Interpreter {
   /* CONTINUE -------------------------------------------------------------- */
   void continue_call() {
     uint16_t id = cycle_id;
-    while(cycle_id >= id) {
-      if(decoder_get() == BP_NEXT)
-        if(cycle_id == id--) break;
+    while(cycle_id <= id) {
+      if(decoder_get() == BP_NEXT) id--;
       if(decoder_get() == BP_WHILE || decoder_get() == BP_FOR) id++;
-      decoder_next();
+      if(cycle_id <= id) decoder_next();
     }
   };
 
