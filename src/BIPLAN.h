@@ -105,7 +105,7 @@ class BIPLAN_Interpreter {
           }
           if(*p == BP_R_RPARENT) break;
         }
-        definitions[l].address = p + 2;
+        definitions[l].address = p + 1;
       }
     }
   };
@@ -370,10 +370,7 @@ class BIPLAN_Interpreter {
         else if(is_char) BPM_PRINT_WRITE(print_fun, (char)v);
         else BPM_PRINT_WRITE(print_fun, v);
       }
-    } while(
-      decoder_get() != BP_SEMICOLON  && decoder_get() != BP_CR &&
-      decoder_get() != BP_R_RPARENT  && decoder_get() != BP_SEMICOLON
-    );
+    } while(decoder_get() != BP_SEMICOLON && decoder_get() != BP_R_RPARENT);
     ignore(BP_R_RPARENT);
   };
 
@@ -394,7 +391,6 @@ class BIPLAN_Interpreter {
 
   void else_call() {
     decoder_next();
-    ignore(BP_CR);
     skip_block();
   };
 
@@ -402,11 +398,9 @@ class BIPLAN_Interpreter {
   void if_call() {
     decoder_next();
     int r = relation();
-    ignore(BP_CR);
     if(!r) skip_block();
     if(decoder_get() == BP_ELSE) {
       decoder_next();
-      ignore(BP_CR);
       if(r) skip_block();
     }
   };
@@ -443,7 +437,6 @@ class BIPLAN_Interpreter {
       if(decoder_get() == BP_STRING) {
         decoder_string(strings[si], sizeof(strings[si]));
         expect(BP_STRING);
-        decoder_next();
       } else if(decoder_get() == BP_S_ADDRESS) {
         decoder_next();
         ci = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
@@ -468,7 +461,7 @@ class BIPLAN_Interpreter {
     BP_VAR_TYPE rel = 0;
     decoder_next();
     if(fun_id > 0) {
-      if(decoder_get() != BP_CR) rel = relation();
+      if(decoder_get() != BP_SEMICOLON) rel = relation();
       fun_id--;
       for(int i = 0; i < BP_PARAMS; i++)
         if(functions[fun_id].params[i].id != BP_VARIABLES) {
@@ -511,7 +504,6 @@ class BIPLAN_Interpreter {
         i++;
       } while((i < BP_PARAMS) && (i < p - 1));
     expect(BP_R_RPARENT);
-    ignore(BP_CR);
     if(fun_id < BP_FUN_DEPTH) {
       functions[fun_id++].address = end;
       decoder_goto(definitions[find_definition(f)].address);
@@ -550,7 +542,6 @@ class BIPLAN_Interpreter {
     expect(BP_COMMA);
     e = expression();
     ignore(BP_R_RPARENT);
-    ignore(BP_CR);
     if(cycle_id < BP_CYCLE_DEPTH) {
       cycles[cycle_id].var_id    = vi;
       cycles[cycle_id].address   = decoder_position();
@@ -567,8 +558,7 @@ class BIPLAN_Interpreter {
         char *end = decoder_position();
         decoder_goto(cycles[cycle_id - 1].address);
         decoder_next();
-        if(relation()) decoder_next();
-        else {
+        if(!relation()) {
           decoder_goto(end);
           cycle_id--;
         }
@@ -703,17 +693,16 @@ class BIPLAN_Interpreter {
   void statement() {
     return_type = 0;
     switch(decoder_get()) {
-      case BP_SEMICOLON:  ; // Same as BP_CR
-      case BP_CR:         ; // Same as BP_ENDIF
+      case BP_SEMICOLON:  ; // Same as BP_ENDIF
       case BP_ENDIF:      decoder_next(); return;
       case BP_FUNCTION:   function_call(); expect(BP_R_RPARENT);
-                          ignore(BP_CR); return;
+                          return;
       case BP_VAR_ACCESS: ; // assignment by reference
       case BP_ADDRESS:    return variable_assignment_call();
       case BP_STR_ACCESS: ; // assignment by reference
       case BP_S_ADDRESS:  return string_assignment_call();
-      case BP_INCREMENT:  var_factor(); ignore(BP_CR); return;
-      case BP_DECREMENT:  var_factor(); ignore(BP_CR); return;
+      case BP_INCREMENT:  var_factor();  return;
+      case BP_DECREMENT:  var_factor();  return;
       case BP_RETURN:     return_call(); return;
       case BP_IF:         return if_call();
       case BP_ELSE:       return else_call();
