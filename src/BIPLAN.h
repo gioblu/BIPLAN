@@ -176,6 +176,10 @@ class BIPLAN_Interpreter {
     cycle_id = 0;
     fun_id = 0;
     ended = false;
+    for(uint8_t i = 0; i < BP_VARIABLES; i++) variables[i] = 0;
+    for(uint8_t i = 0; i < BP_STRINGS; i++)
+      for(uint8_t c = 0; c < BP_STRING_MAX_LENGTH; c++) strings[i][c] = 0;
+    for(uint8_t i = 0; i < BP_STRING_MAX_LENGTH; i++) string[i] = 0;
   };
 
   /* EXPECT A CERTAIN CODE, OTHERWISE THROW ERROR -------------------------- */
