@@ -1,16 +1,23 @@
+
 #include "BCC.h"
 #include "BIPLAN.h"
 
-BCC    bcc;
+BCC compiler;
 BIPLAN_Interpreter interpreter;
+
+bool error = false;
 
 void error_callback(char *position, const char *string) {
   Serial.print("error: ");
   Serial.print(string);
-  Serial.print(" ");
-  Serial.print(*position);
-  Serial.print(" at position ");
-  Serial.println(position - interpreter.program_start);
+  if(position) {
+    Serial.print(" ");
+    Serial.print(*position);
+    Serial.print(" at position ");
+    Serial.print(position - interpreter.program_start);
+  }
+  Serial.println();
+  error = true;
 };
 
 char program[] =
@@ -19,48 +26,45 @@ $a = 10\n\
 $b = 22\n\
 $c = 14\n\
 $d = 9\n\
-print \"Variables initial state \n\" \n\
+print \"Variables initial state \n\"; \n\
 # Print all variables \n\
 for $i = 0 to 3 \n\
-  print $[$i], \"\n\" \n\
+  print $[$i], \"\n\"; \n\
 next \n\
 # Set all variables \n\
 for $i = 0 to 3 \n\
   $[$i] = $i \n\
 next \n\
-print \"Variables state changed by reference \n\" \n\
+print \"Variables state changed by reference \n\"; \n\
 # Print all variables \n\
 for $i = 0 to 3 \n\
-  print $[$i], \"\n\" \n\
+  print $[$i], \"\n\"; \n\
 next \n\
 end\n";
 
 void setup() {
   pinMode(13, OUTPUT);
   Serial.begin(115200);
+  // Show human readable input program
+  Serial.print("\nBIPLAN human-readable source:\n\n");
   Serial.print(program);
-  uint16_t length;
-  for(length = 0; program[length] != 0; length++);
-  Serial.println("--------------------------");
+  uint16_t length = strlen(program);
+  // Print stats
+  Serial.println("\n--------------------------");
   Serial.print("Program length: ");
   Serial.print(length);
   Serial.println(" bytes");
-  Serial.println();
   uint32_t time = millis();
-
-  bcc.compile(program);
-  interpreter.initialize(
-    program,
-    error_callback,
-    &Serial,
-    &Serial,
-    &Serial
-  );
-
+  // Compile
+  Serial.print("\nBCC compilation result:\n\n");
+  compiler.error_callback = error_callback;
+  compiler.run(program);
+  // Print compiled source
+  Serial.print("\nBIPLAN machine language:\n\n");
   Serial.print(program);
-  uint16_t new_length;
-  for(new_length = 0; program[new_length] != 0; new_length++);
-  Serial.println("--------------------------");
+  uint16_t new_length = strlen(program);
+  // Print Stats
+  Serial.println("\n\n--------------------------");
   Serial.print("Compilation duration: ");
   Serial.print(millis() - time);
   Serial.println(" milliseconds");
@@ -75,11 +79,23 @@ void setup() {
   Serial.println("%");
   Serial.println("Program output:");
   Serial.println();
+  // Initialize interpreter
+  interpreter.initialize(
+    program,
+    error_callback,
+    &Serial,
+    &Serial,
+    &Serial
+  );
+  // Check for compilation errors
+  if(error) {
+    interpreter.ended = true;
+    Serial.println("Fix your code and retry.");
+  }
 }
 
 void loop() {
-  do {
+  while(!interpreter.ended)
     interpreter.run();
-  } while(!interpreter.finished());
   while(true);
 }

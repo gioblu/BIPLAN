@@ -1,44 +1,53 @@
+
 #include "BCC.h"
 #include "BIPLAN.h"
 
-BCC    bcc;
+BCC compiler;
 BIPLAN_Interpreter interpreter;
+
+bool error = false;
 
 void error_callback(char *position, const char *string) {
   Serial.print("error: ");
   Serial.print(string);
-  Serial.print(" ");
-  Serial.print(*position);
-  Serial.print(" at position ");
-  Serial.println(position - interpreter.program_start);
+  if(position) {
+    Serial.print(" ");
+    Serial.print(*position);
+    Serial.print(" at position ");
+    Serial.print(position - interpreter.program_start);
+  }
+  Serial.println();
+  error = true;
 };
 
 char program[] =
-"print \"\nBIPLAN v0.0 prime calculator \nDigit the test range: \" \n\
+"print \"\nBIPLAN v0.0 prime calculator \nDigit the test range: \"; \n\
 $index = 0 \n\
 $range = 0 \n\
 $result = 0 \n\
 while true \n\
-  $value = serialRead \n\
-  if $value < 1 continue endif \n\
-  if $value == 13 break endif \n\
-  if ($value < 48) || ($value > 57) \n\
-    print \"Only numbers are accepted \n\" \n\
-    restart \n\
+  if serialAvailable \n\
+    $value = serialRead \n\
+    if $value < 1 continue endif \n\
+    if $value == 13 break endif \n\
+    if ($value < 48) || ($value > 57) \n\
+      print \"Only numbers are accepted \n\"; \n\
+      restart \n\
+    endif \n\
+    :str[$index++] = $value \n\
   endif \n\
-  :str[$index++] = $value \n\
 next \n\
-print :str, \"\n\" \n\
+print :str, \"\n\"; \n\
 $range = number :str \n\
 for $i = 0 to $range \n\
   if prime($i) \n\
-    print($i, \"\n\"); \n\
+    print $i, \"\n\"; \n\
     ++$result \n\
   endif \n\
 next \n\
 $time = millis \n\
 for $i = 0 to $range prime($i) next \n\
-print(\"Elapsed time: \", millis - $time, \" milliseconds \n\") \n\
+print \"Elapsed time: \", millis - $time, \" milliseconds \n\"; \n\
 print(\"Prime numbers found: \", $result, \"\n\");\n\
 restart \n\
 function prime($n) \n\
@@ -53,30 +62,28 @@ return 1 \n\
 \n";
 
 void setup() {
+  pinMode(13, OUTPUT);
   Serial.begin(115200);
+  // Show human readable input program
+  Serial.print("\nBIPLAN human-readable source:\n\n");
   Serial.print(program);
-  uint16_t length;
-  for(length = 0; program[length] != 0; length++);
-  Serial.println("--------------------------");
+  uint16_t length = strlen(program);
+  // Print stats
+  Serial.println("\n--------------------------");
   Serial.print("Program length: ");
   Serial.print(length);
   Serial.println(" bytes");
-  Serial.println();
   uint32_t time = millis();
-
-  bcc.compile(program);
-  interpreter.initialize(
-    program,
-    error_callback,
-    &Serial,
-    &Serial,
-    &Serial
-  );
-
+  // Compile
+  Serial.print("\nBCC compilation result:\n\n");
+  compiler.error_callback = error_callback;
+  compiler.run(program);
+  // Print compiled source
+  Serial.print("\nBIPLAN machine language:\n\n");
   Serial.print(program);
-  uint16_t new_length;
-  for(new_length = 0; program[new_length] != 0; new_length++);
-  Serial.println("--------------------------");
+  uint16_t new_length = strlen(program);
+  // Print Stats
+  Serial.println("\n\n--------------------------");
   Serial.print("Compilation duration: ");
   Serial.print(millis() - time);
   Serial.println(" milliseconds");
@@ -91,11 +98,23 @@ void setup() {
   Serial.println("%");
   Serial.println("Program output:");
   Serial.println();
+  // Initialize interpreter
+  interpreter.initialize(
+    program,
+    error_callback,
+    &Serial,
+    &Serial,
+    &Serial
+  );
+  // Check for compilation errors
+  if(error) {
+    interpreter.ended = true;
+    Serial.println("Fix your code and retry.");
+  }
 }
 
 void loop() {
-  do {
+  while(!interpreter.ended)
     interpreter.run();
-  } while(!interpreter.finished());
   while(true);
 }
