@@ -3,7 +3,7 @@
   |      | | |      | |              | | \    |
   |_____/  | |______| |        ______| |  \   |
   |     \  | |        |       |      | |   \  |
-  |______| | |        |______ |______| |    \_|
+  |______| | |        |______ |______| |    \_| CR.1
   Byte coded Interpreted Programming Language
   Giovanni Blu Mitolo 2017-2020 - gioscarab@gmail.com
       _____              _________________________
@@ -343,7 +343,6 @@ class BIPLAN_Interpreter {
   /* PRINT ----------------------------------------------------------------- */
   void print_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     do {
       BP_VAR_TYPE v = 0;
       bool is_char = (decoder_get() == BP_CHAR);
@@ -369,8 +368,7 @@ class BIPLAN_Interpreter {
         else if(is_char) BPM_PRINT_WRITE(print_fun, (char)v);
         else BPM_PRINT_WRITE(print_fun, v);
       }
-    } while(decoder_get() != BP_SEMICOLON && decoder_get() != BP_R_RPARENT);
-    ignore(BP_R_RPARENT);
+    } while(decoder_get() == BP_COMMA);
   };
 
   /* BLOCK CALL ------------------------------------------------------------ */
@@ -530,7 +528,6 @@ class BIPLAN_Interpreter {
   /* CYCLE ----------------------------------------------------------------- */
   void for_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     expect(BP_ADDRESS);
     uint8_t vi = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
     BP_VAR_TYPE e;
@@ -539,7 +536,6 @@ class BIPLAN_Interpreter {
     set_variable(vi, expression());
     expect(BP_COMMA);
     e = expression();
-    ignore(BP_R_RPARENT);
     if(cycle_id < BP_CYCLE_DEPTH) {
       cycles[cycle_id].var_id    = vi;
       cycles[cycle_id].address   = decoder_position();
@@ -598,47 +594,38 @@ class BIPLAN_Interpreter {
   /* DIGITAL WRITE --------------------------------------------------------- */
   void digitalWrite_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     BP_VAR_TYPE pin = expression();
     expect(BP_COMMA);
     BPM_IO_WRITE(pin, expression());
-    ignore(BP_R_RPARENT);
   };
 
   /* PINMODE --------------------------------------------------------------- */
   void pinMode_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     BP_VAR_TYPE pin = expression();
     expect(BP_COMMA);
     BPM_IO_MODE(pin, expression());
-    ignore(BP_R_RPARENT);
   }
 
   /* WAIT/DELAY ------------------------------------------------------------ */
   void delay_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     BPM_DELAY(expression());
-    ignore(BP_R_RPARENT);
   };
 
   /* RANDOM CALL (min optional, max optional) ------------------------------ */
   BP_VAR_TYPE random_call() {
-    ignore(BP_L_RPARENT);
     BP_VAR_TYPE a = expression(), b;
     if(decoder_get() == BP_COMMA) {
       decoder_next();
       b = BPM_RANDOM(a, expression());
     } else b = BPM_RANDOM(a);
-    ignore(BP_R_RPARENT);
     return b;
   };
 
   /* SERIAL TX CALL -------------------------------------------------------- */
   void serial_tx_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     if(decoder_get() == BP_STRING) {
       decoder_string(string, sizeof(string));
       for(uint16_t i = 0; i < BP_STRING_MAX_LENGTH; i++)
@@ -650,13 +637,11 @@ class BIPLAN_Interpreter {
       for(uint16_t i = 0; i < sizeof(strings[id]); i++)
         BPM_SERIAL_WRITE(serial_fun, strings[id][i]);
     } else BPM_SERIAL_WRITE(serial_fun, relation());
-    ignore(BP_R_RPARENT);
   };
 
   /* STRING LENGTH CALL ---------------------------------------------------- */
   BP_VAR_TYPE sizeof_call() {
     decoder_next();
-    ignore(BP_L_RPARENT);
     if(decoder_get() == BP_S_ADDRESS) {
       decoder_next();
       BP_VAR_TYPE l =
@@ -665,7 +650,6 @@ class BIPLAN_Interpreter {
       return l;
     } else if(decoder_get() == BP_ADDRESS) {
       decoder_next();
-      ignore(BP_R_RPARENT);
       return sizeof(BP_VAR_TYPE);
     } return 0;
   };
@@ -674,7 +658,6 @@ class BIPLAN_Interpreter {
   BP_VAR_TYPE stoi_call() {
     BP_VAR_TYPE v = 0;
     decoder_next();
-    ignore(BP_L_RPARENT);
     if(decoder_get() == BP_S_ADDRESS) {
       decoder_next();
       v = BPM_STOI(strings[*(decoder_position() - 1) - BP_ADDRESS_OFFSET]);
@@ -683,7 +666,6 @@ class BIPLAN_Interpreter {
       decoder_next();
       v = BPM_STOI(string);
     }
-    ignore(BP_R_RPARENT);
     return v;
   };
 
