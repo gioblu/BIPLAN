@@ -28,14 +28,14 @@ $result = 0 \n\
 while true \n\
   if serialAvailable \n\
     $value = serialRead \n\
-    if $value < 1 continue endif \n\
-    if $value == 13 break endif \n\
+    if $value < 1 continue end \n\
+    if $value == 13 break end \n\
     if ($value < 48) || ($value > 57) \n\
       print \"Only numbers are accepted \n\" \n\
       restart \n\
-    endif \n\
+    end \n\
     :str[$index++] = $value \n\
-  endif \n\
+  end \n\
 next \n\
 print :str, \"\n\" \n\
 $range = number :str \n\
@@ -43,7 +43,7 @@ for $i = 0 to $range \n\
   if prime($i) \n\
     print $i, \"\n\" \n\
     ++$result \n\
-  endif \n\
+  end \n\
 next \n\
 $time = millis \n\
 for $i = 0 to $range prime($i) next \n\
@@ -51,12 +51,12 @@ print \"Elapsed time: \", millis - $time, \" milliseconds \n\" \n\
 print \"Prime numbers found: \", $result, \"\n\" \n\
 restart \n\
 function prime($n) \n\
-  if $n <= 1 return 0 endif \n\
-  if $n <= 3 return 1 endif \n\
-  if ($n % 2 == 0) || ($n % 3 == 0) return 0 endif \n\
+  if $n <= 1 return 0 end \n\
+  if $n <= 3 return 1 end \n\
+  if ($n % 2 == 0) || ($n % 3 == 0) return 0 end \n\
   for $u = 2 to sqrt($n) + 1 \n\
-    if($n % $u == 0) return 0 endif \n\
-    if $n == $u return 1 endif \n\
+    if($n % $u == 0) return 0 end \n\
+    if $n == $u return 1 end \n\
   next \n\
 return 1 \n\
 \n";

@@ -18,7 +18,7 @@ A function is a group of statements that together perform a task. It can be defi
 # Call
 print sum(1, 1)
 
-end # end of the program
+stop # end of the program
 
 # Definition
 function sum($a, $b)
@@ -29,7 +29,7 @@ Functions can contain more than one statement, but only one `return` statement c
 # Call
 print_sum(1, 1)
 
-end # end of the program
+stop # end of the program
 
 # Definition
 function print_sum($a, $b)
@@ -47,7 +47,7 @@ $b = 5
 scope_test(2) # Prints 10 2
 print($b) # Prints 5
 
-end # end of the program
+stop # end of the program
 
 # Definition
 function scope_test($b)

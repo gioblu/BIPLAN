@@ -37,7 +37,7 @@ while $inc < 10000 \n\
 next \n\
 print \"while: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
 print \"BIPLAN cycles test ended.\n\" \n\
-end\n";
+stop\n";
 
 void setup() {
   pinMode(13, OUTPUT);

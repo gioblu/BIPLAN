@@ -30,7 +30,7 @@ char program[] =
 for $i = 0 to 2 \n\
   print :[$i], \"\n\" \n\
 next \n\
-end\n";
+stop\n";
 
 void setup() {
   pinMode(13, OUTPUT);

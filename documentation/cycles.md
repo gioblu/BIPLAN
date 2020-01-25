@@ -18,8 +18,8 @@ The `for` statement is a loop that supports a single local variable:
 
 ```php
 for $i = 0 to 5
-  if $i == 2 continue
-  if $i == 5 break
+  if $i == 2 continue end
+  if $i == 5 break end
   print $i
 next
 
@@ -30,8 +30,8 @@ The `while` statement, if the condition is truthy, forces the cyclical execution
 ```php
 $i = 0
 while $i++ < 10
-  if $i == 4 continue
-  if $i == 5 break
+  if $i == 4 continue end
+  if $i == 5 break end
   print $i
 next
 

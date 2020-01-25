@@ -23,7 +23,7 @@ char program[] =
 "print \"X Drawer example \n Please input resolution between 3 and 9:\" \n\
 $res = 0 \n\
 while $res < 3 \n\
-  if serialAvailable $res = (serialRead - 48) endif \n\
+  if serialAvailable $res = (serialRead - 48) end \n\
 next \n\
 print \" \", $res--, \"\n\" \n\
 for $y = 0 to $res \n\
@@ -32,7 +32,7 @@ for $y = 0 to $res \n\
       print \"X\" \n\
     else \n\
       print \" \" \n\
-    endif \n\
+    end \n\
   next \n\
   print \"\n\" \n\
 next \n\

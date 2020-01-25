@@ -23,7 +23,7 @@ void error_callback(char *position, const char *string) {
 char program[] =
 "# BIPLAN serial transmission example \n\
 serialWrite \"This string comes from a BIPLAN program : )\" \n\
-end \n";
+stop \n";
 
 void setup() {
   pinMode(13, OUTPUT);

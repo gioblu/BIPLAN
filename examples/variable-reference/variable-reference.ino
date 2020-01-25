@@ -40,7 +40,7 @@ print \"Variables state changed by reference \n\" \n\
 for $i = 0 to 3 \n\
   print $[$i], \"\n\" \n\
 next \n\
-end\n";
+stop\n";
 
 void setup() {
   pinMode(13, OUTPUT);

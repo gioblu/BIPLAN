@@ -30,7 +30,7 @@ print \"Expected: 2 - 1\n\" \n\
 print ++++$unary--, \" - \", $unary, \"\n\" \n\
 print \"Expected: 2 - 5\n\" \n\
 print --++++$unary++++++, \" - \", $unary, \"\n\" \n\
-end\n";
+stop\n";
 
 void setup() {
   pinMode(13, OUTPUT);

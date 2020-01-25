@@ -27,14 +27,14 @@ $range = 0 \n\
 while true \n\
   if serialAvailable \n\
     $value = serialRead \n\
-    if $value < 1 continue endif \n\
-    if $value == 13 break endif \n\
+    if $value < 1 continue end \n\
+    if $value == 13 break end \n\
     if ($value < 48) || ($value > 57) \n\
       print \"Only numbers are accepted \n\" \n\
       restart \n\
-    endif \n\
+    end \n\
     :str[$index++] = $value \n\
-  endif \n\
+  end \n\
 next \n\
 print :str, \"\n\" \n\
 fibonacci(number :str) \n\

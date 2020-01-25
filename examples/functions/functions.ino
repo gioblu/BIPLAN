@@ -27,7 +27,7 @@ print \"\nComputing div of 10 / 2 = \", div(10, 2) \n\
 $test = div(100, 2) \n\
 print \"\nexpected return value 50: \", $test, \"\nempty_func return value: \", empty_func() \n\
 print \"\nBIPLAN test ended.\" \n\
-end # Program end \n\
+stop # Program end \n\
 function sum($a, $b) \n\
   return $a + $b \n\
 function mul($a, $b) \n\

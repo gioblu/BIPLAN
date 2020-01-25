@@ -15,7 +15,7 @@
 
 | BIP code | BIPLAN function     | Purpose                                                |
 | -------- | ------------------- | ------------------------------------------------------ |
-|  `x`     | `end`               | End program                                            |
+|  `x`     | `stop`              | End program                                            |
 |  `r`     | `restart`           | Restart program                                        |
 |  `b`     | `char`              | Converts to char                                       |
 |  `m`     | `sizeof`            | Returns the length of the trailing string or variable  |

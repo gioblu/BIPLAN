@@ -15,12 +15,12 @@
 An `if` executes the given statement if its condition is truthy, otherwise, it executes the following `else` statement if present. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
 ```php
 $fine = true
-if $fine print "All is fine!" endif
+if $fine print "All is fine!" end
 
 # Or
 
 if not $fine print "Some error occurred"
-else print "All is fine!" endif
+else print "All is fine!" end
 ```
 or can also conditionally execute a group of statements:
 ```php
@@ -32,5 +32,5 @@ if 1 == 1
 else
   print "Some error occurred!"
   print "Equality does not work"
-endif
+end
 ```

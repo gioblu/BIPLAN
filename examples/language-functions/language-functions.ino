@@ -30,7 +30,7 @@ print \"\nrandom 0, 10: \", random 0, 10 \n\
 print \"\nsqrt 81: \", sqrt 81 \n\
 print \"\npinMode 13, OUTPUT: \" \n\
 pinMode 13, OUTPUT \n\
-print\"\nNow blink 5 times: \" \n\
+print \"\nNow blink 5 times: \" \n\
 for $i = 0 to 4 \n\
   print \"\nBLINK\" \n\
   digitalWrite 13, HIGH \n\
@@ -39,7 +39,7 @@ for $i = 0 to 4 \n\
   delay 1000 \n\
 next \n\
 print \"\n\BIPLAN language functions test finished.\" \n\
-end\n";
+stop\n";
 
 void setup() {
   pinMode(13, OUTPUT);

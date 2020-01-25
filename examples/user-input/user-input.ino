@@ -22,7 +22,7 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# BIPLAN print serial input example \n\
-if inputAvailable print char input endif \n\
+if inputAvailable print char input end \n\
 restart \n\
 \n";
 

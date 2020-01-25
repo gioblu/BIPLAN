@@ -26,19 +26,19 @@ char program[] =
 print \"BIPLAN conditions test start...\n\" \n\
 block(false) \n\
 block(true) \n\
-end\n\
+stop\n\
 function block($condition) \n\
   if $condition  \n\
     print \"Block if fail\n\" \n\
-  endif \n\
+  end \n\
   if not $condition \n\
     print \"Block if ok\n\" \n\
-  endif \n\
+  end \n\
   if $condition \n\
     print \"Block if fail\n\" \n\
   else  \n\
     print \"Block else ok\n\" \n\
-  endif \n\
+  end \n\
 return\n";
 
 void setup() {
