@@ -33,8 +33,7 @@ end # end of the program
 
 # Definition
 function print_sum($a, $b)
-  print "Sum: "
-  print $a + $b
+  print "Sum: ", $a + $b
 return
 
 # Prints Sum: 2
@@ -46,13 +45,12 @@ $a = 10
 $b = 5
 
 scope_test(2) # Prints 10 2
-print $b # Prints 5
+print($b) # Prints 5
 
 end # end of the program
 
 # Definition
 function scope_test($b)
-  print $a
-  print $b
+  print $a, " ", $b
 return
 ```
