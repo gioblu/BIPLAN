@@ -187,14 +187,6 @@ class BIPLAN_Interpreter {
     else decoder_next();
   };
 
-  /* IGNORE A CERTAIN CODE ------------------------------------------------- */
-  bool ignore(uint8_t c) {
-    if(c == decoder_get()) {
-      decoder_next();
-      return true;
-    } return false;
-  };
-
   /* GET VARIABLE ---------------------------------------------------------- */
   BP_VAR_TYPE get_variable(int n) {
     if(n >= 0 && n <= BP_VARIABLES) return variables[n];
@@ -244,7 +236,7 @@ class BIPLAN_Interpreter {
   BP_VAR_TYPE factor() {
     BP_VAR_TYPE v = 0;
     bool bitwise_not = (decoder_get() == BP_BITWISE_NOT);
-    ignore(BP_BITWISE_NOT);
+    if(bitwise_not) decoder_next();
     switch(decoder_get()) {
       case BP_VAR_ACCESS:
         decoder_next(); v = variables[expression()];
@@ -646,7 +638,6 @@ class BIPLAN_Interpreter {
       decoder_next();
       BP_VAR_TYPE l =
         strlen(strings[*(decoder_position() - 1) - BP_ADDRESS_OFFSET]);
-      ignore(BP_R_RPARENT);
       return l;
     } else if(decoder_get() == BP_ADDRESS) {
       decoder_next();
