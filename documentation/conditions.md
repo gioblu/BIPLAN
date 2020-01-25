@@ -19,7 +19,7 @@ if $fine print "All is fine!" endif
 
 # Or
 
-if !$fine print "Some error occurred"
+if not $fine print "Some error occurred"
 else print "All is fine!" endif
 ```
 or can also conditionally execute a group of statements:

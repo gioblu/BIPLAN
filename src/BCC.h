@@ -77,7 +77,7 @@ public:
     while(*j != 0) {
       *i = *j++;
       if(*i == BP_STRING) in_str = !in_str;
-      if(*i != ' ') i++;
+      if(*i != BP_SPACE) i++;
       else if(in_str) i++;
     } *i = 0;
   };
@@ -133,7 +133,7 @@ public:
       }
       for(uint16_t i = 0; i < kl; i++, p++)
         if(i < cl && code[i]) *p = code[i];
-        else *p = ' ';
+        else *p = BP_SPACE;
       return p;
     } else return NULL;
   };
@@ -158,7 +158,7 @@ public:
     char code[4] = {(var_type) ? BP_ADDRESS : BP_S_ADDRESS, 0, 0, 0};
     uint8_t n;
     if((p = find_longest_var_name(program, var_type)) != NULL) {
-      str[0] = (var_type) ? '$' : ':';
+      str[0] = (var_type) ? BP_ADDRESS_HUMAN : BP_STRING_HUMAN;
       *p = (var_type) ? BP_ADDRESS : BP_S_ADDRESS;
       p++;
       str[1] = *p;
@@ -168,7 +168,7 @@ public:
       for(uint16_t i = 0; i < BP_MAX_VARIABLE_LENGTH - 1; i++, p++) {
         if((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')) {
           str[n++] = *p;
-          *p = ' ';
+          *p = BP_SPACE;
           // Add space instead of keyword (will be removed by remove_spaces)
         } else break;
       }
@@ -197,7 +197,7 @@ public:
     uint8_t result = 0;
     char   *result_position = 0;
     while(*position != 0) {
-      if(*(position++) == ((type) ? '$' : ':')) {
+      if(*(position++) == ((type) ? BP_ADDRESS_HUMAN : BP_STRING_HUMAN)) {
         // Avoid substitution in strings
         if(is_in_string(program, position)) continue;
         uint8_t i = 0;
@@ -222,10 +222,10 @@ public:
   /* ENCODE FUNCTION IN BYTECODE ------------------------------------------ */
   char *encode_function_pass(char *program, char *position) {
     uint8_t n = 0;
-    char *p = strstr(position, "function ");
+    char *p = strstr(position, BP_FUN_DEF_HUMAN);
     if(p && *p) {
       if(is_in_string(program, p)) {
-        p = strstr(p + 1, "function ");
+        p = strstr(p + 1, BP_FUN_DEF_HUMAN);
         if(p && *p) return p;
         else return NULL;
       }
@@ -233,13 +233,13 @@ public:
       p++;
       *p = fun_id;
       p++;
-      while(*p != ' ') {
-        *p = ' ';
+      while(*p != BP_SPACE) {
+        *p = BP_SPACE;
         p++;
       }
       while(p++ && (*p != BP_L_RPARENT)) {
         function_keyword[n] = *p;
-        *p = ' ';
+        *p = BP_SPACE;
         n++;
       }
       if(n) {
@@ -267,41 +267,39 @@ public:
     // Minify variables
     encode_variables(program, false);
     encode_variables(program, true);
-    // Remove semicolons followed by carriage return
-    encode(program, ";\n", "\n");
     // Logic
-    encode_char(program, "==", BP_EQ);
-    encode_char(program, "!=", BP_NOT_EQ);
-    encode_char(program, ">=", BP_GTOEQ);
-    encode_char(program, "<=", BP_LTOEQ);
-    encode_char(program, "||", BP_LOGIC_OR);
-    encode_char(program, "&&", BP_LOGIC_AND);
+    encode_char(program, BP_EQ_HUMAN, BP_EQ);
+    encode_char(program, BP_NOT_EQ_HUMAN, BP_NOT_EQ);
+    encode_char(program, BP_GTOEQ_HUMAN, BP_GTOEQ);
+    encode_char(program, BP_LTOEQ_HUMAN, BP_LTOEQ);
+    encode_char(program, BP_LOGIC_OR_HUMAN, BP_LOGIC_OR);
+    encode_char(program, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND);
     // Bitwise
-    encode_char(program, ">>", BP_R_SHIFT);
-    encode_char(program, "<<", BP_L_SHIFT);
+    encode_char(program, BP_R_SHIFT_HUMAN, BP_R_SHIFT);
+    encode_char(program, BP_L_SHIFT_HUMAN, BP_L_SHIFT);
     // Remove syntactic sugar
     encode(program, "=", "");
     // Unary
-    encode_char(program, "++", BP_INCREMENT);
-    encode_char(program, "--", BP_DECREMENT);
+    encode_char(program, BP_INCREMENT_HUMAN, BP_INCREMENT);
+    encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
     // Minify bitwise not
-    encode_char(program, "~", BP_BITWISE_NOT);
+    encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
     // String access
-    encode_char(program, ":[", BP_STR_ACCESS);
+    encode_char(program, BP_STR_ACCESS_HUMAN, BP_STR_ACCESS);
     // Variable access
-    encode_char(program, "$[", BP_VAR_ACCESS);
+    encode_char(program, BP_VAR_ACCESS_HUMAN, BP_VAR_ACCESS);
     // Minify functions
     for(uint8_t i = 0; i < BP_MAX_FUNCTIONS; i++)
       encode_functions(program);
     // Minify system calls
-    encode_char(program, "analogRead", BP_AGET);
-    encode_char(program, "digitalWrite", BP_DWRITE);
-    encode_char(program, "digitalRead", BP_DREAD);
-    encode_char(program, "pinMode", BP_PINMODE);
-    encode_char(program, "random", BP_RND);
-    encode_char(program, "millis", BP_MILLIS);
-    encode_char(program, "delay", BP_DELAY);
-    encode_char(program, "sqrt", BP_SQRT);
+    encode_char(program, BP_AGET_HUMAN, BP_AGET);
+    encode_char(program, BP_DWRITE_HUMAN, BP_DWRITE);
+    encode_char(program, BP_DREAD_HUMAN, BP_DREAD);
+    encode_char(program, BP_PINMODE_HUMAN, BP_PINMODE);
+    encode_char(program, BP_RND_HUMAN, BP_RND);
+    encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
+    encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
+    encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
     // Minify constants
     encode(program, "OUTPUT", "1");
     encode(program, "INPUT", "0");
@@ -310,26 +308,26 @@ public:
     encode(program, "false", "0");
     encode(program, "true", "1");
     // Minify language syntax
-    encode_char(program, "serialAvailable", BP_SERIAL_AV);
-    encode_char(program, "serialRead", BP_SERIAL_RX);
-    encode_char(program, "serialWrite", BP_SERIAL_TX);
-    encode_char(program, "inputAvailable", BP_INPUT_AV);
-    encode_char(program, "continue", BP_CONTINUE);
-    encode_char(program, "restart", BP_RESTART);
-    encode_char(program, "return", BP_RETURN);
-    encode_char(program, "number", BP_STOI);
-    encode_char(program, "input", BP_INPUT);
-    encode_char(program, "break", BP_BREAK);
-    encode_char(program, "print", BP_PRINT);
-    encode_char(program, "while", BP_WHILE);
-    encode_char(program, "endif", BP_ENDIF);
-    encode_char(program, "sizeof", BP_SIZEOF);
-    encode_char(program, "next", BP_NEXT);
-    encode_char(program, "char ", BP_CHAR);
-    encode_char(program, "else ", BP_ELSE);
-    encode_char(program, "end", BP_END);
-    encode_char(program, "for", BP_FOR);
-    encode_char(program, "if", BP_IF);
+    encode_char(program, BP_SERIAL_AV_HUMAN, BP_SERIAL_AV);
+    encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
+    encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
+    encode_char(program, BP_INPUT_AV_HUMAN, BP_INPUT_AV);
+    encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
+    encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
+    encode_char(program, BP_RETURN_HUMAN, BP_RETURN);
+    encode_char(program, BP_STOI_HUMAN, BP_STOI);
+    encode_char(program, BP_INPUT_HUMAN, BP_INPUT);
+    encode_char(program, BP_BREAK_HUMAN, BP_BREAK);
+    encode_char(program, BP_PRINT_HUMAN, BP_PRINT);
+    encode_char(program, BP_WHILE_HUMAN, BP_WHILE);
+    encode_char(program, BP_ENDIF_HUMAN, BP_ENDIF);
+    encode_char(program, BP_SIZEOF_HUMAN, BP_SIZEOF);
+    encode_char(program, BP_NEXT_HUMAN, BP_NEXT);
+    encode_char(program, BP_CHAR_HUMAN, BP_CHAR);
+    encode_char(program, BP_ELSE_HUMAN, BP_ELSE);
+    encode_char(program, BP_END_HUMAN, BP_END);
+    encode_char(program, BP_FOR_HUMAN, BP_FOR);
+    encode_char(program, BP_IF_HUMAN, BP_IF);
     encode_char(program, "to", BP_COMMA);
     encode(program, "not", "1-");
     // Remove spaces

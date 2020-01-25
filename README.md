@@ -31,5 +31,6 @@ All the software included in this project is experimental and it is distributed 
 This software is experimental and may not behave as expected. Consider that using a virtual machine of this sort, specially if enabling remote program update, is dangerous. When enabling remote programming of a BIPLAN virtual machine, it must be considered potentially compromised, manipulated or remotely actuated against your will. It should be considered a good practice not to connect to the internet systems that may create a damage (fire, flood, data-leak) if hacked.
 
 #### TODO
+- Avoid variable `$ -> v` and string `: -> t` identifier translation (2 codes spared)
 - function must have end statement
 - reset functions loops and registers states on reset

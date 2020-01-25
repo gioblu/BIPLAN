@@ -107,143 +107,276 @@
   #define BP_CYCLE_DEPTH 20
 #endif
 
-/* BYTE CODE -------------------------------------------------------------- */
-#define BP_ERROR        0  // Decimal  0  | USED |
-#define BP_ENDOFINPUT   1  // Decimal  1  | USED |
-                           // Decimal  2  |      |
-                           // Decimal  3  |      |
-                           // Decimal  4  |      |
-                           // Decimal  5  |      |
-                           // Decimal  6  |      |
-                           // Decimal  7  |      |
-                           // Decimal  8  |      |
-                           // Decimal  9  |      |
-                           // Decimal 10  |      |
-                           // Decimal 11  |      |
-                           // Decimal 12  |      |
-#define BP_CR         '\n' // Decimal 13  |      |
-                           // Decimal 14  |      |
-                           // Decimal 15  |      |
-                           // Decimal 16  |      |
-                           // Decimal 17  |      |
-                           // Decimal 18  |      |
-                           // Decimal 19  |      |
-                           // Decimal 20  |      |
-                           // Decimal 21  |      |
-                           // Decimal 22  |      |
-                           // Decimal 23  |      |
-                           // Decimal 24  |      |
-                           // Decimal 25  |      |
-                           // Decimal 26  |      |
-                           // Decimal 27  |      |
-                           // Decimal 28  |      |
-                           // Decimal 29  |      |
-                           // Decimal 30  |      |
-                           // Decimal 31  |      |
-                    // SPACE  Decimal 32  |      |
-#define BP_ELSE        '!' // Decimal 33  | USED |
-#define BP_STRING      '"' // Decimal 34  | USED |
-#define BP_REM         '#' // Decimal 35  | USED |
-                     // $     Decimal 36  |      |
-#define BP_MOD         '%' // Decimal 37  | USED |
-#define BP_AND         '&' // Decimal 38  | USED |
-                     // '     Decimal 39  |      |
-#define BP_L_RPARENT   '(' // Decimal 40  | USED |
-#define BP_R_RPARENT   ')' // Decimal 41  | USED |
-#define BP_MULT        '*' // Decimal 42  | USED |
-#define BP_PLUS        '+' // Decimal 43  | USED |
-#define BP_COMMA       ',' // Decimal 44  | USED |
-#define BP_MINUS       '-' // Decimal 45  | USED |
-                     // .     Decimal 46  |      |
-#define BP_DIV         '/' // Decimal 47  | USED |
-// NUMBERS              0     Decimal 48  | USED |
-// NUMBERS              1     Decimal 49  | USED |
-// NUMBERS              2     Decimal 50  | USED |
-// NUMBERS              3     Decimal 51  | USED |
-// NUMBERS              4     Decimal 52  | USED |
-// NUMBERS              5     Decimal 53  | USED |
-// NUMBERS              6     Decimal 54  | USED |
-// NUMBERS              7     Decimal 55  | USED |
-// NUMBERS              8     Decimal 56  | USED |
-// NUMBERS              9     Decimal 57  | USED |
-                     // :     Decimal 58  |      |
-#define BP_SEMICOLON   ';' // Decimal 59  | USED |
-#define BP_LT          '<' // Decimal 60  | USED |
-                     // =     Decimal 61  |      |
-#define BP_GT          '>' // Decimal 62  | USED |
-#define BP_IF          '?' // Decimal 63  | USED |
-#define BP_FOR         '@' // Decimal 64  | USED |
-#define BP_LOGIC_AND   'A' // Decimal 65  | USED |
-#define BP_BREAK       'B' // Decimal 66  | USED |
-#define BP_DECREMENT   'C' // Decimal 67  | USED |
-#define BP_DELAY       'D' // Decimal 68  | USED |
-#define BP_DWRITE      'E' // Decimal 69  | USED |
-#define BP_ENDIF       'F' // Decimal 70  | USED |
-#define BP_DREAD       'G' // Decimal 71  | USED |
-#define BP_GTOEQ       'H' // Decimal 72  | USED |
-#define BP_LTOEQ       'I' // Decimal 73  | USED |
-#define BP_AGET        'J' // Decimal 74  | USED |
-#define BP_R_SHIFT     'K' // Decimal 75  | USED |
-#define BP_L_SHIFT     'L' // Decimal 76  | USED |
-#define BP_MILLIS      'M' // Decimal 77  | USED |
-#define BP_BITWISE_NOT 'N' // Decimal 78  | USED |
-#define BP_LOGIC_OR    'O' // Decimal 79  | USED |
-#define BP_PINMODE     'P' // Decimal 80  | USED |
-#define BP_EQ          'Q' // Decimal 81  | USED |
-#define BP_RND         'R' // Decimal 82  | USED |
-#define BP_STR_ACCESS  'S' // Decimal 83  | USED |
-#define BP_NOT_EQ      'T' // Decimal 84  | USED |
-                     // U     Decimal 85  |      |
-#define BP_VAR_ACCESS  'V' // Decimal 86  | USED |
-                     // W     Decimal 87  |      |
-                     // X     Decimal 88  |      |
-                     // Y     Decimal 89  |      |
-                     // Z     Decimal 90  |      |
-#define BP_ACCESS      '[' // Decimal 91  | USED |
-//               BACKSLASH    Decimal 92  | USED |
-#define BP_ACCESS_END  ']' // Decimal 93  | USED |
-#define BP_XOR         '^' // Decimal 94  | USED |
-                     // _     Decimal 95  |      |
-#define BP_INCREMENT   '`' // Decimal 96  | USED |
-#define BP_SERIAL_AV   'a' // Decimal 97  | USED |
-#define BP_CHAR        'b' // Decimal 98  | USED |
-#define BP_CONTINUE    'c' // Decimal 99  | USED |
-                     // d     Decimal 100 |      |
-#define BP_INPUT       'e' // Decimal 101 | USED |
-#define BP_FUN_DEF     'f' // Decimal 102 | USED |
-#define BP_SERIAL_TX   'g' // Decimal 103 | USED |
-                     // h     Decimal 104 |      |
-#define BP_INPUT_AV    'i' // Decimal 105 | USED |
-                     // j     Decimal 106 |      |
-                     // k     Decimal 107 |      |
-                     // l     Decimal 108 |      |
-#define BP_SIZEOF      'm' // Decimal 109 | USED |
-#define BP_NEXT        'n' // Decimal 110 | USED |
-                     // o     Decimal 111 |      |
-#define BP_PRINT       'p' // Decimal 112 | USED |
-#define BP_STOI        'q' // Decimal 113 | USED |
-#define BP_RETURN      'r' // Decimal 114 | USED |
-#define BP_SQRT        's' // Decimal 115 | USED |
-#define BP_S_ADDRESS   't' // Decimal 116 | USED |
-#define BP_SERIAL_RX   'u' // Decimal 117 | USED |
-#define BP_ADDRESS     'v' // Decimal 118 | USED |
-#define BP_WHILE       'w' // Decimal 119 | USED |
-#define BP_END         'x' // Decimal 120 | USED |
-                     // y     Decimal 121 |      |
-#define BP_RESTART     'z' // Decimal 122 | USED |
-#define BP_BLOCK       '{' // Decimal 123 | USED |
-#define BP_OR          '|' // Decimal 124 | USED |
-#define BP_BLOCK_END   '}' // Decimal 125 | USED |
-#define BP_FUNCTION    '~' // Decimal 126 | USED |
-                           // Decimal 127 |      |
-#define BP_NUMBER     128  // Decimal 128 | USED |
+/* MACHINE AND HUMAN-READABLE LANGUAGE SYNTAX -----------------------------
+_______________________________________________________________________
+ CONSTANT NAME                                    | DECIMAL     | USED |
+__________________________________________________|_____________|______| */
+#define BP_ERROR              0                   //  0         | USED |
+#define BP_ENDOFINPUT         1                   //  1         | USED |
+                                                  //  2         |      |
+                                                  //  3         |      |
+                                                  //  4         |      |
+                                                  //  5         |      |
+                                                  //  6         |      |
+                                                  //  7         |      |
+                                                  //  8         |      |
+                                                  //  9         |      |
+                                                  // 10         |      |
+                                                  // 11         |      |
+                                                  // 12         |      |
+#define BP_CR               '\n'                  // 13         |      |
+                                                  // 14         |      |
+                                                  // 15         |      |
+                                                  // 16         |      |
+                                                  // 17         |      |
+                                                  // 18         |      |
+                                                  // 19         |      |
+                                                  // 20         |      |
+                                                  // 21         |      |
+                                                  // 22         |      |
+                                                  // 23         |      |
+                                                  // 24         |      |
+                                                  // 25         |      |
+                                                  // 26         |      |
+                                                  // 27         |      |
+                                                  // 28         |      |
+                                                  // 29         |      |
+                                                  // 30         |      |
+                                                  // 31         |      |
+//______________________________________________________________|______|
+#define BP_SPACE             ' '                  // 32         | USED |
+// USED BY HUMAN-READABLE AS SEPARATOR            //            |      |
+//______________________________________________________________|______|
+#define BP_ELSE              '!'                  // 33         | USED |
+#define BP_ELSE_HUMAN        "else "              //            |      |
+//______________________________________________________________|______|
+#define BP_STRING            '"'                  // 34         | USED |
+//______________________________________________________________|______|
+#define BP_REM               '#'                  // 35         | USED |
+//______________________________________________________________|______|
+#define BP_ADDRESS_HUMAN     '$'                  // 36         | USED |
+// USED IN HUMAN-READABLE AS VARIABLE ID          //            |      |
+//______________________________________________________________|______|
+#define BP_MOD               '%'                  // 37         | USED |
+//______________________________________________________________|______|
+#define BP_AND               '&'                  // 38         | USED |
+//______________________________________________________________|______|
+                           // '                   // 39         |      |
+//______________________________________________________________|______|
+#define BP_L_RPARENT         '('                  // 40         | USED |
+//______________________________________________________________|______|
+#define BP_R_RPARENT         ')'                  // 41         | USED |
+//______________________________________________________________|______|
+#define BP_MULT              '*'                  // 42         | USED |
+//______________________________________________________________|______|
+#define BP_PLUS              '+'                  // 43         | USED |
+//______________________________________________________________|______|
+#define BP_COMMA             ','                  // 44         | USED |
+//______________________________________________________________|______|
+#define BP_MINUS             '-'                  // 45         | USED |
+//______________________________________________________________|______|
+                           // .                   // 46         |      |
+//______________________________________________________________|______|
+#define BP_DIV               '/'                  // 47         | USED |
+//______________________________________________________________|______|
+// NUMBERS                    0                   // 48         | USED |
+// NUMBERS                    1                   // 49         | USED |
+// NUMBERS                    2                   // 50         | USED |
+// NUMBERS                    3                   // 51         | USED |
+// NUMBERS                    4                   // 52         | USED |
+// NUMBERS                    5                   // 53         | USED |
+// NUMBERS                    6                   // 54         | USED |
+// NUMBERS                    7                   // 55         | USED |
+// NUMBERS                    8                   // 56         | USED |
+// NUMBERS                    9                   // 57         | USED |
+//______________________________________________________________|______|
+#define BP_STRING_HUMAN      ':'                  // 58         | USED |
+// USED IN HUMAN-READABLE AS STRING ID            //            |      |
+//______________________________________________________________|______|
+#define BP_SEMICOLON         ';'                  // 59         | USED |
+//______________________________________________________________|______|
+#define BP_LT                '<'                  // 60         | USED |
+//______________________________________________________________|______|
+#define BP_ASSIGN_HUMAN      '='                  // 61         | USED |
+// USED IN HUMAN-READABLE FOR ASSIGNMENT          //            |      |
+//______________________________________________________________|______|
+#define BP_GT                '>'                  // 62         | USED |
+//______________________________________________________________|______|
+#define BP_IF                '?'                  // 63         | USED |
+#define BP_IF_HUMAN          "if"                 //            |      |
+//______________________________________________________________|______|
+#define BP_FOR               '@'                  // 64         | USED |
+#define BP_FOR_HUMAN         "for"                //            |      |
+//______________________________________________________________|______|
+#define BP_LOGIC_AND         'A'                  // 65         | USED |
+#define BP_LOGIC_AND_HUMAN   "&&"                 //            |      |
+//______________________________________________________________|______|
+#define BP_BREAK             'B'                  // 66         | USED |
+#define BP_BREAK_HUMAN       "break"              //            |      |
+//______________________________________________________________|______|
+#define BP_DECREMENT         'C'                  // 67         | USED |
+#define BP_DECREMENT_HUMAN   "--"                 //            |      |
+//______________________________________________________________|______|
+#define BP_DELAY             'D'                  // 68         | USED |
+#define BP_DELAY_HUMAN       "delay"              //            |      |
+//______________________________________________________________|______|
+#define BP_DWRITE            'E'                  // 69         | USED |
+#define BP_DWRITE_HUMAN      "digitalWrite"       //            |      |
+//______________________________________________________________|______|
+#define BP_ENDIF             'F'                  // 70         | USED |
+#define BP_ENDIF_HUMAN       "endif"              //            |      |
+//______________________________________________________________|______|
+#define BP_DREAD             'G'                  // 71         | USED |
+#define BP_DREAD_HUMAN       "digitalRead"        //            |      |
+//______________________________________________________________|______|
+#define BP_GTOEQ             'H'                  // 72         | USED |
+#define BP_GTOEQ_HUMAN       ">="                 //            |      |
+//______________________________________________________________|______|
+#define BP_LTOEQ             'I'                  // 73         | USED |
+#define BP_LTOEQ_HUMAN       "<="                 //            |      |
+//______________________________________________________________|______|
+#define BP_AGET              'J'                  // 74         | USED |
+#define BP_AGET_HUMAN        "analogRead"         //            |      |
+//______________________________________________________________|______|
+#define BP_R_SHIFT           'K'                  // 75         | USED |
+#define BP_R_SHIFT_HUMAN     ">>"                 //            |      |
+//______________________________________________________________|______|
+#define BP_L_SHIFT           'L'                  // 76         | USED |
+#define BP_L_SHIFT_HUMAN     "<<"                 //            |      |
+//______________________________________________________________|______|
+#define BP_MILLIS            'M'                  // 77         | USED |
+#define BP_MILLIS_HUMAN      "millis"             //            |      |
+//______________________________________________________________|______|
+#define BP_BITWISE_NOT       'N'                  // 78         | USED |
+#define BP_BITWISE_NOT_HUMAN "~"                  //            |      |
+//______________________________________________________________|______|
+#define BP_LOGIC_OR          'O'                  // 79         | USED |
+#define BP_LOGIC_OR_HUMAN    "||"                 //            |      |
+//______________________________________________________________|______|
+#define BP_PINMODE           'P'                  // 80         | USED |
+#define BP_PINMODE_HUMAN     "pinMode"            //            |      |
+//______________________________________________________________|______|
+#define BP_EQ                'Q'                  // 81         | USED |
+#define BP_EQ_HUMAN          "=="                 //            |      |
+//______________________________________________________________|______|
+#define BP_RND               'R'                  // 82         | USED |
+#define BP_RND_HUMAN         "random"             //            |      |
+//______________________________________________________________|______|
+#define BP_STR_ACCESS        'S'                  // 83         | USED |
+#define BP_STR_ACCESS_HUMAN ":["                  //            |      |
+//______________________________________________________________|______|
+#define BP_NOT_EQ            'T'                  // 84         | USED |
+#define BP_NOT_EQ_HUMAN      "!="                 //            |      |
+//______________________________________________________________|______|
+                           // U                      85         |      |
+//______________________________________________________________|______|
+#define BP_VAR_ACCESS        'V'                  // 86         | USED |
+#define BP_VAR_ACCESS_HUMAN  "$["                 //            |      |
+//______________________________________________________________|______|
+                           // W                   // 87         |      |
+                           // X                   // 88         |      |
+                           // Y                   // 89         |      |
+                           // Z                   // 90         |      |
+//______________________________________________________________|______|
+#define BP_ACCESS            '['                  // 91         | USED |
+//______________________________________________________________|______|
+//                     BACKSLASH                  // 92         | USED |
+//______________________________________________________________|______|
+#define BP_ACCESS_END        ']'                  // 93         | USED |
+//______________________________________________________________|______|
+#define BP_XOR               '^'                  // 94         | USED |
+//______________________________________________________________|______|
+                           // _                   // 95         |      |
+//______________________________________________________________|______|
+#define BP_INCREMENT         '`'                  // 96         | USED |
+#define BP_INCREMENT_HUMAN   "++"                 //            |      |
+//______________________________________________________________|______|
+#define BP_SERIAL_AV         'a'                  // 97         | USED |
+#define BP_SERIAL_AV_HUMAN   "serialAvailable"    //            |      |
+//______________________________________________________________|______|
+#define BP_CHAR              'b'                  // 98         | USED |
+#define BP_CHAR_HUMAN        "char "              //            |      |
+//______________________________________________________________|______|
+#define BP_CONTINUE          'c'                  // 99         | USED |
+#define BP_CONTINUE_HUMAN    "continue"           //            |      |
+//______________________________________________________________|______|
+                           // d                   // 100        |      |
+//______________________________________________________________|______|
+#define BP_INPUT             'e'                  // 101        | USED |
+#define BP_INPUT_HUMAN       "input"              //            |      |
+//______________________________________________________________|______|
+#define BP_FUN_DEF           'f'                  // 102        | USED |
+#define BP_FUN_DEF_HUMAN     "function "          //            |      |
+//______________________________________________________________|______|
+#define BP_SERIAL_TX         'g'                  // 103        | USED |
+#define BP_SERIAL_TX_HUMAN   "serialWrite"        //            |      |
+//______________________________________________________________|______|
+                           // h                   // 104        |      |
+//______________________________________________________________|______|
+#define BP_INPUT_AV          'i'                  // 105        | USED |
+#define BP_INPUT_AV_HUMAN    "inputAvailable"     //            |      |
+//______________________________________________________________|______|
+                           // j                   // 106        |      |
+                           // k                   // 107        |      |
+                           // l                   // 108        |      |
+//______________________________________________________________|______|
+#define BP_SIZEOF            'm'                  // 109        | USED |
+#define BP_SIZEOF_HUMAN      "sizeof"             //            |      |
+//______________________________________________________________|______|
+#define BP_NEXT              'n'                  // 110        | USED |
+#define BP_NEXT_HUMAN        "next"               //            |      |
+//______________________________________________________________|______|
+                           // o                   // 111        |      |
+//______________________________________________________________|______|
+#define BP_PRINT             'p'                  // 112        | USED |
+#define BP_PRINT_HUMAN       "print"              //            |      |
+//______________________________________________________________|______|
+#define BP_STOI              'q'                  // 113        | USED |
+#define BP_STOI_HUMAN        "number"             //            |      |
+//______________________________________________________________|______|
+#define BP_RETURN            'r'                  // 114        | USED |
+#define BP_RETURN_HUMAN      "return"             //            |      |
+//______________________________________________________________|______|
+#define BP_SQRT              's'                  // 115        | USED |
+#define BP_SQRT_HUMAN        "sqrt"               //            |      |
+//______________________________________________________________|______|
+#define BP_S_ADDRESS         't'                  // 116        | USED |
+//______________________________________________________________|______|
+#define BP_SERIAL_RX         'u'                  // 117        | USED |
+#define BP_SERIAL_RX_HUMAN   "serialRead"         //            |      |
+//______________________________________________________________|______|
+#define BP_ADDRESS           'v'                  // 118        | USED |
+//______________________________________________________________|______|
+#define BP_WHILE             'w'                  // 119        | USED |
+#define BP_WHILE_HUMAN       "while"              //            |      |
+//______________________________________________________________|______|
+#define BP_END               'x'                  // 120        | USED |
+#define BP_END_HUMAN         "end"                //            |      |
+//______________________________________________________________|______|
+                           // y                   // 121        |      |
+//______________________________________________________________|______|
+#define BP_RESTART           'z'                  // 122        | USED |
+#define BP_RESTART_HUMAN     "restart"            //            |      |
+//______________________________________________________________|______|
+                           // {                   // 123        |      |
+//______________________________________________________________|______|
+#define BP_OR                '|'                  // 124        | USED |
+//______________________________________________________________|______|
+                           // }                   // 125        |      |
+//______________________________________________________________|______|
+#define BP_FUNCTION          '~'                  // 126        | USED |
+// sum(2 + 2) -> ~0(2 + 2)                        //            |      |
+//______________________________________________________________|______|
+                                                  // 127        |      |
+//______________________________________________________________|______|
+#define BP_NUMBER           128                   // 128        | USED |
+//______________________________________________________________|______|
 
 // TODO
+// system call to have easier access to user input from console/serial
 // #define BP_AWRITE
 // #define BP_SFLUSH
 // #define BP_SBEGIN
-
-// EVAL
 // #define BP_ABS
 // #define BP_MIN
 // #define BP_MAX
