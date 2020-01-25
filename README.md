@@ -11,6 +11,26 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 
 BIPLAN has a modern syntax inspired by Ruby on Rails and Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extended and applied in other architectures or real time operative systems.
 
+### Code example
+
+Here is some BIPLAN code that shows how to compute the Fibonacci sequence:
+```php
+fibonacci(10) # Prints 0 1 1 2 3 5 8
+stop # End of program
+
+function fibonacci($x)
+  $a = 0
+  $b = 1
+  $n = 0
+  while $n < $x
+    print $n, " "
+    $a = $b
+    $b = $n
+    $n = $a + $b
+  next
+return
+```
+
 ### Documentation
 - [Configuration](documentation/configuration.md)
 - [Comments](documentation/comments.md)
