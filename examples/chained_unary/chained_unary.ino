@@ -22,14 +22,14 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# Unary test \n\
-print \"Chained unary test:\n\"; \n\
+print \"Chained unary test:\n\" \n\
 $unary = 0 \n\
-print \"Expected: 2 - 0\n\"; \n\
-print ++++$unary----, \" - \",  $unary, \"\n\"; \n\
-print \"Expected: 2 - 1\n\"; \n\
-print ++++$unary--, \" - \", $unary, \"\n\"; \n\
-print \"Expected: 2 - 5\n\"; \n\
-print --++++$unary++++++, \" - \", $unary, \"\n\"; \n\
+print \"Expected: 2 - 0\n\" \n\
+print ++++$unary----, \" - \",  $unary, \"\n\" \n\
+print \"Expected: 2 - 1\n\" \n\
+print ++++$unary--, \" - \", $unary, \"\n\" \n\
+print \"Expected: 2 - 5\n\" \n\
+print --++++$unary++++++, \" - \", $unary, \"\n\" \n\
 end\n";
 
 void setup() {

@@ -21,7 +21,7 @@ void error_callback(char *position, const char *string) {
 };
 
 char program[] =
-"print \"\nBIPLAN v0.0 prime calculator \nDigit the test range: \"; \n\
+"print \"\nBIPLAN CR.1 prime calculator \nDigit the test range: \" \n\
 $index = 0 \n\
 $range = 0 \n\
 $result = 0 \n\
@@ -31,24 +31,24 @@ while true \n\
     if $value < 1 continue endif \n\
     if $value == 13 break endif \n\
     if ($value < 48) || ($value > 57) \n\
-      print \"Only numbers are accepted \n\"; \n\
+      print \"Only numbers are accepted \n\" \n\
       restart \n\
     endif \n\
     :str[$index++] = $value \n\
   endif \n\
 next \n\
-print :str, \"\n\"; \n\
+print :str, \"\n\" \n\
 $range = number :str \n\
 for $i = 0 to $range \n\
   if prime($i) \n\
-    print $i, \"\n\"; \n\
+    print $i, \"\n\" \n\
     ++$result \n\
   endif \n\
 next \n\
 $time = millis \n\
 for $i = 0 to $range prime($i) next \n\
-print \"Elapsed time: \", millis - $time, \" milliseconds \n\"; \n\
-print(\"Prime numbers found: \", $result, \"\n\");\n\
+print \"Elapsed time: \", millis - $time, \" milliseconds \n\" \n\
+print \"Prime numbers found: \", $result, \"\n\" \n\
 restart \n\
 function prime($n) \n\
   if $n <= 1 return 0 endif \n\

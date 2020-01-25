@@ -23,21 +23,21 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# Condition test \n\
-print \"BIPLAN conditions test start...\n\"; \n\
+print \"BIPLAN conditions test start...\n\" \n\
 block(false) \n\
 block(true) \n\
 end\n\
 function block($condition) \n\
   if $condition  \n\
-    print \"Block if fail\n\"; \n\
+    print \"Block if fail\n\" \n\
   endif \n\
   if not $condition \n\
-    print \"Block if ok\n\"; \n\
+    print \"Block if ok\n\" \n\
   endif \n\
   if $condition \n\
-    print \"Block if fail\n\"; \n\
+    print \"Block if fail\n\" \n\
   else  \n\
-    print \"Block else ok\n\"; \n\
+    print \"Block else ok\n\" \n\
   endif \n\
 return\n";
 

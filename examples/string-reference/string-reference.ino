@@ -28,7 +28,7 @@ char program[] =
 :str = \"another string\" \n\
 # Print all strings \n\
 for $i = 0 to 2 \n\
-  print :[$i], \"\n\"; \n\
+  print :[$i], \"\n\" \n\
 next \n\
 end\n";
 

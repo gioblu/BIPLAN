@@ -20,21 +20,21 @@ void error_callback(char *position, const char *string) {
 };
 
 char program[] =
-"print \"X Drawer example \n Please input resolution between 3 and 9:\"; \n\
+"print \"X Drawer example \n Please input resolution between 3 and 9:\" \n\
 $res = 0 \n\
 while $res < 3 \n\
   if serialAvailable $res = (serialRead - 48) endif \n\
 next \n\
-print \" \", $res--, \"\n\"; \n\
+print \" \", $res--, \"\n\" \n\
 for $y = 0 to $res \n\
   for $x = 0 to $res \n\
     if $x == $y || ($x + $y == $res) \n\
-      print \"X\"; \n\
+      print \"X\" \n\
     else \n\
-      print \" \"; \n\
+      print \" \" \n\
     endif \n\
   next \n\
-  print \"\n\"; \n\
+  print \"\n\" \n\
 next \n\
 restart\n";
 

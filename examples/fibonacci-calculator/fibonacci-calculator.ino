@@ -21,7 +21,7 @@ void error_callback(char *position, const char *string) {
 };
 
 char program[] =
-"print \"BIPLAN v0.0 fibonacci calculator \n Digit the test range: \"; \n\
+"print \"BIPLAN v0.0 fibonacci calculator \n Digit the test range: \" \n\
 $index = 0 \n\
 $range = 0 \n\
 while true \n\
@@ -30,32 +30,26 @@ while true \n\
     if $value < 1 continue endif \n\
     if $value == 13 break endif \n\
     if ($value < 48) || ($value > 57) \n\
-      print \"Only numbers are accepted \n\"; \n\
+      print \"Only numbers are accepted \n\" \n\
       restart \n\
     endif \n\
     :str[$index++] = $value \n\
   endif \n\
 next \n\
-print :str, \"\n\"; \n\
-$range = number :str \n\
-for $i = 0 to $range \n\
-  print($i, \" Fibonacci: \", prime($i), \"\n\"); \n\
-next \n\
-$time = millis \n\
-for $i = 0 to $range \n\
-  prime($i) \n\
-next \n\
-print(\"Elapsed time: \", millis - $time, \" milliseconds \n\"); \n\
+print :str, \"\n\" \n\
+fibonacci(number :str) \n\
 restart \n\
-function prime($n) \n\
-  if $n <= 1 return 0 endif \n\
-  if $n <= 3 return 1 endif \n\
-  if ($n % 2 == 0) || ($n % 3 == 0) return 0 endif \n\
-  for $u = 2 to sqrt($n) + 1 \n\
-    if($n % $u == 0) return 0 endif \n\
-    if $n == $u return 1 endif \n\
+function fibonacci($n) \n\
+  $a    = 0 \n\
+  $b    = 1 \n\
+  $next = 0 \n\
+  while $next < $n \n\
+    print $next, \"\n\" \n\
+    $a = $b \n\
+    $b = $next \n\
+    $next = $a + $b \n\
   next \n\
-return 1 \n\
+return \n\
 \n";
 
 void setup() {

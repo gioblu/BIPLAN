@@ -22,21 +22,21 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# Test inc speed \n\
-print \"BIPLAN cycles test start...\n\"; \n\
+print \"BIPLAN cycles test start...\n\" \n\
 $inc = 0 \n\
 $time = millis \n\
 for $i = 0 to 10000 \n\
  ++$inc \n\
 next \n\
-print \"for: 10000 increments duration in milliseconds: \", millis - $time, \"\n\"; \n\
+print \"for: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
 delay 1000 \n\
 $inc = 0\n\
 $time = millis\n\
 while $inc < 10000 \n\
   ++$inc \n\
 next \n\
-print \"while: 10000 increments duration in milliseconds: \", millis - $time, \"\n\"; \n\
-print \"BIPLAN cycles test ended.\n\"; \n\
+print \"while: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
+print \"BIPLAN cycles test ended.\n\" \n\
 end\n";
 
 void setup() {

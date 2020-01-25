@@ -21,24 +21,24 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# BIPLAN language functions test \n\
-print \"\nBIPLAN v0.0 language functions test start...\"; \n\
-print \"\nmillis: \", millis; \n\
-print \"\ndigitalRead 13: \", digitalRead 13; \n\
-print \"\nanalogRead 0: \", analogRead 0; \n\
-print \"\nrandom 100: \", random 100; \n\
-print \"\nrandom 0, 10: \", random 0, 10; \n\
-print \"\nsqrt 81: \", sqrt 81; \n\
-print \"\npinMode 13, OUTPUT: \"; \n\
+print \"\nBIPLAN CR.1 language functions test start...\" \n\
+print \"\nmillis: \", millis \n\
+print \"\ndigitalRead 13: \", digitalRead 13 \n\
+print \"\nanalogRead 0: \", analogRead 0 \n\
+print \"\nrandom 100: \", random 100 \n\
+print \"\nrandom 0, 10: \", random 0, 10 \n\
+print \"\nsqrt 81: \", sqrt 81 \n\
+print \"\npinMode 13, OUTPUT: \" \n\
 pinMode 13, OUTPUT \n\
-print \"\nNow blink 5 times: \"; \n\
+print\"\nNow blink 5 times: \" \n\
 for $i = 0 to 4 \n\
-  print \"\nBLINK\"; \n\
+  print \"\nBLINK\" \n\
   digitalWrite 13, HIGH \n\
   delay 1000 \n\
   digitalWrite 13, LOW \n\
   delay 1000 \n\
 next \n\
-print \"\n\BIPLAN language functions test finished.\"; \n\
+print \"\n\BIPLAN language functions test finished.\" \n\
 end\n";
 
 void setup() {
