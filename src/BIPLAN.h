@@ -387,10 +387,10 @@ class BIPLAN_Interpreter {
   void if_call() {
     decoder_next();
     int r = relation();
-    if(!r) skip_block();
+    if(r <= 0) skip_block();
     if(decoder_get() == BP_ELSE) {
       decoder_next();
-      if(r) skip_block();
+      if(r > 0) skip_block();
     }
   };
 
