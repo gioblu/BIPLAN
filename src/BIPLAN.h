@@ -240,8 +240,8 @@ class BIPLAN_Interpreter {
   /* FACTOR: (n) ------------------------------------------------------------*/
   BP_VAR_TYPE factor() {
     BP_VAR_TYPE v = 0;
-    bool bitwise_not = (decoder_get() == BP_BITWISE_NOT);
-    if(bitwise_not) decoder_next();
+    bool bitwise_not = ignore(BP_BITWISE_NOT);
+    bool minus = ignore(BP_MINUS);
     switch(decoder_get()) {
       case BP_VAR_ACCESS:
         decoder_next(); v = variables[expression()];
@@ -269,6 +269,7 @@ class BIPLAN_Interpreter {
       case BP_STOI: v = stoi_call(); break;
       default: v = var_factor();
     }
+    v = (minus) ? -v : v;
     return (bitwise_not) ? ~((unsigned)v) : v;
   };
 
