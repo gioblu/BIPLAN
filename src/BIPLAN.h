@@ -187,6 +187,12 @@ class BIPLAN_Interpreter {
     else decoder_next();
   };
 
+  /* IGNORE A CERTAIN CODE ------------------------------------------------- */
+  bool ignore(uint8_t c) {
+    if(c = (c == decoder_get())) decoder_next();
+    return c;
+  };
+
   /* GET VARIABLE ---------------------------------------------------------- */
   BP_VAR_TYPE get_variable(int n) {
     if(n >= 0 && n <= BP_VARIABLES) return variables[n];
@@ -217,8 +223,7 @@ class BIPLAN_Interpreter {
     decoder_next();
     id = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
     if(type == BP_ADDRESS) v = get_variable(id);
-    else if(decoder_get() == BP_ACCESS) {
-      decoder_next();
+    else if(ignore(BP_ACCESS)) {
       v = strings[id][expression()];
       expect(BP_ACCESS_END);
       return_type = BP_ACCESS;
@@ -339,8 +344,7 @@ class BIPLAN_Interpreter {
       BP_VAR_TYPE v = 0;
       bool is_char = (decoder_get() == BP_CHAR);
       if(is_char || (decoder_get() == BP_COMMA)) decoder_next();
-      if(decoder_get() == BP_STR_ACCESS) {
-        decoder_next();
+      if(ignore(BP_STR_ACCESS)) {
         BPM_PRINT_WRITE(print_fun, strings[relation()]);
         expect(BP_ACCESS_END);
       } else if(decoder_get() == BP_STRING) {
@@ -396,8 +400,7 @@ class BIPLAN_Interpreter {
 
   /* ASSIGN VALUE TO VARIABLE ---------------------------------------------- */
   void variable_assignment_call() {
-    if(decoder_get() == BP_VAR_ACCESS) {
-      decoder_next();
+    if(ignore(BP_VAR_ACCESS)) {
       BP_VAR_TYPE vi = relation();
       expect(BP_ACCESS_END);
       return set_variable(vi, relation());
@@ -417,8 +420,7 @@ class BIPLAN_Interpreter {
       si = expression();
       expect(BP_ACCESS_END);
     } else si = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
-    if(decoder_get() == BP_ACCESS) {
-      decoder_next();
+    if(ignore(BP_ACCESS)) {
       ci = expression();
       expect(BP_ACCESS_END);
     }
@@ -426,16 +428,14 @@ class BIPLAN_Interpreter {
       if(decoder_get() == BP_STRING) {
         decoder_string(strings[si], sizeof(strings[si]));
         expect(BP_STRING);
-      } else if(decoder_get() == BP_S_ADDRESS) {
-        decoder_next();
+      } else if(ignore(BP_S_ADDRESS)) {
         ci = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
         for(uint16_t i = 0; i < sizeof(strings[ci]); i++)
           strings[si][i] = strings[ci][i];
         decoder_next();
       }
     } else {
-      if(decoder_get() == BP_STRING) {
-        expect(BP_STRING);
+      if(ignore(BP_STRING)) {
         strings[si][ci] = (char)(*(decoder_position() - 2));
         decoder_next();
       } else {
@@ -608,10 +608,8 @@ class BIPLAN_Interpreter {
   /* RANDOM CALL (min optional, max optional) ------------------------------ */
   BP_VAR_TYPE random_call() {
     BP_VAR_TYPE a = expression(), b;
-    if(decoder_get() == BP_COMMA) {
-      decoder_next();
-      b = BPM_RANDOM(a, expression());
-    } else b = BPM_RANDOM(a);
+    if(ignore(BP_COMMA)) b = BPM_RANDOM(a, expression());
+    else b = BPM_RANDOM(a);
     return b;
   };
 
@@ -623,8 +621,7 @@ class BIPLAN_Interpreter {
       for(uint16_t i = 0; i < BP_STRING_MAX_LENGTH; i++)
         BPM_SERIAL_WRITE(serial_fun, string[i]);
       decoder_next();
-    } else if(decoder_get() == BP_S_ADDRESS) {
-      decoder_next();
+    } else if(ignore(BP_S_ADDRESS)) {
       uint8_t id = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
       for(uint16_t i = 0; i < sizeof(strings[id]); i++)
         BPM_SERIAL_WRITE(serial_fun, strings[id][i]);
@@ -634,29 +631,21 @@ class BIPLAN_Interpreter {
   /* STRING LENGTH CALL ---------------------------------------------------- */
   BP_VAR_TYPE sizeof_call() {
     decoder_next();
-    if(decoder_get() == BP_S_ADDRESS) {
-      decoder_next();
+    if(ignore(BP_S_ADDRESS)) {
       BP_VAR_TYPE l =
         strlen(strings[*(decoder_position() - 1) - BP_ADDRESS_OFFSET]);
       return l;
-    } else if(decoder_get() == BP_ADDRESS) {
-      decoder_next();
-      return sizeof(BP_VAR_TYPE);
-    } return 0;
+    } else if(ignore(BP_ADDRESS)) return sizeof(BP_VAR_TYPE);
+    return 0;
   };
 
   /* STOI - CONVERTS STRINGS TO NUMBER ------------------------------------- */
   BP_VAR_TYPE stoi_call() {
     BP_VAR_TYPE v = 0;
     decoder_next();
-    if(decoder_get() == BP_S_ADDRESS) {
-      decoder_next();
+    if(ignore(BP_S_ADDRESS))
       v = BPM_STOI(strings[*(decoder_position() - 1) - BP_ADDRESS_OFFSET]);
-    }
-    if(decoder_get() == BP_STRING) {
-      decoder_next();
-      v = BPM_STOI(string);
-    }
+    if(ignore(BP_STRING)) v = BPM_STOI(string);
     return v;
   };
 
