@@ -189,7 +189,7 @@ class BIPLAN_Interpreter {
 
   /* IGNORE A CERTAIN CODE ------------------------------------------------- */
   bool ignore(uint8_t c) {
-    if(c = (c == decoder_get())) decoder_next();
+    if((c = (c == decoder_get()))) decoder_next();
     return c;
   };
 
