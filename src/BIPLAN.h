@@ -391,7 +391,7 @@ class BIPLAN_Interpreter {
   /* IF -------------------------------------------------------------------- */
   void if_call() {
     decoder_next();
-    int r = relation();
+    BP_VAR_TYPE r = relation();
     if(r <= 0) skip_block();
     if(decoder_get() == BP_ELSE) {
       decoder_next();
