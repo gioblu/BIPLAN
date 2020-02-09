@@ -240,8 +240,7 @@ class BIPLAN_Interpreter {
   /* FACTOR: (n) ------------------------------------------------------------*/
   BP_VAR_TYPE factor() {
     BP_VAR_TYPE v = 0;
-    bool bitwise_not = ignore(BP_BITWISE_NOT);
-    bool minus = ignore(BP_MINUS);
+    bool bitwise_not = ignore(BP_BITWISE_NOT), minus = ignore(BP_MINUS);
     switch(decoder_get()) {
       case BP_VAR_ACCESS:
         decoder_next(); v = variables[expression()];
@@ -268,8 +267,7 @@ class BIPLAN_Interpreter {
       case BP_SIZEOF: v = sizeof_call(); break;
       case BP_STOI: v = stoi_call(); break;
       default: v = var_factor();
-    }
-    v = (minus) ? -v : v;
+    } v = (minus) ? -v : v;
     return (bitwise_not) ? ~((unsigned)v) : v;
   };
 
@@ -393,10 +391,7 @@ class BIPLAN_Interpreter {
     decoder_next();
     BP_VAR_TYPE r = relation();
     if(r <= 0) skip_block();
-    if(decoder_get() == BP_ELSE) {
-      decoder_next();
-      if(r > 0) skip_block();
-    }
+    if(ignore(BP_ELSE) && (r > 0)) skip_block();
   };
 
   /* ASSIGN VALUE TO VARIABLE ---------------------------------------------- */
@@ -436,13 +431,9 @@ class BIPLAN_Interpreter {
         decoder_next();
       }
     } else {
-      if(ignore(BP_STRING)) {
-        strings[si][ci] = (char)(*(decoder_position() - 2));
-        decoder_next();
-      } else {
-        strings[si][ci] = (uint8_t)expression();
-        decoder_next();
-      }
+      if(ignore(BP_STRING)) strings[si][ci] = (char)(*(decoder_position() - 2));
+      else strings[si][ci] = (uint8_t)expression();
+      decoder_next();
     }
   };
 
