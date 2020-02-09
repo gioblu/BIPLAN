@@ -329,6 +329,7 @@ public:
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
     encode_char(program, BP_IF_HUMAN, BP_IF);
     encode_char(program, "to", BP_COMMA);
+    encode_char(program, "step", BP_COMMA);
     encode(program, "not", "1-");
     // Remove spaces
     remove_spaces(program);

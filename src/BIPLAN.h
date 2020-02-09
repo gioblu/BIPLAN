@@ -40,10 +40,10 @@ class BIPLAN_Interpreter {
 
   struct cycle_type {
     char *address;
-    bool direction;
-    BP_VAR_TYPE var;
+    BP_VAR_TYPE var = 0;
     uint8_t var_id = BP_VARIABLES;
-    BP_VAR_TYPE to;
+    BP_VAR_TYPE step = 0;
+    BP_VAR_TYPE to = 0;
   };
   /* BUFFERS --------------------------------------------------------------- */
   BP_VAR_TYPE       variables      [BP_VARIABLES];
@@ -498,7 +498,7 @@ class BIPLAN_Interpreter {
 
   /* CONTINUE -------------------------------------------------------------- */
   void continue_call() {
-    uint16_t id = cycle_id;
+    int16_t id = cycle_id;
     while(cycle_id <= id) {
       if(decoder_get() == BP_NEXT) id--;
       if(decoder_get() == BP_WHILE || decoder_get() == BP_FOR) id++;
@@ -507,24 +507,34 @@ class BIPLAN_Interpreter {
   };
 
   /* BREAK ----------------------------------------------------------------- */
-  void break_call() { continue_call(); decoder_next(); cycle_id--; };
+  void break_call() {
+    continue_call();
+    decoder_next();
+    if(cycles[cycle_id - 1].var_id != BP_VARIABLES)
+      set_variable(cycles[cycle_id - 1].var_id, cycles[cycle_id - 1].var);
+    cycles[--cycle_id].var_id = BP_VARIABLES;
+  };
 
   /* CYCLE ----------------------------------------------------------------- */
   void for_call() {
     decoder_next();
     expect(BP_ADDRESS);
     uint8_t vi = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
-    BP_VAR_TYPE e;
-    if(cycle_id < BP_CYCLE_DEPTH) // temporarily stash global variable
-      cycles[cycle_id].var = get_variable(vi);
-    set_variable(vi, expression());
-    expect(BP_COMMA);
-    e = expression();
-    if(cycle_id < BP_CYCLE_DEPTH) {
-      cycles[cycle_id].var_id    = vi;
-      cycles[cycle_id].address   = decoder_position();
-      cycles[cycle_id].direction = (get_variable(vi) < e) ? 1 : 0;
-      cycles[cycle_id++].to      = e;
+    BP_VAR_TYPE l, v;
+    if(cycle_id++ < BP_CYCLE_DEPTH) {
+      v = expression();
+      expect(BP_COMMA);
+      if((l = expression()) == v) {
+        continue_call();
+        return decoder_next();
+      }
+      set_variable(vi, v);
+      if(ignore(BP_COMMA)) cycles[cycle_id - 1].step = relation();
+      else cycles[cycle_id - 1].step = (v < l) ? 1 : -1;
+      cycles[cycle_id - 1].address = decoder_position();
+      cycles[cycle_id - 1].to = l;
+      cycles[cycle_id - 1].var = get_variable(vi);
+      cycles[cycle_id - 1].var_id = vi;
     } else error_fun(decoder_position(), BP_ERROR_CYCLE_MAX);
   };
 
@@ -535,22 +545,16 @@ class BIPLAN_Interpreter {
       if(cycles[cycle_id - 1].var_id == BP_VARIABLES) {
         char *end = decoder_position();
         decoder_goto(cycles[cycle_id - 1].address);
-        decoder_next();
-        if(!relation()) {
+        if(relation() <= 0) {
           decoder_goto(end);
           cycle_id--;
         }
       } else {
-        int vi = cycles[cycle_id - 1].var_id;
-        BP_VAR_TYPE v = get_variable(vi);
-        bool d = cycles[cycle_id - 1].direction;
-        if(
-          ((d)  && v < cycles[cycle_id - 1].to) ||
-          ((!d) && v > cycles[cycle_id - 1].to)
-        ) {
+        uint8_t vi = cycles[cycle_id - 1].var_id;
+        variables[vi] += cycles[cycle_id - 1].step;
+        if(variables[vi] != cycles[cycle_id - 1].to)
           decoder_goto(cycles[cycle_id - 1].address);
-          set_variable(vi, (d) ? ++v : --v);
-        } else { // Set back global variable and reset cycle variable buffer
+        else { // Set back global variable and reset cycle variable buffer
           if(vi != BP_VARIABLES) set_variable(vi, cycles[cycle_id - 1].var);
           cycles[--cycle_id].var_id = BP_VARIABLES;
         }
@@ -561,23 +565,14 @@ class BIPLAN_Interpreter {
   /* WHILE ----------------------------------------------------------------- */
   void while_call() {
     char *start = decoder_position();
-    decoder_next();
-    if(relation()) {
+    if(relation() > 0) {
       if(cycle_id < BP_CYCLE_DEPTH) cycles[cycle_id++].address = start;
       else error(decoder_position(), BP_ERROR_WHILE_MAX);
-    } else {
-      uint16_t c = 1;
-      while(decoder_get() != BP_NEXT && (c > 0)) {
-        if((decoder_get() == BP_WHILE) || (decoder_get() == BP_FOR)) c++;
-        if(decoder_get() == BP_NEXT) c--;
-        decoder_next();
-      }
-    }
+    } else break_call();
   };
 
   /* DIGITAL WRITE --------------------------------------------------------- */
   void digitalWrite_call() {
-    decoder_next();
     BP_VAR_TYPE pin = expression();
     expect(BP_COMMA);
     BPM_IO_WRITE(pin, expression());
