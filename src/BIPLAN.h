@@ -338,7 +338,6 @@ class BIPLAN_Interpreter {
 
   /* PRINT ----------------------------------------------------------------- */
   void print_call() {
-    decoder_next();
     do {
       BP_VAR_TYPE v = 0;
       bool is_char = (decoder_get() == BP_CHAR);
@@ -378,13 +377,6 @@ class BIPLAN_Interpreter {
       decoder_next();
     } while(id >= 1);
   }
-
-  /* ELSE (if arrived here, else should be ignored) ------------------------ */
-
-  void else_call() {
-    decoder_next();
-    skip_block();
-  };
 
   /* IF -------------------------------------------------------------------- */
   void if_call() {
@@ -580,17 +572,10 @@ class BIPLAN_Interpreter {
 
   /* PINMODE --------------------------------------------------------------- */
   void pinMode_call() {
-    decoder_next();
     BP_VAR_TYPE pin = expression();
     expect(BP_COMMA);
     BPM_IO_MODE(pin, expression());
   }
-
-  /* WAIT/DELAY ------------------------------------------------------------ */
-  void delay_call() {
-    decoder_next();
-    BPM_DELAY(expression());
-  };
 
   /* RANDOM CALL (min optional, max optional) ------------------------------ */
   BP_VAR_TYPE random_call() {
@@ -602,7 +587,6 @@ class BIPLAN_Interpreter {
 
   /* SERIAL TX CALL -------------------------------------------------------- */
   void serial_tx_call() {
-    decoder_next();
     if(decoder_get() == BP_STRING) {
       decoder_string(string, sizeof(string));
       for(uint16_t i = 0; i < BP_STRING_MAX_LENGTH; i++)
@@ -652,19 +636,19 @@ class BIPLAN_Interpreter {
       case BP_DECREMENT:  var_factor();  return;
       case BP_RETURN:     return_call(); return;
       case BP_IF:         return if_call();
-      case BP_ELSE:       return else_call();
+      case BP_ELSE:       decoder_next(); return skip_block();
       case BP_FOR:        return for_call();
-      case BP_WHILE:      return while_call();
+      case BP_WHILE:      decoder_next(); return while_call();
       case BP_NEXT:       return next_call();
       case BP_BREAK:      return break_call();
       case BP_CONTINUE:   return continue_call();
-      case BP_PRINT:      return print_call();
+      case BP_PRINT:      decoder_next(); return print_call();
       case BP_END:        return end_call();
-      case BP_DWRITE:     return digitalWrite_call();
-      case BP_PINMODE:    return pinMode_call();
-      case BP_DELAY:      return delay_call();
+      case BP_DWRITE:     decoder_next(); return digitalWrite_call();
+      case BP_PINMODE:    decoder_next(); return pinMode_call();
+      case BP_DELAY:      decoder_next(); BPM_DELAY(expression()); return;
       case BP_RESTART:    return restart_call();
-      case BP_SERIAL_TX:  return serial_tx_call();
+      case BP_SERIAL_TX:  decoder_next(); return serial_tx_call();
       default: error(decoder_position(), BP_ERROR_STATEMENT);
     }
   };
