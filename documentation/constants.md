@@ -4,6 +4,8 @@
 - [Conditions](/documentation/conditions.md)
 - **[Constants](/documentation/constants.md)**
 - [Cycles](/documentation/cycles.md)
+  - [`for`](/documentation/cycles.md#for)
+  - [`while`](/documentation/cycles.md#while)
 - [Functions](/documentation/functions.md)
 - [Numeric variables](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md)
