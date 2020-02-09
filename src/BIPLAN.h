@@ -107,52 +107,22 @@ class BIPLAN_Interpreter {
         }
         definitions[l].address = p + 1;
       }
-    }
-  };
-
-  /* FIND FUNCTION DEFINITION ---------------------------------------------- */
-  uint16_t find_definition(uint8_t d) {
-    for(uint16_t i = 0; i < BP_MAX_FUNCTIONS; i++)
-      if(definitions[i].id == d) return i;
-    error(decoder_position(), BP_ERROR_FUNCTION_CALL);
-    return 0;
-  };
-
-  /* FIND FUNCTION END ----------------------------------------------------- */
-  void find_function_end() {
-    uint8_t n = 0;
-    while(decoder_get() != BP_R_RPARENT || (n > 1)) {
-      if(decoder_get() == BP_ENDOFINPUT)
-        error(decoder_position(), BP_ERROR_FUNCTION_END);
-      if(decoder_get() == BP_L_RPARENT) n++;
-      if(decoder_get() == BP_R_RPARENT) n--;
       decoder_next();
     }
+    decoder_init(program);
   };
 
   /* FIND PARAM LIST LENGTH ------------------------------------------------ */
-  uint8_t find_param_list_length(uint8_t d) {
-    d = find_definition(d);
+  uint8_t param_list_length(uint8_t d) {
     uint8_t p = 0;
     while(definitions[d].params[p++] != BP_PARAMS);
-    if(p < BP_PARAMS) return p;
-    error(decoder_position(), BP_ERROR_PARAMETERS);
-    return 0;
-  }
+    if(p >= BP_PARAMS) error(decoder_position(), BP_ERROR_PARAMETERS);
+    return p + 1;
+  };
 
   /* INITIALIZE INTERPRETER ------------------------------------------------ */
 
   BIPLAN_Interpreter() { set_default(); };
-
-  BIPLAN_Interpreter(
-    char *program,
-    error_type error,
-    BPM_PRINT_TYPE print,
-    BPM_INPUT_TYPE data_input,
-    BPM_SERIAL_TYPE s
-  ) {
-    initialize(program, error, print, data_input, s);
-  };
 
   void initialize(
     char *program,
