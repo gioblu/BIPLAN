@@ -338,6 +338,13 @@ public:
       error(0, BP_ERROR_ROUND_PARENTHESIS);
     if(!check_delimeter(program, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK);
+    // Check variables, strings and functions amount
+    if((fun_id - BP_FUN_OFFSET) >= BP_MAX_FUNCTIONS)
+      error(0, BP_ERROR_FUNCTION_MAX);
+    if((string_id - BP_STRING_OFFSET) >= BP_STRINGS)
+      error(0, BP_ERROR_STRING_MAX);
+    if((var_id - BP_ADDRESS_OFFSET) >= BP_VARIABLES)
+      error(0, BP_ERROR_VARIABLE_MAX);
     // Reset indexes
     var_id = BP_ADDRESS_OFFSET;
     string_id = BP_ADDRESS_OFFSET;
