@@ -45,16 +45,16 @@
   #define BP_VARIABLES 79
 #endif
 
+/* VARIABLE ADDRESSES INDEXING OFFSET ------------------------------------- */
+
+#ifndef BP_ADDRESS_OFFSET
+  #define BP_ADDRESS_OFFSET (127 - BP_VARIABLES)
+#endif
+
 /* STRINGS AMOUNT - Higher if required ------------------------------------ */
 
 #ifndef BP_STRINGS
   #define BP_STRINGS 20
-#endif
-
-/* VARIABLE ADDRESSES INDEXING OFFSET -------------------------------------- */
-
-#ifndef BP_ADDRESS_OFFSET
-  #define BP_ADDRESS_OFFSET (127 - BP_VARIABLES)
 #endif
 
 /* VARIABLE NAME LENGTH - Higher if required ------------------------------ */

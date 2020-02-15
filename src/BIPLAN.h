@@ -359,9 +359,7 @@ class BIPLAN_Interpreter {
   /* ASSIGN VALUE TO STRING ------------------------------------------------ */
   void string_assignment_call() {
     int ci = BP_STRING_MAX_LENGTH, si;
-    bool str_acc = (decoder_get() == BP_STR_ACCESS);
-    decoder_next();
-    if(str_acc) {
+    if(ignore(BP_STR_ACCESS)) {
       si = expression();
       expect(BP_ACCESS_END);
     } else si = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
