@@ -69,6 +69,12 @@
   #define BP_MAX_FUNCTIONS 20
 #endif
 
+/* FUNCTION ADDRESSES INDEXING OFFSET -------------------------------------- */
+
+#ifndef BP_FUN_OFFSET
+  #define BP_FUN_OFFSET (127 - BP_MAX_FUNCTIONS)
+#endif
+
 /* FUNCTION NAME MAXIMUM LENGTH ------------------------------------------- */
 
 #ifndef BP_MAX_FUNCTION_NAME_LENGTH

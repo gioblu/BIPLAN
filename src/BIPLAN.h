@@ -34,9 +34,9 @@
 class BIPLAN_Interpreter {
   public:
   /* TYPES ----------------------------------------------------------------- */
-  struct param_type { BP_VAR_TYPE value; uint8_t id = BP_VARIABLES; };
-  struct fun_type { char *address; param_type params[BP_PARAMS]; };
-  struct def_type { char *address; uint8_t id; uint16_t params[BP_PARAMS]; };
+  struct param_t { BP_VAR_TYPE value; uint8_t id = BP_VARIABLES; };
+  struct fun_t { char *address; uint8_t cycle_id; param_t params[BP_PARAMS]; };
+  struct def_t { char *address; uint16_t params[BP_PARAMS]; };
 
   struct cycle_type {
     char *address;
@@ -45,13 +45,14 @@ class BIPLAN_Interpreter {
     BP_VAR_TYPE step = 0;
     BP_VAR_TYPE to = 0;
   };
+
   /* BUFFERS --------------------------------------------------------------- */
   BP_VAR_TYPE       variables      [BP_VARIABLES];
   char              string         [BP_STRING_MAX_LENGTH];
   char              strings        [BP_STRINGS][BP_STRING_MAX_LENGTH];
   struct cycle_type cycles         [BP_CYCLE_DEPTH];
-  struct fun_type   functions      [BP_FUN_DEPTH];
-  struct def_type   definitions    [BP_MAX_FUNCTIONS];
+  struct fun_t      functions      [BP_FUN_DEPTH];
+  struct def_t      definitions    [BP_MAX_FUNCTIONS];
   /* STATE ----------------------------------------------------------------- */
   char             *program_start  = NULL;
   uint8_t           cycle_id       = 0;
@@ -74,25 +75,23 @@ class BIPLAN_Interpreter {
   /* END PROGRAM ----------------------------------------------------------- */
   void end_call() { expect(BP_END); ended = true; };
 
+  /* RESTART PROGRAM CALL -------------------------------------------------- */
+  void restart_call() { set_default(); decoder_init(program_start); };
+
   /* ERROR ----------------------------------------------------------------- */
   void error(char *position, const char *string) {
     error_fun(position, string);
     ended = true;
   };
 
-  /* RESTART PROGRAM CALL -------------------------------------------------- */
-  void restart_call() { set_default(); decoder_init(program_start); };
-
   /* INDEX LINES ----------------------------------------------------------- */
   void index_function_definitions(char* program) {
-    uint16_t param;
     char *p = program;
-    uint16_t l = 0;
+    uint16_t param, l = 0;
     for(; *p && p; p++) {
       if(*p == BP_FUN_DEF) {
         param = 0;
-        p++; l++;
-        definitions[l].id = *p;
+        p++; l = *p - BP_FUN_OFFSET;
         for(uint8_t i = 0; i < BP_PARAMS; i++)
           definitions[l].params[i] = BP_PARAMS;
         p++;
@@ -102,22 +101,10 @@ class BIPLAN_Interpreter {
             p++;
             definitions[l].params[param++] = *p;
             p++;
-          }
-          if(*p == BP_R_RPARENT) break;
-        }
-        definitions[l].address = p + 1;
-      }
-      decoder_next();
-    }
-    decoder_init(program);
-  };
-
-  /* FIND PARAM LIST LENGTH ------------------------------------------------ */
-  uint8_t param_list_length(uint8_t d) {
-    uint8_t p = 0;
-    while(definitions[d].params[p++] != BP_PARAMS);
-    if(p >= BP_PARAMS) error(decoder_position(), BP_ERROR_PARAMETERS);
-    return p + 1;
+          } if(*p == BP_R_RPARENT) break;
+        } definitions[l].address = p + 1;
+      } decoder_next();
+    } decoder_init(program);
   };
 
   /* INITIALIZE INTERPRETER ------------------------------------------------ */
@@ -416,7 +403,7 @@ class BIPLAN_Interpreter {
           functions[fun_id].params[i].value = 0;
         }
       decoder_goto(functions[fun_id].address);
-      cycle_id = fun_cycle_id;
+      cycle_id = functions[fun_id].cycle_id;
       return rel;
     } else {
       error(decoder_position(), BP_ERROR_RETURN);
@@ -426,30 +413,24 @@ class BIPLAN_Interpreter {
 
   /* FUNCTION -------------------------------------------------------------- */
   BP_VAR_TYPE function_call() {
-    fun_cycle_id = cycle_id;
+    functions[fun_id].cycle_id = cycle_id;
     int16_t i = 0;
-    char *start = decoder_position();
-    find_function_end();
-    char *end = decoder_position();
-    decoder_goto(start);
     expect(BP_FUNCTION);
-    uint16_t f = *(decoder_position() - 1), v = BP_VARIABLES;
-    uint8_t  p = find_param_list_length(f);
+    uint16_t f = *(decoder_position() - 1) - BP_FUN_OFFSET, v = BP_VARIABLES;
     if((*(decoder_position() + 1) == BP_R_RPARENT))
       expect(BP_L_RPARENT); // If call with no params
-    else if(decoder_get() == BP_L_RPARENT)
+    else if(ignore(BP_L_RPARENT))
       do {
-        v = definitions[find_definition(f)].params[i] - BP_ADDRESS_OFFSET;
-        decoder_next();
+        v = definitions[f].params[i] - BP_ADDRESS_OFFSET;
         functions[fun_id].params[i].id = v;
-        functions[fun_id].params[i].value = get_variable(v);
-        set_variable(v, relation()); // Set the value of local variable
-        i++;
-      } while((i < BP_PARAMS) && (i < p - 1));
-    expect(BP_R_RPARENT);
+        if(v != BP_VARIABLES) {
+          functions[fun_id].params[i].value = get_variable(v);
+          set_variable(v, relation()); // Set the value of local variable
+        } else relation(); // ignore unexpected parameter
+      } while((++i < BP_PARAMS) && ignore(BP_COMMA));
     if(fun_id < BP_FUN_DEPTH) {
-      functions[fun_id++].address = end;
-      decoder_goto(definitions[find_definition(f)].address);
+      functions[fun_id++].address = decoder_position();
+      decoder_goto(definitions[f].address);
       while(decoder_get() != BP_RETURN) statement();
       return return_call();
     } else {
