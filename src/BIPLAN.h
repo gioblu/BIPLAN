@@ -473,7 +473,7 @@ class BIPLAN_Interpreter {
       if(ignore(BP_COMMA)) cycles[cycle_id - 1].step = relation();
       else cycles[cycle_id - 1].step = (v < l) ? 1 : -1;
       cycles[cycle_id - 1].address = decoder_position();
-      cycles[cycle_id - 1].to = l;
+      cycles[cycle_id - 1].to = l + 1;
       cycles[cycle_id - 1].var = get_variable(vi);
       cycles[cycle_id - 1].var_id = vi;
     } else error_fun(decoder_position(), BP_ERROR_CYCLE_MAX);
