@@ -6,6 +6,7 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 | -------------------- | -------------------- |
 | TinyBasicPlus        |  11KB ROM,  1KB RAM  |
 | BIPLAN               |  12KB ROM,  1KB RAM  |
+| Wasm3                |  64kB ROM, 10kB RAM  |
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
