@@ -43,10 +43,10 @@ return
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md#unary-operators) [`--`](/documentation/unary-operators.md#unary-operators)
 
 ### License
-This work is dual-licensed under Apache 2.0 and GPL 2.0 (or any later version).
+This work is dual-licensed under [Apache 2.0](LICENSE.Apache-2.0) and [LGPL 3.0 (or any later version)](LICENSE.LGPL-3.0-or-later).
 You can choose between one of them if you use this work.
 
-`SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later`
+`SPDX-License-Identifier: Apache-2.0 OR LGPL-3.0-or-later`
 
 All the software included in this project is experimental and it is distributed "AS IS" without any warranty, use it at your own risk. BIPLAN™ and its brand are registered trademarks, property of Giovanni Blu Mitolo gioscarab@gmail.com
 
