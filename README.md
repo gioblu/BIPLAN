@@ -43,7 +43,12 @@ return
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md#unary-operators) [`--`](/documentation/unary-operators.md#unary-operators)
 
 ### License
-All the software included in this project is experimental and it is distributed "AS IS" without any warranty, use it at your own risk. [Licensed](/LICENSE) under the Apache License, Version 2.0. BIPLAN™ and its brand are registered trademarks, property of Giovanni Blu Mitolo gioscarab@gmail.com
+This work is dual-licensed under Apache 2.0 and GPL 2.0 (or any later version).
+You can choose between one of them if you use this work.
+
+`SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later`
+
+All the software included in this project is experimental and it is distributed "AS IS" without any warranty, use it at your own risk. BIPLAN™ and its brand are registered trademarks, property of Giovanni Blu Mitolo gioscarab@gmail.com
 
 ### Safety warning
 This software is experimental and may not behave as expected. Consider that using a virtual machine of this sort, specially if enabling remote program update, is dangerous. When enabling remote programming of a BIPLAN virtual machine, it must be considered potentially compromised, manipulated or remotely actuated against your will. It should be considered a good practice not to connect to the internet systems that may create a damage (fire, flood, data-leak) if hacked.
