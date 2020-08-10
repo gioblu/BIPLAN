@@ -49,7 +49,7 @@ next
 The BIPLAN `for` supports the `break` statement as other programming languages do:
 ```php
 for $i = 0 to 5
-  if $i == 2 break
+  if $i == 2 break end
   print $i
 next
 print "Finished"
@@ -62,7 +62,7 @@ When the `break` statement is encountered within a `for`, the iteration is inter
 The BIPLAN `for` supports the `continue` statement as other programming languages do:
 ```php
 for $i = 0 to 5
-  if $i == 2 continue
+  if $i == 2 continue end
   print $i
 next
 print "Finished"
