@@ -31,7 +31,7 @@ return
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
-- **[Comments](/documentation/comments.md)** [`#`](/documentation/comments.md#comments)  
+- [Comments](/documentation/comments.md) [`#`](/documentation/comments.md#comments)  
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md#conditions) [`else`](/documentation/conditions.md#conditions) [`end`](/documentation/conditions.md#conditions)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
