@@ -39,52 +39,34 @@
 
 #include "interfaces/BIPLAN_Interfaces.h"
 
-/* VARIABLES AMOUNT - Higher if required (MAX 125, 79 helps debugging) ---- */
-
-#ifndef BP_VARIABLES
-  #define BP_VARIABLES 79
-#endif
-
-/* VARIABLE ADDRESSES INDEXING OFFSET ------------------------------------- */
-
-#ifndef BP_ADDRESS_OFFSET
-  #define BP_ADDRESS_OFFSET (127 - BP_VARIABLES)
-#endif
-
-/* STRINGS AMOUNT - Higher if required ------------------------------------ */
-
-#ifndef BP_STRINGS
-  #define BP_STRINGS 20
-#endif
-
-/* STRING ADDRESSES INDEXING OFFSET --------------------------------------- */
-
-#ifndef BP_STRING_OFFSET
-  #define BP_STRING_OFFSET 1
-#endif
-
 /* KEYWORD MAXIMUM LENGTH ------------------------------------------------- */
 
 #ifndef BP_MAX_KEYWORD_LENGTH
   #define BP_MAX_KEYWORD_LENGTH 20
 #endif
 
-/* MAX FUNCTIONS ---------------------------------------------------------- */
+/* ADDRESSES INDEXING OFFSET ----------------------------------------------- */
+
+#ifndef BP_OFFSET
+  #define BP_OFFSET 40
+#endif
+
+/* VARIABLES AMOUNT - Higher if required (MAX 87) ------------------------- */
+
+#ifndef BP_VARIABLES
+  #define BP_VARIABLES 50
+#endif
+
+/* STRINGS AMOUNT - Higher if required (MAX 87) --------------------------- */
+
+#ifndef BP_STRINGS
+  #define BP_STRINGS 20
+#endif
+
+/* FUNCTIONS AMOUNT - Higher if required (MAX 87) -------------------------- */
 
 #ifndef BP_MAX_FUNCTIONS
   #define BP_MAX_FUNCTIONS 20
-#endif
-
-/* FUNCTION ADDRESSES INDEXING OFFSET -------------------------------------- */
-
-#ifndef BP_FUN_OFFSET
-  #define BP_FUN_OFFSET (127 - BP_MAX_FUNCTIONS)
-#endif
-
-/* FUNCTION NAME MAXIMUM LENGTH ------------------------------------------- */
-
-#ifndef BP_MAX_FUNCTION_NAME_LENGTH
-  #define BP_MAX_FUNCTION_NAME_LENGTH 15
 #endif
 
 /* FUNCTION PARAMETERS AMOUNT - Higher if required ------------------------ */
@@ -173,7 +155,8 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_AND               '&'                  // 38         | USED |
 //______________________________________________________________|______|
-                           // '                   // 39         |      |
+#define BP_S_ADDRESS         '\''                 // 39         | USED |
+// USED IN HUMAN-READABLE AS STRING ID            //            |      |
 //______________________________________________________________|______|
 #define BP_L_RPARENT         '('                  // 40         | USED |
 //______________________________________________________________|______|
@@ -202,8 +185,8 @@ __________________________________________________|_____________|______| */
 // NUMBERS                    8                   // 56         | USED |
 // NUMBERS                    9                   // 57         | USED |
 //______________________________________________________________|______|
-#define BP_S_ADDRESS         ':'                  // 58         | USED |
-// USED IN HUMAN-READABLE AS STRING ID            //            |      |
+#define BP_S_ADDRESS_HUMAN   ":"                  // 58         | USED |
+// USED IN HUMAN-READABLE FOR STRING ASSIGNMENT   //            |      |
 //______________________________________________________________|______|
 #define BP_SEMICOLON         ';'                  // 59         | USED |
 //______________________________________________________________|______|

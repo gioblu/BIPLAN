@@ -91,7 +91,7 @@ class BIPLAN_Interpreter {
     for(; *p && p; p++) {
       if(*p == BP_FUN_DEF) {
         param = 0;
-        p++; l = *p - BP_FUN_OFFSET;
+        p++; l = *p - BP_OFFSET;
         for(uint8_t i = 0; i < BP_PARAMS; i++)
           definitions[l].params[i] = BP_PARAMS;
         p++;
@@ -178,9 +178,7 @@ class BIPLAN_Interpreter {
     int16_t pre = unary(), post = 0, id = BP_VARIABLES;
     uint8_t type = decoder_get();
     decoder_next();
-    id = *(decoder_position() - 1) - (
-      (type == BP_ADDRESS) ? BP_ADDRESS_OFFSET : BP_STRING_OFFSET
-    );
+    id = *(decoder_position() - 1) - BP_OFFSET;
     if(type == BP_ADDRESS) v = get_variable(id);
     else if(ignore(BP_ACCESS)) {
       v = strings[id][expression()];
@@ -355,7 +353,7 @@ class BIPLAN_Interpreter {
       return set_variable(vi, relation());
     } else {
       decoder_next();
-      int vi = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
+      int vi = *(decoder_position() - 1) - BP_OFFSET;
       set_variable(vi, relation());
     }
   };
@@ -368,7 +366,7 @@ class BIPLAN_Interpreter {
     if(str_acc) {
       si = expression();
       expect(BP_ACCESS_END);
-    } else si = *(decoder_position() - 1) - BP_STRING_OFFSET;
+    } else si = *(decoder_position() - 1) - BP_OFFSET;
     if(ignore(BP_ACCESS)) {
       ci = expression();
       expect(BP_ACCESS_END);
@@ -378,7 +376,7 @@ class BIPLAN_Interpreter {
         decoder_string(strings[si], sizeof(strings[si]));
         expect(BP_STRING);
       } else if(ignore(BP_S_ADDRESS)) {
-        ci = *(decoder_position() - 1) - BP_STRING_OFFSET;
+        ci = *(decoder_position() - 1) - BP_OFFSET;
         for(uint16_t i = 0; i < sizeof(strings[ci]); i++)
           strings[si][i] = strings[ci][i];
         decoder_next();
@@ -420,12 +418,12 @@ class BIPLAN_Interpreter {
     functions[fun_id].cycle_id = cycle_id;
     int16_t i = 0;
     expect(BP_FUNCTION);
-    uint16_t f = *(decoder_position() - 1) - BP_FUN_OFFSET, v = BP_VARIABLES;
+    uint16_t f = *(decoder_position() - 1) - BP_OFFSET, v = BP_VARIABLES;
     if((*(decoder_position() + 1) == BP_R_RPARENT))
       expect(BP_L_RPARENT); // If call with no params
     else if(ignore(BP_L_RPARENT))
       do {
-        v = definitions[f].params[i] - BP_ADDRESS_OFFSET;
+        v = definitions[f].params[i] - BP_OFFSET;
         functions[fun_id].params[i].id = v;
         if(v != BP_VARIABLES) {
           functions[fun_id].params[i].value = get_variable(v);
@@ -466,7 +464,7 @@ class BIPLAN_Interpreter {
   void for_call() {
     decoder_next();
     expect(BP_ADDRESS);
-    uint8_t vi = *(decoder_position() - 1) - BP_ADDRESS_OFFSET;
+    uint8_t vi = *(decoder_position() - 1) - BP_OFFSET;
     BP_VAR_TYPE l, v;
     if(cycle_id++ < BP_CYCLE_DEPTH) {
       v = expression();
@@ -548,7 +546,7 @@ class BIPLAN_Interpreter {
         BPM_SERIAL_WRITE(serial_fun, string[i]);
       decoder_next();
     } else if(ignore(BP_S_ADDRESS)) {
-      uint8_t id = *(decoder_position() - 1) - BP_STRING_OFFSET;
+      uint8_t id = *(decoder_position() - 1) - BP_OFFSET;
       for(uint16_t i = 0; i < sizeof(strings[id]); i++)
         BPM_SERIAL_WRITE(serial_fun, strings[id][i]);
     } else BPM_SERIAL_WRITE(serial_fun, relation());
@@ -559,7 +557,7 @@ class BIPLAN_Interpreter {
     decoder_next();
     if(ignore(BP_S_ADDRESS)) {
       BP_VAR_TYPE l =
-        strlen(strings[*(decoder_position() - 1) - BP_STRING_OFFSET]);
+        strlen(strings[*(decoder_position() - 1) - BP_OFFSET]);
       return l;
     } else if(ignore(BP_ADDRESS)) return sizeof(BP_VAR_TYPE);
     return 0;
@@ -570,7 +568,7 @@ class BIPLAN_Interpreter {
     BP_VAR_TYPE v = 0;
     decoder_next();
     if(ignore(BP_S_ADDRESS))
-      v = BPM_STOI(strings[*(decoder_position() - 1) - BP_STRING_OFFSET]);
+      v = BPM_STOI(strings[*(decoder_position() - 1) - BP_OFFSET]);
     if(ignore(BP_STRING)) v = BPM_STOI(string);
     return v;
   };

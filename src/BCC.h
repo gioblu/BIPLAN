@@ -33,9 +33,9 @@
 
 class BCC {
 public:
-  char var_id = BP_ADDRESS_OFFSET;
-  char string_id = BP_STRING_OFFSET;
-  char fun_id = BP_FUN_OFFSET;
+  char var_id = BP_OFFSET;
+  char string_id = BP_OFFSET;
+  char fun_id = BP_OFFSET;
   error_type error_callback = NULL;
   bool fail = false;
 
@@ -285,9 +285,20 @@ public:
 
   /* RUN COMPILATION ------------------------------------------------------ */
   void run(char *program) {
+    // Initial program consistency checks
+    if(!check_delimeter(program, BP_L_RPARENT, BP_R_RPARENT)) {
+      error(0, BP_ERROR_ROUND_PARENTHESIS);
+      return;
+    }
     // Remove comments
     remove_comments(program);
-    // Minify variables
+    // String reference access
+    encode_char(program, BP_STR_ACCESS_HUMAN, BP_STR_ACCESS);
+    // Variable reference access
+    encode_char(program, BP_VAR_ACCESS_HUMAN, BP_VAR_ACCESS);
+    // Encode string
+    encode_char(program, BP_S_ADDRESS_HUMAN, BP_S_ADDRESS);
+    // Encode variables
     encode_variables(program, false);
     encode_variables(program, true);
     // Logic
@@ -305,16 +316,12 @@ public:
     // Unary
     encode_char(program, BP_INCREMENT_HUMAN, BP_INCREMENT);
     encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
-    // Minify bitwise not
+    // Bitwise not
     encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    // String access
-    encode_char(program, BP_STR_ACCESS_HUMAN, BP_STR_ACCESS);
-    // Variable access
-    encode_char(program, BP_VAR_ACCESS_HUMAN, BP_VAR_ACCESS);
     // Minify functions
     for(uint8_t i = 0; i < BP_MAX_FUNCTIONS; i++)
       encode_functions(program);
-    // Minify system calls
+    // System calls
     encode_char(program, BP_AGET_HUMAN, BP_AGET);
     encode_char(program, BP_DWRITE_HUMAN, BP_DWRITE);
     encode_char(program, BP_DREAD_HUMAN, BP_DREAD);
@@ -323,14 +330,14 @@ public:
     encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
     encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
     encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
-    // Minify constants
+    // Constants
     encode(program, "OUTPUT", "1");
     encode(program, "INPUT", "0");
     encode(program, "HIGH", "1");
     encode(program, "LOW", "0");
     encode(program, "false", "0");
     encode(program, "true", "1");
-    // Minify language syntax
+    // Language syntax
     encode_char(program, BP_SERIAL_AV_HUMAN, BP_SERIAL_AV);
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
     encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
@@ -357,21 +364,19 @@ public:
     // Remove spaces
     remove_spaces(program);
     remove_cr(program);
-    // Program consistency checks
-    if(!check_delimeter(program, BP_L_RPARENT, BP_R_RPARENT))
-      error(0, BP_ERROR_ROUND_PARENTHESIS);
+    // End compilation program consistency checks
     if(!check_delimeter(program, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK);
-    // Check variables, strings and functions amount
-    if((fun_id - BP_FUN_OFFSET) >= BP_MAX_FUNCTIONS)
+    // Check variables, strings and functions buffer bounds
+    if((fun_id - BP_OFFSET) >= BP_MAX_FUNCTIONS)
       error(0, BP_ERROR_FUNCTION_MAX);
-    if((string_id - BP_STRING_OFFSET) >= BP_STRINGS)
+    if((string_id - BP_OFFSET) >= BP_STRINGS)
       error(0, BP_ERROR_STRING_MAX);
-    if((var_id - BP_ADDRESS_OFFSET) >= BP_VARIABLES)
+    if((var_id - BP_OFFSET) >= BP_VARIABLES)
       error(0, BP_ERROR_VARIABLE_MAX);
     // Reset indexes
-    var_id = BP_ADDRESS_OFFSET;
-    string_id = BP_STRING_OFFSET;
-    fun_id = BP_FUN_OFFSET;
+    var_id = BP_OFFSET;
+    string_id = BP_OFFSET;
+    fun_id = BP_OFFSET;
   };
 };
