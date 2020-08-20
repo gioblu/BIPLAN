@@ -60,7 +60,7 @@
 /* STRING ADDRESSES INDEXING OFFSET --------------------------------------- */
 
 #ifndef BP_STRING_OFFSET
-  #define BP_STRING_OFFSET (127 - BP_STRINGS)
+  #define BP_STRING_OFFSET 1
 #endif
 
 /* KEYWORD MAXIMUM LENGTH ------------------------------------------------- */
