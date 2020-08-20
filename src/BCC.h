@@ -34,7 +34,7 @@
 class BCC {
 public:
   char var_id = BP_ADDRESS_OFFSET;
-  char string_id = BP_ADDRESS_OFFSET;
+  char string_id = BP_STRING_OFFSET;
   char fun_id = BP_FUN_OFFSET;
   char function_keyword[BP_MAX_FUNCTION_NAME_LENGTH];
   char test_code[BP_MAX_VARIABLE_LENGTH];
@@ -348,7 +348,7 @@ public:
       error(0, BP_ERROR_VARIABLE_MAX);
     // Reset indexes
     var_id = BP_ADDRESS_OFFSET;
-    string_id = BP_ADDRESS_OFFSET;
+    string_id = BP_STRING_OFFSET;
     fun_id = BP_FUN_OFFSET;
   };
 };

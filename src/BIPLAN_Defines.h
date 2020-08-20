@@ -57,6 +57,13 @@
   #define BP_STRINGS 20
 #endif
 
+/* STRING ADDRESSES INDEXING OFFSET --------------------------------------- */
+
+#ifndef BP_STRING_OFFSET
+  #define BP_STRING_OFFSET (127 - BP_STRINGS)
+#endif
+
+
 /* VARIABLE NAME LENGTH - Higher if required ------------------------------ */
 
 #ifndef BP_MAX_VARIABLE_LENGTH
