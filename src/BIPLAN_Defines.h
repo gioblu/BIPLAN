@@ -63,11 +63,10 @@
   #define BP_STRING_OFFSET (127 - BP_STRINGS)
 #endif
 
+/* KEYWORD MAXIMUM LENGTH ------------------------------------------------- */
 
-/* VARIABLE NAME LENGTH - Higher if required ------------------------------ */
-
-#ifndef BP_MAX_VARIABLE_LENGTH
-  #define BP_MAX_VARIABLE_LENGTH 20
+#ifndef BP_MAX_KEYWORD_LENGTH
+  #define BP_MAX_KEYWORD_LENGTH 20
 #endif
 
 /* MAX FUNCTIONS ---------------------------------------------------------- */
@@ -167,7 +166,7 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_REM               '#'                  // 35         | USED |
 //______________________________________________________________|______|
-#define BP_ADDRESS_HUMAN     '$'                  // 36         | USED |
+#define BP_ADDRESS           '$'                  // 36         | USED |
 // USED IN HUMAN-READABLE AS VARIABLE ID          //            |      |
 //______________________________________________________________|______|
 #define BP_MOD               '%'                  // 37         | USED |
@@ -203,7 +202,7 @@ __________________________________________________|_____________|______| */
 // NUMBERS                    8                   // 56         | USED |
 // NUMBERS                    9                   // 57         | USED |
 //______________________________________________________________|______|
-#define BP_STRING_HUMAN      ':'                  // 58         | USED |
+#define BP_S_ADDRESS         ':'                  // 58         | USED |
 // USED IN HUMAN-READABLE AS STRING ID            //            |      |
 //______________________________________________________________|______|
 #define BP_SEMICOLON         ';'                  // 59         | USED |
@@ -353,12 +352,12 @@ __________________________________________________|_____________|______| */
 #define BP_SQRT              's'                  // 115        | USED |
 #define BP_SQRT_HUMAN        "sqrt"               //            |      |
 //______________________________________________________________|______|
-#define BP_S_ADDRESS         't'                  // 116        | USED |
+                           // t                   // 116        |      |
 //______________________________________________________________|______|
 #define BP_SERIAL_RX         'u'                  // 117        | USED |
 #define BP_SERIAL_RX_HUMAN   "serialRead"         //            |      |
 //______________________________________________________________|______|
-#define BP_ADDRESS           'v'                  // 118        | USED |
+                          // 'v'                  // 118        |      |
 //______________________________________________________________|______|
 #define BP_WHILE             'w'                  // 119        | USED |
 #define BP_WHILE_HUMAN       "while"              //            |      |
