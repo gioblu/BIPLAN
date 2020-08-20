@@ -14,19 +14,29 @@ BIPLAN has a modern syntax inspired by Ruby on Rails and Python and it is expres
 
 ### Code example
 
-Here is some BIPLAN code that shows how to compute the Fibonacci sequence:
+Fibonacci sequence computation in 212 bytes of BIPLAN code:
 ```php
 fibonacci(10) # Prints 0 1 1 2 3 5 8
 stop # End of program
-
 function fibonacci($x)
-  $a = 0 $b = 1 $n = 0
+  $a = 0
+  $b = 1
+  $n = 0
   while $n < $x
-    print($n, " ")
-    $a = $b $b = $n
+    print $n, " "
+    $a = $b
+    $b = $n
     $n = $a + $b
   next
 return
+```
+Compiled in 52 bytes of BIP virtual-machine's language by the `BCC` class:
+```
+~((10)xf(($))$*0$+1$(0w$(<$)p$(," "$*$+$+$($($*+$+nr
+```
+Interpreted at run time by the `BIPLAN_Interpreter` class:
+```
+0 1 1 2 3 5 8
 ```
 
 ### Documentation
@@ -54,6 +64,5 @@ All the software included in this project is experimental and it is distributed 
 This software is experimental and may not behave as expected. Consider that using a virtual machine of this sort, specially if enabling remote program update, is dangerous. When enabling remote programming of a BIPLAN virtual machine, it must be considered potentially compromised, manipulated or remotely actuated against your will. It should be considered a good practice not to connect to the internet systems that may create a damage (fire, flood, data-leak) if hacked.
 
 #### TODO
-- Avoid variable `$ -> v` and string `: -> t` identifier translation (2 codes spared)
 - function must have end statement
 - reset functions loops and registers states on reset
