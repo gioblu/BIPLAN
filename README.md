@@ -30,11 +30,11 @@ function fibonacci($x)
   next
 return
 ```
-Compiled in 52 bytes of BIP virtual-machine language by the `BCC` class:
+Compiled in 52 bytes of BIP virtual-machine's language by the [`BCC`](/src/BCC.h) class:
 ```
 ~#(10)xf#($#)$$0$%1$&0w$&<$#p$&," "$$$%$%$&$&$$+$%nr
 ```
-Interpreted at run time by the `BIPLAN_Interpreter` class:
+Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.h) class:
 ```
 0 1 1 2 3 5 8
 ```
