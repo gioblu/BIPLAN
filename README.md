@@ -1,6 +1,6 @@
 
 ## BIPLAN™ CR.1
-BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programming language based on a recursive descent parser that uses only static memory allocation and operates a completely software-defined virtual machine that does not require a garbage collector. It's human-readable language called BIPLAN is compiled in 7-bit virtual-machine language called BIP. Often the most effective barrier against learning programming is the complexity of the tools and the middleware required for the language to work, BIPLAN's architecture and its encoding is designed to offer a simple and unified implementation that can operate in a constrained environment with no need of external dependencies or complex tools:
+BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programming language based on a recursive descent parser that uses only static memory allocation and operates a completely software-defined virtual machine that does not require a garbage collector. It's human-readable language called BIPLAN is compiled in an 7-bit ASCII virtual-machine language called BIP.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -10,7 +10,7 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-BIPLAN has a modern syntax inspired by Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extensible.
+BIPLAN has a modern syntax inspired by Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extensible. Often the most effective barrier against learning programming is the complexity of the tools and the middleware required for the language to work, BIPLAN's architecture and its encoding is designed to offer a simple and unified implementation that can operate in a constrained environment with no need of external dependencies or complex tools.
 
 ### Code example
 
@@ -30,7 +30,7 @@ function fibonacci($x)
   next
 return
 ```
-Compiled in 52 bytes of BIP virtual-machine's language by the [`BCC`](/src/BCC.h) class:
+Compiled in 52 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
 ~#(10)xf#($#)$$0$%1$&0w$&<$#p$&," "$$$%$%$&$&$$+$%nr
 ```
