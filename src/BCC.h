@@ -296,8 +296,6 @@ public:
     encode_char(program, BP_STR_ACCESS_HUMAN, BP_STR_ACCESS);
     // Variable reference access
     encode_char(program, BP_VAR_ACCESS_HUMAN, BP_VAR_ACCESS);
-    // Encode string
-    encode_char(program, BP_S_ADDRESS_HUMAN, BP_S_ADDRESS);
     // Encode variables
     encode_variables(program, false);
     encode_variables(program, true);

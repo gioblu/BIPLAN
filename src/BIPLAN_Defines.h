@@ -45,25 +45,25 @@
   #define BP_MAX_KEYWORD_LENGTH 20
 #endif
 
-/* ADDRESSES INDEXING OFFSET ----------------------------------------------- */
+/* ADDRESSES INDEXING OFFSET ---------------------------------------------- */
 
 #ifndef BP_OFFSET
-  #define BP_OFFSET 40
+  #define BP_OFFSET 35
 #endif
 
-/* VARIABLES AMOUNT - Higher if required (MAX 87) ------------------------- */
+/* VARIABLES AMOUNT - Higher if required (MAX 92) ------------------------- */
 
 #ifndef BP_VARIABLES
   #define BP_VARIABLES 50
 #endif
 
-/* STRINGS AMOUNT - Higher if required (MAX 87) --------------------------- */
+/* STRINGS AMOUNT - Higher if required (MAX 92) --------------------------- */
 
 #ifndef BP_STRINGS
   #define BP_STRINGS 20
 #endif
 
-/* FUNCTIONS AMOUNT - Higher if required (MAX 87) -------------------------- */
+/* FUNCTIONS AMOUNT - Higher if required (MAX 92) ------------------------- */
 
 #ifndef BP_MAX_FUNCTIONS
   #define BP_MAX_FUNCTIONS 20
@@ -155,8 +155,7 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_AND               '&'                  // 38         | USED |
 //______________________________________________________________|______|
-#define BP_S_ADDRESS         '\''                 // 39         | USED |
-// USED IN HUMAN-READABLE AS STRING ID            //            |      |
+                          //  '                      39         |      |
 //______________________________________________________________|______|
 #define BP_L_RPARENT         '('                  // 40         | USED |
 //______________________________________________________________|______|
@@ -185,8 +184,8 @@ __________________________________________________|_____________|______| */
 // NUMBERS                    8                   // 56         | USED |
 // NUMBERS                    9                   // 57         | USED |
 //______________________________________________________________|______|
-#define BP_S_ADDRESS_HUMAN   ":"                  // 58         | USED |
-// USED IN HUMAN-READABLE FOR STRING ASSIGNMENT   //            |      |
+#define BP_S_ADDRESS         ':'                  // 58         | USED |
+// USED IN BOTH HUMAN-READABLE AND MACHINE LANGUAGE FOR STRING  |      |
 //______________________________________________________________|______|
 #define BP_SEMICOLON         ';'                  // 59         | USED |
 //______________________________________________________________|______|
