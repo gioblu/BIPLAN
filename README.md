@@ -10,7 +10,7 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-BIPLAN has a modern syntax inspired by Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extensible. Often the most effective barrier against learning programming is the complexity of the tools and the middleware required for the language to work, BIPLAN's architecture and its encoding is designed to offer a simple and unified implementation that can operate in a constrained environment with no need of external dependencies or complex tools.
+BIPLAN has a modern syntax inspired by Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extensible. Today the complexity of tools required for a programming language to work is often overwhelming, BIPLAN's architecture and its machine-language are designed to offer a very simple set of tools that can operate in a constrained environment with no need of external dependencies.
 
 ### Code example
 

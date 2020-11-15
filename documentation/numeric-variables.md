@@ -3,7 +3,7 @@
 - [Comments](/documentation/comments.md) [`#`]()  
 - [Conditions](/documentation/conditions.md) [`if`]() [`else`]() [`end`]()
 - [Constants](/documentation/constants.md) [`true`]() [`false`]() [`HIGH`]() [`LOW`]() [`INPUT`]() [`OUTPUT`]()
-- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
+- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
 - [Functions](/documentation/functions.md) [`function`]() [`return`]()
 - **[Numeric variables](/documentation/numeric-variables.md)** [`$`]() [`$[]`]()
 - [Operators](/documentation/operators.md) [`+`]() [`-`]() [`*`]() [`/`]() [`%`]() [`==`]() [`!=`]() [`>`]() [`>=`]() [`<`]() [`<=`]() [`&&`]() [`||`]() [`&`]() [`|`]() [`^`]() [`>>`]() [`<<`]() [`++`]() [`--`]() [`~`]() [`not`]()
@@ -20,9 +20,18 @@ Variables can be accessed by name:
 ```php
 print $test # Prints "10"
 ```
-Variables can be accessed by reference, enabling the user to access all global strings as one big array:
+All Variables can be accessed as part of one single array using `$[]`:
 ```php
-$test = 10
-print $[0] # Access the first variable
-# Prints "10" (value of the first variable defined in the program)
+$test = 111
+print $[0] # Prints 111 or the value of the first variable defined
+$[0] = 2
+print $[0] # Prints 2
+```
+The index of a variable can be obtained prepending its name with `index`:
+```php
+$a_variable = 10 # index 0
+$variable = 1    # index 1
+$var = 22        # index 2
+
+print index $var # Prints 2 or the index of $var
 ```

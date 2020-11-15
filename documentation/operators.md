@@ -3,7 +3,7 @@
 - [Comments](/documentation/comments.md) [`#`]()  
 - [Conditions](/documentation/conditions.md) [`if`]() [`else`]() [`end`]()
 - [Constants](/documentation/constants.md) [`true`]() [`false`]() [`HIGH`]() [`LOW`]() [`INPUT`]() [`OUTPUT`]()
-- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
+- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
 - [Functions](/documentation/functions.md) [`function`]() [`return`]()
 - [Numeric variables](/documentation/numeric-variables.md) [`$`]() [`$[]`]()
 - **[Operators](/documentation/operators.md)** [`+`]() [`-`]() [`*`]() [`/`]() [`%`]() [`==`]() [`!=`]() [`>`]() [`>=`]() [`<`]() [`<=`]() [`&&`]() [`||`]() [`&`]() [`|`]() [`^`]() [`>>`]() [`<<`]() [`++`]() [`--`]() [`~`]() [`not`]()
@@ -13,13 +13,13 @@
 
 ## Operators
 
-| Arithmetic         | Logic                 | Bitwise          | Unary prefix             |  Unary postfix          |
-| ------------------ | --------------------- | ---------------- | ------------------------ | ----------------------- |
-| `+` Addition       | `==` Equal            | `&` And          | `++`  Increment then use | `++` use then increment |
+| Arithmetic         | Logic                 | Bitwise           | Unary prefix             |  Unary postfix          |
+| ------------------ | --------------------- | ----------------- | ------------------------ | ----------------------- |
+| `+` Addition       | `==` Equal            | `&` And           | `++`  Increment then use | `++` use then increment |
 | `-` Subtraction    | `!=` Not equal        | `\|` Or           | `--`  Decrement then use | `--` use then decrement |
-| `*` Multiplication | `<`  Less             | `^` Xor          | `~`   Bitwise not        |                         |
-| `/` Division       | `<=` Less or equal    | `<<` Left shift  | `not` Logic not          |                         |
-| `%` Modulus        | `>`  Greater          | `>>` Right shift |                          |                         |
-|                    | `>=` Greater or equal |                  |                          |                         |
-|                    | `&&` And              |                  |                          |                         |
-|                    | `\|\|` Or               |                  |                          |                         |
+| `*` Multiplication | `<`  Less             | `^` Xor           | `~`   Bitwise not        |                         |
+| `/` Division       | `<=` Less or equal    | `<<` Left shift   | `not` Logic not          |                         |
+| `%` Modulus        | `>`  Greater          | `>>` Right shift  | `index` obtain index     |                         |
+|                    | `>=` Greater or equal |                   | `known` execute ahead    |                         |
+|                    | `&&` And              |                   |                          |                         |
+|                    | `\|\|` Or             |                   |                          |                         |

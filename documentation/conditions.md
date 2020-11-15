@@ -1,9 +1,9 @@
 ### Documentation
 - [Configuration](/documentation/configuration.md)
 - [Comments](/documentation/comments.md) [`#`]()  
-- **[Conditions](/documentation/conditions.md)** [`if`]() [`else`]() [`end`]()
+- **[Conditions](/documentation/conditions.md)** [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`]() [`false`]() [`HIGH`]() [`LOW`]() [`INPUT`]() [`OUTPUT`]()
-- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
+- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
 - [Functions](/documentation/functions.md) [`function`]() [`return`]()
 - [Numeric variables](/documentation/numeric-variables.md) [`$`]() [`$[]`]()
 - [Operators](/documentation/operators.md) [`+`]() [`-`]() [`*`]() [`/`]() [`%`]() [`==`]() [`!=`]() [`>`]() [`>=`]() [`<`]() [`<=`]() [`&&`]() [`||`]() [`&`]() [`|`]() [`^`]() [`>>`]() [`<<`]() [`++`]() [`--`]() [`~`]() [`not`]()
@@ -11,8 +11,24 @@
 - [System functions](/documentation/system-functions.md) [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]()
 - [Unary operators](/documentation/unary-operators.md) [`++`]() [`--`]()
 
-## Conditions
-An `if` executes the given statement if its condition is truthy, otherwise, it executes the following `else` statement if present. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
+# Conditions
+```
+if [relation] [statement] end
+
+if [relation] [statement]
+else [statement] end
+
+if [relation]
+  [statement]
+end
+
+if [relation]
+  [statement]
+else
+  [statement]
+end
+```
+An `if`, if its condition is truthy, executes the following statements until `end` is encountered, otherwise it executes the statements that follow the next `else` until `end` is encountered. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
 ```php
 $fine = true
 if $fine print "All is fine!" end
