@@ -104,7 +104,16 @@ class BIPLAN_Interpreter {
           } if(*p == BP_R_RPARENT) break;
         } definitions[l].address = p + 1;
       } decoder_next();
-    } decoder_init(program);
+    }
+  };
+
+  /* PROCESS KNOWN STATEMENTS --------------------------------------------- */
+  void process_known_statements(char* program) {
+    decoder_init(program);
+    while(decoder_get() != BP_ENDOFINPUT) {
+      if(ignore(BP_KNOWN)) statement();
+      else decoder_next();
+    }
   };
 
   /* INITIALIZE INTERPRETER ------------------------------------------------ */
@@ -121,6 +130,7 @@ class BIPLAN_Interpreter {
     program_start = program;
     set_default();
     index_function_definitions(program);
+    process_known_statements(program);
     decoder_init(program);
     serial_fun = s;
     error_fun = error;
@@ -577,6 +587,7 @@ class BIPLAN_Interpreter {
   void statement() {
     return_type = 0;
     switch(decoder_get()) {
+      case BP_KNOWN:      ; // Same as BP_SEMICOLON
       case BP_SEMICOLON:  ; // Same as BP_ENDIF
       case BP_ENDIF:      decoder_next(); return;
       case BP_FUNCTION:   function_call(); expect(BP_R_RPARENT);
