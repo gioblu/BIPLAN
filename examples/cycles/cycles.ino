@@ -28,14 +28,18 @@ $time = millis \n\
 for $i = 0 to 10000 \n\
  ++$inc \n\
 next \n\
-print \"for: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
-delay 1000 \n\
+print millis - $time, \"ms  - for   10000 increments\", \"\n\" \n\
 $inc = 0\n\
 $time = millis\n\
 while $inc < 10000 \n\
   ++$inc \n\
 next \n\
-print \"while: 10000 increments duration in milliseconds: \", millis - $time, \"\n\" \n\
+print millis - $time, \"ms - while 10000 increments\", \"\n\" \n\
+$inc = 0\n\
+$time = millis\n\
+$loop = here \n\
+if ++$inc < 10000 jump $loop end \n\
+print millis - $time, \"ms - jump  10000 increments\", \"\n\" \n\
 print \"BIPLAN cycles test ended.\n\" \n\
 stop\n";
 

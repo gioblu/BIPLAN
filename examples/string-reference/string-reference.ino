@@ -26,10 +26,9 @@ char program[] =
 :strTest = \"this is a test\" \n\
 :anotherTest = \"another test\" \n\
 :str = \"another string\" \n\
-# Print all strings \n\
-for $i = 0 to 2 \n\
-  print :[$i], \"\n\" \n\
-next \n\
+print \"index: \", index :strTest, \" string: \", :[index :strTest], \"\n\" \n\
+print \"index: \", index :anotherTest, \" string: \", :[index :anotherTest], \"\n\" \n\
+print \"index: \", index :str, \" string: \", :[index :str], \"\n\" \n\
 stop\n";
 
 void setup() {
@@ -47,7 +46,6 @@ void setup() {
   uint32_t time = millis();
   // Compile
   Serial.print("\nBCC compilation result:\n\n");
-  compiler.error_callback = error_callback;
   compiler.run(program);
   // Print compiled source
   Serial.print("\nBIPLAN machine language:\n\n");
