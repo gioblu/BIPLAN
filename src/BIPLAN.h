@@ -186,22 +186,27 @@ class BIPLAN_Interpreter {
   BP_VAR_TYPE var_factor() {
     BP_VAR_TYPE v;
     int16_t pre = unary(), post = 0, id = BP_VARIABLES;
+    bool index = ignore(BP_INDEX);
     uint8_t type = decoder_get();
     decoder_next();
     id = *(decoder_position() - 1) - BP_OFFSET;
-    if(type == BP_ADDRESS) v = get_variable(id);
-    else if(ignore(BP_ACCESS)) {
+    if(index) {
+      if((type == BP_ADDRESS) || (type == BP_S_ADDRESS))
+        return id + pre;
+      else return (BP_VAR_TYPE)(decoder_position() - program_start);
+    }
+    if(type == BP_ADDRESS) {
+      v = get_variable(id);
+      if(decoder_get() == BP_INCREMENT || decoder_get() == BP_DECREMENT)
+        post = unary();
+      if((pre != 0) || (post != 0)) set_variable(id, v + pre + post);
+    } else if(ignore(BP_ACCESS)) {
       v = strings[id][expression()];
       expect(BP_ACCESS_END);
       return_type = BP_ACCESS;
     } else {
       return_type = BP_S_ADDRESS;
       v = id;
-    }
-    if(type == BP_ADDRESS) {
-      if(decoder_get() == BP_INCREMENT || decoder_get() == BP_DECREMENT)
-        post = unary();
-      if((pre != 0) || (post != 0)) set_variable(id, v + pre + post);
     }
     return v + pre;
   };
