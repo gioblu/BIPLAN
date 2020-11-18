@@ -310,6 +310,12 @@ class BIPLAN_Interpreter {
     } return r1;
   };
 
+  /* JUMP ------------------------------------------------------------------ */
+  void jump_call() {
+    decoder_next();
+    decoder_goto(program_start + relation());
+  }
+
   /* PRINT ----------------------------------------------------------------- */
   void print_call() {
     do {
@@ -609,6 +615,7 @@ class BIPLAN_Interpreter {
       case BP_FOR:        return for_call();
       case BP_WHILE:      decoder_next(); return while_call();
       case BP_NEXT:       return next_call();
+      case BP_JUMP:       return jump_call();
       case BP_BREAK:      return break_call();
       case BP_CONTINUE:   return continue_call();
       case BP_PRINT:      decoder_next(); return print_call();

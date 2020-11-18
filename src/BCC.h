@@ -350,14 +350,18 @@ public:
     encode_char(program, BP_WHILE_HUMAN, BP_WHILE);
     encode_char(program, BP_ENDIF_HUMAN, BP_ENDIF);
     encode_char(program, BP_SIZEOF_HUMAN, BP_SIZEOF);
+    encode_char(program, BP_INDEX_HUMAN, BP_INDEX);
     encode_char(program, BP_NEXT_HUMAN, BP_NEXT);
     encode_char(program, BP_CHAR_HUMAN, BP_CHAR);
     encode_char(program, BP_ELSE_HUMAN, BP_ELSE);
+    encode_char(program, BP_JUMP_HUMAN, BP_JUMP);
+    encode_char(program, BP_KNOWN_HUMAN, BP_KNOWN);
     encode_char(program, BP_END_HUMAN, BP_END);
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
     encode_char(program, BP_IF_HUMAN, BP_IF);
     encode_char(program, "to", BP_COMMA);
     encode_char(program, "step", BP_COMMA);
+    encode(program, BP_HERE_HUMAN, BP_HERE);
     encode(program, "not", "1-");
     // Remove spaces
     remove_spaces(program);
