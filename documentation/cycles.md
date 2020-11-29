@@ -11,7 +11,7 @@
 - [System functions](/documentation/system-functions.md) [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]() [`index`]() [`known`]()
 - [Unary operators](/documentation/unary-operators.md) [`++`]() [`--`]()
 
-# `for`
+## `for`
 ```
 for [variable assignment] to [expression] step [expression]
   [statement]
@@ -71,7 +71,7 @@ print "Finished"
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
-# `while`
+## `while`
 ```
 while [condition]
   [statement]
@@ -116,7 +116,7 @@ next
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
-# `jump`
+## `jump`
 ```
 jump [program index]
 ```
