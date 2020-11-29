@@ -19,7 +19,7 @@
 | `-` Subtraction    | `!=` Not equal        | `\|` Or           | `--`  Decrement then use | `--` use then decrement |
 | `*` Multiplication | `<`  Less             | `^` Xor           | `~`   Bitwise not        |                         |
 | `/` Division       | `<=` Less or equal    | `<<` Left shift   | `not` Logic not          |                         |
-| `%` Modulus        | `>`  Greater          | `>>` Right shift  | `index` obtain index     |                         |
-|                    | `>=` Greater or equal |                   | `known` execute ahead    |                         |
+| `%` Modulus        | `>`  Greater          | `>>` Right shift  |                          |                         |
+|                    | `>=` Greater or equal |                   |                          |                         |
 |                    | `&&` And              |                   |                          |                         |
 |                    | `\|\|` Or             |                   |                          |                         |

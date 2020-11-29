@@ -3,12 +3,12 @@
 - [Comments](/documentation/comments.md) [`#`]()  
 - [Conditions](/documentation/conditions.md) [`if`]() [`else`]() [`end`]()
 - [Constants](/documentation/constants.md) [`true`]() [`false`]() [`HIGH`]() [`LOW`]() [`INPUT`]() [`OUTPUT`]()
-- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue) 
+- [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
 - [Functions](/documentation/functions.md) [`function`]() [`return`]()
 - [Numeric variables](/documentation/numeric-variables.md) [`$`]() [`$[]`]()
 - [Operators](/documentation/operators.md) [`+`]() [`-`]() [`*`]() [`/`]() [`%`]() [`==`]() [`!=`]() [`>`]() [`>=`]() [`<`]() [`<=`]() [`&&`]() [`||`]() [`&`]() [`|`]() [`^`]() [`>>`]() [`<<`]() [`++`]() [`--`]() [`~`]() [`not`]()
 - [Strings](/documentation/strings.md) [`:`]() [`:[]`]()
-- **[System functions](/documentation/system-functions.md)** [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]()
+- **[System functions](/documentation/system-functions.md)** [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]() [`index`]() [`known`]()
 - [Unary operators](/documentation/unary-operators.md) [`++`]() [`--`]()
 
 ## System functions
@@ -19,6 +19,7 @@
 |  `r`     | `restart`           | Restart program                                        |
 |  `b`     | `char`              | Converts to char                                       |
 |  `m`     | `sizeof`            | Returns the length of the trailing string or variable  |
+|  `_`     | `index`             | Obtain index of                                        |
 |  `\`     | `print`             | Prints data                                            |
 |  `D`     | `delay`             | Pauses the program for n milliseconds                  |
 |  `R`     | `random`            | Generates pseudo-random number                         |
@@ -33,3 +34,4 @@
 |  `g`     | `serialWrite`       | Write one character to serial port                     |
 |  `e`     | `input`             | Receive data                                           |
 |  `i`     | `inputAvailable`    | Check if data is available                             |
+|  `l`     | `known`             | Execute statement ahead                                |

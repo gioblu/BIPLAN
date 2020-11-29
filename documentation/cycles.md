@@ -8,7 +8,7 @@
 - [Numeric variables](/documentation/numeric-variables.md) [`$`]() [`$[]`]()
 - [Operators](/documentation/operators.md) [`+`]() [`-`]() [`*`]() [`/`]() [`%`]() [`==`]() [`!=`]() [`>`]() [`>=`]() [`<`]() [`<=`]() [`&&`]() [`||`]() [`&`]() [`|`]() [`^`]() [`>>`]() [`<<`]() [`++`]() [`--`]() [`~`]() [`not`]()
 - [Strings](/documentation/strings.md) [`:`]() [`:[]`]()
-- [System functions](/documentation/system-functions.md) [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]()
+- [System functions](/documentation/system-functions.md) [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]() [`index`]() [`known`]()
 - [Unary operators](/documentation/unary-operators.md) [`++`]() [`--`]()
 
 # for
@@ -115,3 +115,15 @@ next
 # Prints Alert if the reading is less than $treshold
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
+
+#### jump
+A `jump` can be used to move to another point in the program, to implement a routine or a cycle:
+```php
+$i = 0
+$cycle = here
+print $i++, " "
+jump $cycle
+
+# Prints 0 1 2 3 4 5 ...
+```
+The program above saves in `$cycle` the index of the following statement using `here`, then `jump` will move within the program where `$cycle` points to.
