@@ -11,7 +11,7 @@
 - [System functions](/documentation/system-functions.md) [`stop`]() [`restart`]() [`char`]() [`sizeof`]() [`print`]() [`delay`]() [`random`]() [`millis`]() [`sqrt`]() [`analogRead`]() [`digitalRead`]() [`digitalWrite`]() [`pinMode`]() [`serialAvailable`]() [`serialRead`]() [`serialWrite`]() [`input`]() [`inputAvailable`]() [`index`]() [`known`]()
 - [Unary operators](/documentation/unary-operators.md) [`++`]() [`--`]()
 
-# for
+# `for`
 ```
 for [variable assignment] to [expression] step [expression]
   [statement]
@@ -35,7 +35,7 @@ next
 ```
 Each time `next` is encountered the variable is incremented or decremented by 1 and the cycle restart if the limit defined after the `to` is not reached. Consider that `for`, unlike `for` defined by other programming languages, evaluates and caches the limit the first time the `for` statement is encountered. For this reason the `for` is a quick iterator, if you need to conditionally exit from a loop use `while` instead.
 
-#### step
+#### `step`
 Optionally the `for` the increment or decrement value can be configured after `step`:  
 ```php
 for $i = 0 to 10 step 2
@@ -45,7 +45,7 @@ next
 # Prints 0, 2, 4, 6, 8, 10
 ```
 
-#### break
+#### `break`
 The BIPLAN `for` supports the `break` statement as other programming languages do:
 ```php
 for $i = 0 to 5
@@ -58,7 +58,7 @@ print "Finished"
 ```
 When the `break` statement is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
 
-#### continue
+#### `continue`
 The BIPLAN `for` supports the `continue` statement as other programming languages do:
 ```php
 for $i = 0 to 5
@@ -71,7 +71,7 @@ print "Finished"
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
-# while
+# `while`
 ```
 while [condition]
   [statement]
@@ -86,7 +86,7 @@ next
 # Prints The pin is HIGH until pin 12 is HIGH
 ```
 
-#### break
+#### `break`
 The BIPLAN `while` supports the `break` statement as other programming languages do:
 ```php
 while true
@@ -100,7 +100,7 @@ print "Button pressed!"
 ```
 When the `break` statement is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
 
-#### continue
+#### `continue`
 The BIPLAN `while` supports the `continue` statement as other programming languages do:
 ```php
 $treshold = 512
@@ -116,7 +116,10 @@ next
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
-#### jump
+# `jump`
+```
+jump [program index]
+```
 A `jump` can be used to move to another point in the program, to implement a routine or a cycle:
 ```php
 $i = 0
