@@ -124,11 +124,9 @@ label [variable]
 ```
 `jump` and `label` can be used to move to another point in the program, to implement a routine or a cycle:
 ```php
-$i = 0
 label $cycle
-print $i++, " "
-jump $cycle
-
+  print $i++, " "
+  jump $cycle
 # Prints 0 1 2 3 4 5 ...
 ```
 The program above saves in `$cycle` the index of the following statement, then `jump` will move within the program where `$cycle` points to.

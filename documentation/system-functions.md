@@ -34,4 +34,3 @@
 |  `g`     | `serialWrite`       | Write one character to serial port                     |
 |  `e`     | `input`             | Receive data                                           |
 |  `i`     | `inputAvailable`    | Check if data is available                             |
-|  `l`     | `known`             | Execute statement ahead                                |
