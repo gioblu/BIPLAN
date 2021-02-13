@@ -107,11 +107,11 @@ class BIPLAN_Interpreter {
     }
   };
 
-  /* PROCESS KNOWN STATEMENTS --------------------------------------------- */
-  void process_known_statements(char* program) {
+  /* PROCESS LABEL STATEMENTS --------------------------------------------- */
+  void process_labels(char* program) {
     decoder_init(program);
     while(decoder_get() != BP_ENDOFINPUT) {
-      if(ignore(BP_KNOWN)) statement();
+      if(decoder_get() == BP_LABEL) statement();
       else decoder_next();
     }
   };
@@ -130,7 +130,7 @@ class BIPLAN_Interpreter {
     program_start = program;
     set_default();
     index_function_definitions(program);
-    process_known_statements(program);
+    process_labels(program);
     decoder_init(program);
     serial_fun = s;
     error_fun = error;
@@ -190,11 +190,8 @@ class BIPLAN_Interpreter {
     uint8_t type = decoder_get();
     decoder_next();
     id = *(decoder_position() - 1) - BP_OFFSET;
-    if(index) {
-      if((type == BP_ADDRESS) || (type == BP_S_ADDRESS))
-        return id + pre;
-      else return (BP_VAR_TYPE)(decoder_position() - program_start);
-    }
+    if(index && ((type == BP_ADDRESS) || (type == BP_S_ADDRESS)))
+      return id + pre;
     if(type == BP_ADDRESS) {
       v = get_variable(id);
       if(decoder_get() == BP_INCREMENT || decoder_get() == BP_DECREMENT)
@@ -504,6 +501,14 @@ class BIPLAN_Interpreter {
     } else error_fun(decoder_position(), BP_ERROR_CYCLE_MAX);
   };
 
+  /* LABEL ----------------------------------------------------------------- */
+  void label_call() {
+    decoder_next();
+    decoder_next();
+    int id = *(decoder_position() - 1) - BP_OFFSET;
+    set_variable(id, decoder_position() - program_start);
+  };
+
   /* NEXT ------------------------------------------------------------------ */
   void next_call() {
     decoder_next();
@@ -598,7 +603,7 @@ class BIPLAN_Interpreter {
   void statement() {
     return_type = 0;
     switch(decoder_get()) {
-      case BP_KNOWN:      ; // Same as BP_SEMICOLON
+      case BP_LABEL:      label_call(); return;
       case BP_SEMICOLON:  ; // Same as BP_ENDIF
       case BP_ENDIF:      decoder_next(); return;
       case BP_FUNCTION:   function_call(); expect(BP_R_RPARENT);

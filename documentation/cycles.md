@@ -119,14 +119,16 @@ When the `continue` statement is encountered within a `for`, all following state
 # `jump`
 ```
 jump [program index]
+
+label [variable]
 ```
-A `jump` can be used to move to another point in the program, to implement a routine or a cycle:
+`jump` and `label` can be used to move to another point in the program, to implement a routine or a cycle:
 ```php
 $i = 0
-$cycle = here
+label $cycle
 print $i++, " "
 jump $cycle
 
 # Prints 0 1 2 3 4 5 ...
 ```
-The program above saves in `$cycle` the index of the following statement using `here`, then `jump` will move within the program where `$cycle` points to.
+The program above saves in `$cycle` the index of the following statement, then `jump` will move within the program where `$cycle` points to.

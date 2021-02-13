@@ -355,7 +355,7 @@ public:
     encode_char(program, BP_CHAR_HUMAN, BP_CHAR);
     encode_char(program, BP_ELSE_HUMAN, BP_ELSE);
     encode_char(program, BP_JUMP_HUMAN, BP_JUMP);
-    encode_char(program, BP_KNOWN_HUMAN, BP_KNOWN);
+    encode_char(program, BP_LABEL_HUMAN, BP_LABEL);
     encode_char(program, BP_END_HUMAN, BP_END);
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
     encode_char(program, BP_IF_HUMAN, BP_IF);
