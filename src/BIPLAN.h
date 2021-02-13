@@ -219,7 +219,7 @@ class BIPLAN_Interpreter {
       case BP_STR_ACCESS:
         decoder_next(); v = (BP_VAR_TYPE)strings[expression()];
         expect(BP_ACCESS_END); break;
-      case BP_NUMBER: v = atoi(decoder_position()); expect(BP_NUMBER); break;
+      case BP_NUMBER: v = BPM_ATOL(decoder_position()); expect(BP_NUMBER); break;
       case BP_DREAD: decoder_next(); return BPM_IO_READ(expression());
       case BP_MILLIS: decoder_next(); v = (BPM_MILLIS() % BP_VAR_MAX); break;
       case BP_AGET: decoder_next(); v = BPM_AREAD(expression()); break;
@@ -236,7 +236,8 @@ class BIPLAN_Interpreter {
       case BP_L_RPARENT:
         decoder_next(); v = relation(); expect(BP_R_RPARENT); break;
       case BP_SIZEOF: v = sizeof_call(); break;
-      case BP_STOI: v = stoi_call(); break;
+      case BP_ATOL: v = atol_call(); break;
+      case BP_NUMERIC: decoder_next(); v = relation(); v = (v >= 48) && (v <= 57); break;
       default: v = var_factor();
     } v = (minus) ? -v : v;
     return (bitwise_not) ? ~((unsigned)v) : v;
@@ -589,13 +590,17 @@ class BIPLAN_Interpreter {
     return 0;
   };
 
-  /* STOI - CONVERTS STRINGS TO NUMBER ------------------------------------- */
-  BP_VAR_TYPE stoi_call() {
+  /* ATOL - CONVERTS STRINGS TO NUMBER ------------------------------------ */
+  BP_VAR_TYPE atol_call() {
     BP_VAR_TYPE v = 0;
     decoder_next();
     if(ignore(BP_S_ADDRESS))
-      v = BPM_STOI(strings[*(decoder_position() - 1) - BP_OFFSET]);
-    if(ignore(BP_STRING)) v = BPM_STOI(string);
+      v = BPM_ATOL(strings[*(decoder_position() - 1) - BP_OFFSET]);
+    else if(decoder_get() == BP_STRING) {
+      decoder_string(string, sizeof(string));
+      expect(BP_STRING);
+      v = BPM_ATOL(string);
+    }
     return v;
   };
 

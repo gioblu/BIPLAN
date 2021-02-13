@@ -25,16 +25,14 @@ char program[] =
 $index = 0 \n\
 $range = 0 \n\
 while true \n\
-  if serialAvailable \n\
-    $value = serialRead \n\
-    if $value < 1 continue end \n\
-    if $value == 13 break end \n\
-    if ($value < 48) || ($value > 57) \n\
-      print \"Only numbers are accepted \n\" \n\
-      restart \n\
-    end \n\
-    :str[$index++] = $value \n\
+  $value = serialRead \n\
+  if $value < 0 continue end \n\
+  if $value == CR break end \n\
+  if not numeric $value \n\
+    print \"Only numbers are accepted \n\" \n\
+    restart \n\
   end \n\
+  :str[$index++] = $value \n\
 next \n\
 print :str, \"\n\" \n\
 fibonacci(number :str) \n\
@@ -48,6 +46,7 @@ function fibonacci($n) \n\
     $a = $b \n\
     $b = $next \n\
     $next = $a + $b \n\
+    if $next < 0 return end \n\
   next \n\
 return \n\
 \n";

@@ -26,27 +26,24 @@ $index = 0 \n\
 $range = 0 \n\
 $result = 0 \n\
 while true \n\
-  if serialAvailable \n\
-    $value = serialRead \n\
-    if $value < 1 continue end \n\
-    if $value == 13 break end \n\
-    if ($value < 48) || ($value > 57) \n\
-      print \"Only numbers are accepted \n\" \n\
-      restart \n\
-    end \n\
-    :str[$index++] = $value \n\
+  $value = serialRead \n\
+  if $value < 0 continue end \n\
+  if $value == CR break end \n\
+  if not numeric $value \n\
+    print \"Only numbers are accepted \n\" \n\
+    restart \n\
   end \n\
+  :str[$index++] = $value \n\
 next \n\
 print :str, \"\n\" \n\
 $range = number :str \n\
+$time = millis \n\
 for $i = 0 to $range \n\
   if prime($i) \n\
     print $i, \"\n\" \n\
     ++$result \n\
   end \n\
 next \n\
-$time = millis \n\
-for $i = 0 to $range prime($i) next \n\
 print \"Elapsed time: \", millis - $time, \" milliseconds \n\" \n\
 print \"Prime numbers found: \", $result, \"\n\" \n\
 restart \n\

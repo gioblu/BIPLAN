@@ -342,8 +342,9 @@ public:
     encode_char(program, BP_INPUT_AV_HUMAN, BP_INPUT_AV);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
+    encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
     encode_char(program, BP_RETURN_HUMAN, BP_RETURN);
-    encode_char(program, BP_STOI_HUMAN, BP_STOI);
+    encode_char(program, BP_ATOL_HUMAN, BP_ATOL);
     encode_char(program, BP_INPUT_HUMAN, BP_INPUT);
     encode_char(program, BP_BREAK_HUMAN, BP_BREAK);
     encode_char(program, BP_PRINT_HUMAN, BP_PRINT);

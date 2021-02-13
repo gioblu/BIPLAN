@@ -310,8 +310,8 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
                            // h                   // 104        |      |
 //______________________________________________________________|______|
-#define BP_INPUT_AV          'i'                  // 105        | USED |
-#define BP_INPUT_AV_HUMAN    "inputAvailable"     //            |      |
+#define BP_NUMERIC           'i'                  // 105        | USED |
+#define BP_NUMERIC_HUMAN     "numeric"            //            |      |
 //______________________________________________________________|______|
 #define BP_JUMP              'j'                  // 106        | USED |
 #define BP_JUMP_HUMAN        "jump"               //            |      |
@@ -332,8 +332,8 @@ __________________________________________________|_____________|______| */
 #define BP_PRINT             'p'                  // 112        | USED |
 #define BP_PRINT_HUMAN       "print"              //            |      |
 //______________________________________________________________|______|
-#define BP_STOI              'q'                  // 113        | USED |
-#define BP_STOI_HUMAN        "number"             //            |      |
+#define BP_ATOL              'q'                  // 113        | USED |
+#define BP_ATOL_HUMAN        "number"             //            |      |
 //______________________________________________________________|______|
 #define BP_RETURN            'r'                  // 114        | USED |
 #define BP_RETURN_HUMAN      "return"             //            |      |

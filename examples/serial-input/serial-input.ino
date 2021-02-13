@@ -21,7 +21,7 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# BIPLAN print serial input example \n\
-if serialAvailable print char serialRead end \n\
+$s = serialRead if $s >= 0 print char $s end \n\
 restart \n";
 
 void setup() {

@@ -21,10 +21,10 @@
 #if defined(ARDUINO)
   #include "Arduino.h"
 
-  /* Strings -------------------------------------------------------------- */
+  /* String conversion ---------------------------------------------------- */
 
-  #ifndef BPM_STOI
-    #define BPM_STOI atoi
+  #ifndef BPM_ATOL
+    #define BPM_ATOL atol
   #endif
 
   /* Arduino IO system calls ---------------------------------------------- */
