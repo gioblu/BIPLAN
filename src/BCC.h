@@ -328,13 +328,6 @@ public:
     encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
     encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
     encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
-    // Constants
-    encode(program, "OUTPUT", "1");
-    encode(program, "INPUT", "0");
-    encode(program, "HIGH", "1");
-    encode(program, "LOW", "0");
-    encode(program, "false", "0");
-    encode(program, "true", "1");
     // Language syntax
     encode_char(program, BP_SERIAL_AV_HUMAN, BP_SERIAL_AV);
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
@@ -363,6 +356,15 @@ public:
     encode_char(program, "to", BP_COMMA);
     encode_char(program, "step", BP_COMMA);
     encode(program, "not", "1-");
+    // Constants
+    encode(program, "OUTPUT", "1");
+    encode(program, "INPUT", "0");
+    encode(program, "HIGH", "1");
+    encode(program, "LOW", "0");
+    encode(program, "false", "0");
+    encode(program, "true", "1");
+    encode(program, "LF", "10");
+    encode(program, "CR", "13");
     // Remove spaces
     remove_spaces(program);
     remove_cr(program);
