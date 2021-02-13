@@ -45,8 +45,6 @@ next
 # Prints 0, 2, 4, 6, 8, 10
 ```
 
----
-
 #### `break`
 The BIPLAN `for` supports the `break` statement as other programming languages do:
 ```php
