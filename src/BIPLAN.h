@@ -197,7 +197,7 @@ class BIPLAN_Interpreter {
       if(decoder_get() == BP_INCREMENT || decoder_get() == BP_DECREMENT)
         post = unary();
       if((pre != 0) || (post != 0)) set_variable(id, v + pre + post);
-    } else if(ignore(BP_ACCESS)) {
+    } else if((type == BP_S_ADDRESS) && ignore(BP_ACCESS)) {
       v = strings[id][expression()];
       expect(BP_ACCESS_END);
       return_type = BP_ACCESS;
@@ -217,8 +217,10 @@ class BIPLAN_Interpreter {
         decoder_next(); v = variables[expression()];
         expect(BP_ACCESS_END); break;
       case BP_STR_ACCESS:
-        decoder_next(); v = (BP_VAR_TYPE)strings[expression()];
-        expect(BP_ACCESS_END); break;
+        decoder_next(); v = expression();
+        if(ignore(BP_ACCESS_END) && ignore(BP_ACCESS))
+          v = strings[v][expression()];
+        ignore(BP_ACCESS_END); break;
       case BP_NUMBER: v = BPM_ATOL(decoder_position()); expect(BP_NUMBER); break;
       case BP_DREAD: decoder_next(); return BPM_IO_READ(expression());
       case BP_MILLIS: decoder_next(); v = (BPM_MILLIS() % BP_VAR_MAX); break;
@@ -397,9 +399,9 @@ class BIPLAN_Interpreter {
         decoder_next();
       }
     } else {
-      if(ignore(BP_STRING)) strings[si][ci] = (char)(*(decoder_position() - 2));
-      else strings[si][ci] = (uint8_t)expression();
-      decoder_next();
+      if(ignore(BP_STRING)) {
+        strings[si][ci] = (char)(*(decoder_position() - 2));
+      } else strings[si][ci] = (uint8_t)expression();
     }
   };
 
