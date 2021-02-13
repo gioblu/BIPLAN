@@ -31,10 +31,14 @@
 
 #include "utils/errors/BIPLAN_Errors.h"
 
-/* VARIABLE TYPE - Change if required ------------------------------------- */
+/* VARIABLE TYPE - Change if required (signed only) ----------------------- */
 
 #ifndef BP_VAR_TYPE
-  #define BP_VAR_TYPE int32_t
+  #define BP_VAR_TYPE long
+#endif
+
+#ifndef BP_VAR_MAX
+  #define BP_VAR_MAX (BP_VAR_TYPE)((unsigned BP_VAR_TYPE) ~ 0 >> 1)
 #endif
 
 #include "interfaces/BIPLAN_Interfaces.h"
@@ -81,12 +85,10 @@
   #define BP_FUN_DEPTH 20
 #endif
 
-/* MAXIMUM LENGTH OF NUMBER --------------------------------------------------
-   int  or int16_t BP_NUM_MAX_LENGTH = 6
-   long or int32_t BP_NUM_MAX_LENGTH = 11 */
+/* MAXIMUM LENGTH OF NUMBER ----------------------------------------------- */
 
 #ifndef BP_NUM_MAX_LENGTH
-  #define BP_NUM_MAX_LENGTH 6
+  #define BP_NUM_MAX_LENGTH 20 // Handle 64 bits machine limit
 #endif
 
 /* STRING MAX LENGTH - Higher if required --------------------------------- */

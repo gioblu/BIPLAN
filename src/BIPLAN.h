@@ -221,7 +221,7 @@ class BIPLAN_Interpreter {
         expect(BP_ACCESS_END); break;
       case BP_NUMBER: v = atoi(decoder_position()); expect(BP_NUMBER); break;
       case BP_DREAD: decoder_next(); return BPM_IO_READ(expression());
-      case BP_MILLIS: decoder_next(); v = (BPM_MILLIS() % 32767); break;
+      case BP_MILLIS: decoder_next(); v = (BPM_MILLIS() % BP_VAR_MAX); break;
       case BP_AGET: decoder_next(); v = BPM_AREAD(expression()); break;
       case BP_RND: decoder_next();  v = random_call(); break;
       case BP_SQRT: decoder_next(); v = sqrt(expression()); break;
