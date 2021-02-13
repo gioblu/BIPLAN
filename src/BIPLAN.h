@@ -229,10 +229,6 @@ class BIPLAN_Interpreter {
       case BP_SERIAL_RX:
         v = BPM_SERIAL_READ(serial_fun); decoder_next(); break;
       case BP_INPUT: v = BPM_INPUT(data_in_fun); decoder_next(); break;
-      case BP_INPUT_AV:
-        v = BPM_INPUT_AVAILABLE(serial_fun); decoder_next(); break;
-      case BP_SERIAL_AV:
-        v = BPM_SERIAL_AVAILABLE(serial_fun); decoder_next(); break;
       case BP_L_RPARENT:
         decoder_next(); v = relation(); expect(BP_R_RPARENT); break;
       case BP_SIZEOF: v = sizeof_call(); break;

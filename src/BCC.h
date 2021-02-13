@@ -329,10 +329,8 @@ public:
     encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
     encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
     // Language syntax
-    encode_char(program, BP_SERIAL_AV_HUMAN, BP_SERIAL_AV);
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
     encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
-    encode_char(program, BP_INPUT_AV_HUMAN, BP_INPUT_AV);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);

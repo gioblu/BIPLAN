@@ -288,8 +288,7 @@ __________________________________________________|_____________|______| */
 #define BP_INCREMENT         '`'                  // 96         | USED |
 #define BP_INCREMENT_HUMAN   "++"                 //            |      |
 //______________________________________________________________|______|
-#define BP_SERIAL_AV         'a'                  // 97         | USED |
-#define BP_SERIAL_AV_HUMAN   "serialAvailable"    //            |      |
+//                            a                   // 97         |      |
 //______________________________________________________________|______|
 #define BP_CHAR              'b'                  // 98         | USED |
 #define BP_CHAR_HUMAN        "char "              //            |      |
