@@ -37,7 +37,7 @@ next \n\
 print millis - $time, \"ms - while 10000 increments\", \"\n\" \n\
 $inc = 0\n\
 $time = millis\n\
-$loop = here \n\
+label $loop \n\
 if ++$inc < 10000 jump $loop end \n\
 print millis - $time, \"ms - jump  10000 increments\", \"\n\" \n\
 print \"BIPLAN cycles test ended.\n\" \n\
