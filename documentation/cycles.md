@@ -115,18 +115,3 @@ next
 # Prints Alert if the reading is less than $treshold
 ```
 When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
-
-## `jump`
-```
-jump [program index]
-
-label [variable]
-```
-`jump` and `label` can be used to move to another point in the program, to implement a routine or a cycle:
-```php
-label $cycle
-  print $i++, " "
-  jump $cycle
-# Prints 0 1 2 3 4 5 ...
-```
-The program above saves in `$cycle` the index of the following statement, then `jump` will move within the program where `$cycle` points to.
