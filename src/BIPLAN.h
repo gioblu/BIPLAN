@@ -594,9 +594,12 @@ class BIPLAN_Interpreter {
   BP_VAR_TYPE atol_call() {
     BP_VAR_TYPE v = 0;
     decoder_next();
-    if(ignore(BP_S_ADDRESS))
+    if(ignore(BP_ADDRESS)) {
+      uint8_t vi = *(decoder_position() - 1) - BP_OFFSET;
+      v = get_variable(vi) - 48;
+    } else if(ignore(BP_S_ADDRESS)) {
       v = BPM_ATOL(strings[*(decoder_position() - 1) - BP_OFFSET]);
-    else if(decoder_get() == BP_STRING) {
+    } else if(decoder_get() == BP_STRING) {
       decoder_string(string, sizeof(string));
       expect(BP_STRING);
       v = BPM_ATOL(string);
