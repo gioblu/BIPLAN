@@ -18,3 +18,4 @@
 #define BP_ERROR_STRING_MAX          "maximum amount of strings exceeded"
 #define BP_ERROR_BLOCK               "non matching condition delimiter"
 #define BP_ERROR_ROUND_PARENTHESIS   "non matching round parenthesis"
+#define BP_ERROR_MEM_SET             "memory update out of bound"

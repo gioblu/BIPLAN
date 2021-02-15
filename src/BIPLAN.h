@@ -48,6 +48,7 @@ class BIPLAN_Interpreter {
 
   /* BUFFERS --------------------------------------------------------------- */
   BP_VAR_TYPE       variables      [BP_VARIABLES];
+  uint8_t           memory         [BP_MEM_SIZE];
   char              string         [BP_STRING_MAX_LENGTH];
   char              strings        [BP_STRINGS][BP_STRING_MAX_LENGTH];
   struct cycle_type cycles         [BP_CYCLE_DEPTH];
@@ -142,10 +143,11 @@ class BIPLAN_Interpreter {
     cycle_id = 0;
     fun_id = 0;
     ended = false;
-    for(uint8_t i = 0; i < BP_VARIABLES; i++) variables[i] = 0;
-    for(uint8_t i = 0; i < BP_STRINGS; i++)
-      for(uint8_t c = 0; c < BP_STRING_MAX_LENGTH; c++) strings[i][c] = 0;
-    for(uint8_t i = 0; i < BP_STRING_MAX_LENGTH; i++) string[i] = 0;
+    for(BP_VAR_TYPE i = 0; i < BP_MEM_SIZE; i++) memory[i] = 0;
+    for(BP_VAR_TYPE i = 0; i < BP_VARIABLES; i++) variables[i] = 0;
+    for(BP_VAR_TYPE i = 0; i < BP_STRINGS; i++)
+      for(BP_VAR_TYPE c = 0; c < BP_STRING_MAX_LENGTH; c++) strings[i][c] = 0;
+    for(BP_VAR_TYPE i = 0; i < BP_STRING_MAX_LENGTH; i++) string[i] = 0;
   };
 
   /* EXPECT A CERTAIN CODE, OTHERWISE THROW ERROR -------------------------- */
@@ -230,6 +232,7 @@ class BIPLAN_Interpreter {
         if(ignore(BP_ACCESS_END) && ignore(BP_ACCESS))
           v = strings[v][expression()];
         ignore(BP_ACCESS_END); break;
+      case BP_MEM_ACCESS: v = memory[access(BP_MEM_ACCESS)]; break;
       case BP_NUMBER: v = BPM_ATOL(decoder_position()); expect(BP_NUMBER); break;
       case BP_DREAD: decoder_next(); return BPM_IO_READ(expression());
       case BP_MILLIS: decoder_next(); v = (BPM_MILLIS() % BP_VAR_MAX); break;
@@ -414,7 +417,14 @@ class BIPLAN_Interpreter {
     }
   };
 
-  /* RETURN ---------------------------------------------------------------- */
+  /* GENERAL PURPOSE MEMORY ASSIGNMENT ------------------------------------ */
+  void mem_assignment_call() {
+    BP_VAR_TYPE i = access(BP_MEM_ACCESS);
+    if((i >= 0) && (i < BP_MEM_SIZE)) memory[i] = expression();
+    else error(decoder_position(), BP_ERROR_MEM_SET);
+  };
+
+  /* RETURN --------------------------------------------------------------- */
   BP_VAR_TYPE return_call() {
     BP_VAR_TYPE rel = 0;
     decoder_next();
@@ -627,6 +637,7 @@ class BIPLAN_Interpreter {
       case BP_ADDRESS:    return variable_assignment_call();
       case BP_STR_ACCESS: ; // assignment by reference
       case BP_S_ADDRESS:  return string_assignment_call();
+      case BP_MEM_ACCESS: return mem_assignment_call();
       case BP_INCREMENT:  var_factor();  return;
       case BP_DECREMENT:  var_factor();  return;
       case BP_RETURN:     return_call(); return;

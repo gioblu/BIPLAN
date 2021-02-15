@@ -31,6 +31,12 @@
 
 #include "utils/errors/BIPLAN_Errors.h"
 
+/* BYTE MEMORY SIZE ------------------------------------------------------- */
+
+#ifndef BP_MEM_SIZE
+  #define BP_MEM_SIZE 1024
+#endif
+
 /* VARIABLE TYPE - Change if required (signed only) ----------------------- */
 
 #ifndef BP_VAR_TYPE
@@ -264,7 +270,8 @@ __________________________________________________|_____________|______| */
 #define BP_NOT_EQ            'T'                  // 84         | USED |
 #define BP_NOT_EQ_HUMAN      "!="                 //            |      |
 //______________________________________________________________|______|
-                           // U                      85         |      |
+#define BP_MEM_ACCESS        'U'                  // 85         | USED |
+#define BP_MEM_ACCESS_HUMAN  "@["                 //            |      |
 //______________________________________________________________|______|
 #define BP_VAR_ACCESS        'V'                  // 86         | USED |
 #define BP_VAR_ACCESS_HUMAN  "$["                 //            |      |
