@@ -18,6 +18,10 @@
 analogRead [number or variable]
 ```
 It receives a single parameter. Reads an analog pin and returns a value between 0 and 1023.
+```php
+print `analogRead A0`
+# Prints a value between 0 and 1023
+```
 
 ---
 
@@ -26,6 +30,10 @@ It receives a single parameter. Reads an analog pin and returns a value between 
 delay [number or variable]
 ```
 It receives a single parameter. Pauses the execution of the program for a given amount of milliseconds.
+```php
+delay 1000
+# Pauses the execution of the program for 1 second
+```
 
 ---
 
@@ -34,6 +42,10 @@ It receives a single parameter. Pauses the execution of the program for a given 
 digitalRead [number or variable]
 ```
 It receives a single parameter. Reads a digital pin, it returns 0 or 1.
+```php
+print digitalRead 12
+# Prints either 0 or 1
+```
 
 ---
 
@@ -42,6 +54,10 @@ It receives a single parameter. Reads a digital pin, it returns 0 or 1.
 digitalWrite [number or variable], [number or variable]
 ```
 It receives two parameters, the pin number and the state (0 or LOW, 1 or HIGH). Sets the state of a digital pin.
+```php
+digitalWrite 12, HIGH
+# Sets the state of pin 12 to HIGH
+```
 
 ---
 
@@ -50,6 +66,12 @@ It receives two parameters, the pin number and the state (0 or LOW, 1 or HIGH). 
 jump [variable]
 ```
 The `jump` statement transfers control to the location specified by the `label`. It receives a single parameter of type variable.
+```php
+label $loop
+  print "Hello world \n"
+jump $loop
+# Prints Hello word cyclically
+```
 
 ---
 
@@ -58,6 +80,11 @@ The `jump` statement transfers control to the location specified by the `label`.
 index [variable or string]
 ```
 Receives a single parameter of type variable or string. Returns the position in the buffer of the parameter received.
+```php
+$roll = 125  
+$yaw  = 150
+print index $roll # Prints 0
+```
 
 ---
 
@@ -65,7 +92,11 @@ Receives a single parameter of type variable or string. Returns the position in 
 ```
 input
 ```
-Returns the user's input. Returns -1 if no input is received.
+Returns the user's input. Returns -1 if no input is received. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated. 
+```php
+if input >= 0 print char input end
+# Prints user's input
+```
 
 ---
 
@@ -74,6 +105,12 @@ Returns the user's input. Returns -1 if no input is received.
 label [variable]
 ```
 Saves the program index in a variable to be used by `jump` later. Receives a single parameter of type variable.
+```php
+label $loop
+  print "Hello world \n"
+jump $loop
+# Prints Hello word cyclically
+```
 
 ---
 
@@ -82,6 +119,10 @@ Saves the program index in a variable to be used by `jump` later. Receives a sin
 millis
 ```
 Returns the amount of milliseconds elapsed since the program's execution started.
+```php
+print millis
+# Prints time elapsed since start up
+```
 
 ---
 
