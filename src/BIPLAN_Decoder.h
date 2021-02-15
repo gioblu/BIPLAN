@@ -87,12 +87,6 @@ void decoder_next() {
   decoder_current = get_next_code();
 };
 
-/* DECODER 1 CHARACTER FORWARD --------------------------------------------- */
-void decoder_step() {
-  decoder_ptr++;
-  decoder_current = get_next_code();
-};
-
 /* MOVE DECODER TO A CERTAIN ZONE OF THE PROGRAM -------------------------- */
 void decoder_goto(char *program) {
   decoder_ptr = program;

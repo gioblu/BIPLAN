@@ -246,7 +246,7 @@ class BIPLAN_Interpreter {
       case BP_NUMERIC: decoder_next(); v = relation(); v = (v >= 48) && (v <= 57); break;
       default: v = var_factor();
     } v = (minus) ? -v : v;
-    return (bitwise_not) ? ~((unsigned)v) : v;
+    return (bitwise_not) ? ~v : v;
   };
 
   /* TERM: *, /, % ----------------------------------------------------------*/
