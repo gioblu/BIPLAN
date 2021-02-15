@@ -199,9 +199,8 @@ class BIPLAN_Interpreter {
       if(decoder_get() == BP_INCREMENT || decoder_get() == BP_DECREMENT)
         post = unary();
       if((pre != 0) || (post != 0)) set_variable(id, v + pre + post);
-    } else if((type == BP_S_ADDRESS) && ignore(BP_ACCESS)) {
-      v = strings[id][expression()];
-      expect(BP_ACCESS_END);
+    } else if((type == BP_S_ADDRESS) && (decoder_get() == BP_ACCESS)) {
+      v = strings[id][access(BP_ACCESS)];
       return_type = BP_ACCESS;
     } else {
       return_type = BP_S_ADDRESS;
@@ -224,14 +223,11 @@ class BIPLAN_Interpreter {
     BP_VAR_TYPE v = 0;
     bool bitwise_not = ignore(BP_BITWISE_NOT), minus = ignore(BP_MINUS);
     switch(decoder_get()) {
-      case BP_VAR_ACCESS:
-        decoder_next(); v = variables[expression()];
-        expect(BP_ACCESS_END); break;
+      case BP_VAR_ACCESS: v = variables[access(BP_VAR_ACCESS)]; break;
       case BP_STR_ACCESS:
-        decoder_next(); v = expression();
-        if(ignore(BP_ACCESS_END) && ignore(BP_ACCESS))
-          v = strings[v][expression()];
-        ignore(BP_ACCESS_END); break;
+        v = access(BP_STR_ACCESS);
+        if(decoder_get() == BP_ACCESS) v = strings[v][access(BP_ACCESS)];
+        break;
       case BP_MEM_ACCESS: v = memory[access(BP_MEM_ACCESS)]; break;
       case BP_NUMBER: v = BPM_ATOL(decoder_position()); expect(BP_NUMBER); break;
       case BP_DREAD: decoder_next(); return BPM_IO_READ(expression());
@@ -328,11 +324,10 @@ class BIPLAN_Interpreter {
   void print_call() {
     do {
       BP_VAR_TYPE v = 0;
-      bool is_char = (decoder_get() == BP_CHAR);
-      if(is_char || (decoder_get() == BP_COMMA)) decoder_next();
-      if(ignore(BP_STR_ACCESS)) {
-        BPM_PRINT_WRITE(print_fun, strings[relation()]);
-        expect(BP_ACCESS_END);
+      ignore(BP_COMMA);
+      bool is_char = ignore(BP_CHAR);
+      if(decoder_get() == BP_STR_ACCESS) {
+        BPM_PRINT_WRITE(print_fun, strings[access(BP_STR_ACCESS)]);
       } else if(decoder_get() == BP_STRING) {
         decoder_string(string, sizeof(string));
         BPM_PRINT_WRITE(print_fun, string);
@@ -369,17 +364,16 @@ class BIPLAN_Interpreter {
   /* IF -------------------------------------------------------------------- */
   void if_call() {
     decoder_next();
-    BP_VAR_TYPE r = relation();
-    if(r <= 0) skip_block();
-    if(ignore(BP_ELSE) && (r > 0)) skip_block();
+    if((BP_VAR_TYPE)(relation()) > 0) return;
+    skip_block();
+    ignore(BP_ELSE);
   };
 
   /* ASSIGN VALUE TO VARIABLE ---------------------------------------------- */
   void variable_assignment_call() {
-    if(ignore(BP_VAR_ACCESS)) {
-      BP_VAR_TYPE vi = relation();
-      expect(BP_ACCESS_END);
-      return set_variable(vi, relation());
+    if(decoder_get() == BP_VAR_ACCESS) {
+      BP_VAR_TYPE v = access(BP_VAR_ACCESS);
+      return set_variable(v, relation());
     } else {
       decoder_next();
       int vi = *(decoder_position() - 1) - BP_OFFSET;
@@ -387,7 +381,7 @@ class BIPLAN_Interpreter {
     }
   };
 
-  /* ASSIGN VALUE TO STRING ------------------------------------------------ */
+  /* ASSIGN VALUE TO STRING ----------------------------------------------- */
   void string_assignment_call() {
     int ci = BP_STRING_MAX_LENGTH, si;
     bool str_acc = (decoder_get() == BP_STR_ACCESS);
@@ -396,10 +390,7 @@ class BIPLAN_Interpreter {
       si = expression();
       expect(BP_ACCESS_END);
     } else si = *(decoder_position() - 1) - BP_OFFSET;
-    if(ignore(BP_ACCESS)) {
-      ci = expression();
-      expect(BP_ACCESS_END);
-    }
+    if(decoder_get() == BP_ACCESS) ci = access(BP_ACCESS);
     if(ci == BP_STRING_MAX_LENGTH) {
       if(decoder_get() == BP_STRING) {
         decoder_string(strings[si], sizeof(strings[si]));
