@@ -19,7 +19,7 @@ analogRead [number or variable]
 ```
 It receives a single parameter. Reads an analog pin and returns a value between 0 and 1023.
 ```php
-print `analogRead A0`
+print analogRead A0
 # Prints a value between 0 and 1023
 ```
 
@@ -83,7 +83,8 @@ Receives a single parameter of type variable or string. Returns the position in 
 ```php
 $roll = 125  
 $yaw  = 150
-print index $roll # Prints 0
+print index $roll
+# Prints 0
 ```
 
 ---
@@ -92,7 +93,7 @@ print index $roll # Prints 0
 ```
 input
 ```
-Returns the user's input. Returns -1 if no input is received. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated. 
+Returns the user's input. Returns -1 if no input is received. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
 ```php
 if input >= 0 print char input end
 # Prints user's input
@@ -131,6 +132,10 @@ print millis
 pinMode [number or variable], [number or variable]
 ```
 It receives two parameters, the pin number and the mode (0 or INPUT, 1 or OUTPUT). Sets the mode of a digital pin.
+```php
+pinMode 12, OUTPUT
+# Sets pin 12 mode as output
+```
 
 ---
 
@@ -138,7 +143,10 @@ It receives two parameters, the pin number and the mode (0 or INPUT, 1 or OUTPUT
 ```
 print [comma separated parameter list]
 ```
-Receives a comma separated parameter list of type number, variable or string. It prints the parameters received. `char` can be used within print to convert numeric values to charaters.
+Receives a comma separated parameter list of type number, variable or string. It prints the parameters received. `char` can be used within print to convert numeric values to characters.
+```php
+print "Hello world!"
+```
 
 ---
 
@@ -149,6 +157,12 @@ random [number or variable]
 random [number or variable], [number or variable]
 ```
 It can receive a single parameter, the maximum or two parameters the minimum and the maximum. Returns a randomly generated number.
+```php
+print random 10
+# Prints a number between 0 and 9
+print random 10, 100
+# Prints a number between 10 and 99
+```
 
 ---
 
@@ -157,6 +171,10 @@ It can receive a single parameter, the maximum or two parameters the minimum and
 restart
 ```
 Restarts the execution of the program.
+```php
+restart
+# Restarts the program
+```
 
 ---
 
@@ -165,6 +183,10 @@ Restarts the execution of the program.
 serialWrite [number or variable or string]
 ```
 Receives a single parameter of type number or variable or string. Transmits via serial the parameter's value.
+```php
+serialWrite "CIAO"
+# Transmits CIAO via serial
+```
 
 ---
 
@@ -173,6 +195,10 @@ Receives a single parameter of type number or variable or string. Transmits via 
 serialRead
 ```
 Returns the value received via serial or -1 if no value is received.
+```php
+print serialRead
+# Prints what is received via serial
+```
 
 ---
 
@@ -181,6 +207,14 @@ Returns the value received via serial or -1 if no value is received.
 sizeof [variable or string]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
+```php
+$v = 0
+print sizeof $v
+# Prints 4
+:s = "Hello world!"
+print sizeof :s
+# Prints 12
+```
 
 ---
 
@@ -189,6 +223,10 @@ Receives a single parameter of type variable or string. Returns the length of th
 sqrt [number or variable]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
+```php
+print sqrt 81
+# Prints 9
+```
 
 ---
 
@@ -197,6 +235,10 @@ Receives a single parameter of type variable or string. Returns the length of th
 stop
 ```
 Halts the execution of the program.
+```php
+stop
+# Stops the program's execution
+```
 
 ---
 
