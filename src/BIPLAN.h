@@ -483,7 +483,7 @@ class BIPLAN_Interpreter {
     expect(BP_ADDRESS);
     uint8_t vi = *(decoder_position() - 1) - BP_OFFSET;
     BP_VAR_TYPE l, v;
-    if(cycle_id++ < BP_CYCLE_DEPTH) {
+    if(cycle_id < BP_CYCLE_DEPTH) {
       v = expression();
       expect(BP_COMMA);
       if((l = expression()) == v) {
@@ -491,12 +491,12 @@ class BIPLAN_Interpreter {
         return decoder_next();
       }
       set_variable(vi, v);
+      cycles[++cycle_id - 1].to = l + 1;
+      cycles[cycle_id - 1].var = get_variable(vi);
+      cycles[cycle_id - 1].var_id = vi;
       if(ignore(BP_COMMA)) cycles[cycle_id - 1].step = relation();
       else cycles[cycle_id - 1].step = (v < l) ? 1 : -1;
       cycles[cycle_id - 1].address = decoder_position();
-      cycles[cycle_id - 1].to = l + 1;
-      cycles[cycle_id - 1].var = get_variable(vi);
-      cycles[cycle_id - 1].var_id = vi;
     } else error_fun(decoder_position(), BP_ERROR_CYCLE_MAX);
   };
 
