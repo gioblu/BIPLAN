@@ -208,7 +208,16 @@ class BIPLAN_Interpreter {
     return v + pre;
   };
 
-  /* FACTOR: (n) ------------------------------------------------------------*/
+  /* ACCESS MEMORY VIA INDEX [ ] ------------------------------------------ */
+
+  BP_VAR_TYPE access(BP_VAR_TYPE v) {
+    expect(v);
+    v = relation();
+    expect(BP_ACCESS_END);
+    return v;
+  };
+
+  /* FACTOR: (n) ---------------------------------------------------------- */
   BP_VAR_TYPE factor() {
     BP_VAR_TYPE v = 0;
     bool bitwise_not = ignore(BP_BITWISE_NOT), minus = ignore(BP_MINUS);
