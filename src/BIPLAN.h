@@ -71,7 +71,7 @@ class BIPLAN_Interpreter {
   bool finished() { return ended || decoder_finished(); };
 
   /* RUN ------------------------------------------------------------------- */
-  void run() { if(!decoder_finished()) statement(); };
+  bool run() { statement(); return !ended;  };
 
   /* END PROGRAM ----------------------------------------------------------- */
   void end_call() { expect(BP_END); ended = true; };
@@ -187,7 +187,7 @@ class BIPLAN_Interpreter {
   /* NUMERIC VARIABLE: 1234 -------------------------------------------------*/
   BP_VAR_TYPE var_factor() {
     BP_VAR_TYPE v;
-    int16_t pre = unary(), post = 0, id = BP_VARIABLES;
+    int8_t pre = unary(), post = 0, id = BP_VARIABLES;
     bool index = ignore(BP_INDEX);
     uint8_t type = decoder_get();
     decoder_next();
