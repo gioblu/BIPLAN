@@ -13,6 +13,8 @@
  * @version 0.1 -- 28 October 2008
  * @version 0.2 -- 20 April 2017 (Zbigniew Zasieczny)
  *  - added methods needed by PJON to handle WINX86 abstraction interface
+ *
+ * 11/05/2020 getByte function simplified, now returns -1 in case of failure
  */
 
 #pragma once
@@ -31,51 +33,33 @@
   public:
     Serial(
       std::string &commPortName,
-      int bitRate = 115200,
-      bool testOnStartup = false,
-      bool cycleDtrOnStartup = false
+      int bitRate = 115200
     );
 
     virtual ~Serial();
 
-    /** Writes a NULL terminated string.
-     *
-     * @param buffer the string to send
-     *
-     * @return int the number of characters written
-     */
-    int write(const char buffer[]);
-
-    /** Writes a string of bytes to the serial port.
+    /** Writes a single byte (uint8_t) to the serial port.
      *
      * @param buffer pointer to the buffer containing the bytes
-     * @param buffLen the number of bytes in the buffer
      *
      * @return int the number of bytes written
      */
-    int write(char *buffer, int buffLen);
+    int writeByte(uint8_t *buffer);
 
     /** Reads a string of bytes from the serial port.
      *
      * @param buffer pointer to the buffer to be written to
      * @param buffLen the size of the buffer
-     * @param nullTerminate if set to true it will null terminate the string
      *
      * @return int the number of bytes read
      */
-    int read(char *buffer, int buffLen, bool nullTerminate = true);
+    int read(uint8_t *buffer, int buffLen);
 
-    /** Writes a single character to the serial port
-    *
-    * @param buffer pointer to the buffer to be written to
-    *
-    * @return int the number of bytes written (should be always 1)
-    */
-    int putChar(char *buffer);
-
-    /** Returns single character from the receive buffer
-    */
-    char getChar();
+    /** Returns an integer (uint16_t)
+      *
+      * @return a value < 256 or -1 in case of failure
+      */
+    int16_t getByte();
 
     /** Returns true if there is data available in receive buffer
     */

@@ -72,6 +72,12 @@
     std::this_thread::sleep_for(std::chrono::milliseconds(delay_value_ms));
   }
 
+  /* String conversion ---------------------------------------------------- */
+
+  #ifndef BPM_ATOL
+    #define BPM_ATOL atol
+  #endif
+
   /* Generic constants ---------------------------------------------------- */
 
   #ifndef A0
@@ -82,7 +88,7 @@
     #define LED_BUILTIN -1
   #endif
 
-  /* Fallback to WINDOWS-specific functions -------------------------------- */
+  /* Fallback to WINDOWS-specific functions ------------------------------- */
 
   #if !defined(BPM_AREF)
     #define BPM_AREF(R)
@@ -108,10 +114,10 @@
     #define BPM_IO_PULL_DOWN(P)
   #endif
 
-  /* Random ----------------------------------------------------------------- */
+  /* Random --------------------------------------------------------------- */
 
   #ifndef BPM_RANDOM
-    #define BPM_RANDOM(randMax) (int)((1.0 + randMax) * rand() / ( RAND_MAX + 1.0 ) )
+    #define BPM_RANDOM(rmx) (int)((1.0 + rmx) * rand() / ( RAND_MAX + 1.0 ) )
     /* Scale rand()'s return value against RAND_MAX using doubles instead of
        a pure modulus to have a more distributed result */
   #endif
@@ -121,30 +127,49 @@
   #endif
 
 
-  /* Serial ----------------------------------------------------------------- */
+  /* User input ----------------------------------------------------------- */
 
-  #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE Serial *
+  #ifndef BPM_INPUT_TYPE
+    #define BPM_INPUT_TYPE Stream * // Not sure what should go here on win
   #endif
 
-  #ifndef BPM_SERIAL_AVAILABLE
-    #define BPM_SERIAL_AVAILABLE(S) S->serialDataAvail()
+  #ifndef BPM_INPUT
+    #define BPM_INPUT(S) S->read()
+  #endif
+
+  /* Print ---------------------------------------------------------------- */
+
+  #ifndef BPM_PRINT_TYPE
+    #define BPM_PRINT_TYPE Stream * // Not sure what should go here on win
+  #endif
+
+  #ifndef BPM_PRINT_WRITE
+    #define BPM_PRINT_WRITE(S, C) S->print(C)
+  #endif
+
+  #ifndef BPM_PRINT_FLUSH
+    #define BPM_PRINT_FLUSH(S) S->flush()
+  #endif
+
+  /* Serial --------------------------------------------------------------- */
+
+  #ifndef BPM_SERIAL_TYPE
+    #define BPM_SERIAL_TYPE Serial *
   #endif
 
   #ifndef BPM_SERIAL_WRITE
-    #define BPM_SERIAL_WRITE(S, C) S->putChar((char*)&C)
+    #define BPM_SERIAL_WRITE(S, C) S->writeByte(&C)
   #endif
 
   #ifndef BPM_SERIAL_READ
-    #define BPM_SERIAL_READ(S) S->getChar()
+    #define BPM_SERIAL_READ(S) S->getByte()
   #endif
 
   #ifndef BPM_SERIAL_FLUSH
     #define BPM_SERIAL_FLUSH(S) S->flush()
   #endif
 
-
-  /* Timing ----------------------------------------------------------------- */
+  /* Timing --------------------------------------------------------------- */
 
   #ifndef BPM_DELAY
     #define BPM_DELAY delay
