@@ -67,7 +67,7 @@
   /* Random ----------------------------------------------------------------- */
 
   #ifndef BPM_RANDOM
-    #define BPM_RANDOM(randMax) (int)((1.0 + randMax) * rand() / ( RAND_MAX + 1.0 ) )
+    #define BPM_RANDOM(rmx) (int)((1.0 + rmx) * rand() / ( RAND_MAX + 1.0 ) )
     /* Scale rand()'s return value against RAND_MAX using doubles instead of
        a pure modulus to have a more distributed result */
   #endif
@@ -79,7 +79,7 @@
   /* Serial ----------------------------------------------------------------- */
 
   #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE int16_t 
+    #define BPM_PRINT_TYPE int16_t
   #endif
 
   #ifndef BPM_SERIAL_AVAILABLE

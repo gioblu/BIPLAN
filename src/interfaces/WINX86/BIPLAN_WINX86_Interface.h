@@ -1,8 +1,8 @@
 
-/* PJON Windows x86 Interface
+/* BIPLAN Windows x86 Interface
    _____________________________________________________________________________
 
-    Copyright 2018 Zbigniew Zasieczny z.zasieczny@gmail.com
+    Copyright Giovanni Blu Mitolo and Zbigniew Zasieczny
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
