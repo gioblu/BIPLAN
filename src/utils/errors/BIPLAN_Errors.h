@@ -16,6 +16,8 @@
 #define BP_ERROR_CYCLE_NEXT          "non matching next"
 #define BP_ERROR_WHILE_MAX           "while maximum depth exceeded"
 #define BP_ERROR_STRING_MAX          "maximum amount of strings exceeded"
+#define BP_ERROR_STRING_END          "string end missing"
+#define BP_ERROR_SQUARE_PARENTHESIS  "non matching square parenthesis"
 #define BP_ERROR_BLOCK               "non matching condition delimiter"
 #define BP_ERROR_ROUND_PARENTHESIS   "non matching round parenthesis"
 #define BP_ERROR_MEM_SET             "memory update out of bound"

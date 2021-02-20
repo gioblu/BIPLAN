@@ -44,6 +44,7 @@ public:
   /* ERROR ----------------------------------------------------------------- */
   void error(char *position, const char *string) {
     error_callback(position, string);
+    fail = true;
   };
 
   /* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
@@ -266,11 +267,16 @@ public:
   };
 
   /* RUN COMPILATION ------------------------------------------------------ */
-  void run(char *program) {
-    // Initial program consistency checks
+  bool run(char *program) {
+    // Check () parentheses
     if(!check_delimeter(program, BP_L_RPARENT, BP_R_RPARENT)) {
       error(0, BP_ERROR_ROUND_PARENTHESIS);
-      return;
+      return !fail;
+    }
+    // Check [] parentheses
+    if(!check_delimeter(program, BP_ACCESS, BP_ACCESS_END)) {
+      error(0, BP_ERROR_SQUARE_PARENTHESIS);
+    	return !fail;
     }
     // Remove comments
     remove_comments(program);
@@ -352,7 +358,7 @@ public:
     remove(program, BP_LF);
     remove(program, BP_SPACE);
     remove(program, BP_TAB);
-    // End compilation program consistency checks
+    // Check if-end
     if(!check_delimeter(program, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK);
     // Check variables, strings and functions buffer bounds
@@ -366,5 +372,6 @@ public:
     var_id = BP_OFFSET;
     string_id = BP_OFFSET;
     fun_id = BP_OFFSET;
+    return !fail;
   };
 };

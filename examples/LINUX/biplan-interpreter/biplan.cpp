@@ -14,12 +14,11 @@ bool error = false;
 
 void error_callback(char *position, const char *string) {
   printf("\nerror: ");
-  printf(" %s ", string);
+  printf("%s ", string);
   if(position) {
-    printf(" ");
-    printf(" %c ", *position);
+    printf("%c", *position);
     printf(" at position ");
-    //printf(" %d \n ", position - interpreter.program_start);
+    printf("%d \n ", (int)(position - interpreter.program_start));
   }
   error = true;
 };
