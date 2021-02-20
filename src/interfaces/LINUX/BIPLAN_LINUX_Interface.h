@@ -20,27 +20,11 @@
 #pragma once
 
 #if defined(LINUX) || defined(ANDROID)
-  #include <iostream>
-  #include <string>
-  #include <stdio.h>
-  #include <stdint.h>
-  #include <inttypes.h>
-  #include <stdlib.h>
-  #include <stdarg.h>
   #include <string.h>
   #include <unistd.h>
   #include <fcntl.h>
   #include <sys/ioctl.h>
-  #include <sys/types.h>
-  #include <sys/stat.h>
-
-extern "C" {
-  extern int tcflush (int __fd, int __queue_selector);
-}
-
-  #include <chrono>
   #include <thread>
-  #include <sstream>
   #include <math.h>
 
   #define OUTPUT 1
@@ -170,7 +154,7 @@ extern "C" {
   #endif
 
   #ifndef BPM_INPUT
-    #define BPM_INPUT(S) get_input_naive
+    #define BPM_INPUT(S) getchar_unlocked()
   #endif
 
   /* Timing --------------------------------------------------------------- */

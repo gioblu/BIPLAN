@@ -6,8 +6,8 @@
 #endif
 
 #include "BIPLAN_LINUX_Interface.h"
-#include "/usr/include/asm-generic/termbits.h"
-#include "/usr/include/asm-generic/ioctls.h"
+#include <asm-generic/termbits.h>
+#include <asm-generic/ioctls.h>
 
 auto start_ts = std::chrono::high_resolution_clock::now();
 auto start_ts_ms = std::chrono::high_resolution_clock::now();
