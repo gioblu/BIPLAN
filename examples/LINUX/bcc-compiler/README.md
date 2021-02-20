@@ -14,8 +14,8 @@ The `bcc` executable can be used to compile BIPLAN into BIP, in this example's d
 Expected output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
-Source: test.txt
-Target: ../biplan-interpreter/test.bip
-Source length: 238B
-Compilation time: 188 microseconds
+Source: fib.bpl
+Target: ../biplan-interpreter/fib.bip
+Source length: 238B, BIP length: 64B, reduction: 73.109245%
+Compilation time: 251 microseconds
 ```

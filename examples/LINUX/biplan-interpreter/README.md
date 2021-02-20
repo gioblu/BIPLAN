@@ -25,4 +25,4 @@ Interpreter output:
 Execution duration: 124 microseconds
 ```
 
-On my old Lenovo ThinkPad SL510 with 8gB of RAM BIPLAN looks to be around 11316 times quicker than python.
+On my computer it takes around 124 microseconds to find the 40th Fibonacci number. BIPLAN looks to be around 11316 times quicker than python.
