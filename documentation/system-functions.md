@@ -93,9 +93,10 @@ print index $roll
 ```
 input
 ```
-Returns the user's input. Returns -1 if no input is received. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
+Returns the user's input. On the Arduino returns -1 if no input is received on Linux instead it blocks the execution until a carriage return is detected. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
 ```php
-if input >= 0 print char input end
+$i = input
+if $i >= 0 print char $i end
 # Prints user's input
 ```
 
