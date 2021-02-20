@@ -87,23 +87,18 @@ class BIPLAN_Interpreter {
 
   /* INDEX LINES ----------------------------------------------------------- */
   void index_function_definitions(char* program) {
-    char *p = program;
     uint16_t param, l = 0;
-    for(; *p && p; p++) {
-      if(*p == BP_FUN_DEF) {
+    while(decoder_get() != BP_ENDOFINPUT) {
+      if(ignore(BP_FUN_DEF)) {
         param = 0;
-        p++; l = *p - BP_OFFSET;
+        l = *(decoder_position() - 1) - BP_OFFSET;
         for(uint8_t i = 0; i < BP_PARAMS; i++)
           definitions[l].params[i] = BP_PARAMS;
-        p++;
-        while(*p == BP_COMMA || *p == BP_L_RPARENT) {
-          p++;
-          if(*p == BP_ADDRESS) {
-            p++;
-            definitions[l].params[param++] = *p;
-            p++;
-          } if(*p == BP_R_RPARENT) break;
-        } definitions[l].address = p + 1;
+        while(ignore(BP_COMMA) || ignore(BP_L_RPARENT)) {
+          if(ignore(BP_ADDRESS)) {
+            definitions[l].params[param++] = *(decoder_position() - 1);
+          } if(*decoder_position() == BP_R_RPARENT) break;
+        } definitions[l].address = decoder_position() + 1;
       } decoder_next();
     }
   };
@@ -130,8 +125,9 @@ class BIPLAN_Interpreter {
   ) {
     program_start = program;
     set_default();
-    index_function_definitions(program);
     process_labels(program);
+    decoder_init(program);
+    index_function_definitions(program);
     decoder_init(program);
     serial_fun = s;
     error_fun = error;
