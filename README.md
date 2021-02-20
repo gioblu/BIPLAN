@@ -32,9 +32,9 @@ function fibonacci($n)
   next
 return $next
 ```
-Compiled in 65 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 64 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-~#(10)xf#($#)$$0$%1$&0w$&<$#p$&," "$$$%$%$&$&$$+$%nr
+p~#(40)xf#($$)$%0$&1$#0$'0w$'<$$$'$'+1$%$&$&$#$#$%+$&?$#<0rFnr$#
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.h) class:
 ```

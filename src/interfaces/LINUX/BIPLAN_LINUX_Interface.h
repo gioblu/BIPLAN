@@ -3,7 +3,7 @@
    13/04/2020 - callalilychen, Use termios2 for generic baudrate support
    ___________________________________________________________________________
 
-    Copyright 2018 Fred Larsen
+    Copyright Giovanni Blu Mitolo and Fred Larsen
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -145,7 +145,6 @@
   #ifndef BPM_SERIAL_FLUSH
     #define BPM_SERIAL_FLUSH(S) tcflush(S, TCIOFLUSH)
   #endif
-
 
   /* User input ----------------------------------------------------------- */
 

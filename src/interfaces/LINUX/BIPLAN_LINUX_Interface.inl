@@ -49,7 +49,7 @@ void delay(uint32_t delay_value_ms) {
   std::this_thread::sleep_for(std::chrono::milliseconds(delay_value_ms));
 };
 
-/* Open serial port ----------------------------------------------------- */
+/* Open serial port -------------------------------------------------------- */
 
 int serialOpen(const char *device, const int baud) {
   speed_t bd;
@@ -65,7 +65,7 @@ int serialOpen(const char *device, const int baud) {
   int r = ioctl(fd, TCGETS2, &config);
   if(r) return -1;
 
-  // sets the terminal to something like the "raw" mode of the old Version 7 terminal driver
+  // Sets terminal to something like "raw" mode of Version 7 terminal driver
   config.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
                    | INLCR | IGNCR | ICRNL | IXON);
   config.c_cflag &= ~(CSTOPB | CSIZE | PARENB);
@@ -96,7 +96,7 @@ int serialOpen(const char *device, const int baud) {
   return fd;
 };
 
-/* Returns the number of bytes of data available to be read in the buffer */
+/* Returns the number of bytes of data available to be read in the buffer -- */
 
 int serialDataAvailable(const int fd) {
   int result = 0;
@@ -104,7 +104,7 @@ int serialDataAvailable(const int fd) {
   return result;
 };
 
-/* Reads a character from the serial buffer ------------------------------- */
+/* Reads a character from the serial buffer -------------------------------- */
 
 int serialGetCharacter(const int fd) {
   uint8_t result;

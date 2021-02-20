@@ -70,7 +70,7 @@ uint8_t get_next_code() {
     *decoder_ptr == BP_ADDRESS ||
     *decoder_ptr == BP_S_ADDRESS ||
     *decoder_ptr == BP_FUNCTION ||
-		*decoder_ptr == BP_FUN_DEF
+    *decoder_ptr == BP_FUN_DEF
   ) {
     decoder_next_ptr = decoder_ptr + 2;
     return *decoder_ptr;

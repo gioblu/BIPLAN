@@ -94,7 +94,7 @@ class BIPLAN_Interpreter {
         l = *(decoder_position() - 1) - BP_OFFSET;
         for(uint8_t i = 0; i < BP_PARAMS; i++)
           definitions[l].params[i] = BP_PARAMS;
-        while(ignore(BP_COMMA) || ignore(BP_L_RPARENT)) {
+        while(ignore(BP_L_RPARENT) || ignore(BP_COMMA)) {
           if(ignore(BP_ADDRESS)) {
             definitions[l].params[param++] = *(decoder_position() - 1);
           } if(*decoder_position() == BP_R_RPARENT) break;
@@ -103,7 +103,7 @@ class BIPLAN_Interpreter {
     }
   };
 
-  /* PROCESS LABEL STATEMENTS --------------------------------------------- */
+  /* PROCESS LABEL STATEMENTS ---------------------------------------------- */
   void process_labels(char* program) {
     decoder_init(program);
     while(decoder_get() != BP_ENDOFINPUT) {
