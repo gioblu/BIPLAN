@@ -29,12 +29,11 @@ int main(int argc, char* argv[]) {
   // Serial initialization
   int s;
   if(argc == 5) {
-    s = serialOpen(argv[3], atoi(argv[4]));
+    s = serialOpen(argv[2], atoi(argv[3]));
     if(int(s) < 0) printf("Serial fail!\n");
     else printf("Serial OK.\n");
   }
   printf("Source: %s", argv[1]);
-  fflush(stdout);
   FILE * p_file;
   long p_size;
   size_t result;
@@ -65,10 +64,8 @@ int main(int argc, char* argv[]) {
   fclose(p_file);
   // Initialize interpreter using cout as print and stdin as input
   interpreter.initialize(program, error_callback, s, s, s);
-  // Check for compilation errors
-
-  uint32_t t = BPM_MICROS();
   printf("\nInterpreter output: \n\n");
+  uint32_t t = BPM_MICROS();
   while(interpreter.run());
   t = BPM_MICROS() - t;
   printf("\n\nExecution duration: %u microseconds \n", t);

@@ -57,16 +57,16 @@ int main(int argc, char* argv[]) {
   }
   t = BPM_MICROS() - t;
   // Save program in target file
-	FILE *o_file = fopen(argv[2], "w");
+  FILE *o_file = fopen(argv[2], "w");
   fwrite(program, sizeof(char), strlen(program), o_file);
-	// Obtain file size:
-	fseek(o_file, 0, SEEK_END);
-	int o_size = ftell(o_file);
-	rewind(o_file);
-	printf(", BIP length: ");
-	std::cout << o_size;
-	printf("B, reduction: %f", (100 - (100 / ((float)p_size / (float)o_size))));
-	fclose(o_file);
-	printf("%% \nCompilation time: %d microseconds \n", (int)(t));
+  // Obtain file size:
+  fseek(o_file, 0, SEEK_END);
+  int o_size = ftell(o_file);
+  rewind(o_file);
+  printf(", BIP length: ");
+  std::cout << o_size;
+  printf("B, reduction: %f", (100 - (100 / ((float)p_size / (float)o_size))));
+  fclose(o_file);
+  printf("%% \nCompilation time: %d microseconds \n", (int)(t));
   exit(1);
 };
