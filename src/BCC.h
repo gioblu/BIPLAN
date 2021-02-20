@@ -348,9 +348,10 @@ public:
     encode(program, "LF", "10");
     encode(program, "CR", "13");
     // Remove spaces line feed and carriage return
-    remove(program, '\n');
-    remove(program, '\r');
-    remove(program, ' ');
+    remove(program, BP_CR);
+    remove(program, BP_LF);
+    remove(program, BP_SPACE);
+    remove(program, BP_TAB);
     // End compilation program consistency checks
     if(!check_delimeter(program, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK);
