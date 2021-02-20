@@ -14,54 +14,59 @@ void error_callback(char *position, const char *string) {
   printf("Compilation error: ");
   printf("%s", string);
   printf("\n");
-  fflush(stdout);
 };
 
 int main(int argc, char* argv[]) {
   printf("BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021 \n");
   printf("Source: %s \n", argv[1]);
   printf("Target: %s \n", argv[2]);
-  fflush(stdout);
-  FILE * pFile;
-  long lSize;
+  FILE * p_file;
+  long p_size;
   size_t result;
   // Open file
-  pFile = fopen(argv[1], "r");
-  if(pFile == NULL) {
-    fputs("Unable to open the source file.\n", stderr);
-    exit(1);
+  p_file = fopen(argv[1], "r");
+  if(p_file == NULL) {
+    printf("Unable to open the source file.\n");
+    exit(-3);
   }
   // Obtain file size:
-  fseek(pFile, 0, SEEK_END);
-  lSize = ftell(pFile);
-  rewind(pFile);
+  fseek(p_file, 0, SEEK_END);
+  p_size = ftell(p_file);
+  rewind(p_file);
   printf("Source length: ");
-  std::cout << lSize;
-  printf("B \n");
-  if((sizeof(char) * lSize) >= BCC_MAX_PROGRAM_SIZE) {
-    fputs("Program too big, configure BCC_MAX_PROGRAM_SIZE.\n", stderr);
-    exit(2);
+  std::cout << p_size;
+  printf("B");
+  if((sizeof(char) * p_size) >= BCC_MAX_PROGRAM_SIZE) {
+    printf("\nProgram too big, configure BCC_MAX_PROGRAM_SIZE.");
+    exit(-2);
   }
   // Copy the file into the buffer:
-  result = fread(program, 1, lSize, pFile);
-  if(result != lSize) {
-    fputs("Unable to read source file.\n", stderr);
-    exit(3);
+  result = fread(program, 1, p_size, p_file);
+  if(result != p_size) {
+    printf("\nUnable to read source file.");
+    exit(-1);
   }
   // Close source file
-  fclose(pFile);
+  fclose(p_file);
   // Compile program
   compiler.error_callback = error_callback;
   uint32_t t = BPM_MICROS();
   if(!compiler.run(program)) {
-    printf("Compilation failed: check your code and retry\n");
-    return 0;
+    printf("\nCompilation failed: check your code and retry");
+    exit(0);
   }
   t = BPM_MICROS() - t;
-  printf("Compilation time: %u microseconds \n", t);
   // Save program in target file
-  FILE *f = fopen(argv[2], "w");
-  fwrite(program, sizeof(char), strlen(program), f);
-  fclose(f);
-  return 0;
+	FILE *o_file = fopen(argv[2], "w");
+  fwrite(program, sizeof(char), strlen(program), o_file);
+	// Obtain file size:
+	fseek(o_file, 0, SEEK_END);
+	int o_size = ftell(o_file);
+	rewind(o_file);
+	printf(", BIP length: ");
+	std::cout << o_size;
+	printf("B, reduction: %f", (100 - (100 / ((float)p_size / (float)o_size))));
+	fclose(o_file);
+	printf("%% \nCompilation time: %d microseconds \n", (int)(t));
+  exit(1);
 };
