@@ -74,8 +74,7 @@ public:
     } return in_str;
   };
 
-  /* REMOVE SPACES FROM PROGRAM ------------------------------------------- */
-  void remove_spaces(char *s) {
+  void remove(char *s, char v) {
     if(fail) return; // Abort if an error occurred
     char *i = s;
     char *j = s;
@@ -83,21 +82,7 @@ public:
     while(*j != 0) {
       *i = *j++;
       if(*i == BP_STRING) in_str = !in_str;
-      if(*i != BP_SPACE) i++;
-      else if(in_str) i++;
-    } *i = 0;
-  };
-
-  /* REMOVE CARRIAGE RETURN FROM PROGRAM ---------------------------------- */
-  void remove_cr(char *s) {
-    if(fail) return; // Abort if an error occurred
-    char *i = s;
-    char *j = s;
-    bool in_str = false;
-    while(*j != 0) {
-      *i = *j++;
-      if(*i == BP_STRING) in_str = !in_str;
-      if(*i != '\n') i++;
+      if(*i != v) i++;
       else if(in_str) i++;
     } *i = 0;
   };
@@ -114,10 +99,7 @@ public:
       if(*i != BP_REM) i++;
       else {
         if(in_str) i++;
-        else {
-          while(*j != BP_CR) (void)(*j++);
-          //(void)(*j++);
-        }
+        else while(*j != BP_CR) (void)(*j++);
       }
     } *i = 0;
   };
@@ -365,9 +347,10 @@ public:
     encode(program, "true", "1");
     encode(program, "LF", "10");
     encode(program, "CR", "13");
-    // Remove spaces
-    remove_spaces(program);
-    remove_cr(program);
+    // Remove spaces line feed and carriage return
+    remove(program, '\n');
+    remove(program, '\r');
+    remove(program, ' ');
     // End compilation program consistency checks
     if(!check_delimeter(program, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK);
