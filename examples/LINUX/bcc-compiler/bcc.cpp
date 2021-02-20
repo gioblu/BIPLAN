@@ -54,9 +54,9 @@ int main(int argc, char* argv[]) {
   compiler.error_callback = error_callback;
   uint32_t t = BPM_MICROS();
   if(!compiler.run(program)) {
-		printf("Compilation failed: check your code and retry\n");
-		return 0;
-	}
+    printf("Compilation failed: check your code and retry\n");
+    return 0;
+  }
   t = BPM_MICROS() - t;
   printf("Compilation time: %u microseconds \n", t);
   // Save program in target file

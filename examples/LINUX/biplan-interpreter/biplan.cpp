@@ -21,6 +21,7 @@ void error_callback(char *position, const char *string) {
     printf("%d \n ", (int)(position - interpreter.program_start));
   }
   error = true;
+  exit(0);
 };
 
 int main(int argc, char* argv[]) {
@@ -69,6 +70,7 @@ int main(int argc, char* argv[]) {
   if(error) {
     interpreter.ended = true;
     printf("\nFix your code and retry.");
+    exit(4);
   }
 
   uint32_t t = BPM_MICROS();
@@ -76,5 +78,5 @@ int main(int argc, char* argv[]) {
   while(interpreter.run());
   t = BPM_MICROS() - t;
   printf("\n\nExecution duration: %u microseconds \n", t);
-  return 0;
+  exit(5);
 };
