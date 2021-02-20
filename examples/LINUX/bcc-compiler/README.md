@@ -9,13 +9,13 @@ The `bcc.cpp` file is a complete and ready to use compiler. It is able to compil
 #### How to use it
 The `bcc` executable can be used to compile BIPLAN into BIP, in this example's directory is located a `test.txt` file that contains a BIPLAN program; this is compiled into BIP in `test.bip`.
 1. Locate the `BIPLAN/examples/LINUX/bcc-compiler` directory
-2. Digit `./bcc test.txt test.bip`
+2. Digit `./bcc fib.bpl fib.bip`
 
 Expected output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: test.txt
-Target: test.bip
-Source length: 150B
-Compilation time: 70 microseconds
+Target: ../biplan-interpreter/test.bip
+Source length: 238B
+Compilation time: 188 microseconds
 ```

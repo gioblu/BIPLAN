@@ -1,8 +1,0 @@
-print "BIPLAN 10000 increments benchmark"
-$inc = 0
-$time = millis
-for $i = 0 to 10000
-  ++$inc
-next
-print millis - $time, "milliseconds"
-stop
