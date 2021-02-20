@@ -14,30 +14,33 @@ BIPLAN has a modern syntax inspired by Python and it is expressly designed to op
 
 ### Code example
 
-Fibonacci sequence computation in 212 bytes of BIPLAN code:
+Fibonacci sequence computation in 236 bytes of BIPLAN code:
 ```php
-fibonacci(10) # Prints 0 1 1 2 3 5 8
-stop # End of program
-function fibonacci($x)
-  $a = 0
-  $b = 1
-  $n = 0
-  while $n < $x
-    print $n, " "
+print fibonacci(40)
+stop
+function fibonacci($n)
+  $a    = 0
+  $b    = 1
+  $next = 0
+  $r    = 0
+  while $r < $n
+    $r = $r + 1
     $a = $b
-    $b = $n
-    $n = $a + $b
+    $b = $next
+    $next = $a + $b
+    if $next < 0 return end
   next
-return
+return $next
 ```
-Compiled in 52 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 65 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
 ~#(10)xf#($#)$$0$%1$&0w$&<$#p$&," "$$$%$%$&$&$$+$%nr
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.h) class:
 ```
-0 1 1 2 3 5 8
+102334155
 ```
+On my computer it takes around 124 microseconds to find the 40th Fibonacci number. BIPLAN looks to be around 11316 times quicker than python.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
