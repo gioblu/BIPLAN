@@ -153,15 +153,11 @@ print "Hello world!"
 ### `random`
 ```
 random [number or variable]
-
-random [number or variable], [number or variable]
 ```
-It can receive a single parameter, the maximum or two parameters the minimum and the maximum. Returns a randomly generated number.
+It receives a single parameter, the exclusive maximum value. Returns a randomly generated number.
 ```php
 print random 10
 # Prints a number between 0 and 9
-print random 10, 100
-# Prints a number between 10 and 99
 ```
 
 ---

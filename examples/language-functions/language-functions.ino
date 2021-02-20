@@ -26,7 +26,6 @@ print \"\nmillis: \", millis \n\
 print \"\ndigitalRead 13: \", digitalRead 13 \n\
 print \"\nanalogRead 0: \", analogRead 0 \n\
 print \"\nrandom 100: \", random 100 \n\
-print \"\nrandom 0, 10: \", random 0, 10 \n\
 print \"\nsqrt 81: \", sqrt 81 \n\
 print \"\npinMode 13, OUTPUT: \" \n\
 pinMode 13, OUTPUT \n\

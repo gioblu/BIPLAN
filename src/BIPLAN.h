@@ -568,8 +568,7 @@ class BIPLAN_Interpreter {
   /* RANDOM CALL (min optional, max optional) ------------------------------ */
   BP_VAR_TYPE random_call() {
     BP_VAR_TYPE a = expression(), b;
-    if(ignore(BP_COMMA)) b = BPM_RANDOM(a, expression());
-    else b = BPM_RANDOM(a);
+    b = BPM_RANDOM(a);
     return b;
   };
 
@@ -585,9 +584,9 @@ class BIPLAN_Interpreter {
       for(uint16_t i = 0; i < sizeof(strings[id]); i++)
         BPM_SERIAL_WRITE(serial_fun, strings[id][i]);
     } else {
-			BP_VAR_TYPE r = relation();
-			BPM_SERIAL_WRITE(serial_fun, r);
-		}
+      BP_VAR_TYPE r = relation();
+      BPM_SERIAL_WRITE(serial_fun, r);
+    }
   };
 
   /* STRING LENGTH CALL ---------------------------------------------------- */
