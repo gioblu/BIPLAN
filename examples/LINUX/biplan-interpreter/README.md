@@ -9,8 +9,10 @@ The `biplan.cpp` file is a complete and ready to use interpreter. It is able to 
 #### How to use it
 The `biplan` executable can be used to execute BIP machine language, in this example's directory is located a `fib.bip` file that contains BIP machine code able to compute the 40th fibonacci number. We can use the `biplan` executable to run it and benchmark its performance.
 
-1. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-2. Digit `./biplan fib.bip`
+1. Open the console
+2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
+3. Digit `./biplan fib.bip`
+4. Try to use [bcc-compiler](../bcc-compiler) to compile your own BIPLAN program
 
 Expected output:
 ```
@@ -25,4 +27,4 @@ Interpreter output:
 Execution duration: 124 microseconds
 ```
 
-On my computer it takes around 124 microseconds to find the 40th Fibonacci number. BIPLAN looks to be around 11316 times quicker than python.
+On my computer it takes around 124 microseconds to run the program. BIPLAN looks to be around 11316 times quicker than python.
