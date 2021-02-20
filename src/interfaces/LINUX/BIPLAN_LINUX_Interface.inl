@@ -5,7 +5,7 @@
     #define PJON_LINUX_SEPARATE_DEFINITION
 #endif
 
-#include "PJON_LINUX_Interface.h"
+#include "BIPLAN_LINUX_Interface.h"
 #include "/usr/include/asm-generic/termbits.h"
 #include "/usr/include/asm-generic/ioctls.h"
 

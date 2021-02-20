@@ -62,10 +62,10 @@ class BIPLAN_Interpreter {
   bool              ended          = false;
   uint8_t           return_type    = 0;
   /* CALLBACKS ------------------------------------------------------------- */
-  error_type        error_fun      = NULL;
-  BPM_PRINT_TYPE    print_fun      = NULL;
-  BPM_INPUT_TYPE    data_in_fun    = NULL;
-  BPM_SERIAL_TYPE   serial_fun     = NULL;
+  error_type        error_fun;
+  BPM_PRINT_TYPE    print_fun;
+  BPM_INPUT_TYPE    data_in_fun;
+  BPM_SERIAL_TYPE   serial_fun;
 
   /* FINISHED -------------------------------------------------------------- */
   bool finished() { return ended || decoder_finished(); };
@@ -584,7 +584,10 @@ class BIPLAN_Interpreter {
       uint8_t id = *(decoder_position() - 1) - BP_OFFSET;
       for(uint16_t i = 0; i < sizeof(strings[id]); i++)
         BPM_SERIAL_WRITE(serial_fun, strings[id][i]);
-    } else BPM_SERIAL_WRITE(serial_fun, relation());
+    } else {
+			BP_VAR_TYPE r = relation();
+			BPM_SERIAL_WRITE(serial_fun, r);
+		}
   };
 
   /* STRING LENGTH CALL ---------------------------------------------------- */

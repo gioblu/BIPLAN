@@ -20,7 +20,8 @@
 #pragma once
 
 #if defined(LINUX) || defined(ANDROID)
-
+  #include <iostream>
+  #include <string>
   #include <stdio.h>
   #include <stdint.h>
   #include <inttypes.h>
@@ -71,7 +72,7 @@ extern "C" {
   int serialGetCharacter(const int fd);
 
   #ifndef BPM_LINUX_SEPARATE_DEFINITION
-    #include "BPM_LINUX_Interface.inl"
+    #include "BIPLAN_LINUX_Interface.inl"
   #endif
 
   /* String conversion ---------------------------------------------------- */
@@ -91,6 +92,15 @@ extern "C" {
   #endif
 
   /* LINUX IO system calls ------------------------------------------------ */
+
+
+  #if !defined(BPM_AREF)
+    #define BPM_AREF(R)
+  #endif
+
+  #if !defined(BPM_AREAD)
+    #define BPM_AREAD(R) 0
+  #endif
 
   #if !defined(BPM_ANALOG_READ)
     #define BPM_ANALOG_READ(P) 0
@@ -124,6 +134,16 @@ extern "C" {
     #define BPM_RANDOM_SEED srand
   #endif
 
+  /* Print ---------------------------------------------------------------- */
+
+  #ifndef BPM_PRINT_TYPE
+    #define BPM_PRINT_TYPE int
+  #endif
+
+  #ifndef BPM_PRINT_WRITE
+    #define BPM_PRINT_WRITE(S, C) std::cout << C
+  #endif
+
   /* Serial --------------------------------------------------------------- */
 
   #ifndef BPM_SERIAL_TYPE
@@ -140,6 +160,17 @@ extern "C" {
 
   #ifndef BPM_SERIAL_FLUSH
     #define BPM_SERIAL_FLUSH(S) tcflush(S, TCIOFLUSH)
+  #endif
+
+
+  /* User input ----------------------------------------------------------- */
+
+  #ifndef BPM_INPUT_TYPE
+    #define BPM_INPUT_TYPE int
+  #endif
+
+  #ifndef BPM_INPUT
+    #define BPM_INPUT(S) get_input_naive
   #endif
 
   /* Timing --------------------------------------------------------------- */
