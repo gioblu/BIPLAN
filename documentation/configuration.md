@@ -14,40 +14,34 @@
 ## Configuration
 
 ### Numeric variables
-BIPLAN supports only one numeric variable type that is by default `int32_t` but can be easily changed with the use of contants:
+BIPLAN supports only one numeric variable type that is by default `long` but can be easily changed with the use of constants:
 ```cpp
-// Sets the BIPLAN numeric type to uint32_t
-#define BP_VAR_TYPE uint32_t
+// Sets the BIPLAN numeric type to int
+#define BP_VAR_TYPE int
 #include "BIPLAN.h"
 ```
-Each variable is just an entry of a global array of variables. The `BP_VARIABLES` constant can be used as shown below to configure the maximum amount of variables available:
+Each variable is just an entry of a statically allocated array. The `BP_VARIABLES` constant can be used as shown below to configure the maximum amount of variables available:
 ```cpp
 #define BP_VARIABLES 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports a maximum amount of 125 global variables.
-
-The maximum length of variable names can be configured as follows:
-```cpp
-#define BP_MAX_VARIABLE_LENGTH 10
-#include "BIPLAN.h"
-```
+BIPLAN supports up to 92 variables defined by the user, such as `$my_var = 1` although it can access more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
 
 ---
 
 ### Strings
-BIPLAN has a static buffer of strings, which maximum length can be easily configured as follows:
+Each string is just an entry of a statically allocated array, the `BP_STRINGS` constant can be used as shown below to configure the maximum amount of strings available:
+```cpp
+#define BP_STRINGS 50
+#include "BIPLAN.h"
+```
+BIPLAN supports up to 92 strings defined by the user, such as `:my_string = "Hello world!"` although it can get and or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
+---
 ```cpp
 // Sets BIPLAN strings maximum length to 50
 #define BP_STRING_MAX_LENGTH 50
 #include "BIPLAN.h"
 ```
-Each string is just an entry of a global array of string. The `BP_STRINGS` constant can be used as shown below to configure the maximum amount of strings available:
-```cpp
-#define BP_STRINGS 50
-#include "BIPLAN.h"
-```
-BIPLAN supports a maximum amount of 125 global strings.
 
 ---
 
@@ -67,8 +61,14 @@ The maximum function call depth can be configured as follows:
 #define BP_FUN_DEPTH 5
 #include "BIPLAN.h"
 ```
-The maximum length of function names can be configured as follows:
+BIPLAN supports a maximum amount of 92 functions defined by the user.
+
+---
+### Keyword length
+You can configure the maximum length of user-defined keywords using the `BP_MAX_KEYWORD_LENGTH` as follows:
+
 ```cpp
-#define BP_MAX_FUNCTION_NAME_LENGTH 10
-#include "BIPLAN.h"
+#ifndef BP_MAX_KEYWORD_LENGTH
+  #define BP_MAX_KEYWORD_LENGTH 20
+#endif
 ```
