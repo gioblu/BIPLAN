@@ -27,4 +27,4 @@ Execution duration: 124 microseconds
 ```
 
 You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it.
-On my computer `biplan` needs 124 microseconds to run the algorithm, `python` instead needs around 1.40 seconds to run the same algorithm written in python. BIPLAN looks to be around 11316 times faster than python.
+On my computer `biplan` needs 124 microseconds to run the algorithm, `python` instead needs around 170 milliseconds to run the same algorithm written in python. BIPLAN looks to be around 1370 times faster than python.

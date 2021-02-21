@@ -40,7 +40,7 @@ Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.h) class:
 ```
 102334155
 ```
-On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs 124 microseconds to run the algorithm. Python needs around 1.40 seconds to run the same algorithm. BIPLAN looks to be around 11316 times quicker than python.
+On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs 124 microseconds to run the algorithm. Python needs around 170 milliseconds to run the same algorithm. BIPLAN looks to be around 1370 times quicker than python.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
