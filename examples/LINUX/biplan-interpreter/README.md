@@ -4,7 +4,7 @@ The `biplan.cpp` file is a complete and ready to use interpreter. It is able to 
 #### How to build it
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. Digit `g++ -DLINUX -I. -I ../../../src -std=gnu++11 biplan.cpp -o biplan -lpthread -lcrypt -lm -lrtD`
+3. Digit `make`
 
 #### How to use it
 The `biplan` executable can be used to execute BIP machine language, in this example's directory you find [`fib.bip`](fib.bip). This file contains an algorithm in BIP machine language able to compute the 40th number of the Fibonacci sequence. You can use the `biplan` executable to run it and benchmark its performance.

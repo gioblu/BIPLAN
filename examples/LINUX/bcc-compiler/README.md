@@ -4,7 +4,7 @@ The `bcc.cpp` file is a complete and ready to use compiler. It is able to compil
 #### How to build it
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/bcc-compiler` directory
-3. Digit `g++ -DLINUX -I. -I ../../../src -std=gnu++11 bcc.cpp -o bcc -lpthread -lcrypt -lm -lrtD`
+3. Digit `make`
 
 #### How to use it
 The `bcc` executable can be used to compile BIPLAN into BIP machine language, in this example's directory you find [`fib.bpl`](fib.bpl) that contains a BIPLAN program able to compute the 40th number of the fibonacci series. This is compiled into BIP machine language in [`fib.bip`](../biplan-interpreter/fib.bip).
