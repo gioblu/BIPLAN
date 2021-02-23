@@ -101,14 +101,15 @@ void decoder_init(char *program) {
 };
 
 /* DECODE STRING ---------------------------------------------------------- */
-void decoder_string(char *d, uint16_t l) {
+bool decoder_string(char *d, uint16_t l) {
   char *string_end;
   uint16_t string_length;
-  if(decoder_current != BP_STRING) return;
+  if(decoder_current != BP_STRING) return false;
   string_end = strchr(decoder_ptr + 1, BP_STRING);
-  if(string_end == NULL) return;
+  if(string_end == NULL) return false;
   string_length = string_end - decoder_ptr - 1;
   if(l < string_length) string_length = l;
   memcpy(d, decoder_ptr + 1, string_length);
   d[string_length] = 0;
+  return true;
 };

@@ -171,6 +171,14 @@ class BIPLAN_Interpreter {
     else error(decoder_position(), BP_ERROR_VARIABLE_SET);
   };
 
+  /* GET ONE CHAR FROM STRING ---------------------------------------------- */
+  char string_char(int s, int c) {
+    if((c >= BP_STRING_MAX_LENGTH) || (s < 0 && s >= BP_STRINGS)) {
+      error(decoder_position(), BP_ERROR_STRING_GET);
+      return 0;
+    } return strings[s][c];
+  };
+
   /* UNARY OPERATOR -------------------------------------------------------- */
   int8_t unary() {
     int8_t u = 0;
@@ -196,7 +204,7 @@ class BIPLAN_Interpreter {
         post = unary();
       if((pre != 0) || (post != 0)) set_variable(id, v + pre + post);
     } else if((type == BP_S_ADDRESS) && (decoder_get() == BP_ACCESS)) {
-      v = strings[id][access(BP_ACCESS)];
+      v = string_char(id, access(BP_ACCESS));
       return_type = BP_ACCESS;
     } else {
       return_type = BP_S_ADDRESS;
@@ -219,10 +227,10 @@ class BIPLAN_Interpreter {
     BP_VAR_TYPE v = 0;
     bool bitwise_not = ignore(BP_BITWISE_NOT), minus = ignore(BP_MINUS);
     switch(decoder_get()) {
-      case BP_VAR_ACCESS: v = variables[access(BP_VAR_ACCESS)]; break;
+      case BP_VAR_ACCESS: v = get_variable(access(BP_VAR_ACCESS)); break;
       case BP_STR_ACCESS:
         v = access(BP_STR_ACCESS);
-        if(decoder_get() == BP_ACCESS) v = strings[v][access(BP_ACCESS)];
+        if(decoder_get() == BP_ACCESS) v = string_char(v, access(BP_ACCESS));
         break;
       case BP_MEM_ACCESS: v = memory[access(BP_MEM_ACCESS)]; break;
       case BP_NUMBER: v = BPM_ATOL(decoder_position()); expect(BP_NUMBER); break;
@@ -316,6 +324,12 @@ class BIPLAN_Interpreter {
     decoder_goto(program_start + relation());
   }
 
+  /* READ SAFELY A STRING -------------------------------------------------- */
+  void read_string(char *s) {
+    if(!decoder_string(s, sizeof(string)))
+      error(decoder_position(), BP_ERROR_STRING_END);
+  };
+
   /* PRINT ----------------------------------------------------------------- */
   void print_call() {
     do {
@@ -325,7 +339,7 @@ class BIPLAN_Interpreter {
       if(decoder_get() == BP_STR_ACCESS) {
         BPM_PRINT_WRITE(print_fun, strings[access(BP_STR_ACCESS)]);
       } else if(decoder_get() == BP_STRING) {
-        decoder_string(string, sizeof(string));
+        read_string(string);
         BPM_PRINT_WRITE(print_fun, string);
         decoder_next();
       } else if(decoder_get() == BP_S_ADDRESS) {
@@ -389,7 +403,7 @@ class BIPLAN_Interpreter {
     if(decoder_get() == BP_ACCESS) ci = access(BP_ACCESS);
     if(ci == BP_STRING_MAX_LENGTH) {
       if(decoder_get() == BP_STRING) {
-        decoder_string(strings[si], sizeof(strings[si]));
+        read_string(strings[si]);
         expect(BP_STRING);
       } else if(ignore(BP_S_ADDRESS)) {
         ci = *(decoder_position() - 1) - BP_OFFSET;
@@ -571,7 +585,7 @@ class BIPLAN_Interpreter {
   /* SERIAL TX CALL -------------------------------------------------------- */
   void serial_tx_call() {
     if(decoder_get() == BP_STRING) {
-      decoder_string(string, sizeof(string));
+      read_string(string);
       for(uint16_t i = 0; i < BP_STRING_MAX_LENGTH; i++)
         BPM_SERIAL_WRITE(serial_fun, string[i]);
       decoder_next();
@@ -606,7 +620,7 @@ class BIPLAN_Interpreter {
     } else if(ignore(BP_S_ADDRESS)) {
       v = BPM_ATOL(strings[*(decoder_position() - 1) - BP_OFFSET]);
     } else if(decoder_get() == BP_STRING) {
-      decoder_string(string, sizeof(string));
+      read_string(string);
       expect(BP_STRING);
       v = BPM_ATOL(string);
     }
