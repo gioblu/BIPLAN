@@ -337,7 +337,7 @@ class BIPLAN_Interpreter {
       ignore(BP_COMMA);
       bool is_char = ignore(BP_CHAR);
       if(decoder_get() == BP_STR_ACCESS) {
-        BPM_PRINT_WRITE(print_fun, strings[access(BP_STR_ACCESS)]);
+        BPM_PRINT_WRITE(print_fun, (char)factor());
       } else if(decoder_get() == BP_STRING) {
         read_string(string);
         BPM_PRINT_WRITE(print_fun, string);
