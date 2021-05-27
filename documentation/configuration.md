@@ -17,7 +17,7 @@
 BIPLAN supports only one numeric variable type that is by default `long` but can be easily changed with the use of constants:
 ```cpp
 // Sets the BIPLAN numeric type to int
-#define BP_VAR_TYPE int
+#define BP_VAR_T int
 #include "BIPLAN.h"
 ```
 Each variable is just an entry of a statically allocated array. The `BP_VARIABLES` constant can be used as shown below to configure the maximum amount of variables available:

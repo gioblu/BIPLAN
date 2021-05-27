@@ -12,16 +12,18 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Strings
-String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings.
+String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 92 strings.
 ```php
 :test = "Hello world!"
 ```
 String can be accessed by name:
 ```php
+:test = "Hello world!"
 print :test # Prints "Hello world!"
 ```
 All strings can be accessed as part of one single array using `:[]`:
 ```php
+:test = "Hello world!"
 print :[0] # Prints "Hello world!"
 # or the value of :test (first string defined in the program)
 ```

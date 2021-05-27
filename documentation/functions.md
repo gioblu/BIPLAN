@@ -13,11 +13,11 @@
 
 ## Functions
 ```
-function [function name]([parameter], [parameter])
+function [function name]([parameter], [parameter], ...)
   [statement]
 return [expression]
 ```
-A function is a group of statements that together perform a task and can return a value. It is important to take in consideration that the function's statements are executed recursively when the function is called, so at each call a certain overhead is pushed on the stack of the physical machine that is executing the interpreter. A function can be defined using the `function` keyword, defining its name and a parameter list delimited by parentheses used to define which variables are used for function computation. The variables used in the function's definition are set with the value passed by the call, when the function returns the global variable's value is restored. All statements contained in the function definition are be executed until a `return` is encountered. The function definition must be placed after the `stop` statement.   
+A function is a group of statements that together perform a task and can return a value. It is important to take in consideration that the function's statements are executed recursively when the function is called, so at each call a certain overhead is pushed on the stack of the physical machine that is executing the interpreter. A function can be defined using the `function` keyword, defining its name and a parameter list delimited by parentheses used to define which variables are used for function computation. The variables used in the function's definition are set with the value passed by the call, when the function returns the global variable's value is restored. All statements contained in the function definition are executed until a `return` is encountered. The function definition must be placed after the `stop` statement. Each function is just an entry of a global array of functions. BIPLAN supports up to 92 functions. 
 
 ```php
 # Call
@@ -43,7 +43,7 @@ function fibonacci($x)
     $b = $n
     $n = $a + $b
   next
-return 0
+  return $n
 ```
 
 BIPLAN supports scoping only for variables part of the function parameters list, within functions it is possible to access all other variables globally.
