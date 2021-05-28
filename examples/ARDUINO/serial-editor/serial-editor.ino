@@ -2,7 +2,7 @@
 #include "BIPLAN.h"
 
 BCC bcc;
-BIPLAN_Interpreter interpreter;
+
 
 #define MAX_PROG_SIZE 2500
 #define MAX_LINE_SIZE  100
@@ -72,7 +72,7 @@ void run() {
   uint32_t time = millis();
 
   bcc.compile(program);
-  interpreter.initialize(program, error_callback, &Serial, &Serial, &Serial);
+  bip_init(program, error_callback, &Serial, &Serial, &Serial);
 
   Serial.print(program);
   uint16_t new_length;
@@ -93,7 +93,7 @@ void run() {
   Serial.println("Program output:");
   Serial.println();
   do {
-    interpreter.run();
+    
   } while(!interpreter.finished());
 }
 
@@ -104,7 +104,7 @@ void error_callback(char *position, const char *string) {
   Serial.print(" ");
   Serial.print(*position);
   Serial.print(" at position ");
-  Serial.println(position - interpreter.program_start);
+  Serial.println(position - bip_program_start);
 };
 
 void setup() {

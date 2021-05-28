@@ -2,7 +2,7 @@
 #include "BIPLAN.h"
 
 BCC compiler;
-BIPLAN_Interpreter interpreter;
+
 
 bool error = false;
 
@@ -13,7 +13,7 @@ void error_callback(char *position, const char *string) {
     Serial.print(" ");
     Serial.print(*position);
     Serial.print(" at position ");
-    Serial.print(position - interpreter.program_start);
+    Serial.print(position - bip_program_start);
   }
   Serial.println();
   error = true;
@@ -77,7 +77,7 @@ void setup() {
   Serial.println("Program output:");
   Serial.println();
   // Initialize interpreter
-  interpreter.initialize(
+  bip_init(
     program,
     error_callback,
     &Serial,
@@ -86,13 +86,12 @@ void setup() {
   );
   // Check for compilation errors
   if(error) {
-    interpreter.ended = true;
+    bip_ended = true;
     Serial.println("Fix your code and retry.");
   }
 }
 
 void loop() {
-  while(!interpreter.ended)
-    interpreter.run();
+  while(bip_run());
   while(true);
 }
