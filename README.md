@@ -1,8 +1,6 @@
 
 ## BIPLAN™ CR.1
-BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language. It is designed with the goal of being very simple and lightweight but powerful and modern. The software contained in this repository can be used to embed a BIPLAN compiler or interpreter into C and C++ applications for rapid prototyping, scripted applications or general-purpose computing. The BIPLAN machine-language and its interpreter are designed to provide with a very simple portable virtual-machine able to operate efficiently limited micro-controllers as well as on more powerful real-time operative systems with no need of external dependencies.
-
-BIPLAN is a very compact language, even more compact than Micropython or Lua.
+BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language that fits in less than 12KB of program memory. BIPLAN is a very compact language, even more compact than Micropython or Lua.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -14,7 +12,7 @@ BIPLAN is a very compact language, even more compact than Micropython or Lua.
 
 ### Why?
 
-In 2017 I have built a couple of BASIC stand-alone computers with arduino-compatible boards. I have used BASIC because that was the only imperative programming language that fitted in them. After playing I understood there was space to make a new language; quick, portable, modern, but at the same small enough to run on limited micro-controllers.
+In 2017 I have built a couple of stand-alone computers using Arduino boards and I was forced to use BASIC because it was the only interpreted programming language that fitted in them. How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only option in constrained environments? After playing I understood there was space to make a new language; quick, portable, modern, but at the same small enough to run on limited micro-controllers.
 
 ### Code example
 
