@@ -1,7 +1,7 @@
 
 // For printf and file used below
 #include <inttypes.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <BCC.h>
@@ -11,9 +11,8 @@ char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;
 
 void error_callback(char *position, const char *string) {
-  printf("Compilation error: ");
+  printf("\nCompilation error: ");
   printf("%s", string);
-  printf("\n");
 };
 
 int main(int argc, char* argv[]) {
@@ -52,7 +51,7 @@ int main(int argc, char* argv[]) {
   compiler.error_callback = error_callback;
   uint32_t t = BPM_MICROS();
   if(!compiler.run(program)) {
-    printf("\nCompilation failed: check your code and retry");
+    printf("\nCompilation failed: check your code and retry\n");
     exit(0);
   }
   t = BPM_MICROS() - t;

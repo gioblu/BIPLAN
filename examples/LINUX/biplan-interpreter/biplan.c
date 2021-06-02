@@ -1,14 +1,13 @@
 
 // For printf and file used below
 #include <inttypes.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <BIPLAN.h>
+#include <BIPLAN.c>
 
 #define BCC_MAX_PROGRAM_SIZE 2000
 char program[BCC_MAX_PROGRAM_SIZE];
-BIPLAN_Interpreter interpreter;
 
 bool error = false;
 
@@ -18,7 +17,7 @@ void error_callback(char *position, const char *string) {
   if(position) {
     printf("%c", *position);
     printf(" at position ");
-    printf("%d \n ", (int)(position - interpreter.program_start));
+    printf("%d \n ", (int)(position - bip_program_start));
   }
   error = true;
   exit(0);
@@ -60,13 +59,13 @@ int main(int argc, char* argv[]) {
     printf("\nReading error ");
     exit(-1);
   }
-  // terminate
+  // Terminate
   fclose(p_file);
   // Initialize interpreter using cout as print and stdin as input
-  interpreter.initialize(program, error_callback, s, s, s);
+  bip_init(program, error_callback, s, s, s);
   printf("\nInterpreter output: \n\n");
   uint32_t t = BPM_MICROS();
-  while(interpreter.run());
+  while(bip_run());
   t = BPM_MICROS() - t;
   printf("\n\nExecution duration: %u microseconds \n", t);
   exit(1);

@@ -37,8 +37,8 @@ Each string is just an entry of a statically allocated array, the `BP_STRINGS` c
 ```
 BIPLAN supports up to 92 strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
 ```cpp
-// Sets BIPLAN strings maximum length to 50
-#define BP_STRING_MAX_LENGTH 50
+// Sets BIPLAN string maximum length to 50
+#define BP_STRING_MAX 50
 #include "BIPLAN.h"
 ```
 
@@ -64,10 +64,10 @@ BIPLAN supports a maximum amount of 92 functions defined by the user.
 
 ---
 ### Keyword length
-You can configure the maximum length of user-defined keywords using the `BP_MAX_KEYWORD_LENGTH` as follows:
+You can configure the maximum length of user-defined keywords using the `BP_KEYWORD_MAX` as follows:
 
 ```cpp
-#ifndef BP_MAX_KEYWORD_LENGTH
-  #define BP_MAX_KEYWORD_LENGTH 20
+#ifndef BP_KEYWORD_MAX
+  #define BP_KEYWORD_MAX 20
 #endif
 ```
