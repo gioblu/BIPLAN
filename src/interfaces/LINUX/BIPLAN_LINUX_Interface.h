@@ -26,6 +26,7 @@
   #include <sys/ioctl.h>
   #include <thread>
   #include <math.h>
+  #include <stdio.h>
 
   #define OUTPUT 1
   #define INPUT 0
@@ -63,6 +64,10 @@
 
   #ifndef BPM_ATOL
     #define BPM_ATOL atol
+  #endif
+
+  #ifndef BPM_LTOA
+    #define BPM_LTOA(B, L) sprintf(B, "%ld", L);
   #endif
 
   /* Generic constants ---------------------------------------------------- */
@@ -120,18 +125,18 @@
 
   /* Print ---------------------------------------------------------------- */
 
-  #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE int
+  #ifndef BPM_PRINT_T
+    #define BPM_PRINT_T int
   #endif
 
   #ifndef BPM_PRINT_WRITE
-    #define BPM_PRINT_WRITE(S, C) std::cout << C
+    #define BPM_PRINT_WRITE(S, C) std::cerr << C
   #endif
 
   /* Serial --------------------------------------------------------------- */
 
-  #ifndef BPM_SERIAL_TYPE
-    #define BPM_SERIAL_TYPE int16_t
+  #ifndef BPM_SERIAL_T
+    #define BPM_SERIAL_T int16_t
   #endif
 
   #ifndef BPM_SERIAL_WRITE
@@ -148,12 +153,54 @@
 
   /* User input ----------------------------------------------------------- */
 
-  #ifndef BPM_INPUT_TYPE
-    #define BPM_INPUT_TYPE int
+  #ifndef BPM_INPUT_T
+    #define BPM_INPUT_T int
   #endif
 
   #ifndef BPM_INPUT
     #define BPM_INPUT(S) getchar_unlocked()
+  #endif
+
+  /* Files ---------------------------------------------------------------- */
+
+  #ifndef BPM_FILE_T
+    #define BPM_FILE_T FILE
+  #endif
+
+  #ifndef BPM_FILE_OPEN
+    #define BPM_FILE_OPEN(T, P, M) \
+      switch(M) { \
+        case 0:  T = fopen(P, "r");   break; \
+        case 1:  T = fopen(P, "rb");  break; \
+        case 2:  T = fopen(P, "r+");  break; \
+        case 3:  T = fopen(P, "rb+"); break; \
+        case 4:  T = fopen(P, "w");   break; \
+        case 5:  T = fopen(P, "wb");  break; \
+        case 6:  T = fopen(P, "w+");  break; \
+        case 7:  T = fopen(P, "wb+"); break; \
+        case 8:  T = fopen(P, "a");   break; \
+        case 9:  T = fopen(P, "ab");  break; \
+        case 10: T = fopen(P, "a+");  break; \
+        case 11: T = fopen(P, "ab+"); break; \
+      };
+  #endif
+
+  #ifndef BPM_FILE_WRITE
+    #define BPM_FILE_WRITE(T, V) fprintf(T,"%c", V);
+  #endif
+
+  #ifndef BPM_FILE_READ
+    #define BPM_FILE_READ(T) fgetc(T);
+  #endif
+
+  #ifndef BPM_FILE_CLOSE
+    #define BPM_FILE_CLOSE(T) fclose(T);
+  #endif
+
+  /* System --------------------------------------------------------------- */
+
+  #ifndef BPM_SYSTEM
+    #define BPM_SYSTEM(P) system(P)
   #endif
 
   /* Timing --------------------------------------------------------------- */

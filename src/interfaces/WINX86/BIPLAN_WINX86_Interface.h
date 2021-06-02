@@ -129,8 +129,8 @@
 
   /* User input ----------------------------------------------------------- */
 
-  #ifndef BPM_INPUT_TYPE
-    #define BPM_INPUT_TYPE Stream * // Not sure what should go here on win
+  #ifndef BPM_INPUT_T
+    #define BPM_INPUT_T Stream * // Not sure what should go here on win
   #endif
 
   #ifndef BPM_INPUT
@@ -139,8 +139,8 @@
 
   /* Print ---------------------------------------------------------------- */
 
-  #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE Stream * // Not sure what should go here on win
+  #ifndef BPM_PRINT_T
+    #define BPM_PRINT_T Stream * // Not sure what should go here on win
   #endif
 
   #ifndef BPM_PRINT_WRITE
@@ -153,8 +153,8 @@
 
   /* Serial --------------------------------------------------------------- */
 
-  #ifndef BPM_SERIAL_TYPE
-    #define BPM_SERIAL_TYPE Serial *
+  #ifndef BPM_SERIAL_T
+    #define BPM_SERIAL_T Serial *
   #endif
 
   #ifndef BPM_SERIAL_WRITE

@@ -78,8 +78,8 @@
 
   /* Serial ----------------------------------------------------------------- */
 
-  #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE int16_t
+  #ifndef BPM_PRINT_T
+    #define BPM_PRINT_T int16_t
   #endif
 
   #ifndef BPM_SERIAL_AVAILABLE

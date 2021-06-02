@@ -5,7 +5,7 @@
   |     \  | |        |       |      | |   \  |
   |______| | |        |______ |______| |    \_| CR.1
   Byte coded Interpreted Programming Language
-  Giovanni Blu Mitolo 2017-2020 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -14,18 +14,9 @@
     (O)                 |_________________________|__|___/|
                                            \ /            |
                                            (O)
-  BIPLAN Copyright (c) 2017-2020, Giovanni Blu Mitolo All rights reserved.
+  BIPLAN Copyright (c) 2017-2021, Giovanni Blu Mitolo All rights reserved.
   Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License. */
+  you may not use this file except in compliance with the License. */
 
 #pragma once
 
@@ -39,20 +30,26 @@
 
 /* VARIABLE TYPE - Change if required (signed only) ----------------------- */
 
-#ifndef BP_VAR_TYPE
-  #define BP_VAR_TYPE long
+#ifndef BP_VAR_T
+  #define BP_VAR_T long
 #endif
 
 #ifndef BP_VAR_MAX
-  #define BP_VAR_MAX (BP_VAR_TYPE)((unsigned BP_VAR_TYPE) ~ 0 >> 1)
+  #define BP_VAR_MAX (BP_VAR_T)((unsigned BP_VAR_T) ~ 0 >> 1)
 #endif
 
 #include "interfaces/BIPLAN_Interfaces.h"
 
 /* KEYWORD MAXIMUM LENGTH ------------------------------------------------- */
 
-#ifndef BP_MAX_KEYWORD_LENGTH
-  #define BP_MAX_KEYWORD_LENGTH 20
+#ifndef BP_KEYWORD_MAX
+  #define BP_KEYWORD_MAX 20
+#endif
+
+/* FILES MAXIMUM AMOUNT --------------------------------------------------- */
+
+#ifndef BP_FILES_MAX
+  #define BP_FILES_MAX 10
 #endif
 
 /* ADDRESSES INDEXING OFFSET ---------------------------------------------- */
@@ -75,8 +72,8 @@
 
 /* FUNCTIONS AMOUNT - Higher if required (MAX 92) ------------------------- */
 
-#ifndef BP_MAX_FUNCTIONS
-  #define BP_MAX_FUNCTIONS 20
+#ifndef BP_FUN_MAX
+  #define BP_FUN_MAX 20
 #endif
 
 /* FUNCTION PARAMETERS AMOUNT - Higher if required ------------------------ */
@@ -91,16 +88,16 @@
   #define BP_FUN_DEPTH 20
 #endif
 
-/* MAXIMUM LENGTH OF NUMBER ----------------------------------------------- */
+/* MAXIMUM LENGTH OF A NUMBER (represented as a string) --------------------- */
 
-#ifndef BP_NUM_MAX_LENGTH
-  #define BP_NUM_MAX_LENGTH 20 // Handle 64 bits machine limit
+#ifndef BP_NUM_MAX
+  #define BP_NUM_MAX 20 // Handle 64 bits machine limit
 #endif
 
 /* STRING MAX LENGTH - Higher if required --------------------------------- */
 
-#ifndef BP_STRING_MAX_LENGTH
-  #define BP_STRING_MAX_LENGTH 60
+#ifndef BP_STRING_MAX
+  #define BP_STRING_MAX 60
 #endif
 
 /* FOR MAXIMUM DEPTH - Higher if required --------------------------------- */
@@ -156,7 +153,7 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_REM               '#'                  // 35         | USED |
 //______________________________________________________________|______|
-#define BP_ADDRESS           '$'                  // 36         | USED |
+#define BP_VAR_ADDR           '$'                 // 36         | USED |
 // USED IN HUMAN-READABLE AS VARIABLE ID          //            |      |
 //______________________________________________________________|______|
 #define BP_MOD               '%'                  // 37         | USED |
@@ -192,7 +189,7 @@ __________________________________________________|_____________|______| */
 // NUMBERS                    8                   // 56         | USED |
 // NUMBERS                    9                   // 57         | USED |
 //______________________________________________________________|______|
-#define BP_S_ADDRESS         ':'                  // 58         | USED |
+#define BP_STR_ADDR         ':'                   // 58         | USED |
 // USED IN BOTH HUMAN-READABLE AND MACHINE LANGUAGE FOR STRING  |      |
 //______________________________________________________________|______|
 #define BP_SEMICOLON         ';'                  // 59         | USED |
@@ -264,17 +261,17 @@ __________________________________________________|_____________|______| */
 #define BP_RND               'R'                  // 82         | USED |
 #define BP_RND_HUMAN         "random"             //            |      |
 //______________________________________________________________|______|
-#define BP_STR_ACCESS        'S'                  // 83         | USED |
-#define BP_STR_ACCESS_HUMAN ":["                  //            |      |
+#define BP_STR_ACC           'S'                  // 83         | USED |
+#define BP_STR_ACC_HUMAN     ":["                 //            |      |
 //______________________________________________________________|______|
 #define BP_NOT_EQ            'T'                  // 84         | USED |
 #define BP_NOT_EQ_HUMAN      "!="                 //            |      |
 //______________________________________________________________|______|
-#define BP_MEM_ACCESS        'U'                  // 85         | USED |
-#define BP_MEM_ACCESS_HUMAN  "@["                 //            |      |
+#define BP_MEM_ACC           'U'                  // 85         | USED |
+#define BP_MEM_ACC_HUMAN     "@["                 //            |      |
 //______________________________________________________________|______|
-#define BP_VAR_ACCESS        'V'                  // 86         | USED |
-#define BP_VAR_ACCESS_HUMAN  "$["                 //            |      |
+#define BP_VAR_ACC           'V'                  // 86         | USED |
+#define BP_VAR_ACC_HUMAN     "$["                 //            |      |
 //______________________________________________________________|______|
                            // W                   // 87         |      |
                            // X                   // 88         |      |
@@ -322,7 +319,8 @@ __________________________________________________|_____________|______| */
 #define BP_JUMP              'j'                  // 106        | USED |
 #define BP_JUMP_HUMAN        "jump"               //            |      |
 //______________________________________________________________|______|
-                           // k                   // 107        |      |
+#define BP_SYSTEM            'k'                  // 107        |      |
+#define BP_SYSTEM_HUMAN      "system"             //            |      |
 //______________________________________________________________|______|
 #define BP_LABEL             'l'                  // 108        | USED |
 #define BP_LABEL_HUMAN       "label"              //            |      |
@@ -333,7 +331,8 @@ __________________________________________________|_____________|______| */
 #define BP_NEXT              'n'                  // 110        | USED |
 #define BP_NEXT_HUMAN        "next"               //            |      |
 //______________________________________________________________|______|
-                           // o                   // 111        |      |
+#define BP_FILE_CLOSE        'o'                  // 111        |      |
+#define BP_FILE_CLOSE_HUMAN  "close_file"         //            |      |
 //______________________________________________________________|______|
 #define BP_PRINT             'p'                  // 112        | USED |
 #define BP_PRINT_HUMAN       "print"              //            |      |
@@ -347,12 +346,14 @@ __________________________________________________|_____________|______| */
 #define BP_SQRT              's'                  // 115        | USED |
 #define BP_SQRT_HUMAN        "sqrt"               //            |      |
 //______________________________________________________________|______|
-                           // t                   // 116        |      |
+#define BP_FILE_READ         't'                  // 116        |      |
+#define BP_FILE_READ_HUMAN   "read_file"          //            |      |
 //______________________________________________________________|______|
 #define BP_SERIAL_RX         'u'                  // 117        | USED |
 #define BP_SERIAL_RX_HUMAN   "serialRead"         //            |      |
 //______________________________________________________________|______|
-                          // 'v'                  // 118        |      |
+#define BP_FILE_WRITE        'v'                  // 118        |      |
+#define BP_FILE_WRITE_HUMAN  "write_file"         //            |      |
 //______________________________________________________________|______|
 #define BP_WHILE             'w'                  // 119        | USED |
 #define BP_WHILE_HUMAN       "while"              //            |      |
@@ -360,7 +361,8 @@ __________________________________________________|_____________|______| */
 #define BP_END               'x'                  // 120        | USED |
 #define BP_END_HUMAN         "stop"               //            |      |
 //______________________________________________________________|______|
-                           // y                   // 121        |      |
+#define BP_FILE_OPEN         'y'                  // 121        |      |
+#define BP_FILE_OPEN_HUMAN   "open_file"          //            |      |
 //______________________________________________________________|______|
 #define BP_RESTART           'z'                  // 122        | USED |
 #define BP_RESTART_HUMAN     "restart"            //            |      |
@@ -379,8 +381,11 @@ __________________________________________________|_____________|______| */
 #define BP_NUMBER           128                   // 128        | USED |
 //______________________________________________________________|______|
 
-// TODO
-// system call to have easier access to user input from console/serial
+
+// TODO - Condense codes serial, write, read, open, close
+
+// #define BP_CLRSCR
+// #define BP_GOTOXY
 // #define BP_AWRITE
 // #define BP_SFLUSH
 // #define BP_SBEGIN
@@ -391,4 +396,33 @@ __________________________________________________|_____________|______| */
 
 /* DATA TYPES ------------------------------------------------------------- */
 
-typedef void (*error_type)(char *position, const char *string);
+typedef void (*bip_error_t)(char *position, const char *string);
+
+struct bip_param_t {
+  BP_VAR_T value;
+  uint8_t id = BP_VARIABLES;
+};
+
+struct bip_fun_t {
+  char *address;
+  uint8_t cid;
+  bip_param_t params[BP_PARAMS];
+};
+
+struct bip_def_t {
+  char *address;
+  uint16_t params[BP_PARAMS];
+};
+
+struct bip_cycle_t {
+  char *address;
+  BP_VAR_T var = 0;
+  uint8_t var_id = BP_VARIABLES;
+  BP_VAR_T step = 0;
+  BP_VAR_T to = 0;
+};
+
+struct bip_files_t {
+  BPM_FILE_T *file;
+  bool free = true;
+};

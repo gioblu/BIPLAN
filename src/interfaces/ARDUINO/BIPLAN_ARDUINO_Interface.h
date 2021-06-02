@@ -61,8 +61,8 @@
 
   /* Print ---------------------------------------------------------------- */
 
-  #ifndef BPM_PRINT_TYPE
-    #define BPM_PRINT_TYPE Stream *
+  #ifndef BPM_PRINT_T
+    #define BPM_PRINT_T Stream *
   #endif
 
   #ifndef BPM_PRINT_WRITE
@@ -75,8 +75,8 @@
 
   /* Serial --------------------------------------------------------------- */
 
-  #ifndef BPM_SERIAL_TYPE
-    #define BPM_SERIAL_TYPE Stream *
+  #ifndef BPM_SERIAL_T
+    #define BPM_SERIAL_T Stream *
   #endif
 
   #ifndef BPM_SERIAL_AVAILABLE
@@ -93,12 +93,8 @@
 
   /* User input ----------------------------------------------------------- */
 
-  #ifndef BPM_INPUT_TYPE
-    #define BPM_INPUT_TYPE Stream *
-  #endif
-
-  #ifndef BPM_INPUT_AVAIL
-    #define BPM_INPUT_AVAILABLE(S) S->available()
+  #ifndef BPM_INPUT_T
+    #define BPM_INPUT_T Stream *
   #endif
 
   #ifndef BPM_INPUT

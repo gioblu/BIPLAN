@@ -351,12 +351,14 @@ public:
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
     encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
     encode_char(program, BP_FILE_OPEN_HUMAN, BP_FILE_OPEN);
+    encode_char(program, BP_FILE_CLOSE_HUMAN, BP_FILE_CLOSE);
     encode_char(program, BP_FILE_READ_HUMAN, BP_FILE_READ);
     encode_char(program, BP_FILE_WRITE_HUMAN, BP_FILE_WRITE);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
     encode_char(program, BP_RETURN_HUMAN, BP_RETURN);
+    encode_char(program, BP_SYSTEM_HUMAN, BP_SYSTEM);
     encode_char(program, BP_ATOL_HUMAN, BP_ATOL);
     encode_char(program, BP_INPUT_HUMAN, BP_INPUT);
     encode_char(program, BP_BREAK_HUMAN, BP_BREAK);
@@ -381,6 +383,7 @@ public:
     encode(program, "INPUT", "0");
     encode(program, "HIGH", "1");
     encode(program, "LOW", "0");
+    encode(program, "EOF", "-1");
     encode(program, "false", "0");
     encode(program, "true", "1");
     encode(program, "LF", "10");
