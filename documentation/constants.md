@@ -13,13 +13,14 @@
 
 ## Constants
 
-| Constant   | Value                       |
-| ---------- | --------------------------- |
-| `false`    | or `0`                      |
-| `true`     | or `1`                      |
-| `LOW`      | or `0` digital pin state    |
-| `HIGH`     | or `1` digital pin state    |
-| `INPUT`    | or `0` digital pin mode     |
-| `OUTPUT`   | or `1` digital pin mode     |
-| `CR`       | or `13` carriage return     |
-| `LF`       | or `10` line feed           |
+| Constant   | Value  |
+| ---------- | ------ |
+| `false`    | `0`    |
+| `true`     | `1`    |
+| `LOW`      | `0`    |
+| `HIGH`     | `1`    |
+| `INPUT`    | `0`    |
+| `OUTPUT`   | `1`    |
+| `CR`       | `13`   |
+| `LF`       | `10`   |
+| `EOF`      | `-1`   |
