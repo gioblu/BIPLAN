@@ -1,6 +1,8 @@
 
 ## BIPLAN™ CR.1
-BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programming language based on a recursive descent parser that uses only static memory allocation and operates a completely software-defined virtual machine that does not require a garbage collector. It's human-readable language called BIPLAN is compiled in an 7-bit ASCII virtual-machine language called BIP.
+BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language. It is designed with the goal of being very simple and lightweight but powerful and modern. The software contained in this repository can be used to embed a BIPLAN compiler or interpreter into C and C++ applications for rapid prototyping, scripted applications or general-purpose computing. The BIPLAN machine-language and its interpreter are designed to provide with a very simple portable virtual-machine able to operate efficiently limited micro-controllers as well as on more powerful real-time operative systems with no need of external dependencies.
+
+BIPLAN is a very compact language, even more compact than Micropython or Lua.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -10,11 +12,13 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental programm
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-BIPLAN has a modern syntax inspired by Python and it is expressly designed to operate efficiently on microcontrollers with limited resources although its implementation is designed to be easily extensible. Today the complexity of tools required for a programming language to work is often overwhelming, BIPLAN's architecture and its machine-language are designed to offer a very simple set of tools that can operate in a constrained environment with no need of external dependencies.
+### Why?
+
+In 2017 I have built a couple of BASIC stand-alone computers with arduino-compatible boards. I have used BASIC because that was the only imperative programming language that fitted in them. After playing I understood there was space to make a new language; quick, portable, modern, but at the same small enough to run on limited micro-controllers.
 
 ### Code example
 
-Fibonacci sequence computation in 236 bytes of BIPLAN code:
+Fibonacci sequence computation in 174 bytes of BIPLAN code:
 ```php
 print fibonacci(40)
 stop
@@ -22,25 +26,30 @@ function fibonacci($n)
   $a    = 0
   $b    = 1
   $next = 0
-  $r    = 0
-  while $r < $n
-    $r = $r + 1
+  for $r = 0 to $n - 1
     $a = $b
     $b = $next
     $next = $a + $b
-    if $next < 0 return end
   next
 return $next
 ```
-Compiled in 64 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 51 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#(40)xf#($$)$%0$&1$#0$'0w$'<$$$'$'+1$%$&$&$#$#$%+$&?$#<0rFnr$#
+p~#(40)xf#($$)$%0$&1$#0@$'0,$$-1$%$&$&$#$#$%+$&nr$#
 ```
-Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.h) class:
+Compiler output:
+```
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
+Source: fib.bpl
+Target: ../biplane-interpreter/fib.bip
+Source length: 174B, BIP length: 51B, reduction: 70.689651%
+Compilation time: 293 microseconds
+```
+Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
 102334155
 ```
-On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs 124 microseconds to run the algorithm. Python needs around 170 milliseconds to run the same algorithm. BIPLAN looks to be around 1370 times quicker than python.
+On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
