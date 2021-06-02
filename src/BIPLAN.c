@@ -22,6 +22,11 @@
 #pragma once
 #include "BIPLAN.h"
 
+#define BP_SYS_REL_BOUNDS(R, B, E) \
+  DCD_NEXT; \
+  R = bip_relation(); \
+  if((R < 0) || (R >= B)) { bip_error(dcd_ptr, E); }
+
 /* SYSTEM CALL WITH 1 RELATION PARAMETER ----------------------------------- */
 
 #define BP_SYS_REL_1(F, T) \
@@ -218,7 +223,7 @@ char bip_string_char(int s, int c) {
   } return bip_strings[s][c];
 };
 
-/* NUMERIC VARIABLE: 1234 -------------------------------------------------*/
+/* NUMERIC VARIABLE: 1234 ---------------------------------------------------*/
 BP_VAR_T bip_var_factor() {
   BP_VAR_T v;
   uint8_t id = BP_VARIABLES, pre = 0;
@@ -266,8 +271,7 @@ BP_VAR_T bip_factor() {
         v = bip_string_char(v, bip_access(BP_ACCESS));
       break;
     case BP_MEM_ACC: v = bip_memory[bip_access(BP_MEM_ACC)]; break;
-    case BP_FILE_OPEN: DCD_NEXT; v = bip_file_open_call(); break;
-    case BP_FILE_READ: DCD_NEXT; v = BPM_FILE_READ(bip_files[bip_relation()].file); break;
+    case BP_FILE: v = bip_file_call(); break;
     case BP_DREAD: DCD_NEXT; v = bip_expression(); return BPM_IO_READ(v);
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
     case BP_AGET: DCD_NEXT; b = bip_expression(); v = BPM_AREAD(b); break;
@@ -605,42 +609,52 @@ void bip_digitalWrite_call() { BP_SYS_EXP_1(BPM_IO_WRITE); };
 /* PINMODE ----------------------------------------------------------------- */
 void bip_pinMode_call() { BP_SYS_EXP_1(BPM_IO_MODE); };
 
-/* CLOSE FILE -------------------------------------------------------------- */
-void bip_file_close_call() {
+/* VOID FILE FUNCTIONS ----------------------------------------------------- */
+void bip_file_void_call() {
   DCD_NEXT;
-  BP_VAR_T r = bip_relation();
-  BPM_FILE_CLOSE(bip_files[r].file);
-  bip_files[r].free = true;
+  BP_VAR_T r;
+  if(dcd_current == BP_CLOSE) {
+    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    if(!bip_ended) {
+      BPM_FILE_CLOSE(bip_files[r].file);
+      bip_files[r].free = true;
+    }
+  } else {
+    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    if(!bip_ended) {
+      BP_EXPECT(BP_COMMA);
+      BP_SYS_REL_1(BPM_FILE_WRITE, bip_files[r].file);
+    }
+  }
 };
 
-/* OPEN FILE --------------------------------------------------------------- */
-BP_VAR_T bip_file_open_call() {
-  BP_VAR_T f = bip_get_file_id();
-  if(f == BP_FILES_MAX) return BP_FILES_MAX;
-  if(dcd_current == BP_STRING) {
-    bip_read_string(bip_string);
-    BP_EXPECT(BP_COMMA);
-    BP_VAR_T v = bip_relation();
-    BPM_FILE_OPEN(bip_files[f].file, bip_string, v);
-    BP_EMPTY_STRING;
-  } else if(bip_ignore(BP_STR_ADDR)) {
-    uint8_t id = *(dcd_ptr - 1) - BP_OFFSET;
-    BP_EXPECT(BP_COMMA);
-    BP_VAR_T v = bip_relation();
-    BPM_FILE_OPEN(bip_files[f].file, bip_strings[id], v);
-  }
-  if(bip_files[f].file == NULL) bip_error(dcd_ptr, BP_ERROR_FILE_OPEN);
-  return f;
-};
+/* RETURNING FILE FUNCTIONS ------------------------------------------------ */
 
-/* WRITE IN FILE ----------------------------------------------------------- */
-void bip_file_write_call() {
-  BP_VAR_T r = bip_relation();
-  if((r < 0) || (r > BP_FILES_MAX)) bip_error(dcd_ptr, BP_ERROR_FILE_MAX);
-  else {
-    BP_EXPECT(BP_COMMA);
-    BP_SYS_REL_1(BPM_FILE_WRITE, bip_files[r].file);
-  }
+BP_VAR_T bip_file_call() {
+  DCD_NEXT;
+  if(dcd_current == BP_OPEN) {
+    DCD_NEXT;
+    BP_VAR_T f = bip_get_file_id();
+    if(f == BP_FILES_MAX) return BP_FILES_MAX;
+    if(dcd_current == BP_STRING) {
+      bip_read_string(bip_string);
+      BP_EXPECT(BP_COMMA);
+      BP_VAR_T v = bip_relation();
+      BPM_FILE_OPEN(bip_files[f].file, bip_string, v);
+      BP_EMPTY_STRING;
+    } else if(bip_ignore(BP_STR_ADDR)) {
+      uint8_t id = *(dcd_ptr - 1) - BP_OFFSET;
+      BP_EXPECT(BP_COMMA);
+      BP_VAR_T v = bip_relation();
+      BPM_FILE_OPEN(bip_files[f].file, bip_strings[id], v);
+    }
+    if(bip_files[f].file == NULL) bip_error(dcd_ptr, BP_ERROR_FILE_OPEN);
+    return f;
+  } else if (dcd_current == BP_READ) {
+    BP_VAR_T r;
+    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    if(!bip_ended) return BPM_FILE_READ(bip_files[r].file);
+  } return 0;
 };
 
 /* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
@@ -703,8 +717,7 @@ void bip_statement() {
     case BP_JUMP:       DCD_NEXT; return bip_jump_call();
     case BP_BREAK:      return bip_break_call();
     case BP_CONTINUE:   return bip_continue_call();
-    case BP_FILE_CLOSE: return bip_file_close_call();
-    case BP_FILE_WRITE: DCD_NEXT; return bip_file_write_call();
+    case BP_FILE:       return bip_file_void_call();
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_DWRITE:     DCD_NEXT; return bip_digitalWrite_call();
     case BP_PINMODE:    DCD_NEXT; return bip_pinMode_call();

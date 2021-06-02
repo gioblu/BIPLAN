@@ -350,10 +350,9 @@ public:
     // Language syntax
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
     encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
-    encode_char(program, BP_FILE_OPEN_HUMAN, BP_FILE_OPEN);
-    encode_char(program, BP_FILE_CLOSE_HUMAN, BP_FILE_CLOSE);
-    encode_char(program, BP_FILE_READ_HUMAN, BP_FILE_READ);
-    encode_char(program, BP_FILE_WRITE_HUMAN, BP_FILE_WRITE);
+    //encode_char(program, BP_FILE_OPEN_HUMAN, BP_FILE_OPEN);
+    //encode_char(program, BP_FILE_READ_HUMAN, BP_FILE_READ);
+    //encode_char(program, BP_FILE_WRITE_HUMAN, BP_FILE_WRITE);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
@@ -366,8 +365,13 @@ public:
     encode_char(program, BP_WHILE_HUMAN, BP_WHILE);
     encode_char(program, BP_ENDIF_HUMAN, BP_ENDIF);
     encode_char(program, BP_SIZEOF_HUMAN, BP_SIZEOF);
+    encode_char(program, BP_WRITE_HUMAN, BP_WRITE);
     encode_char(program, BP_INDEX_HUMAN, BP_INDEX);
+    encode_char(program, BP_CLOSE_HUMAN, BP_CLOSE);
+    encode_char(program, BP_READ_HUMAN, BP_READ);
+    encode_char(program, BP_OPEN_HUMAN, BP_OPEN);
     encode_char(program, BP_NEXT_HUMAN, BP_NEXT);
+    encode_char(program, BP_FILE_HUMAN, BP_FILE);
     encode_char(program, BP_CHAR_HUMAN, BP_CHAR);
     encode_char(program, BP_ELSE_HUMAN, BP_ELSE);
     encode_char(program, BP_JUMP_HUMAN, BP_JUMP);
