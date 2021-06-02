@@ -340,9 +340,6 @@ public:
       encode_functions(program);
     // System calls
     encode_char(program, BP_AGET_HUMAN, BP_AGET);
-    encode_char(program, BP_DWRITE_HUMAN, BP_DWRITE);
-    encode_char(program, BP_DREAD_HUMAN, BP_DREAD);
-    encode_char(program, BP_PINMODE_HUMAN, BP_PINMODE);
     encode_char(program, BP_RND_HUMAN, BP_RND);
     encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
     encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
@@ -350,9 +347,6 @@ public:
     // Language syntax
     encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
     encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
-    //encode_char(program, BP_FILE_OPEN_HUMAN, BP_FILE_OPEN);
-    //encode_char(program, BP_FILE_READ_HUMAN, BP_FILE_READ);
-    //encode_char(program, BP_FILE_WRITE_HUMAN, BP_FILE_WRITE);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
@@ -379,6 +373,7 @@ public:
     encode_char(program, BP_END_HUMAN, BP_END);
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
     encode_char(program, BP_IF_HUMAN, BP_IF);
+    encode_char(program, BP_IO_HUMAN, BP_IO);
     encode_char(program, "to", BP_COMMA);
     encode_char(program, "step", BP_COMMA);
     encode(program, "not", "1-");

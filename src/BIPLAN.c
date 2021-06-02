@@ -62,7 +62,7 @@
   }
 
 /* SYSTEM CALL WITH 1 EXPRESSION PARAMETER --------------------------------- */
-#define BP_SYS_EXP_1(F) \
+#define BP_SYS_EXP_2(F) \
   BP_VAR_T bip_x = bip_expression(), bip_y; \
   BP_EXPECT(BP_COMMA); \
   bip_y = bip_expression(); \
@@ -272,7 +272,7 @@ BP_VAR_T bip_factor() {
       break;
     case BP_MEM_ACC: v = bip_memory[bip_access(BP_MEM_ACC)]; break;
     case BP_FILE: v = bip_file_call(); break;
-    case BP_DREAD: DCD_NEXT; v = bip_expression(); return BPM_IO_READ(v);
+    case BP_IO: v = bip_io_call(); break;
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
     case BP_AGET: DCD_NEXT; b = bip_expression(); v = BPM_AREAD(b); break;
     case BP_RND: DCD_NEXT;  v = bip_random_call(); break;
@@ -603,13 +603,26 @@ void bip_while_call() {
   } else bip_break_call();
 };
 
-/* DIGITAL WRITE ----------------------------------------------------------- */
-void bip_digitalWrite_call() { BP_SYS_EXP_1(BPM_IO_WRITE); };
+/* INPUT/OUTPUT FUNCTIONS -------------------------------------------------- */
+void bip_io_void_call() {
+  bool c;
+  DCD_IGNORE(BP_WRITE, c);
+  if(c) {
+    BP_SYS_EXP_2(BPM_IO_WRITE);
+  } else {
+    DCD_NEXT;
+    BP_SYS_EXP_2(BPM_IO_MODE);
+  }
+};
 
-/* PINMODE ----------------------------------------------------------------- */
-void bip_pinMode_call() { BP_SYS_EXP_1(BPM_IO_MODE); };
+BP_VAR_T bip_io_call() {
+  DCD_NEXT;
+  BP_EXPECT(BP_READ);
+  BP_VAR_T v = bip_expression();
+  return BPM_IO_READ(v);
+};
 
-/* VOID FILE FUNCTIONS ----------------------------------------------------- */
+/* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
 void bip_file_void_call() {
   DCD_NEXT;
   BP_VAR_T r;
@@ -627,8 +640,6 @@ void bip_file_void_call() {
     }
   }
 };
-
-/* RETURNING FILE FUNCTIONS ------------------------------------------------ */
 
 BP_VAR_T bip_file_call() {
   DCD_NEXT;
@@ -719,8 +730,7 @@ void bip_statement() {
     case BP_CONTINUE:   return bip_continue_call();
     case BP_FILE:       return bip_file_void_call();
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
-    case BP_DWRITE:     DCD_NEXT; return bip_digitalWrite_call();
-    case BP_PINMODE:    DCD_NEXT; return bip_pinMode_call();
+    case BP_IO:         DCD_NEXT; return bip_io_void_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
     case BP_SERIAL_TX:  DCD_NEXT; return bip_serial_tx_call();
     case BP_RESTART:    return bip_restart_call();

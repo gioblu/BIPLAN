@@ -93,7 +93,7 @@ void bip_next_call();
 
 void bip_while_call();
 
-void bip_digitalWrite_call();
+BP_VAR_T bip_io_call();
 
 void bip_pinMode_call();
 
