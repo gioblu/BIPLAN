@@ -23,6 +23,16 @@
 
   /* String conversion ---------------------------------------------------- */
 
+  char *custom_itoa(int num, char *str) {
+    if(str == NULL) return NULL;
+    sprintf(str, "%d", num);
+    return str;
+  };
+
+  #ifndef BPM_ITOA
+    #define BPM_ITOA custom_itoa
+  #endif
+
   #ifndef BPM_ATOL
     #define BPM_ATOL atol
   #endif

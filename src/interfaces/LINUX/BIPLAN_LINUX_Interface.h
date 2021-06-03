@@ -27,6 +27,7 @@
   #include <thread>
   #include <math.h>
   #include <stdio.h>
+  #include <stdlib.h>
 
   #define OUTPUT 1
   #define INPUT 0
@@ -56,11 +57,18 @@
 
   int serialGetCharacter(const int fd);
 
+  /* itoa ----------------------------------------------------------------- */
+  char *custom_itoa(int num, char *str);
+
   #ifndef BPM_LINUX_SEPARATE_DEFINITION
     #include "BIPLAN_LINUX_Interface.inl"
   #endif
 
   /* String conversion ---------------------------------------------------- */
+
+  #ifndef BPM_ITOA
+    #define BPM_ITOA custom_itoa
+  #endif
 
   #ifndef BPM_ATOL
     #define BPM_ATOL atol
@@ -89,10 +97,6 @@
 
   #if !defined(BPM_AREAD)
     #define BPM_AREAD(R) 0
-  #endif
-
-  #if !defined(BPM_ANALOG_READ)
-    #define BPM_ANALOG_READ(P) 0
   #endif
 
   #if !defined(BPM_IO_WRITE)

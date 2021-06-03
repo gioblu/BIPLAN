@@ -111,3 +111,11 @@ int serialGetCharacter(const int fd) {
   if(read(fd, &result, 1) != 1) return -1;
   return ((int)result) & 0xFF;
 };
+
+/* itoa -------------------------------------------------------------------- */
+
+char *custom_itoa(int num, char *str) {
+  if(str == NULL) return NULL;
+  sprintf(str, "%d", num);
+  return str;
+};
