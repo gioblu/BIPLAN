@@ -61,7 +61,7 @@
     BP_EMPTY_STRING; \
   }
 
-/* SYSTEM CALL WITH 1 EXPRESSION PARAMETER --------------------------------- */
+/* SYSTEM CALL WITH 2 EXPRESSION PARAMETER --------------------------------- */
 #define BP_SYS_EXP_2(F) \
   BP_VAR_T bip_x = bip_expression(), bip_y; \
   BP_EXPECT(BP_COMMA); \
@@ -274,12 +274,11 @@ BP_VAR_T bip_factor() {
     case BP_FILE: v = bip_file_call(); break;
     case BP_IO: v = bip_io_call(); break;
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
-    case BP_AGET: DCD_NEXT; b = bip_expression(); v = BPM_AREAD(b); break;
+    case BP_ADC: v = bip_adc_call(); break;
     case BP_RND: DCD_NEXT;  v = bip_random_call(); break;
     case BP_SQRT: DCD_NEXT; v = sqrt(bip_expression()); break;
     case BP_FUNCTION: v = bip_function_call(); DCD_NEXT; break;
-    case BP_SERIAL_RX:
-      v = BPM_SERIAL_READ(bip_serial_fun); DCD_NEXT; break;
+    case BP_SERIAL: v = bip_serial_call(); break;
     case BP_INPUT: v = BPM_INPUT(bip_data_in_fun); DCD_NEXT; break;
     case BP_L_RPARENT:
       DCD_NEXT; v = bip_relation(); BP_EXPECT(BP_R_RPARENT); break;
@@ -604,15 +603,16 @@ void bip_while_call() {
 };
 
 /* INPUT/OUTPUT FUNCTIONS -------------------------------------------------- */
-void bip_io_void_call() {
-  bool c;
-  DCD_IGNORE(BP_WRITE, c);
-  if(c) {
-    BP_SYS_EXP_2(BPM_IO_WRITE);
-  } else {
+
+BP_VAR_T bip_adc_call() {
+  DCD_NEXT;
+  char c = dcd_current;
+  if(c == BP_READ) {
     DCD_NEXT;
-    BP_SYS_EXP_2(BPM_IO_MODE);
+    BP_VAR_T p = bip_expression();
+    return BPM_AREAD(p);
   }
+  return 0;
 };
 
 BP_VAR_T bip_io_call() {
@@ -620,6 +620,16 @@ BP_VAR_T bip_io_call() {
   BP_EXPECT(BP_READ);
   BP_VAR_T v = bip_expression();
   return BPM_IO_READ(v);
+};
+
+void bip_io_void_call() {
+  char c = dcd_current;
+  DCD_NEXT;
+  if(dcd_current == BP_WRITE) {
+    BP_SYS_EXP_2(BPM_IO_WRITE);
+  } else if(dcd_current == BP_OPEN) {
+    BP_SYS_EXP_2(BPM_IO_MODE);
+  }
 };
 
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
@@ -668,14 +678,19 @@ BP_VAR_T bip_file_call() {
   } return 0;
 };
 
-/* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
-BP_VAR_T bip_random_call() {
-  BP_VAR_T a = bip_expression(), b = BPM_RANDOM(a);
-  return b;
+/* SERIAL SYSTEM FUNCTIONS ------------------------------------------------- */
+BP_VAR_T bip_serial_call() {
+  DCD_NEXT;
+  char c = dcd_current;
+  BP_VAR_T r;
+  DCD_NEXT;
+  if(c == BP_WRITE) {
+    BP_SYS_REL_1(BPM_SERIAL_WRITE, bip_serial_fun);
+  } else if(c == BP_READ) {
+    BPM_SERIAL_READ(bip_serial_fun);
+    DCD_NEXT;
+  }
 };
-
-/* SERIAL TX CALL ---------------------------------------------------------- */
-void bip_serial_tx_call() { BP_SYS_REL_1(BPM_SERIAL_WRITE, bip_serial_fun); };
 
 /* STRING LENGTH CALL ------------------------------------------------------ */
 BP_VAR_T bip_sizeof_call() {
@@ -685,6 +700,12 @@ BP_VAR_T bip_sizeof_call() {
     return l;
   } else if(bip_ignore(BP_VAR_ADDR)) return sizeof(BP_VAR_T);
   return 0;
+};
+
+/* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
+BP_VAR_T bip_random_call() {
+  BP_VAR_T a = bip_expression(), b = BPM_RANDOM(a);
+  return b;
 };
 
 /* ATOL - CONVERTS STRINGS TO NUMBER --------------------------------------- */
@@ -732,7 +753,6 @@ void bip_statement() {
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_IO:         DCD_NEXT; return bip_io_void_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
-    case BP_SERIAL_TX:  DCD_NEXT; return bip_serial_tx_call();
     case BP_RESTART:    return bip_restart_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);

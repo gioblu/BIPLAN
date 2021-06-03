@@ -95,11 +95,13 @@ void bip_while_call();
 
 BP_VAR_T bip_io_call();
 
+BP_VAR_T bip_adc_call();
+
 void bip_pinMode_call();
 
 BP_VAR_T bip_random_call();
 
-void bip_serial_tx_call();
+BP_VAR_T bip_serial_call();
 
 BP_VAR_T bip_system_call();
 
