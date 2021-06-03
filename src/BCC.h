@@ -116,6 +116,19 @@ public:
     } *i = 0;
   };
 
+  /* CONVERT CHARACTER CONSTANTS ------------------------------------------ */
+  void convert_char_constants(char *program) {
+    char *p = program, b[3] = {};
+    while(*p != 0) {
+      if(!is_in_string(program, p) && (*p == BP_SINGLE_QUOTE)) {
+        p++;
+        BPM_ITOA(*p, b);
+        p--;
+        for(uint8_t i = 0; i < 3; i++)
+          *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
+      } else p++;
+    }
+  };
   /* COMPILE PROGRAM KEYWORD IN BIP MACHINE LANGUAGE ---------------------- */
   char *encode_pass(
     char *program,
@@ -332,6 +345,8 @@ public:
     encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
     // Bitwise not
     encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
+    // Convert character constants in their decimal value using atoi
+    convert_char_constants(program);
     // Encode variables
     encode_variables(program, BP_VAR_ADDR);
     encode_variables(program, BP_STR_ADDR);
