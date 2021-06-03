@@ -339,14 +339,12 @@ public:
     for(uint8_t i = 0; i < BP_FUN_MAX; i++)
       encode_functions(program);
     // System calls
-    encode_char(program, BP_AGET_HUMAN, BP_AGET);
     encode_char(program, BP_RND_HUMAN, BP_RND);
     encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
     encode_char(program, BP_DELAY_HUMAN, BP_DELAY);
     encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
     // Language syntax
-    encode_char(program, BP_SERIAL_RX_HUMAN, BP_SERIAL_RX);
-    encode_char(program, BP_SERIAL_TX_HUMAN, BP_SERIAL_TX);
+    encode_char(program, BP_SERIAL_HUMAN, BP_SERIAL);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
@@ -372,6 +370,7 @@ public:
     encode_char(program, BP_LABEL_HUMAN, BP_LABEL);
     encode_char(program, BP_END_HUMAN, BP_END);
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
+    encode_char(program, BP_ADC_HUMAN, BP_ADC);
     encode_char(program, BP_IF_HUMAN, BP_IF);
     encode_char(program, BP_IO_HUMAN, BP_IO);
     encode_char(program, "to", BP_COMMA);
