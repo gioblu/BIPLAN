@@ -27,7 +27,6 @@
   #include <thread>
   #include <math.h>
   #include <stdio.h>
-  #include <stdlib.h>
 
   #define OUTPUT 1
   #define INPUT 0

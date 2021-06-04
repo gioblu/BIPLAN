@@ -345,7 +345,7 @@ public:
     encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
     // Bitwise not
     encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    // Convert character constants in their decimal value using atoi
+    // Convert character constants in their decimal value using itoa
     convert_char_constants(program);
     // Encode variables
     encode_variables(program, BP_VAR_ADDR);

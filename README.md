@@ -12,7 +12,7 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpre
 
 ### Why?
 
-In 2017 I built a couple of stand-alone computers using Arduino boards and I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language; quick, portable, modern, but at the same small enough to run on limited micro-controllers.
+In 2017 I built a couple of stand-alone computers using Arduino boards and I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language; quick, portable, modern, but at the same time small enough to run on limited micro-controllers.
 
 ### Code example
 
