@@ -632,6 +632,13 @@ void bip_io_void_call() {
   }
 };
 
+/* CURSOR ------------------------------------------------------------------ */
+void bip_cursor_call() {
+  BP_VAR_T r = bip_expression();
+  BP_EXPECT(BP_COMMA);
+  BPM_PRINT_CURSOR(r, bip_expression());
+};
+
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
 void bip_file_void_call() {
   DCD_NEXT;
@@ -753,6 +760,8 @@ void bip_statement() {
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_IO:         DCD_NEXT; return bip_io_void_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
+    case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
+    case BP_CLEAR:      DCD_NEXT; BPM_PRINT_CLEAR; return;
     case BP_RESTART:    return bip_restart_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);

@@ -136,6 +136,14 @@
     #define BPM_PRINT_WRITE(S, C) std::cerr << C
   #endif
 
+  #ifndef BPM_PRINT_CLEAR
+    #define BPM_PRINT_CLEAR printf("\e[1;1H\e[2J");
+  #endif
+
+  #ifndef BPM_PRINT_CURSOR
+    #define BPM_PRINT_CURSOR(X, Y) printf("\033[%d;%dH", (Y), (X));
+  #endif
+
   /* Serial --------------------------------------------------------------- */
 
   #ifndef BPM_SERIAL_T

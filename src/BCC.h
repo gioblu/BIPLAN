@@ -129,6 +129,7 @@ public:
       } else p++;
     }
   };
+
   /* COMPILE PROGRAM KEYWORD IN BIP MACHINE LANGUAGE ---------------------- */
   char *encode_pass(
     char *program,
@@ -365,7 +366,9 @@ public:
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
     encode_char(program, BP_RETURN_HUMAN, BP_RETURN);
     encode_char(program, BP_SYSTEM_HUMAN, BP_SYSTEM);
+    encode_char(program, BP_CURSOR_HUMAN, BP_CURSOR);
     encode_char(program, BP_ATOL_HUMAN, BP_ATOL);
+    encode_char(program, BP_CLEAR__HUMAN, BP_CLEAR);
     encode_char(program, BP_INPUT_HUMAN, BP_INPUT);
     encode_char(program, BP_BREAK_HUMAN, BP_BREAK);
     encode_char(program, BP_PRINT_HUMAN, BP_PRINT);
