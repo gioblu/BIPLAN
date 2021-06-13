@@ -5,7 +5,7 @@
   |     \  | |        |       |      | |   \  |
   |______| | |        |______ |______| |    \_| CR.1
   Byte coded Interpreted Programming Language
-  Giovanni Blu Mitolo 2017-2020 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -121,6 +121,11 @@ public:
     char *p = program, b[3] = {};
     while(*p != 0) {
       if(!is_in_string(program, p) && (*p == BP_SINGLE_QUOTE)) {
+        if(*(p + 2) != BP_SINGLE_QUOTE) {
+          error(0, BP_ERROR_SINGLE_QUOTE);
+          fail = true;
+          return;
+        }
         p++;
         BPM_ITOA(*p, b);
         p--;
@@ -321,6 +326,8 @@ public:
   bool run(char *program) {
     // Remove comments
     remove_comments(program);
+    // Convert character constants in their decimal value using itoa
+    convert_char_constants(program);
     // Pre-compilation error check
     if(!pre_compilation_checks(program)) return false;
     // String reference access
@@ -346,8 +353,6 @@ public:
     encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
     // Bitwise not
     encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    // Convert character constants in their decimal value using itoa
-    convert_char_constants(program);
     // Encode variables
     encode_variables(program, BP_VAR_ADDR);
     encode_variables(program, BP_STR_ADDR);
