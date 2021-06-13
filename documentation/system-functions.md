@@ -14,6 +14,8 @@
 ## System functions
 
 ### `adc`
+
+#### `adc read`
 ```
 adc read [number or variable]
 ```
@@ -50,6 +52,8 @@ delay 1000
 ---
 
 ### `file`
+
+#### `file open`
 ```
 file open [string or string address], [number or variable]
 ```
@@ -59,7 +63,8 @@ It receives two parameters, the file path and the mode. It returns the pointer t
 $f = file open "test.txt", 0
 # Opens the test.txt file in reading mode
 ```
----
+
+#### `file close`
 
 ```
 file close [pointer to file]
@@ -70,7 +75,8 @@ It receives a single parameter, the pointer to file. It closes the file.
 file close "test.txt"
 # Closes test.txt file 
 ```
----
+
+#### `file read`
 
 ```
 file read [pointer to file]
@@ -81,6 +87,8 @@ It receives a single parameter, the file pointer. It returns one character.
 $c = file read $f
 # Reads one character from test.txt
 ```
+
+#### `file write`
 
 ```
 file write [pointer to file], [string, string address, variable or value] 
@@ -95,6 +103,8 @@ file write $f, "Hello world!"
 ---
 
 ### `io`
+
+#### `io read`
 ```
 io read [number or variable]
 ```
@@ -104,6 +114,8 @@ print io read 12
 # Prints either 0 or 1
 ```
 
+#### `io write`
+
 ```
 io write [number or variable], [number or variable]
 ```
@@ -112,6 +124,8 @@ It receives two parameters, the pin number and the state (0 or LOW, 1 or HIGH). 
 io write 12, HIGH
 # Sets the state of pin 12 to HIGH
 ```
+
+#### `io open`
 
 ```
 io open [number or variable], [number or variable]
@@ -241,6 +255,8 @@ restart
 ---
 
 ### `serial`
+
+#### `serial write`
 ```
 serial write [variable or numeric value or string]
 ```
@@ -250,6 +266,7 @@ serial write "CIAO"
 # Transmits CIAO via serial
 ```
 
+#### `serial read`
 ```
 serial read
 ```
@@ -259,6 +276,7 @@ print serial read
 # Prints what is received via serial
 ```
 
+#### `serial open`
 ```
 serial open [variable or numeric value]
 ```
