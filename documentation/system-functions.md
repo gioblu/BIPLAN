@@ -72,7 +72,7 @@ file close [pointer to file]
 It receives a single parameter, the pointer to file. It closes the file.
 
 ```php
-file close "test.txt"
+file close $f
 # Closes test.txt file 
 ```
 
@@ -295,7 +295,7 @@ size [variable or numeric value or string]
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php
 $v = 0
-print sizeof $v
+print size $v
 # Prints 4
 :s = "Hello world!"
 print size :s

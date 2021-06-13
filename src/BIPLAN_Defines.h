@@ -331,7 +331,7 @@ __________________________________________________|_____________|______| */
 #define BP_LABEL_HUMAN       "label"              //            |      |
 //______________________________________________________________|______|
 #define BP_SIZEOF            'm'                  // 109        | USED |
-#define BP_SIZEOF_HUMAN      "sizeof"             //            |      |
+#define BP_SIZEOF_HUMAN      "size"               //            |      |
 //______________________________________________________________|______|
 #define BP_NEXT              'n'                  // 110        | USED |
 #define BP_NEXT_HUMAN        "next"               //            |      |
