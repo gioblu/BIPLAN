@@ -14,6 +14,7 @@
 ## System functions
 
 ### `adc`
+Using the `adc` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle the adc.
 
 #### `adc read`
 ```
@@ -52,6 +53,7 @@ delay 1000
 ---
 
 ### `file`
+Using the `file` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle files.
 
 #### `file open`
 ```
@@ -103,6 +105,7 @@ file write $f, "Hello world!"
 ---
 
 ### `io`
+Using the `io` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle io ports.
 
 #### `io read`
 ```
@@ -255,6 +258,7 @@ restart
 ---
 
 ### `serial`
+Using the `serial` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle serial communication.
 
 #### `serial write`
 ```
@@ -336,25 +340,3 @@ Halts the execution of the program.
 stop
 # Stops the program's execution
 ```
-
----
-
-| BIP code | BIPLAN function     | Purpose                                                |
-| -------- | ------------------- | ------------------------------------------------------ |
-|  `x`     | `stop`              | End program                                            |
-|  `r`     | `restart`           | Restart program                                        |
-|  `b`     | `char`              | Converts to char                                       |
-|  `m`     | `sizeof`            | Returns the length of the trailing string or variable  |
-|  `_`     | `index`             | Obtain index of                                        |
-|  `\`     | `print`             | Prints data                                            |
-|  `D`     | `delay`             | Pauses the program for n milliseconds                  |
-|  `R`     | `random`            | Generates pseudo-random number                         |
-|  `M`     | `millis`            | Returns the number of milliseconds since start up      |
-|  `s`     | `sqrt`              | Calculates the square root of a number                 |
-|  `J`     | `analogRead`        | Reads the value from the specified analog pin          |
-|  `G`     | `digitalRead`       | Reads the value from a specified digital pin           |
-|  `E`     | `digitalWrite`      | Sets the state to a digital pin                        |
-|  `P`     | `pinMode`           | Configures the pin mode of a digital pin               |
-|  `c`     | `serialRead`        | Get one character of input data                        |
-|  `g`     | `serialWrite`       | Write one character to serial port                     |
-|  `e`     | `input`             | Receive data                                           |
