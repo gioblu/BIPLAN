@@ -8,7 +8,7 @@
 - [Numeric variables](/documentation/numeric-variables.md) [`$`](/documentation/numeric-variables.md) [`$[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
 - [Strings](/documentation/strings.md) [`:`](/documentation/strings.md) [`:[]`](/documentation/strings.md)
-- **[System functions](/documentation/system-functions.md)** [`stop`](/documentation/system-functions.md#stop) [`restart`](/documentation/system-functions.md#restart) [`char`](/documentation/system-functions.md#print) [`sizeof`](/documentation/system-functions.md#sizeof) [`print`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`random`](/documentation/system-functions.md#random) [`millis`](/documentation/system-functions.md#millis) [`sqrt`](/documentation/system-functions.md#sqrt) [`analogRead`](/documentation/system-functions.md#analogRead) [`digitalRead`](/documentation/system-functions.md#digitalRead) [`digitalWrite`](/documentation/system-functions.md#digitalWrite) [`pinMode`](/documentation/system-functions.md#pinMode) [`serialRead`](/documentation/system-functions.md#serialRead) [`serialWrite`](/documentation/system-functions.md#serialWrite) [`input`](/documentation/system-functions.md#input) [`index`](/documentation/system-functions.md#index) [`jump`](/documentation/system-functions.md#jump)
+- **[System functions](/documentation/system-functions.md)** [`stop`](/documentation/system-functions.md#stop) [`restart`](/documentation/system-functions.md#restart) [`char`](/documentation/system-functions.md#print) [`size`](/documentation/system-functions.md#size) [`print`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`random`](/documentation/system-functions.md#random) [`millis`](/documentation/system-functions.md#millis) [`sqrt`](/documentation/system-functions.md#sqrt) [`adc read`](/documentation/system-functions.md#adc-read) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`io open`](/documentation/system-functions.md#io-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`input`](/documentation/system-functions.md#input) [`index`](/documentation/system-functions.md#index) [`jump`](/documentation/system-functions.md#jump)
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## System functions
@@ -30,7 +30,7 @@ print adc read A0
 
 ### `cursor`
 ```
-cursor [number or variable], [number or variable] 
+cursor [number or variable], [number or variable]
 ```
 It receives two parameters. Moves the cursor to the coordinates received.
 ```php
@@ -75,7 +75,7 @@ It receives a single parameter, the pointer to file. It closes the file.
 
 ```php
 file close $f
-# Closes test.txt file 
+# Closes test.txt file
 ```
 
 #### `file read`
@@ -93,9 +93,9 @@ $c = file read $f
 #### `file write`
 
 ```
-file write [pointer to file], [string, string address, variable or value] 
+file write [pointer to file], [string, string address, variable or value]
 ```
-It receives two parameters, the file pointer and the value to be written in the file. 
+It receives two parameters, the file pointer and the value to be written in the file.
 
 ```php
 file write $f, "Hello world!"
@@ -307,8 +307,8 @@ print size :s
 ```
 ---
 
-### `system` 
-``` 
+### `system`
+```
 system [string or string address]
 ```
 Passes a command or program name to the host environment, returns after the command has been completed.
