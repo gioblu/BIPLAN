@@ -226,7 +226,8 @@ char bip_string_char(int s, int c) {
 /* NUMERIC VARIABLE: 1234 ---------------------------------------------------*/
 BP_VAR_T bip_var_factor() {
   BP_VAR_T v;
-  uint8_t id = BP_VARIABLES, pre = 0;
+  uint8_t id = BP_VARIABLES;
+  int8_t pre = 0;
   bool index;
   BP_UNARY(pre);
   DCD_IGNORE(BP_INDEX, index);
@@ -611,8 +612,7 @@ BP_VAR_T bip_adc_call() {
     DCD_NEXT;
     BP_VAR_T p = bip_expression();
     return BPM_AREAD(p);
-  }
-  return 0;
+  } return 0;
 };
 
 BP_VAR_T bip_io_call() {
