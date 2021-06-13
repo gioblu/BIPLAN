@@ -13,14 +13,26 @@
 
 ## System functions
 
-### `analogRead`
+### `adc`
 ```
-analogRead [number or variable]
+adc read [number or variable]
 ```
 It receives a single parameter. Reads an analog pin and returns a value between 0 and 1023.
 ```php
-print analogRead A0
+print adc read A0
 # Prints a value between 0 and 1023
+```
+
+---
+
+### `cursor`
+```
+cursor [number or variable], [number or variable] 
+```
+It receives two parameters. Moves the cursor to the coordinates received.
+```php
+cursor 0, 0
+# Moves the cursor to x 0, y 0
 ```
 
 ---
@@ -37,26 +49,77 @@ delay 1000
 
 ---
 
-### `digitalRead`
+### `file`
 ```
-digitalRead [number or variable]
+file open [string or string address], [number or variable]
 ```
-It receives a single parameter. Reads a digital pin, it returns 0 or 1.
+It receives two parameters, the file path and the mode. It returns the pointer to the file.
+
 ```php
-print digitalRead 12
-# Prints either 0 or 1
+$f = file open "test.txt", 0
+# Opens the test.txt file in reading mode
+```
+---
+
+```
+file close [pointer to file]
+```
+It receives a single parameter, the pointer to file. It closes the file.
+
+```php
+file close "test.txt"
+# Closes test.txt file 
+```
+---
+
+```
+file read [pointer to file]
+```
+It receives a single parameter, the file pointer. It returns one character.
+
+```php
+$c = file read $f
+# Reads one character from test.txt
+```
+
+```
+file write [pointer to file], [string, string address, variable or value] 
+```
+It receives two parameters, the file pointer and the value to be written in the file. 
+
+```php
+file write $f, "Hello world!"
+# Writes Hello world! test.txt
 ```
 
 ---
 
-### `digitalWrite`
+### `io`
 ```
-digitalWrite [number or variable], [number or variable]
+io read [number or variable]
+```
+It receives a single parameter. Reads a digital pin, it returns 0 or 1.
+```php
+print io read 12
+# Prints either 0 or 1
+```
+
+```
+io write [number or variable], [number or variable]
 ```
 It receives two parameters, the pin number and the state (0 or LOW, 1 or HIGH). Sets the state of a digital pin.
 ```php
-digitalWrite 12, HIGH
+io write 12, HIGH
 # Sets the state of pin 12 to HIGH
+```
+
+```
+io open [number or variable], [number or variable]
+```
+It receives two parameters, the pin number and the mode (0 or INPUT, 1 or OUTPUT). Sets the mode of a digital pin.
+```php
+io open 12, OUTPUT
+# Sets pin 12 mode as output
 ```
 
 ---
@@ -128,14 +191,16 @@ print millis
 
 ---
 
-### `pinMode`
+### `numeric`
 ```
-pinMode [number or variable], [number or variable]
+numeric [variable or numeric value]
 ```
-It receives two parameters, the pin number and the mode (0 or INPUT, 1 or OUTPUT). Sets the mode of a digital pin.
+Returns true if the input value is a numeric character, false if it is not a numeric character.
 ```php
-pinMode 12, OUTPUT
-# Sets pin 12 mode as output
+$num = '1'
+$chr = 'A'
+print numeric $num, " ", numeric $chr
+# Prints true false
 ```
 
 ---
@@ -153,7 +218,7 @@ print "Hello world!"
 
 ### `random`
 ```
-random [number or variable]
+random [variable or numeric value]
 ```
 It receives a single parameter, the exclusive maximum value. Returns a randomly generated number.
 ```php
@@ -175,33 +240,39 @@ restart
 
 ---
 
-### `serialWrite`
+### `serial`
 ```
-serialWrite [number or variable or string]
+serial write [variable or numeric value or string]
 ```
 Receives a single parameter of type number or variable or string. Transmits via serial the parameter's value.
 ```php
-serialWrite "CIAO"
+serial write "CIAO"
 # Transmits CIAO via serial
 ```
 
----
-
-### `serialRead`
 ```
-serialRead
+serial read
 ```
 Returns the value received via serial or -1 if no value is received.
 ```php
-print serialRead
+print serial read
+# Prints what is received via serial
+```
+
+```
+serial open [variable or numeric value]
+```
+Returns 1 if the serial port was correctly initialized, -1 if initialization failed.
+```php
+print serial read
 # Prints what is received via serial
 ```
 
 ---
 
-### `sizeof`
+### `size`
 ```
-sizeof [variable or string]
+size [variable or numeric value or string]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php
@@ -209,15 +280,26 @@ $v = 0
 print sizeof $v
 # Prints 4
 :s = "Hello world!"
-print sizeof :s
+print size :s
 # Prints 12
+```
+---
+
+### `system` 
+``` 
+system [string or string address]
+```
+Passes a command or program name to the host environment, returns after the command has been completed.
+```php
+system "ls"
+# On Linux prints list of files and directories
 ```
 
 ---
 
 ### `sqrt`
 ```
-sqrt [number or variable]
+sqrt [variable or numeric value]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php
