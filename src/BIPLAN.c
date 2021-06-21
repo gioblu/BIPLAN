@@ -283,6 +283,7 @@ BP_VAR_T bip_factor() {
     case BP_INPUT: v = BPM_INPUT(bip_data_in_fun); DCD_NEXT; break;
     case BP_L_RPARENT:
       DCD_NEXT; v = bip_relation(); BP_EXPECT(BP_R_RPARENT); break;
+    case BP_RESULT: DCD_NEXT; v = bip_result_get_call(); break;
     case BP_SIZEOF: v = bip_sizeof_call(); break;
     case BP_SYSTEM: v = bip_system_call(); break;
     case BP_ATOL: v = bip_atol_call(); break;
@@ -460,6 +461,19 @@ void bip_mem_assignment_call() {
   else bip_error(dcd_ptr, BP_ERROR_MEM_SET);
 };
 
+/* RESULT ------------------------------------------------------------------ */
+void bip_result_set_call() {
+  if(bip_fn_id > 0) bip_functions[bip_fn_id - 1].result = bip_relation();
+  else bip_error(dcd_ptr, BP_ERROR_RESULT_SET);
+};
+
+BP_VAR_T bip_result_get_call() {
+  if(bip_fn_id > 0)
+    return bip_functions[bip_fn_id - 1].result;
+  else bip_error(dcd_ptr, BP_ERROR_RESULT_GET);
+  return 0;
+};
+
 /* RETURN ------------------------------------------------------------------ */
 BP_VAR_T bip_return_call() {
   BP_VAR_T rel = 0;
@@ -475,6 +489,7 @@ BP_VAR_T bip_return_call() {
         );
         bip_functions[bip_fn_id].params[i].id = BP_VARIABLES;
         bip_functions[bip_fn_id].params[i].value = 0;
+        bip_functions[bip_fn_id].result = 0;
       } else break;
     DCD_GOTO(bip_functions[bip_fn_id].address);
     bip_fw_id = bip_functions[bip_fn_id].cid;
@@ -763,6 +778,7 @@ void bip_statement() {
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
     case BP_CLEAR:      DCD_NEXT; BPM_PRINT_CLEAR; return;
     case BP_RESTART:    return bip_restart_call();
+    case BP_RESULT:     DCD_NEXT; return bip_result_set_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);
   }

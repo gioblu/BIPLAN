@@ -101,6 +101,10 @@ void bip_pinMode_call();
 
 BP_VAR_T bip_random_call();
 
+BP_VAR_T bip_result_get_call();
+
+void bip_result_set_call();
+
 BP_VAR_T bip_serial_call();
 
 BP_VAR_T bip_system_call();

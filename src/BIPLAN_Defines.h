@@ -351,7 +351,8 @@ __________________________________________________|_____________|______| */
 #define BP_SQRT              's'                  // 115        | USED |
 #define BP_SQRT_HUMAN        "sqrt"               //            |      |
 //______________________________________________________________|______|
-                          //  t                   // 116        |      |
+#define BP_RESULT            't'                  // 116        |      |
+#define BP_RESULT_HUMAN      "result"             //            |      |
 //______________________________________________________________|______|
 #define BP_SERIAL_RX         'u'                  // 117        | USED |
 #define BP_SERIAL_RX_HUMAN   "serialRead"         //            |      |
@@ -411,6 +412,7 @@ struct bip_fun_t {
   char *address;
   uint8_t cid;
   bip_param_t params[BP_PARAMS];
+  BP_VAR_T result;
 };
 
 struct bip_def_t {

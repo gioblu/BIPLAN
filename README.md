@@ -23,25 +23,25 @@ stop
 function fibonacci($n)
   $a    = 0
   $b    = 1
-  $next = 0
+  result = 0
   for $r = 0 to $n - 1
     $a = $b
-    $b = $next
-    $next = $a + $b
+    $b = result
+    result = $a + $b
   next
-return $next
+return result
 ```
-Compiled in 51 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 47 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#(40)xf#($$)$%0$&1$#0@$'0,$$-1$%$&$&$#$#$%+$&nr$#
+p~#(40)xf#($#)$$0$%1t0@$&0,$#-1$$$%$%tt$$+$%nrt
 ```
 Compiler output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl
-Target: ../biplane-interpreter/fib.bip
-Source length: 174B, BIP length: 51B, reduction: 70.689651%
-Compilation time: 293 microseconds
+Target: ../biplan-interpreter/fib.bip
+Source length: 178B, BIP length: 47B, reduction: 73.595505%
+Compilation time: 214 microseconds 
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```

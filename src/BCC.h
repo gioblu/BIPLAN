@@ -366,6 +366,7 @@ public:
     encode_char(program, BP_SQRT_HUMAN, BP_SQRT);
     // Language syntax
     encode_char(program, BP_SERIAL_HUMAN, BP_SERIAL);
+    encode_char(program, BP_RESULT_HUMAN, BP_RESULT);
     encode_char(program, BP_CONTINUE_HUMAN, BP_CONTINUE);
     encode_char(program, BP_RESTART_HUMAN, BP_RESTART);
     encode_char(program, BP_NUMERIC_HUMAN, BP_NUMERIC);
