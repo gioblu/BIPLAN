@@ -377,7 +377,10 @@ void bip_print_call() {
     bip_ignore(BP_COMMA);
     bool is_char = bip_ignore(BP_CHAR);
     if(dcd_current == BP_STR_ACC) {
-      BPM_PRINT_WRITE(bip_print_fun, (char)bip_factor());
+      v = bip_access(BP_STR_ACC);
+      if(dcd_current == BP_ACCESS)
+        BPM_PRINT_WRITE(bip_print_fun, bip_strings[v][bip_access(BP_ACCESS)]);
+      else BPM_PRINT_WRITE(bip_print_fun, bip_strings[v]);
     } else if(dcd_current == BP_STRING) {
       bip_read_string(bip_string);
       BPM_PRINT_WRITE(bip_print_fun, bip_string);
