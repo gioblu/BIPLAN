@@ -557,7 +557,6 @@ void bip_break_call() {
 
 /* CYCLE ------------------------------------------------------------------- */
 void bip_for_call() {
-  BP_EXPECT(BP_VAR_ADDR);
   uint8_t vi = *(dcd_ptr - 1) - BP_OFFSET;
   BP_VAR_T l, v;
   if(bip_fw_id < BP_CYCLE_DEPTH) {

@@ -64,7 +64,8 @@ uint8_t dcd_next_code() {
     *dcd_ptr == BP_VAR_ADDR ||
     *dcd_ptr == BP_STR_ADDR ||
     *dcd_ptr == BP_FUNCTION ||
-    *dcd_ptr == BP_FUN_DEF
+    *dcd_ptr == BP_FUN_DEF  ||
+    *dcd_ptr == BP_FOR
   ) {
     dcd_next_ptr = dcd_ptr + 2;
     return *dcd_ptr;

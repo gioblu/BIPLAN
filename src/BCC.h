@@ -32,8 +32,12 @@
 #include "BCC.h"
 
 /* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
-#define BCC_KEYWORD_CHAR(C) \
-  (C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_')
+#define BCC_IS_KEYWORD(C) \
+  ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
+
+/* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
+#define BCC_IS_ADDRESS(C) \
+  ((C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FUNCTION))
 
 class BCC {
 public:
@@ -175,7 +179,7 @@ public:
   };
 
   /* COMPILE PROGRAM VARIABLE IN BIP MACHINE LANGUAGE --------------------- */
-  char *minifier_variable_pass(char *program, char *position, char var_type) {
+  char *encode_variable(char *program, char *position, char var_type) {
     char *p;
     char str[BP_KEYWORD_MAX];
     char code[4] = {var_type, 0, 0, 0};
@@ -188,12 +192,12 @@ public:
       p++;
       n = 2;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
-        if(BCC_KEYWORD_CHAR(*p)) {
+        if(BCC_IS_KEYWORD(*p)) {
           // Add space instead of keyword (will be removed by remove_spaces)
           str[n++] = *p;
           *p = BP_SPACE;
           // Check maximum variable name length
-          if((i == (BP_KEYWORD_MAX - 2)) && (BCC_KEYWORD_CHAR(*(p + 1)))) {
+          if((i == (BP_KEYWORD_MAX - 2)) && (BCC_IS_KEYWORD(*(p + 1)))) {
             error(0, BP_ERROR_VARIABLE_NAME);
             fail = true;
             return NULL;
@@ -218,7 +222,7 @@ public:
     if(fail) return;
     char *position = program;
     while(position) position =
-      minifier_variable_pass(program, position, var_type);
+      encode_variable(program, position, var_type);
   };
 
   char *find_longest_var_name(char *program, char var_type) {
@@ -230,7 +234,7 @@ public:
         // Avoid substitution in strings
         if(is_in_string(program, position)) continue;
         uint8_t i = 0;
-        while(BCC_KEYWORD_CHAR(*position)) {
+        while(BCC_IS_KEYWORD(*position)) {
           i++;
           position++;
         }
@@ -243,6 +247,25 @@ public:
     if(result)
       return (char *)result_position;
     else return NULL;
+  };
+
+  /* COMPILE FOR ------------------------------------------------------------
+     from @ $# to @  # (BP_VAR_ADDR is removed) */
+  void encode_for(char *program) {
+  if(fail) return;
+  char *p = program;
+    while(p) {
+      const char c[2] = {BP_FOR, 0};
+      p = strstr(p, c);
+      if(p && *p) {
+        if(is_in_string(program, p) || BCC_IS_ADDRESS(*(p - 1))) {
+          p += 2;
+          continue;
+        }
+        while(*(++p) == BP_SPACE);
+        *(p++) = BP_SPACE;
+      } else return;
+    }
   };
 
   /* COMPILE FUNCTION IN BIP MACHINE LANGUAGE ----------------------------- */
@@ -394,12 +417,14 @@ public:
     encode_char(program, BP_LABEL_HUMAN, BP_LABEL);
     encode_char(program, BP_END_HUMAN, BP_END);
     encode_char(program, BP_FOR_HUMAN, BP_FOR);
+    // Remove BP_VAR_ADDR that follows for
+    encode_for(program);
     encode_char(program, BP_ADC_HUMAN, BP_ADC);
+    encode_char(program, "step", BP_COMMA);
+    encode(program, "not", "1-");
     encode_char(program, BP_IF_HUMAN, BP_IF);
     encode_char(program, BP_IO_HUMAN, BP_IO);
     encode_char(program, "to", BP_COMMA);
-    encode_char(program, "step", BP_COMMA);
-    encode(program, "not", "1-");
     // Constants
     encode(program, "OUTPUT", "1");
     encode(program, "INPUT", "0");
