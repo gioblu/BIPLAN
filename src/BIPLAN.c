@@ -722,7 +722,9 @@ BP_VAR_T bip_sizeof_call() {
   if(bip_ignore(BP_STR_ADDR)) {
     BP_VAR_T l = strlen(bip_strings[*(dcd_ptr - 1) - BP_OFFSET]);
     return l;
-  } else if(bip_ignore(BP_VAR_ADDR)) return sizeof(BP_VAR_T);
+  } else if(dcd_current == BP_STR_ACC)
+    return strlen(bip_strings[bip_access(BP_STR_ACC)]);
+  else if(bip_ignore(BP_VAR_ADDR)) return sizeof(BP_VAR_T);
   return 0;
 };
 
