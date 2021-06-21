@@ -109,7 +109,7 @@ BP_VAR_T bip_serial_call();
 
 BP_VAR_T bip_system_call();
 
-BP_VAR_T bip_file_call();
+BP_VAR_T bip_file_get_call();
 
 BP_VAR_T bip_sizeof_call();
 

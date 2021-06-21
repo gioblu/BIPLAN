@@ -272,7 +272,7 @@ BP_VAR_T bip_factor() {
         v = bip_string_char(v, bip_access(BP_ACCESS));
       break;
     case BP_MEM_ACC: v = bip_memory[bip_access(BP_MEM_ACC)]; break;
-    case BP_FILE: v = bip_file_call(); break;
+    case BP_FILE: v = bip_file_get_call(); break;
     case BP_IO: v = bip_io_call(); break;
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
     case BP_ADC: v = bip_adc_call(); break;
@@ -654,7 +654,7 @@ void bip_cursor_call() {
 };
 
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
-void bip_file_void_call() {
+void bip_file_set_call() {
   DCD_NEXT;
   BP_VAR_T r;
   if(dcd_current == BP_CLOSE) {
@@ -672,7 +672,7 @@ void bip_file_void_call() {
   }
 };
 
-BP_VAR_T bip_file_call() {
+BP_VAR_T bip_file_get_call() {
   DCD_NEXT;
   if(dcd_current == BP_OPEN) {
     DCD_NEXT;
@@ -736,10 +736,7 @@ BP_VAR_T bip_atol_call() {
   return v;
 };
 
-/* SYSTEM -----------------------------------------------------------------
-    Passes a single parameter of type :string or string literal to the host
-    environment; when completed its return value is returned. */
-
+/* SYSTEM (Passes a :string or string literal to the environment) ---------- */
 BP_VAR_T bip_system_call() {
   BP_VAR_T v = 0;
   BP_SYS_STR_1(BPM_SYSTEM, v);
@@ -770,7 +767,7 @@ void bip_statement() {
     case BP_JUMP:       DCD_NEXT; return bip_jump_call();
     case BP_BREAK:      return bip_break_call();
     case BP_CONTINUE:   return bip_continue_call();
-    case BP_FILE:       return bip_file_void_call();
+    case BP_FILE:       return bip_file_set_call();
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_IO:         DCD_NEXT; return bip_io_void_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
