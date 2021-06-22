@@ -30,17 +30,17 @@ function fibonacci($n)
   next
 return result
 ```
-Compiled in 44 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 42 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#(40)xf#($#)$$0$%1@&0,$#-1$$$%$%tt$$+$%nrt
+p~#40)xf#$#)$$0$%1@&0,$#-1$$$%$%tt$$+$%nrt
 ```
 Compiler output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl
 Target: ../biplan-interpreter/fib.bip
-Source length: 159B, BIP length: 44B, reduction: 72.327042%
-Compilation time: 246 microseconds
+Source length: 159B, BIP length: 42B, reduction: 73.584908%
+Compilation time: 181 microseconds
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
