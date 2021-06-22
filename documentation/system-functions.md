@@ -186,7 +186,7 @@ if $i >= 0 print char $i end
 ```
 label [variable]
 ```
-Saves the program index in a variable to be used by `jump` later. Receives a single parameter of type variable.
+Saves the position in the program in a variable to be used by `jump` later. Receives a single parameter of type variable.
 ```php
 label $loop
   print "Hello world \n"
@@ -262,7 +262,7 @@ Using the `serial` keyword along with `read`, `write`, `open` and `close` it is 
 
 #### `serial write`
 ```
-serial write [variable or numeric value or string]
+serial write [variable, numeric value or string]
 ```
 Receives a single parameter of type number or variable or string. Transmits via serial the parameter's value.
 ```php
@@ -286,15 +286,15 @@ serial open [variable or numeric value]
 ```
 Returns 1 if the serial port was correctly initialized, -1 if initialization failed.
 ```php
-print serial read
-# Prints what is received via serial
+print serial open 9600
+# Opens serial at 9600Bd
 ```
 
 ---
 
 ### `size`
 ```
-size [variable or numeric value or string]
+size [variable, numeric value or string]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php

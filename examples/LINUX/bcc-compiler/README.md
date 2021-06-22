@@ -17,9 +17,9 @@ Expected output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl
-Target: ../biplane-interpreter/fib.bip
-Source length: 413B, BIP length: 63B, reduction: 84.745758%
-Compilation time: 480 microseconds
+Target: ../biplan-interpreter/fib.bip
+Source length: 411B, BIP length: 59B, reduction: 85.644768%
+Compilation time: 395 microseconds
 ```
 
 You can now give a try to the [biplan-interpreter](../biplan-interpreter) and use it to run [`fib.bip`](../biplan-interpreter/fib.bip).

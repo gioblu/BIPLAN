@@ -23,7 +23,7 @@ Interpreter output:
 
 102334155
 
-Execution duration: 932880 microseconds
+Execution duration: 798395 microseconds
 ```
 
 You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it.

@@ -13,7 +13,6 @@ stop
 function fibonacci($n)
   $a    = 0
   $b    = 1
-  result = 0
   for $r = 1 to $n
     $a = $b
     $b = result

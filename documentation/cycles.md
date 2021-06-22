@@ -81,7 +81,7 @@ next
 ```
 The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until a `next` statement is encountered.   
 ```php
-while digitalRead 12 == HIGH
+while io read 12 == HIGH
   print "The pin is HIGH"
 next
 
@@ -92,7 +92,7 @@ next
 The BIPLAN `while` supports the `break` statement as other programming languages do:
 ```php
 while true
-  if digitalRead 12 == HIGH
+  if io read 12 == HIGH
     break
   end
 next
@@ -107,7 +107,7 @@ The BIPLAN `while` supports the `continue` statement as other programming langua
 ```php
 $treshold = 512
 while true
-  if analogRead A0 > $treshold
+  if adc read A0 > $treshold
     continue
   else
     print "Alert"
