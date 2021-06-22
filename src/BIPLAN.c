@@ -143,11 +143,12 @@ void bip_index_definitions(char* program) {
       l = *(dcd_ptr - 1) - BP_OFFSET;
       for(uint8_t i = 0; i < BP_PARAMS; i++)
         bip_definitions[l].params[i] = BP_PARAMS;
-      while(bip_ignore(BP_L_RPARENT) || bip_ignore(BP_COMMA)) {
+      do {
         if(bip_ignore(BP_VAR_ADDR)) {
           bip_definitions[l].params[param++] = *(dcd_ptr - 1);
         } if(*dcd_ptr == BP_R_RPARENT) break;
-      } bip_definitions[l].address = dcd_ptr + 1;
+      } while(bip_ignore(BP_COMMA));
+      bip_definitions[l].address = dcd_ptr + 1;
     } DCD_NEXT;
   }
 };
@@ -508,23 +509,19 @@ BP_VAR_T bip_function_call() {
   bip_functions[bip_fn_id].cid = bip_fw_id;
   BP_EXPECT(BP_FUNCTION);
   uint8_t i = 0, f = *(dcd_ptr - 1) - BP_OFFSET, v = BP_VARIABLES;
-  if((*(dcd_ptr + 1) == BP_R_RPARENT)) {
-    BP_EXPECT(BP_L_RPARENT); // If call with no params
-  } else {
+  if(*dcd_ptr != BP_R_RPARENT) {
     bool r;
-    DCD_IGNORE(BP_L_RPARENT, r);
-    if(r)
-      do {
-        v = bip_definitions[f].params[i] - BP_OFFSET;
-        bip_functions[bip_fn_id].params[i].id = v;
-        if(v != BP_VARIABLES) {
-          // Stash global variabile value
-          BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
-          // Set global variable with parameter value
-          BP_SET_VARIABLE(v, bip_relation());
-        } else break; // ignore unexpected parameters
-        DCD_IGNORE(BP_COMMA, r);
-      } while((++i < BP_PARAMS) && r);
+    do {
+      v = bip_definitions[f].params[i] - BP_OFFSET;
+      bip_functions[bip_fn_id].params[i].id = v;
+      if(v != BP_VARIABLES) {
+        // Stash global variabile value
+        BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
+        // Set global variable with parameter value
+        BP_SET_VARIABLE(v, bip_relation());
+      } else break; // ignore unexpected parameters
+      DCD_IGNORE(BP_COMMA, r);
+    } while((++i < BP_PARAMS) && r);
   }
   if(bip_fn_id < BP_FUN_DEPTH) {
     bip_functions[bip_fn_id++].address = dcd_ptr;

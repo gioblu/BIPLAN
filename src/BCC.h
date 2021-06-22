@@ -300,6 +300,9 @@ public:
           fail = true;
           return NULL;
         }
+        function_keyword[keyword_length] = *p;
+        keyword_length++;
+        *p = BP_SPACE;
         // Encode address
         function_keyword[keyword_length] = 0;
         function_address[0] = BP_FUNCTION;
