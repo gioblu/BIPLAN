@@ -274,7 +274,7 @@ BP_VAR_T bip_factor() {
       break;
     case BP_MEM_ACC: v = bip_memory[bip_access(BP_MEM_ACC)]; break;
     case BP_FILE: v = bip_file_get_call(); break;
-    case BP_IO: v = bip_io_call(); break;
+    case BP_IO: v = bip_io_get_call(); break;
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
     case BP_ADC: v = bip_adc_call(); break;
     case BP_RND: DCD_NEXT;  v = bip_random_call(); break;
@@ -629,14 +629,14 @@ BP_VAR_T bip_adc_call() {
   } return 0;
 };
 
-BP_VAR_T bip_io_call() {
+BP_VAR_T bip_io_get_call() {
   DCD_NEXT;
   BP_EXPECT(BP_READ);
   BP_VAR_T v = bip_expression();
   return BPM_IO_READ(v);
 };
 
-void bip_io_void_call() {
+void bip_io_set_call() {
   char c = dcd_current;
   DCD_NEXT;
   if(dcd_current == BP_WRITE) {
@@ -771,7 +771,7 @@ void bip_statement() {
     case BP_CONTINUE:   return bip_continue_call();
     case BP_FILE:       return bip_file_set_call();
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
-    case BP_IO:         DCD_NEXT; return bip_io_void_call();
+    case BP_IO:         DCD_NEXT; return bip_io_set_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
     case BP_CLEAR:      DCD_NEXT; BPM_PRINT_CLEAR; return;
