@@ -4,7 +4,7 @@
   |_____/  | |______| |        ______| |  \   |
   |     \  | |        |       |      | |   \  |
   |______| | |        |______ |______| |    \_| CR.1
-  Byte coded Interpreted Programming Language
+  BIPLAN (Byte coded Interpreted Programming Language)
   Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
       _____              _________________________
      |   | |            |_________________________|
@@ -14,18 +14,10 @@
     (O)                 |_________________________|__|___/|
                                            \ /            |
                                            (O)
-  BIPLAN Copyright (c) 2017-2021, Giovanni Blu Mitolo All rights reserved.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License. */
+  BCC (BIPLAN Compiler Collection) - BIPLAN to BIP compiler  */
 
 #pragma once
 #include "BIPLAN_Defines.h"
@@ -92,8 +84,7 @@ public:
   /* REMOVE CHARACTER FROM PROGRAM ---------------------------------------- */
   void remove(char *s, char v) {
     if(fail) return;
-    char *i = s;
-    char *j = s;
+    char *i = s, *j = s;
     bool in_str = false;
     while(*j != 0) {
       *i = *j++;
@@ -106,8 +97,7 @@ public:
   /* REMOVE COMMENTS FROM PROGRAM ----------------------------------------- */
   void remove_comments(char *program) {
     if(fail) return;
-    char *i = program;
-    char *j = program;
+    char *i = program, *j = program;
     bool in_str = false;
     while(*j != 0) {
       *i = *j++;
@@ -130,8 +120,7 @@ public:
           fail = true;
           return;
         }
-        p++;
-        BPM_ITOA(*p, b);
+        BPM_ITOA(*(++p), b);
         p--;
         for(uint8_t i = 0; i < 3; i++)
           *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
@@ -147,8 +136,7 @@ public:
     const char *code
   ) {
     char *p;
-    uint8_t kl = strlen(keyword);
-    uint8_t cl = strlen(code);
+    uint8_t kl = strlen(keyword), cl = strlen(code);
     p = strstr(position, keyword);
     if(p && *p) {
       if(is_in_string(program, p)) {
@@ -180,16 +168,12 @@ public:
 
   /* COMPILE PROGRAM VARIABLE IN BIP MACHINE LANGUAGE --------------------- */
   char *encode_variable(char *program, char *position, char var_type) {
-    char *p;
-    char str[BP_KEYWORD_MAX];
-    char code[4] = {var_type, 0, 0, 0};
+    char *p, str[BP_KEYWORD_MAX], code[4] = {var_type, 0, 0, 0};
     uint8_t n;
     if((p = find_longest_var_name(program, var_type)) != NULL) {
       str[0] = var_type;
-      p++;
-      str[1] = *p;
-      *p = (var_type == BP_VAR_ADDR) ? var_id : string_id;
-      p++;
+      str[1] = *(++p);
+      *(p++) = (var_type == BP_VAR_ADDR) ? var_id : string_id;
       n = 2;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
         if(BCC_IS_KEYWORD(*p)) {
@@ -220,18 +204,15 @@ public:
 
   void encode_variables(char *program, char var_type) {
     if(fail) return;
-    char *position = program;
-    while(position) position =
-      encode_variable(program, position, var_type);
+    char *p = program;
+    while(p) p = encode_variable(program, p, var_type);
   };
 
   char *find_longest_var_name(char *program, char var_type) {
-    char   *position = program;
+    char   *position = program, *result_position = 0;
     uint8_t result = 0;
-    char   *result_position = 0;
     while(*position != 0) {
-      if(*(position++) == var_type) {
-        // Avoid substitution in strings
+      if((*(position++) == var_type) && !BCC_IS_ADDRESS(*(position - 1))) {
         if(is_in_string(program, position)) continue;
         uint8_t i = 0;
         while(BCC_IS_KEYWORD(*position)) {
@@ -244,8 +225,7 @@ public:
         }
       }
     }
-    if(result)
-      return (char *)result_position;
+    if(result) return (char *)result_position;
     else return NULL;
   };
 
@@ -280,18 +260,12 @@ public:
         if(p && *p) return p;
         else return NULL;
       }
-      *p = BP_FUN_DEF;
-      p++;
-      *p = fun_id;
-      p++;
-      while(*p != BP_SPACE) {
-        *p = BP_SPACE;
-        p++;
-      }
+      *(p++) = BP_FUN_DEF;
+      *(p++) = fun_id;
+      while(*p != BP_SPACE) *(p++) = BP_SPACE;
       while(p++ && (*p != BP_L_RPARENT)) {
-        function_keyword[keyword_length] = *p;
+        function_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
-        keyword_length++;
       }
       if(keyword_length) {
         // Check keyword length
@@ -300,8 +274,7 @@ public:
           fail = true;
           return NULL;
         }
-        function_keyword[keyword_length] = *p;
-        keyword_length++;
+        function_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
         // Encode address
         function_keyword[keyword_length] = 0;
@@ -350,41 +323,35 @@ public:
 
   /* RUN COMPILATION ------------------------------------------------------ */
   bool run(char *program) {
-    // Remove comments
     remove_comments(program);
     // Convert character constants in their decimal value using itoa
     convert_char_constants(program);
-    // Pre-compilation error check
     if(!pre_compilation_checks(program)) return false;
-    // String reference access
+    // :string, $variable and @memory reference access
     encode_char(program, BP_STR_ACC_HUMAN, BP_STR_ACC);
-    // Variable reference access
     encode_char(program, BP_VAR_ACC_HUMAN, BP_VAR_ACC);
-    // Memory reference access
     encode_char(program, BP_MEM_ACC_HUMAN, BP_MEM_ACC);
-    // Logic
+    // Logic = != >= <= || &&
     encode_char(program, BP_EQ_HUMAN, BP_EQ);
     encode_char(program, BP_NOT_EQ_HUMAN, BP_NOT_EQ);
     encode_char(program, BP_GTOEQ_HUMAN, BP_GTOEQ);
     encode_char(program, BP_LTOEQ_HUMAN, BP_LTOEQ);
     encode_char(program, BP_LOGIC_OR_HUMAN, BP_LOGIC_OR);
     encode_char(program, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND);
-    // Bitwise
+    // Bitwise >> <<
     encode_char(program, BP_R_SHIFT_HUMAN, BP_R_SHIFT);
     encode_char(program, BP_L_SHIFT_HUMAN, BP_L_SHIFT);
     // Remove syntactic sugar
     encode_char(program, "=", ' ');
-    // Unary
+    // Unary ++ --
     encode_char(program, BP_INCREMENT_HUMAN, BP_INCREMENT);
     encode_char(program, BP_DECREMENT_HUMAN, BP_DECREMENT);
-    // Bitwise not
+    // Bitwise not !
     encode_char(program, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    // Encode variables
+    // Encode variables and functions
     encode_variables(program, BP_VAR_ADDR);
     encode_variables(program, BP_STR_ADDR);
-    // Minify functions
-    for(uint8_t i = 0; i < BP_FUN_MAX; i++)
-      encode_functions(program);
+    for(uint8_t i = 0; i < BP_FUN_MAX; i++) encode_functions(program);
     // System calls
     encode_char(program, BP_RND_HUMAN, BP_RND);
     encode_char(program, BP_MILLIS_HUMAN, BP_MILLIS);
@@ -447,7 +414,6 @@ public:
     var_id = BP_OFFSET;
     string_id = BP_OFFSET;
     fun_id = BP_OFFSET;
-    // Post-compilation error check
     post_compilation_checks(program);
     return !fail;
   };
