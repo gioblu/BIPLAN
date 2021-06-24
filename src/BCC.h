@@ -100,7 +100,7 @@ public:
     } *i = 0;
   };
 
-  /* COMPILE CHARACTER CONSTANTS ------------------------------------------ */
+  /* COMPILE CHARACTER CONSTANTS '@' -> 64 --------------------------------- */
   void compile_char_constants(char *prog) {
     char *p = prog, b[3] = {};
     while(*p != 0) {
@@ -163,7 +163,7 @@ public:
     while(p) p = compile_pass(prog, p, key, (const char *)c, post, pre);
   };
 
-  /* COMPILE PROGRAM VARIABLE IN BIP MACHINE LANGUAGE --------------------- */
+  /* COMPILE PROGRAM VARIABLE IN BIP MACHINE LANGUAGE $v -> $# ------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
     char *p, str[BP_KEYWORD_MAX], code[4] = {var_type, 0, 0, 0};
     uint8_t n;
@@ -248,14 +248,11 @@ public:
         *p = BP_SPACE;
       }
       if(keyword_length) {
-        // Check keyword length
         if(keyword_length >= BP_KEYWORD_MAX) {
           error(0, BP_ERROR_FUNCTION_NAME);
           return NULL;
         }
-        //fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
-        // Encode address
         fn_keyword[keyword_length] = 0;
         fn_address[0] = BP_FUNCTION;
         fn_address[1] = fun_id++;

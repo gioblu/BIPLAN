@@ -163,7 +163,6 @@ void bip_process_labels(char* program) {
 };
 
 /* GET FILE ID ------------------------------------------------------------- */
-
 BP_VAR_T bip_get_file_id() {
   for(uint16_t i = 0; i < BP_FILES_MAX; i++)
     if(bip_files[i].free) {
@@ -175,7 +174,6 @@ BP_VAR_T bip_get_file_id() {
 };
 
 /* INITIALIZE INTERPRETER -------------------------------------------------- */
-
 void bip_init(
   char *program,
   bip_error_t error,
@@ -297,10 +295,8 @@ BP_VAR_T bip_factor() {
 
 /* TERM: *, /, % ------------------------------------------------------------*/
 BP_VAR_T bip_term() {
-  BP_VAR_T f1 = 0, f2 = 0;
-  uint8_t op;
-  f1 = bip_factor();
-  op = dcd_current;
+  BP_VAR_T f1 = bip_factor(), f2 = 0;
+  uint8_t op = dcd_current;
   while(op == BP_MULT || op == BP_DIV || op == BP_MOD) {
     DCD_NEXT;
     f2 = bip_factor();
@@ -317,8 +313,7 @@ BP_VAR_T bip_term() {
 
 /* EXPRESSION +, -, &, | ----------------------------------------------------*/
 BP_VAR_T bip_expression() {
-  BP_VAR_T t1 = 0, t2 = 0;
-  t1 = bip_term();
+  BP_VAR_T t1 = bip_term(), t2 = 0;
   uint8_t op = dcd_current;
   while(
     op == BP_PLUS || op == BP_MINUS || op == BP_AND || op == BP_OR ||
@@ -618,7 +613,6 @@ void bip_while_call() {
 };
 
 /* INPUT/OUTPUT FUNCTIONS -------------------------------------------------- */
-
 BP_VAR_T bip_adc_call() {
   DCD_NEXT;
   char c = dcd_current;

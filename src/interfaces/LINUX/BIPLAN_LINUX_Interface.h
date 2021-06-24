@@ -66,11 +66,11 @@
   /* String conversion ---------------------------------------------------- */
 
   #ifndef BPM_ITOA
-    #define BPM_ITOA custom_itoa
+    #define BPM_ITOA fast_itoa
   #endif
 
   #ifndef BPM_ATOL
-    #define BPM_ATOL atol
+    #define BPM_ATOL fast_atol
   #endif
 
   #ifndef BPM_LTOA
