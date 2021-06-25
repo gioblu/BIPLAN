@@ -144,10 +144,9 @@ void bip_index_definitions(char* program) {
       for(uint8_t i = 0; i < BP_PARAMS; i++)
         bip_definitions[l].params[i] = BP_PARAMS;
       do {
-        if(bip_ignore(BP_VAR_ADDR)) {
+        if(bip_ignore(BP_VAR_ADDR))
           bip_definitions[l].params[param++] = *(dcd_ptr - 1);
-        } if(*dcd_ptr == BP_R_RPARENT) break;
-      } while(bip_ignore(BP_COMMA));
+      } while(*dcd_ptr != BP_R_RPARENT);
       bip_definitions[l].address = dcd_ptr + 1;
     } DCD_NEXT;
   }
@@ -509,12 +508,15 @@ BP_VAR_T bip_function_call() {
     do {
       v = bip_definitions[f].params[i] - BP_OFFSET;
       bip_functions[bip_fn_id].params[i].id = v;
-      if(v != BP_VARIABLES) {
+      if(bip_definitions[f].params[i] != BP_VARIABLES) {
         // Stash global variabile value
         BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
         // Set global variable with parameter value
         BP_SET_VARIABLE(v, bip_relation());
-      } else break; // ignore unexpected parameters
+      } else {
+        bip_error(dcd_ptr, BP_ERROR_FUNCTION_PARAMS);
+        return 0;
+      }
       DCD_IGNORE(BP_COMMA, r);
     } while((++i < BP_PARAMS) && r);
   }

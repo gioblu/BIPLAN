@@ -28,8 +28,10 @@
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
 
 /* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
-#define BCC_IS_ADDRESS(C) \
-  ((C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FUNCTION))
+#define BCC_IS_ADDRESS(C) ( \
+  (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || \
+  (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
+)
 
 class BCC {
 public:
@@ -170,8 +172,10 @@ public:
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
       str[n++] = *(++p);
+      if(var_type == BP_VAR_ADDR) if(BCC_IS_ADDRESS(var_id)) var_id++;
+      else if(BCC_IS_ADDRESS(string_id)) string_id++;
       *(p++) = (var_type == BP_VAR_ADDR) ? var_id : string_id;
-      for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
+      for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
           *p = BP_SPACE;
@@ -180,7 +184,6 @@ public:
             return NULL;
           }
         } else break;
-      }
       if(n) {
         str[n] = 0;
         code[1] = (var_type == BP_VAR_ADDR) ? var_id : string_id;
@@ -203,7 +206,7 @@ public:
   char *find_longest_var_name(char *prog, char var_type) {
     char *p = prog, *longest = 0;
     uint8_t result = 0;
-    while(*p != 0) {
+    while(*p != 0)
       if(*(p++) == var_type) {
         if(is_in_string(prog, p - 1) || BCC_IS_ADDRESS(*(p - 2))) continue;
         uint8_t i = 0;
@@ -216,7 +219,6 @@ public:
           result = i;
         }
       }
-    }
     if(result) return (char *)longest;
     else return NULL;
   };
@@ -240,19 +242,24 @@ public:
         if(p && *p) return p;
         else return NULL;
       }
+      if(BCC_IS_ADDRESS(fun_id)) fun_id++;
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
       while(*p != BP_SPACE) *(p++) = BP_SPACE;
       while(p++ && (*p != BP_L_RPARENT)) {
         fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
+      } // Remove commas from definition
+      *p = BP_SPACE;
+      while(*p != BP_R_RPARENT) {
+        if((*p == BP_COMMA) && !BCC_IS_ADDRESS(*(p - 1))) *p = BP_SPACE;
+        p++;
       }
       if(keyword_length) {
         if(keyword_length >= BP_KEYWORD_MAX) {
           error(0, BP_ERROR_FUNCTION_NAME);
           return NULL;
         }
-        *p = BP_SPACE;
         fn_keyword[keyword_length] = 0;
         fn_address[0] = BP_FUNCTION;
         fn_address[1] = fun_id++;
@@ -339,6 +346,7 @@ public:
     compile_char(prog, BP_RETURN_HUMAN, BP_RETURN);
     compile_char(prog, BP_SYSTEM_HUMAN, BP_SYSTEM);
     compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR);
+    compile_char(prog, "locals:", ' ');
     compile_char(prog, BP_ATOL_HUMAN, BP_ATOL);
     compile_char(prog, BP_CLEAR__HUMAN, BP_CLEAR);
     compile_char(prog, BP_INPUT_HUMAN, BP_INPUT);

@@ -16,12 +16,11 @@ In 2017 I built a couple of stand-alone computers using Arduino boards and I was
 
 ### Code example
 
-Fibonacci sequence computation in 159 bytes of BIPLAN code:
+Fibonacci sequence computation in 166 bytes of BIPLAN code:
 ```php
 print fibonacci(40)
 stop
-function fibonacci($n)
-  $a = 0
+function fibonacci($n, locals: $a, $b)
   $b = 1
   for $r = 0 to $n - 1
     $a = $b
@@ -30,17 +29,17 @@ function fibonacci($n)
   next
 return result
 ```
-Compiled in 42 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 43 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#40)xf#$#)$$0$%1@&0,$#-1$$$%$%tt$$+$%nrt
+p~#40)xf#$#$%$&)$&1@'0,$#-1$%$&$&tt$%+$&nrt
 ```
 Compiler output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl
 Target: ../biplan-interpreter/fib.bip
-Source length: 159B, BIP length: 42B, reduction: 73.584908%
-Compilation time: 181 microseconds
+Source length: 166B, BIP length: 43B, reduction: 74.096390%
+Compilation time: 264 microseconds 
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
