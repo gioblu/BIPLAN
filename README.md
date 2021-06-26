@@ -61,12 +61,41 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ### License
-This work is dual-licensed under [Apache 2.0](LICENSE.Apache-2.0) and [LGPL 3.0 (or any later version)](LICENSE.LGPL-3.0-or-later).
-You can choose between one of them if you use this work.
+The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License.
 
-`SPDX-License-Identifier: Apache-2.0 OR LGPL-3.0-or-later`
+```
+Definitions.
 
-All the software included in this project is experimental and it is distributed "AS IS" without any warranty, use it at your own risk. BIPLAN™ and its brand are registered trademarks, property of Giovanni Blu Mitolo gioscarab@gmail.com
+"You" (or "Your") shall mean an individual exercising
+permissions granted by this License.
 
-### Safety warning
-This software is experimental and may not behave as expected. Consider that using a virtual machine of this sort, specially if enabling remote program update, is dangerous. When enabling remote programming of a BIPLAN virtual machine, it must be considered potentially compromised, manipulated or remotely actuated against your will. It should be considered a good practice not to connect to the internet systems that may create a damage (fire, flood, data-leak) if hacked.
+"Software" BIPLAN software, associated documentation and configuration files
+
+"License" shall mean the conditions for use, copy, modify, merge, publish or
+distribute the Software as defined by Section 1 through 2 of this document.
+
+BIPLAN Experimenter's License
+
+Copyright 2021 Giovanni Blu Mitolo
+
+Permission is hereby granted to You, free of charge, the rights to use, copy,
+modify, merge, publish or distribute copies of (the "Software"), subject to the
+following conditions:
+
+1.Use the Software only for experimental purposes
+
+2.Companies, institutions, organizations or corporations don't have the right
+ to use, copy, modify, merge, publish or distribute the Software
+
+4.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ YOU ARE SOLELY RESPONSIBLE FOR USING, COPYING, MODIFYING, MERGING, PUBLISHING
+ OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
+ EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
+ associated with Your
+ exercise of permissions under this License.
+```
