@@ -121,7 +121,7 @@ char *fast_itoa(int num, char *str) {
 };
 
 long fast_atol(const char *p) {
-  int c = *(p++), sign = (c == 45) ? 1 : 0, x = 0;
+  int c = *(p++), x = 0;
   for(; c > 47 && c < 58; c = *(p++)) x = (x << 1) + (x << 3) + c - 48;
-  return sign ? -x : x;
+  return x;
 };
