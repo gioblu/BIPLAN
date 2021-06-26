@@ -1,6 +1,6 @@
 
 ## BIPLAN™ CR.1
-BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language that fits in less than 12KB of program memory. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua.
+BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language that fits in less than 12KB of program memory. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -9,6 +9,8 @@ BIPLAN (Byte-coded Interpreted Programming Language) is an experimental interpre
 | Wasm3                |  64kB ROM, 10kB RAM  |
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
+
+The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
 
 ### Why?
 
@@ -39,7 +41,7 @@ BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl
 Target: ../biplan-interpreter/fib.bip
 Source length: 166B, BIP length: 43B, reduction: 74.096390%
-Compilation time: 264 microseconds 
+Compilation time: 264 microseconds
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
@@ -61,7 +63,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ### License
-The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License.
+The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License:
 
 ```
 Definitions.
