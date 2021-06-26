@@ -357,8 +357,7 @@ __________________________________________________|_____________|______| */
 #define BP_SERIAL_RX         'u'                  // 117        | USED |
 #define BP_SERIAL_RX_HUMAN   "serialRead"         //            |      |
 //______________________________________________________________|______|
-#define BP_CLEAR             'v'                  // 118        | USED |
-#define BP_CLEAR__HUMAN      "clear"              //            |      |
+                          // 'v'                  // 118        |      |
 //______________________________________________________________|______|
 #define BP_WHILE             'w'                  // 119        | USED |
 #define BP_WHILE_HUMAN       "while"              //            |      |

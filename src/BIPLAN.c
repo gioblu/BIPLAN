@@ -386,6 +386,9 @@ void bip_print_call() {
         if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
         else BPM_PRINT_WRITE(bip_print_fun, v);
       } else BPM_PRINT_WRITE(bip_print_fun, bip_strings[v]);
+    } else if(dcd_current == BP_RESTART) {
+      BPM_PRINT_CLEAR;
+      DCD_NEXT;
     } else {
       v = bip_relation();
       if(bip_return_type == BP_STR_ADDR)
@@ -771,7 +774,6 @@ void bip_statement() {
     case BP_IO:         DCD_NEXT; return bip_io_set_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
-    case BP_CLEAR:      DCD_NEXT; BPM_PRINT_CLEAR; return;
     case BP_RESTART:    return bip_restart_call();
     case BP_RESULT:     DCD_NEXT; return bip_result_set_call();
     case BP_END:        return bip_end_call();

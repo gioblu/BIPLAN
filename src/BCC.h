@@ -348,7 +348,6 @@ public:
     compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR);
     compile_char(prog, "locals:", ' ');
     compile_char(prog, BP_ATOL_HUMAN, BP_ATOL);
-    compile_char(prog, BP_CLEAR__HUMAN, BP_CLEAR);
     compile_char(prog, BP_INPUT_HUMAN, BP_INPUT);
     compile_char(prog, BP_BREAK_HUMAN, BP_BREAK);
     compile_char(prog, BP_PRINT_HUMAN, BP_PRINT);
