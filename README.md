@@ -69,7 +69,8 @@ Definitions.
 "You" (or "Your") shall mean an individual exercising
 permissions granted by this License.
 
-"Software" BIPLAN software, associated documentation and configuration files
+"Software" shall mean the source code, associated documentation
+and configuration files included in the BIPLAN directory
 
 "License" shall mean the conditions for use, copy, modify, merge, publish or
 distribute the Software as defined by Section 1 through 3 of this document.
@@ -79,7 +80,7 @@ BIPLAN Experimenter's License
 Copyright 2021 Giovanni Blu Mitolo
 
 Permission is hereby granted to You, free of charge, the rights to use, copy,
-modify, merge, publish or distribute copies of (the "Software"), subject to the
+modify, merge, publish or distribute copies of the Software, subject to the
 following conditions:
 
 1.Use the Software only for experimental purposes
@@ -96,6 +97,4 @@ following conditions:
  YOU ARE SOLELY RESPONSIBLE FOR USING, COPYING, MODIFYING, MERGING, PUBLISHING
  OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
  EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
- associated with Your
- exercise of permissions under this License.
 ```
