@@ -504,21 +504,22 @@ BP_VAR_T bip_function_call() {
   BP_EXPECT(BP_FUNCTION);
   uint8_t i = 0, f = *(dcd_ptr - 1) - BP_OFFSET, v = BP_VARIABLES;
   if(*dcd_ptr != BP_R_RPARENT) {
-    bool r;
+    bool r = true;
     do {
+      if(bip_definitions[f].params[i] == BP_PARAMS) break;
       v = bip_definitions[f].params[i] - BP_OFFSET;
       bip_functions[bip_fn_id].params[i].id = v;
-      if(bip_definitions[f].params[i] != BP_VARIABLES) {
+      if(i < BP_PARAMS) {
         // Stash global variabile value
         BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
         // Set global variable with parameter value
-        BP_SET_VARIABLE(v, bip_relation());
+        if(r) BP_SET_VARIABLE(v, bip_relation());
       } else {
         bip_error(dcd_ptr, BP_ERROR_FUNCTION_PARAMS);
         return 0;
       }
       DCD_IGNORE(BP_COMMA, r);
-    } while((++i < BP_PARAMS) && r);
+    } while((++i < BP_PARAMS));
   }
   if(bip_fn_id < BP_FUN_DEPTH) {
     bip_functions[bip_fn_id++].address = dcd_ptr;
