@@ -4,7 +4,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- **[Functions](/documentation/functions.md)** [`function`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- **[Functions](/documentation/functions.md)** [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
 - [Numeric variables](/documentation/numeric-variables.md) [`$`](/documentation/numeric-variables.md) [`$[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
 - [Strings](/documentation/strings.md) [`:`](/documentation/strings.md) [`:[]`](/documentation/strings.md)
@@ -13,11 +13,11 @@
 
 ## Functions
 ```
-function [function name]([parameter], [parameter], ...)
+function [name]([parameter], [parameter], locals: [parameter], [parameter])
   [statement]
 return [expression]
 ```
-A function is a group of statements that together perform a task and can return a value. A function can be defined using the `function` keyword, defining its name and a parameter list delimited by parentheses used to define which variables are used for function computation. If local variables are required they can be defined after the `locals:` keyword within the parameter list. The variables used in the function's definition are set with the value passed by the call, when the function returns the global variable's value is restored. All statements contained in the function definition are executed until a `return` is encountered. Only one `return` is supported and must be the last statement of the function definition. The function definition must be placed after the `stop` statement. Each function is just an entry of a global array of functions. BIPLAN supports up to 89 functions.
+A function is a group of statements that together perform a task and can return a value. A function can be defined using the `function` keyword, defining its name and a parameter list delimited by parentheses used to define which variables are used for function computation. If local variables are required they can be defined after the `locals:` keyword within the parameter list. The variables used in the function's definition are set with the value passed by the call, when the function returns the global variable's value is restored. All statements contained in the function definition are executed until a `return` is encountered. The function definition must be placed after the `stop` statement. Each function is just an entry of a global array of functions. BIPLAN supports up to 89 functions.
 
 ```php
 # Call

@@ -10,9 +10,8 @@ print fibonacci(40)
 
 stop
 
-function fibonacci($n)
-  $a    = 0
-  $b    = 1
+function fibonacci($n, locals: $a, $b)
+  ++$b
   for $r = 1 to $n
     $a = $b
     $b = result
