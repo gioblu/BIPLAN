@@ -26,12 +26,12 @@ char    *dcd_ptr;
 char    *dcd_next_ptr;
 uint8_t  dcd_current = BP_ERROR;
 
-/* DECODER FINISHED ------------------------------------------------------- */
+/* Checks if the decoder encountered the end of the program ---------------- */
 uint8_t dcd_finished() {
   return *dcd_ptr == 0 || dcd_current == BP_ENDOFINPUT;
 };
 
-/* GET NEXT CODE ---------------------------------------------------------- */
+/* Get next code from BIP code --------------------------------------------- */
 uint8_t dcd_next_code() {
   // if digit (0-9)
   if(*dcd_ptr >= 48 && *dcd_ptr <= 57) {
@@ -67,26 +67,26 @@ uint8_t dcd_next_code() {
   return BP_ERROR;
 };
 
-/* GET NEXT CODE ---------------------------------------------------------- */
+/* Gets the next code from BIP code ---------------------------------------- */
 #define DCD_NEXT \
   dcd_ptr = dcd_next_ptr; \
   dcd_current = dcd_next_code();
 
-/* MOVE DECODER TO A CERTAIN ZONE OF THE PROGRAM -------------------------- */
+/* Moves decoder to a certain position in the program ---------------------- */
 #define DCD_GOTO(P) \
   dcd_ptr = P; \
   dcd_current = dcd_next_code();
 
-/* INITIALIZE DECODER ----------------------------------------------------- */
+/* Initializes the decoder ------------------------------------------------- */
 #define DCD_INIT(P) \
   DCD_GOTO(P); \
   dcd_current = dcd_next_code();
 
-/* IGNORE A CERTAIN CODE ------------------------------------------------- */
+/* Ignores a certain code -------------------------------------------------- */
 #define DCD_IGNORE(C, V) \
   if(V = (C == dcd_current)) { DCD_NEXT; }
 
-/* DECODE STRING ---------------------------------------------------------- */
+/* Decodes a string -------------------------------------------------------- */
 bool decoder_string(char *d, uint16_t l) {
   char *string_end;
   uint16_t string_length;

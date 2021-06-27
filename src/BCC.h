@@ -21,11 +21,11 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
-/* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
+/* Checks if the character passed is an acceptable keyword's symbol -------- */
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
 
-/* ACCEPTABLE KEYWORD CHARACTER ------------------------------------------ */
+/* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDRESS(C) ( \
   (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || \
   (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
@@ -41,13 +41,13 @@ public:
 
   BCC() { };
 
-  /* ERROR ----------------------------------------------------------------- */
+  /* Function called in case of compilation error -------------------------- */
   void error(char *position, const char *string) {
     error_callback(position, string);
     fail = true;
   };
 
-  /* CHECK DELIMETER ------------------------------------------------------- */
+  /* Checks consistency of syntax delimiters ------------------------------- */
   bool check_delimeter(char *prog, char a, char b, char c = 0) {
     uint16_t ia = 0, ib = 0;
     char *p = prog;
@@ -59,7 +59,7 @@ public:
     } return (ia == ib);
   };
 
-  /* CHECK IF POINTER IS IN A STRING -------------------------------------- */
+  /* Checks if a certain position in the program is within a string -------- */
   bool is_in_string(char *prog, char *pos) {
     bool in_str = false;
     char *p = prog;
@@ -71,7 +71,7 @@ public:
     } return in_str;
   };
 
-  /* REMOVE CHARACTER FROM PROGRAM ---------------------------------------- */
+  /* Remove a given symbol from the program -------------------------------- */
   void remove(char *s, char v) {
     if(fail) return;
     char *i = s, *j = s;
@@ -84,7 +84,7 @@ public:
     } *i = 0;
   };
 
-  /* REMOVE COMMENTS FROM PROGRAM ----------------------------------------- */
+  /* Remove comments from program ------------------------------------------ */
   void remove_comments(char *prog) {
     if(fail) return;
     char *i = prog, *j = prog;
@@ -100,7 +100,7 @@ public:
     } *i = 0;
   };
 
-  /* COMPILE CHARACTER CONSTANTS '@' -> 64 --------------------------------- */
+  /* Compiles character constants suh as '@' into 64 (its decimal value) --- */
   void compile_char_constants(char *prog) {
     char *p = prog, b[3] = {};
     while(*p != 0) {
@@ -117,7 +117,7 @@ public:
     }
   };
 
-  /* COMPILE PROGRAM KEYWORD IN BIP MACHINE LANGUAGE ---------------------- */
+  /* Compiles BIPLAN keywords into BIP byte-code --------------------------- */
   char *compile_pass(
     char *prog,
     char *pos,
@@ -163,7 +163,7 @@ public:
     while(p) p = compile_pass(prog, p, key, (const char *)c, post, pre);
   };
 
-  /* COMPILE PROGRAM VARIABLE IN BIP MACHINE LANGUAGE $v -> $# ------------- */
+  /* Compiles user-defined variables in BIP byte-code ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
     char *p, str[BP_KEYWORD_MAX], code[4] = {var_type, 0, 0, 0};
     uint8_t n;
@@ -221,14 +221,13 @@ public:
     else return NULL;
   };
 
-  /* COMPILE FOR ------------------------------------------------------------
-     from @ $# to @  # (BP_VAR_ADDR is removed) */
+  /* Intermediate for compilation, @ $# to @  # BP_VAR_ADDR is removed ----- */
   void compile_for(char *prog) {
     char c[2] = {BP_FOR, 0};
     compile(prog, c, c, BP_VAR_ADDR, 1);
   };
 
-  /* COMPILE FUNCTION IN BIP MACHINE LANGUAGE ----------------------------- */
+  /* Compile user-defined functions in BIP byte-code ----------------------- */
   char *compile_function_pass(char *prog, char *pos) {
     char fn_keyword[BP_KEYWORD_MAX];
     char fn_address[3];
@@ -276,7 +275,7 @@ public:
     while(pos) pos = compile_function_pass(prog, pos);
   };
 
-  /* PRE-COMPILATION CHECKS ----------------------------------------------- */
+  /* Pre-compilation checks ------------------------------------------------ */
   bool pre_compilation_checks(char *prog) {
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
       error(0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
@@ -287,7 +286,7 @@ public:
     return !fail;
   };
 
-  /* POST-COMPILATION CHECKS ----------------------------------------------- */
+  /* Post-compilation checks ----------------------------------------------- */
   void post_compilation_checks(char *prog) {
     if(!check_delimeter(prog, BP_NEXT, BP_FOR, BP_WHILE))
       error(0, BP_ERROR_NEXT);  // Check for/while-next
@@ -299,7 +298,7 @@ public:
     if((var_id - BP_OFFSET) >= BP_VARIABLES) error(0, BP_ERROR_VARIABLE_MAX);
   };
 
-  /* RUN COMPILATION ------------------------------------------------------ */
+  /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     // Compile character constants in their decimal value
     compile_char_constants(prog);
