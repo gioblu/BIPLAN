@@ -303,9 +303,9 @@ public:
 
   /* RUN COMPILATION ------------------------------------------------------ */
   bool run(char *prog) {
-    remove_comments(prog);
-    // Compile character constants in their decimal value using itoa
+    // Compile character constants in their decimal value
     compile_char_constants(prog);
+    remove_comments(prog);
     if(!pre_compilation_checks(prog)) return false;
     // :string $variable @memory reference access
     compile_char(prog, BP_STR_ACC_HUMAN, BP_STR_ACC);
