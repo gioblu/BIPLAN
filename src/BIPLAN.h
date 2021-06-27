@@ -14,8 +14,7 @@
     (O)                 |_________________________|__|___/|
                                            \ /            |
                                            (O)
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License. */
+  BIP byte-code interpreter */
 
 #pragma once
 #include "BIPLAN_Defines.h"

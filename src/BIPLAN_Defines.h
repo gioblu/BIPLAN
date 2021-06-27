@@ -4,7 +4,7 @@
   |_____/  | |______| |        ______| |  \   |
   |     \  | |        |       |      | |   \  |
   |______| | |        |______ |______| |    \_| CR.1
-  Byte coded Interpreted Programming Language
+  BIPLAN (Byte coded Interpreted Programming Language)
   Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
       _____              _________________________
      |   | |            |_________________________|
@@ -13,10 +13,7 @@
   /________|_______________||_________________||__   |   |D
     (O)                 |_________________________|__|___/|
                                            \ /            |
-                                           (O)
-  BIPLAN Copyright (c) 2017-2021, Giovanni Blu Mitolo All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License. */
+                                           (O) */
 
 #pragma once
 

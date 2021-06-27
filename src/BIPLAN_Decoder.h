@@ -4,8 +4,8 @@
   |_____/  | |______| |        ______| |  \   |
   |     \  | |        |       |      | |   \  |
   |______| | |        |______ |______| |    \_| CR.1
-  Byte coded Interpreted Programming Language
-  Giovanni Blu Mitolo 2017-2020 - gioscarab@gmail.com
+  BIPLAN (Byte coded Interpreted Programming Language)
+  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -14,18 +14,8 @@
     (O)                 |_________________________|__|___/|
                                            \ /            |
                                            (O)
-  BIPLAN Copyright (c) 2017-2020, Giovanni Blu Mitolo All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License. */
+  BIP byte-code decoder */
 
 #pragma once
 #include "BIPLAN_Defines.h"

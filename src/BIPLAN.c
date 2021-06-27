@@ -14,10 +14,7 @@
     (O)                 |_________________________|__|___/|
                                            \ /            |
                                            (O)
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-
-  BIP virtual-machine language interpreter */
+  BIP byte-code interpreter */
 
 #pragma once
 #include "BIPLAN.h"
