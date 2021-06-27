@@ -251,7 +251,7 @@ public:
         *p = BP_SPACE;
       } // Remove commas from definition
       *p = BP_SPACE;
-      while(*p != BP_R_RPARENT) {
+      while((*p != BP_R_RPARENT) || BCC_IS_ADDRESS(*(p - 1))) {
         if((*p == BP_COMMA) && !BCC_IS_ADDRESS(*(p - 1))) *p = BP_SPACE;
         p++;
       }
