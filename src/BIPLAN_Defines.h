@@ -313,7 +313,8 @@ __________________________________________________|_____________|______| */
 #define BP_SERIAL            'g'                  // 103        | used |
 #define BP_SERIAL_HUMAN      "serial"             //            |      |
 //______________________________________________________________|______|
-                           // h                   // 104        |      |
+#define BP_LTOA              'h'                  // 104        | used |
+#define BP_LTOA_HUMAN        "string"             //            |      |
 //______________________________________________________________|______|
 #define BP_NUMERIC           'i'                  // 105        | used |
 #define BP_NUMERIC_HUMAN     "numeric"            //            |      |

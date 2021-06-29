@@ -118,7 +118,7 @@ public:
           error(0, BP_ERROR_SINGLE_QUOTE);
           return;
         }
-        BPM_ITOA(*(++p), b);
+        BPM_LTOA(*(++p), b);
         p--;
         for(uint8_t i = 0; i < 3; i++)
           *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
@@ -361,6 +361,7 @@ public:
     compile_char(prog, BP_SYSTEM_HUMAN, BP_SYSTEM);
     compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR);
     compile_char(prog, "locals:", ' ');
+    compile_char(prog, BP_LTOA_HUMAN, BP_LTOA);
     compile_char(prog, BP_ATOL_HUMAN, BP_ATOL);
     compile_char(prog, BP_INPUT_HUMAN, BP_INPUT);
     compile_char(prog, BP_BREAK_HUMAN, BP_BREAK);

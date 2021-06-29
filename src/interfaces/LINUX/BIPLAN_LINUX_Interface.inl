@@ -112,12 +112,18 @@ int serialGetCharacter(const int fd) {
   return ((int)result) & 0xFF;
 };
 
-/* itoa atol --------------------------------------------------------------- */
+/* ltoa atol --------------------------------------------------------------- */
 
-char *fast_itoa(int num, char *str) {
-  if(str == NULL) return NULL;
-  sprintf(str, "%d", num);
-  return str;
+void fast_ltoa(unsigned long value, char* string) {
+  unsigned char index = BP_NUM_MAX;
+  char buffer[BP_NUM_MAX];
+  do {
+    buffer[--index] = '0' + (value % 10);
+  } while (value /= 10);
+  do {
+    *string++ = buffer[index++];
+  } while(index < BP_NUM_MAX);
+  *string = 0;
 };
 
 long fast_atol(const char *p) {

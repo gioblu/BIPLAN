@@ -38,7 +38,7 @@
       F(T, bip_strings[id][i]); \
   } else { \
     BP_VAR_T r = bip_relation(); \
-    BPM_LTOA(bip_string, r); \
+    BPM_LTOA(r, bip_string); \
     for(uint16_t i = 0; i < BP_STRING_MAX; i++) \
       F(T, bip_string[i]); \
     BP_EMPTY_STRING; \
@@ -728,11 +728,21 @@ BP_VAR_T bip_random_call() {
   return b;
 };
 
-/* ATOL - CONVERTS STRINGS TO NUMBER --------------------------------------- */
+/* ATOL - LTOA ------------------------------------------------------------- */
 BP_VAR_T bip_atol_call() {
   BP_VAR_T v = 0;
   BP_SYS_STR_1(BPM_ATOL, v);
   return v;
+};
+
+uint16_t bip_ltoa_call() {
+  BP_VAR_T v = bip_relation(), s = 0;
+  BP_EXPECT(BP_COMMA);
+  DCD_NEXT;
+  s = *(dcd_ptr - 1) - BP_OFFSET;
+  if((s < 0) || (s >= BP_STRINGS)) bip_error(dcd_ptr, BP_ERROR_STRING_GET);
+  else BPM_LTOA(v, bip_strings[s]);
+  return s;
 };
 
 /* SYSTEM (Passes a :string or string literal to the environment) ---------- */
@@ -771,6 +781,7 @@ void bip_statement() {
     case BP_IO:         DCD_NEXT; return bip_io_set_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
+    case BP_LTOA:       DCD_NEXT; bip_ltoa_call(); return;
     case BP_RESTART:    return bip_restart_call();
     case BP_RESULT:     DCD_NEXT; return bip_result_set_call();
     case BP_END:        return bip_end_call();

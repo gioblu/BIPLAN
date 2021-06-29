@@ -114,4 +114,6 @@ BP_VAR_T bip_sizeof_call();
 
 BP_VAR_T bip_atol_call();
 
+uint16_t bip_ltoa_call();
+
 void bip_statement();

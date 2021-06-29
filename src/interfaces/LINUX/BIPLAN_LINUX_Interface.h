@@ -65,8 +65,8 @@
 
   /* String conversion ---------------------------------------------------- */
 
-  #ifndef BPM_ITOA
-    #define BPM_ITOA fast_itoa
+  #ifndef BPM_LTOA
+    #define BPM_LTOA(L, A) fast_ltoa(L, A);
   #endif
 
   #ifndef BPM_ATOL
