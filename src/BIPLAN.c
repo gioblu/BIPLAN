@@ -19,7 +19,7 @@
 #pragma once
 #include "BIPLAN.h"
 
-#define BP_SYS_REL_BOUNDS(R, B, E) \
+#define BP_SYS_BOUNDS(R, B, E) \
   DCD_NEXT; \
   R = bip_relation(); \
   if((R < 0) || (R >= B)) { bip_error(dcd_ptr, E); }
@@ -655,14 +655,12 @@ void bip_file_set_call() {
   DCD_NEXT;
   BP_VAR_T r;
   if(dcd_current == BP_CLOSE) {
-    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
-    if(!bip_ended) {
+    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
       BPM_FILE_CLOSE(bip_files[r].file);
       bip_files[r].free = true;
     }
   } else {
-    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
-    if(!bip_ended) {
+    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
       BP_EXPECT(BP_COMMA);
       BP_SYS_REL_1(BPM_FILE_WRITE, bip_files[r].file);
     }
@@ -691,8 +689,8 @@ BP_VAR_T bip_file_get_call() {
     return f;
   } else if (dcd_current == BP_READ) {
     BP_VAR_T r;
-    BP_SYS_REL_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
-    if(!bip_ended) return BPM_FILE_READ(bip_files[r].file);
+    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX)
+    else return BPM_FILE_READ(bip_files[r].file);
   } return 0;
 };
 
