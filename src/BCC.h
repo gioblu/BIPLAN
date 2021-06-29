@@ -38,6 +38,7 @@ public:
   char fun_id = BP_OFFSET;
   bip_error_t error_callback = NULL;
   bool fail = false;
+  char *stop;
 
   BCC() { };
 
@@ -54,9 +55,17 @@ public:
     while(*p != 0) {
       if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1))) {
         if(*p == a) ia++;
-        if((*p == b) || (*p == c)) ib++;
+        if(*p == b) ib++;
+        if(c && (*p == c)) ib++;
       } p++;
     } return (ia == ib);
+  };
+
+  /* Finds the end of a program -------------------------------------------- */
+  void find_end(char *prog) {
+    char *p;
+    for(p = prog; *p != 0; p++);
+    stop = p;
   };
 
   /* Checks if a certain position in the program is within a string -------- */
@@ -165,14 +174,16 @@ public:
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
-    char *p, str[BP_KEYWORD_MAX], code[4] = {var_type, 0, 0, 0};
+    char *p, str[BP_KEYWORD_MAX], code[4] =
+      {var_type == BP_VAR_ADDR_HUMAN ? BP_VAR_ADDR : var_type, 0, 0, 0};
     uint8_t n;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
+      *p = (var_type == BP_VAR_ADDR_HUMAN) ? BP_VAR_ADDR : var_type;
       str[n++] = *(++p);
-      if(var_type == BP_VAR_ADDR) if(BCC_IS_ADDRESS(var_id)) var_id++;
+      if(var_type == BP_VAR_ADDR_HUMAN) if(BCC_IS_ADDRESS(var_id)) var_id++;
       else if(BCC_IS_ADDRESS(string_id)) string_id++;
-      *(p++) = (var_type == BP_VAR_ADDR) ? var_id : string_id;
+      *(p++) = (var_type == BP_VAR_ADDR_HUMAN) ? var_id : string_id;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
@@ -184,12 +195,12 @@ public:
         } else break;
       if(n) {
         str[n] = 0;
-        code[1] = (var_type == BP_VAR_ADDR) ? var_id : string_id;
+        code[1] = (var_type == BP_VAR_ADDR_HUMAN) ? var_id : string_id;
         code[2] = 0;
         compile(position, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !is_in_string(prog, p)) return p;
-        if(var_type == BP_VAR_ADDR) var_id++; else string_id++;
+        if(var_type == BP_VAR_ADDR_HUMAN) var_id++; else string_id++;
         return (char *)position;
       } return p;
     } return NULL;
@@ -204,7 +215,7 @@ public:
   char *find_longest_var_name(char *prog, char var_type) {
     char *p = prog, *longest = 0;
     uint8_t result = 0;
-    while(*p != 0)
+    while((*p != 0) && (p <= stop))
       if(*(p++) == var_type) {
         if(is_in_string(prog, p - 1) || BCC_IS_ADDRESS(*(p - 2))) continue;
         uint8_t i = 0;
@@ -231,7 +242,7 @@ public:
   char *compile_function_pass(char *prog, char *pos) {
     char fn_keyword[BP_KEYWORD_MAX];
     char fn_address[3];
-    char *p = strstr(pos, BP_FUN_DEF_HUMAN);
+    char *p = strstr(pos, BP_FUN_DEF_HUMAN), *p2 = p;
     uint8_t keyword_length = 0;
     if(p && *p) {
       if(is_in_string(prog, p)) {
@@ -248,10 +259,13 @@ public:
         *p = BP_SPACE;
       } // Remove commas from definition
       *p = BP_SPACE;
-      while((*p != BP_R_RPARENT) || BCC_IS_ADDRESS(*(p - 1))) {
-        if((*p == BP_COMMA) && !BCC_IS_ADDRESS(*(p - 1))) *p = BP_SPACE;
+      while((*p != BP_R_RPARENT) || ((*p - 1) == BP_VAR_ADDR)) {
+        if((*p == BP_COMMA) && !((*p - 1) == BP_VAR_ADDR)) *p = BP_SPACE;
         p++;
       }
+      stop = p;
+      var_id = BP_OFFSET + BP_VARIABLES - BP_PARAMS;
+      compile_variables(p2, BP_VAR_ADDR_HUMAN);
       if(keyword_length) {
         if(keyword_length >= BP_KEYWORD_MAX) {
           error(0, BP_ERROR_FUNCTION_NAME);
@@ -300,6 +314,7 @@ public:
 
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
+    find_end(prog);
     // Compile character constants in their decimal value
     compile_char_constants(prog);
     remove_comments(prog);
@@ -326,9 +341,11 @@ public:
     // Bitwise not !
     compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
     // Encode variables and functions
-    compile_variables(prog, BP_VAR_ADDR);
-    compile_variables(prog, BP_STR_ADDR);
     for(uint8_t i = 0; i < BP_FUN_MAX; i++) compile_functions(prog);
+    var_id = BP_OFFSET;
+    find_end(prog);
+    compile_variables(prog, BP_VAR_ADDR_HUMAN);
+    compile_variables(prog, BP_STR_ADDR);
     // System calls
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
