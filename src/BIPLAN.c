@@ -393,6 +393,7 @@ void bip_print_call() {
       else if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
       else BPM_PRINT_WRITE(bip_print_fun, v);
     }
+    bip_return_type = 0;
   } while(dcd_current == BP_COMMA);
 };
 
@@ -752,7 +753,6 @@ BP_VAR_T bip_system_call() {
 
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {
-  bip_return_type = 0;
   switch(dcd_current) {
     case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
     case BP_SEMICOLON:  ; // Same as BP_ENDIF
