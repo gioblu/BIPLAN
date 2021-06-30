@@ -15,22 +15,23 @@
 The graph below showcases the structure and the features of the BIP CR.1 computer architecture implemented by BIPLAN. This virtual computer architecture operates with the BIP ASCII machine-code. BIP CR.1 has a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
 
 ```
- _____________________________________________________________
-|                                                             |
-| BIP CR.1 "FICTIONAL" COMPUTER ARCHITECTURE                  |
-|_____________________________________________________________|
-|                                                             |
-| BIP DECODER                                                 |
-|_____________________________________________________________|
-|                                                             |
-| INTERPRETER                                                 |
-|___________ ___________ _____________ ___________ ___________|
-|           |           |             |           |           |
-| FUNCTION  | MEMORY    | VARIABLE    | STRING    | FILE      |
-| REGISTERS | REGISTERS | REGISTERS   | REGISTERS | REGISTERS |
-|___________|___________|_____________|___________|___________|
-|           |           |     |       |           |           |
-| SERIAL    | I-O       | ADC | MONO  | TEXT MODE | FILE      |
-| INTERFACE | INTERFACE | DAC | SOUND | GRAPHICS  | INTERFACE |
-|___________|___________|_____|_______|___________|___________|
+ _______________________________________________________________
+|                                                               |
+| BIP CR.1 "FICTIONAL" COMPUTER ARCHITECTURE                    |
+|_______________________________________________________________|
+|                                                               |
+| BIP DECODER                                                   |
+|_______________________________________________________________|
+|                                                               |
+| INTERPRETER                                                   |
+|_____________ ___________ _____________ ___________ ___________|
+|             |           |             |           |           |
+| 88 FUNCTION | 2^31/2^63 | 88 VARIABLE | 88 STRING | 88 FILE   |
+| REGISTERS   | MEMORY    | REGISTERS   | REGISTERS | REGISTERS |
+|             | REGISTERS |             |           |           |
+|_____________|___________|_____________|___________|___________|
+|             |           |     |       |           |           |
+| SERIAL      | I-O       | ADC | MONO  | TEXT MODE | FILE      |
+| INTERFACE   | INTERFACE | DAC | SOUND | GRAPHICS  | INTERFACE |
+|_____________|___________|_____|_______|___________|___________|
 ```
