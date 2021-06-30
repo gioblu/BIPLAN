@@ -12,19 +12,14 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## BIP CR.1 computer architecture
-The graph below showcases the structure and the features of the BIP CR.1 computer architecture implemented by BIPLAN. This virtual computer architecture operates with the BIP ASCII machine-code. BIP CR.1 has a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
+The graph below showcases the structure and the features of the BIP CR.1 computer architecture implemented by BIPLAN. This virtual computer operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
 
 ```
- _______________________________________________________________
-|                                                               |
-| BIP CR.1 "FICTIONAL" COMPUTER ARCHITECTURE                    |
-|_______________________________________________________________|
-|                                                               |
-| BIP DECODER                                                   |
-|_______________________________________________________________|
-|                                                               |
-| INTERPRETER                                                   |
-|_____________ ___________ _____________ ___________ ___________|
+BIP CR.1 COMPUTER ARCHITECTURE                    
+ _______________________________ _______________________________
+|                               |                               |
+| BIP DECODER                   | BIP INTERPRETER               |
+|_____________ ___________ _____|_______ ___________ ___________|
 |             |           |             |           |           |
 | 88 FUNCTION | 2^31/2^63 | 88 VARIABLE | 88 STRING | 88 FILE   |
 | REGISTERS   | MEMORY    | REGISTERS   | REGISTERS | REGISTERS |

@@ -10,6 +10,25 @@ BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental int
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
+The graph below showcases the structure and the features of the BIP CR.1 computer architecture implemented by BIPLAN. This virtual computer operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
+
+```
+BIP CR.1 COMPUTER ARCHITECTURE                    
+ _______________________________ _______________________________
+|                               |                               |
+| BIP DECODER                   | BIP INTERPRETER               |
+|_____________ ___________ _____|_______ ___________ ___________|
+|             |           |             |           |           |
+| 88 FUNCTION | 2^31/2^63 | 88 VARIABLE | 88 STRING | 88 FILE   |
+| REGISTERS   | MEMORY    | REGISTERS   | REGISTERS | REGISTERS |
+|             | REGISTERS |             |           |           |
+|_____________|___________|_____________|___________|___________|
+|             |           |     |       |           |           |
+| SERIAL      | I-O       | ADC | MONO  | TEXT MODE | FILE      |
+| INTERFACE   | INTERFACE | DAC | SOUND | GRAPHICS  | INTERFACE |
+|_____________|___________|_____|_______|___________|___________|
+```
+
 The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
 
 ### Why?
