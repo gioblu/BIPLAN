@@ -75,7 +75,7 @@ permissions granted by this License.
 and configuration files included in the BIPLAN directory
 
 "License" shall mean the conditions for use, copy, modify, merge, publish or
-distribute the Software as defined by Section 1 through 3 of this document.
+distribute the Software as defined by Section 1 through 5 of this document.
 
 BIPLAN Experimenter's License
 
@@ -86,14 +86,18 @@ modify, merge, publish or distribute copies of the Software, subject to the
 following conditions:
 
 1.Use, copy, modify, merge, publish or distribute the Software only for
-  experimental or educational purposes. The software cannot be used for
-  statistical analysis, to enrich, train, tune or optimize neural networks,
-  models, classifiers, data-sets or databases.
+  experimental or educational purposes.
 
-2.Companies, institutions, organizations or corporations don't have the right
+2.Companies, institutions, organizations and corporations don't have the right
   to use, copy, modify, merge, publish or distribute the Software
 
-3.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+3.The Software cannot be used as data for statistical analysis or to enrich,
+  train, tune or optimize any form of neural network, model, classifier,
+  data-set or database.
+
+4.Any malevolent use of The Software is strictly forbidden.
+
+5.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
