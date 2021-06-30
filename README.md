@@ -68,7 +68,7 @@ The license grants permission to use, copy, modify, merge, publish and distribut
 ```
 Definitions.
 
-"You" (or "Your") shall mean an individual exercising
+"You" (or "Your") shall mean an individual, human, exercising
 permissions granted by this License.
 
 "Software" shall mean the source code, associated documentation
@@ -85,8 +85,10 @@ Permission is hereby granted to You, free of charge, the rights to use, copy,
 modify, merge, publish or distribute copies of the Software, subject to the
 following conditions:
 
-1.Use, copy, modify, merge, publish or distribute the Software only
-  for experimental purposes
+1.Use, copy, modify, merge, publish or distribute the Software only for
+  experimental or educational purposes. The software cannot be used for
+  statistical analysis, to enrich, train, tune or optimize neural networks,
+  models, classifiers, data-sets or databases.
 
 2.Companies, institutions, organizations or corporations don't have the right
   to use, copy, modify, merge, publish or distribute the Software
