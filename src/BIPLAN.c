@@ -461,10 +461,9 @@ void bip_mem_assignment_call() {
 };
 
 /* RESULT ------------------------------------------------------------------ */
-void bip_result_set_call() {
-  if(bip_fn_id > 0) bip_functions[bip_fn_id - 1].result = bip_relation();
-  else bip_error(dcd_ptr, BP_ERROR_RESULT_SET);
-};
+#define BP_RESULT_SET_CALL \
+  if(bip_fn_id > 0) bip_functions[bip_fn_id - 1].result = bip_relation(); \
+  else { bip_error(dcd_ptr, BP_ERROR_RESULT_SET); }
 
 BP_VAR_T bip_result_get_call() {
   if(bip_fn_id > 0)
