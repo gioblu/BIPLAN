@@ -1,11 +1,6 @@
 
-/* ______     ______           ______   _
-  |      | | |      | |              | | \    |
-  |_____/  | |______| |        ______| |  \   |
-  |     \  | |        |       |      | |   \  |
-  |______| | |        |______ |______| |    \_| CR.1
-  BIPLAN (Byte coded Interpreted Programming Language)
-  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
+/* BIPLAN CR.1 (Byte coded Interpreted Programming Language)
+
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -15,6 +10,7 @@
                                            \ /            |
                                            (O)
 
+  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
   BCC (BIPLAN Compiler Collection) - BIPLAN to BIP compiler  */
 
 #pragma once
