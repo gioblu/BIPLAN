@@ -33,9 +33,7 @@
 
 class BCC {
 public:
-  char var_id = BP_OFFSET;
-  char string_id = BP_OFFSET;
-  char fun_id = BP_OFFSET;
+  char var_id = BP_OFFSET, string_id = BP_OFFSET, fun_id = BP_OFFSET;
   bip_error_t error_callback = NULL;
   bool fail = false;
   char *stop;
@@ -242,14 +240,9 @@ public:
   char *compile_function_pass(char *prog, char *pos) {
     char fn_keyword[BP_KEYWORD_MAX];
     char fn_address[3];
-    char *p = strstr(pos, BP_FUN_DEF_HUMAN), *p2 = p;
+    char *p = find_longest_fun_name(prog), *p2 = p;
     uint8_t keyword_length = 0;
     if(p && *p) {
-      if(is_in_string(prog, p)) {
-        p = strstr(p + 1, BP_FUN_DEF_HUMAN);
-        if(p && *p) return p;
-        else return NULL;
-      }
       if(BCC_IS_ADDRESS(fun_id)) fun_id++;
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
@@ -266,27 +259,46 @@ public:
       stop = p;
       var_id = BP_OFFSET + BP_VARIABLES - BP_PARAMS;
       compile_variables(p2, BP_VAR_ADDR_HUMAN);
-      if(keyword_length) {
-        if(keyword_length >= BP_KEYWORD_MAX) {
-          error(0, BP_ERROR_FUNCTION_NAME);
-          return NULL;
-        }
-        fn_keyword[keyword_length] = 0;
-        fn_address[0] = BP_FUNCTION;
-        fn_address[1] = fun_id++;
-        fn_address[2] = 0;
-        compile(prog, fn_keyword, fn_address, BP_L_RPARENT);
-        p = strstr(pos, fn_keyword);
-        if(p && *p) return p;
-        else return NULL;
-      } return p;
-    } else return NULL;
+      fn_keyword[keyword_length] = 0;
+      fn_address[0] = BP_FUNCTION;
+      fn_address[1] = fun_id++;
+      fn_address[2] = 0;
+      compile(prog, fn_keyword, fn_address, BP_L_RPARENT);
+      p = strstr(pos, fn_keyword);
+      if(p && *p) return p;
+      return NULL;
+    } return NULL;
   };
 
   void compile_functions(char *prog) {
     if(fail) return;
     char *pos = prog;
     while(pos) pos = compile_function_pass(prog, pos);
+  };
+
+  char *find_longest_fun_name(char *prog) {
+    char *p = prog, *p2, *longest = NULL;
+    do {
+      uint8_t i = 0, result = 0;
+      p = strstr(p, BP_FUN_DEF_HUMAN), p2 = p;
+      if(p && *p) {
+        if(is_in_string(prog, p)) {
+          p = strstr(p + 1, BP_FUN_DEF_HUMAN), p2 = p;
+          if(!p || !*p) return NULL;
+        }
+        while(BCC_IS_KEYWORD(*p)) p++;
+        while(*p == BP_SPACE) p++;
+        while(p && BCC_IS_KEYWORD(*(p++))) i++;
+        if(i > result) {
+          longest = p2;
+          result = i;
+        }
+        if(i >= BP_KEYWORD_MAX) {
+          error(0, BP_ERROR_FUNCTION_NAME);
+          return NULL;
+        }
+      } else return longest;
+    } while(*p && p);
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
@@ -315,43 +327,33 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
-    // Compile character constants in their decimal value
     compile_char_constants(prog);
     remove_comments(prog);
     if(!pre_compilation_checks(prog)) return false;
-    // :string $variable @memory reference access
     compile_char(prog, BP_STR_ACC_HUMAN, BP_STR_ACC);
     compile_char(prog, BP_VAR_ACC_HUMAN, BP_VAR_ACC);
     compile_char(prog, BP_MEM_ACC_HUMAN, BP_MEM_ACC);
-    // Logic == != >= <= || &&
     compile_char(prog, BP_EQ_HUMAN, BP_EQ);
     compile_char(prog, BP_NOT_EQ_HUMAN, BP_NOT_EQ);
     compile_char(prog, BP_GTOEQ_HUMAN, BP_GTOEQ);
     compile_char(prog, BP_LTOEQ_HUMAN, BP_LTOEQ);
     compile_char(prog, BP_LOGIC_OR_HUMAN, BP_LOGIC_OR);
     compile_char(prog, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND);
-    // Bitwise >> <<
     compile_char(prog, BP_R_SHIFT_HUMAN, BP_R_SHIFT);
     compile_char(prog, BP_L_SHIFT_HUMAN, BP_L_SHIFT);
-    // Remove syntactic sugar
-    compile_char(prog, "=", ' ');
-    // Unary ++ --
+    compile_char(prog, "=", ' '); // Remove syntactic sugar
     compile_char(prog, BP_INCREMENT_HUMAN, BP_INCREMENT);
     compile_char(prog, BP_DECREMENT_HUMAN, BP_DECREMENT);
-    // Bitwise not !
     compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    // Encode variables and functions
     for(uint8_t i = 0; i < BP_FUN_MAX; i++) compile_functions(prog);
     var_id = BP_OFFSET;
     find_end(prog);
     compile_variables(prog, BP_VAR_ADDR_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
-    // System calls
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
     compile_char(prog, BP_DELAY_HUMAN, BP_DELAY);
     compile_char(prog, BP_SQRT_HUMAN, BP_SQRT);
-    // Language syntax
     compile_char(prog, BP_SERIAL_HUMAN, BP_SERIAL);
     compile_char(prog, BP_RESULT_HUMAN, BP_RESULT);
     compile_char(prog, BP_CONTINUE_HUMAN, BP_CONTINUE);
@@ -382,7 +384,6 @@ public:
     compile_char(prog, BP_LABEL_HUMAN, BP_LABEL);
     compile_char(prog, BP_END_HUMAN, BP_END);
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
-    // Remove BP_VAR_ADDR that follows for
     compile_for(prog);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
     compile_char(prog, "step", BP_COMMA);
@@ -390,7 +391,6 @@ public:
     compile_char(prog, BP_IF_HUMAN, BP_IF);
     compile_char(prog, BP_IO_HUMAN, BP_IO);
     compile_char(prog, "to", BP_COMMA);
-    // Constants
     compile(prog, "OUTPUT", "1");
     compile(prog, "INPUT", "0");
     compile(prog, "HIGH", "1");
@@ -400,15 +400,11 @@ public:
     compile(prog, "true", "1");
     compile(prog, "LF", "10");
     compile(prog, "CR", "13");
-    // Remove tabs, spaces, line feed and carriage return
     remove(prog, BP_CR);
     remove(prog, BP_LF);
     remove(prog, BP_SPACE);
     remove(prog, BP_TAB);
-    // Reset indexes
-    var_id = BP_OFFSET;
-    string_id = BP_OFFSET;
-    fun_id = BP_OFFSET;
+    var_id = BP_OFFSET, string_id = BP_OFFSET, fun_id = BP_OFFSET;
     post_compilation_checks(prog);
     return !fail;
   };
