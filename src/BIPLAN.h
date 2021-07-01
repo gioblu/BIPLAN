@@ -103,13 +103,13 @@ void bip_result_set_call();
 
 BP_VAR_T bip_serial_call();
 
-BP_VAR_T bip_system_call();
-
 BP_VAR_T bip_file_get_call();
 
 BP_VAR_T bip_sizeof_call();
 
-BP_VAR_T bip_atol_call();
+BP_VAR_T bip_system_call(BP_VAR_T v);
+
+BP_VAR_T bip_atol_call(BP_VAR_T v);
 
 uint16_t bip_ltoa_call();
 

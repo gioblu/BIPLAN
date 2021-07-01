@@ -46,21 +46,20 @@
 #define BP_SYS_STR_1(F, V) \
   DCD_NEXT; \
   if(bip_ignore(BP_VAR_ADDR)) { \
-    v = bip_get_variable(*(dcd_ptr - 1) - BP_OFFSET) - 48;\
+    V = bip_get_variable(*(dcd_ptr - 1) - BP_OFFSET) - 48;\
   } else if(bip_ignore(BP_STR_ADDR)) { \
     V = F(bip_strings[*(dcd_ptr - 1) - BP_OFFSET]); \
   } else if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \
     V = F(bip_string); \
     BP_EMPTY_STRING; \
-  }
+  } return V;
 
 /* SYSTEM CALL WITH 2 EXPRESSION PARAMETER --------------------------------- */
 #define BP_SYS_EXP_2(F) \
-  BP_VAR_T bip_x = bip_expression(), bip_y; \
+  BP_VAR_T bip_sys_exp = bip_expression(); \
   BP_EXPECT(BP_COMMA); \
-  bip_y = bip_expression(); \
-  F(bip_x, bip_y);
+  F(bip_sys_exp, bip_expression());
 
 /* EMPTY STRING ------------------------------------------------------------ */
 #define BP_EMPTY_STRING \
@@ -87,6 +86,17 @@
   while(dcd_current == BP_INCREMENT || dcd_current == BP_DECREMENT) { \
     if(dcd_current == BP_INCREMENT) { V++; } else { V--; } \
     DCD_NEXT; \
+  }
+
+/* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
+#define BP_VAR_ADDR_CALL \
+  if(dcd_current == BP_VAR_ACC) { \
+    BP_VAR_T bp_var_addr_call_acc = bip_access(BP_VAR_ACC); \
+    BP_SET_VARIABLE(bp_var_addr_call_acc, bip_relation()); \
+  } else { \
+    DCD_NEXT; \
+    uint8_t bp_var_addr_call_addr = *(dcd_ptr - 1) - BP_OFFSET; \
+    BP_SET_VARIABLE(bp_var_addr_call_addr, bip_relation()); \
   }
 
 /* BUFFERS ----------------------------------------------------------------- */
@@ -277,8 +287,8 @@ BP_VAR_T bip_factor() {
       DCD_NEXT; v = bip_relation(); BP_EXPECT(BP_R_RPARENT); break;
     case BP_RESULT: DCD_NEXT; v = bip_result_get_call(); break;
     case BP_SIZEOF: v = bip_sizeof_call(); break;
-    case BP_SYSTEM: v = bip_system_call(); break;
-    case BP_ATOL: v = bip_atol_call(); break;
+    case BP_SYSTEM: v = bip_system_call(0); break;
+    case BP_ATOL: v = bip_atol_call(0); break;
     case BP_NUMERIC:
       DCD_NEXT; v = bip_relation(); v = (v >= 48) && (v <= 57); break;
     default: v = bip_var_factor();
@@ -413,18 +423,6 @@ void bip_if_call() {
   if(dcd_current == BP_ELSE) DCD_NEXT;
 };
 
-/* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
-void bip_variable_assignment_call() {
-  if(dcd_current == BP_VAR_ACC) {
-    BP_VAR_T v = bip_access(BP_VAR_ACC);
-    BP_SET_VARIABLE(v, bip_relation());
-  } else {
-    DCD_NEXT;
-    uint8_t vi = *(dcd_ptr - 1) - BP_OFFSET;
-    BP_SET_VARIABLE(vi, bip_relation());
-  }
-};
-
 /* ASSIGN VALUE TO STRING -------------------------------------------------- */
 void bip_string_assignment_call() {
   int ci = BP_STRING_MAX, si;
@@ -506,8 +504,7 @@ BP_VAR_T bip_function_call() {
       if(bip_definitions[f].params[i] == BP_PARAMS) break;
       v = bip_definitions[f].params[i] - BP_OFFSET;
       bip_functions[bip_fn_id].params[i].id = v;
-      if(i < BP_PARAMS) {
-        // Stash global variabile value
+      if(i < BP_PARAMS) { // Stash global variabile value
         BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
         // Set global variable with parameter value
         if(r) BP_SET_VARIABLE(v, bip_relation());
@@ -580,28 +577,27 @@ void bip_label_call() {
 };
 
 /* NEXT -------------------------------------------------------------------- */
-void bip_next_call() {
-  if(bip_fw_id) {
-    if(bip_cycles[bip_fw_id - 1].var_id == BP_VARIABLES) {
-      char *end = dcd_ptr;
-      DCD_GOTO(bip_cycles[bip_fw_id - 1].address);
-      if(bip_relation() <= 0) {
-        DCD_GOTO(end);
-        bip_fw_id--;
-      }
-    } else {
-      uint8_t vi = bip_cycles[bip_fw_id - 1].var_id;
-      bip_variables[vi] += bip_cycles[bip_fw_id - 1].step;
-      if(bip_variables[vi] != bip_cycles[bip_fw_id - 1].to) {
-        DCD_GOTO(bip_cycles[bip_fw_id - 1].address);
-      } else { // Set back global variable and reset cycle variable buffer
-        if(vi != BP_VARIABLES)
-          BP_SET_VARIABLE(vi, bip_cycles[bip_fw_id - 1].var);
-        bip_cycles[--bip_fw_id].var_id = BP_VARIABLES;
-      }
-    }
-  } else bip_error(dcd_ptr, BP_ERROR_NEXT);
-};
+#define BP_NEXT_CALL \
+  if(bip_fw_id) { \
+    if(bip_cycles[bip_fw_id - 1].var_id == BP_VARIABLES) { \
+      char *bp_while_next_addr = dcd_ptr; \
+      DCD_GOTO(bip_cycles[bip_fw_id - 1].address); \
+      if(bip_relation() <= 0) { \
+        DCD_GOTO(bp_while_next_addr); \
+        bip_fw_id--; \
+      } \
+    } else { \
+      uint8_t bp_for_next_addr = bip_cycles[bip_fw_id - 1].var_id; \
+      bip_variables[bp_for_next_addr] += bip_cycles[bip_fw_id - 1].step; \
+      if(bip_variables[bp_for_next_addr] != bip_cycles[bip_fw_id - 1].to) { \
+        DCD_GOTO(bip_cycles[bip_fw_id - 1].address); \
+      } else { \
+        if(bp_for_next_addr != BP_VARIABLES) \
+          BP_SET_VARIABLE(bp_for_next_addr, bip_cycles[bip_fw_id - 1].var); \
+        bip_cycles[--bip_fw_id].var_id = BP_VARIABLES; \
+      } \
+    } \
+  } else { bip_error(dcd_ptr, BP_ERROR_NEXT); }
 
 /* WHILE ------------------------------------------------------------------- */
 void bip_while_call() {
@@ -641,11 +637,7 @@ void bip_io_set_call() {
 };
 
 /* CURSOR ------------------------------------------------------------------ */
-void bip_cursor_call() {
-  BP_VAR_T r = bip_expression();
-  BP_EXPECT(BP_COMMA);
-  BPM_PRINT_CURSOR(r, bip_expression());
-};
+void bip_cursor_call() { BP_SYS_EXP_2(BPM_PRINT_CURSOR); };
 
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
 void bip_file_set_call() {
@@ -717,18 +709,8 @@ BP_VAR_T bip_sizeof_call() {
   return 0;
 };
 
-/* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
-BP_VAR_T bip_random_call() {
-  BP_VAR_T a = bip_expression(), b = BPM_RANDOM(a);
-  return b;
-};
-
 /* ATOL - LTOA ------------------------------------------------------------- */
-BP_VAR_T bip_atol_call() {
-  BP_VAR_T v = 0;
-  BP_SYS_STR_1(BPM_ATOL, v);
-  return v;
-};
+BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STR_1(BPM_ATOL, v); };
 
 uint16_t bip_ltoa_call() {
   BP_VAR_T v = bip_relation(), s = 0;
@@ -740,44 +722,44 @@ uint16_t bip_ltoa_call() {
   return s;
 };
 
-/* SYSTEM (Passes a :string or string literal to the environment) ---------- */
-BP_VAR_T bip_system_call() {
-  BP_VAR_T v = 0;
-  BP_SYS_STR_1(BPM_SYSTEM, v);
-  return v;
+/* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
+BP_VAR_T bip_random_call() {
+  BP_VAR_T a = bip_expression(), b = BPM_RANDOM(a);
+  return b;
 };
+
+/* SYSTEM (Passes a :string or string literal to the environment) ---------- */
+BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STR_1(BPM_SYSTEM, v); };
 
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {
   switch(dcd_current) {
-    case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
-    case BP_SEMICOLON:  ; // Same as BP_ENDIF
-    case BP_ENDIF:      DCD_NEXT; return;
-    case BP_ELSE:       DCD_NEXT; return bip_skip_block();
-    case BP_FUNCTION:   bip_function_call(); BP_EXPECT(BP_R_RPARENT);
-                        return;
+    case BP_RESULT:     DCD_NEXT; BP_RESULT_SET_CALL; return;
     case BP_VAR_ACC: ;  // assignment by reference
-    case BP_VAR_ADDR:   return bip_variable_assignment_call();
     case BP_STR_ACC: ;  // assignment by reference
-    case BP_STR_ADDR:   return bip_string_assignment_call();
-    case BP_MEM_ACC:    return bip_mem_assignment_call();
+    case BP_VAR_ADDR:   BP_VAR_ADDR_CALL; return;
+    case BP_FUNCTION:   bip_function_call(); DCD_NEXT; return;
     case BP_INCREMENT:  ; // same as decrement
     case BP_DECREMENT:  bip_var_factor();  return;
-    case BP_IF:         DCD_NEXT; return bip_if_call();
+    case BP_NEXT:       DCD_NEXT; BP_NEXT_CALL; return;
     case BP_FOR:        DCD_NEXT; return bip_for_call();
+    case BP_IF:         DCD_NEXT; return bip_if_call();
+    case BP_ELSE:       DCD_NEXT; return bip_skip_block();
+    case BP_ENDIF:      DCD_NEXT; return;
+    case BP_STR_ADDR:   return bip_string_assignment_call();
+    case BP_MEM_ACC:    return bip_mem_assignment_call();
     case BP_WHILE:      DCD_NEXT; return bip_while_call();
-    case BP_NEXT:       DCD_NEXT; return bip_next_call();
+    case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
     case BP_JUMP:       DCD_NEXT; return bip_jump_call();
     case BP_BREAK:      return bip_break_call();
     case BP_CONTINUE:   return bip_continue_call();
-    case BP_FILE:       return bip_file_set_call();
-    case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_IO:         DCD_NEXT; return bip_io_set_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
+    case BP_PRINT:      DCD_NEXT; return bip_print_call();
+    case BP_FILE:       return bip_file_set_call();
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
     case BP_LTOA:       DCD_NEXT; bip_ltoa_call(); return;
     case BP_RESTART:    return bip_restart_call();
-    case BP_RESULT:     DCD_NEXT; return bip_result_set_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);
   }

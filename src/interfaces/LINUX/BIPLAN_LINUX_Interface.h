@@ -141,7 +141,7 @@
   #endif
 
   #ifndef BPM_PRINT_CURSOR
-    #define BPM_PRINT_CURSOR(X, Y) printf("\033[%d;%dH", (Y), (X));
+    #define BPM_PRINT_CURSOR(X, Y) printf("\033[%d;%dH", ((int)Y), ((int)X));
   #endif
 
   /* Serial --------------------------------------------------------------- */
