@@ -736,8 +736,9 @@ void bip_statement() {
   switch(dcd_current) {
     case BP_RESULT:     DCD_NEXT; BP_RESULT_SET_CALL; return;
     case BP_VAR_ACC: ;  // assignment by reference
-    case BP_STR_ACC: ;  // assignment by reference
     case BP_VAR_ADDR:   BP_VAR_ADDR_CALL; return;
+    case BP_STR_ACC: ;  // assignment by reference
+    case BP_STR_ADDR:   return bip_string_assignment_call();
     case BP_FUNCTION:   bip_function_call(); DCD_NEXT; return;
     case BP_INCREMENT:  ; // same as decrement
     case BP_DECREMENT:  bip_var_factor();  return;
@@ -746,7 +747,6 @@ void bip_statement() {
     case BP_IF:         DCD_NEXT; return bip_if_call();
     case BP_ELSE:       DCD_NEXT; return bip_skip_block();
     case BP_ENDIF:      DCD_NEXT; return;
-    case BP_STR_ADDR:   return bip_string_assignment_call();
     case BP_MEM_ACC:    return bip_mem_assignment_call();
     case BP_WHILE:      DCD_NEXT; return bip_while_call();
     case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
