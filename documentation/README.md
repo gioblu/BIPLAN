@@ -12,7 +12,8 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## BIP CR.1 computer architecture
-The graph below showcases the structure and the features of the BIP CR.1 computer architecture implemented by BIPLAN. This virtual computer operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
+The graph below showcases the structure and the features of the BIP CR.1 computer architecture that operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
+
 
 ```
 BIP CR.1 COMPUTER ARCHITECTURE                    
