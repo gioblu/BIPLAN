@@ -16,6 +16,27 @@
 #pragma once
 #include "BIPLAN.h"
 
+/* BUFFERS ----------------------------------------------------------------- */
+BP_VAR_T           bip_variables     [BP_VARIABLES];
+uint8_t            bip_memory        [BP_MEM_SIZE];
+char               bip_string        [BP_STRING_MAX];
+char               bip_strings       [BP_STRINGS][BP_STRING_MAX];
+struct bip_cycle_t bip_cycles        [BP_CYCLE_DEPTH];
+struct bip_fun_t   bip_functions     [BP_FUN_DEPTH];
+struct bip_def_t   bip_definitions   [BP_FUN_MAX];
+bip_files_t        bip_files         [BP_FILES_MAX];
+/* STATE ------------------------------------------------------------------- */
+char              *bip_program_start  = NULL;
+uint8_t            bip_fw_id          = 0;
+int                bip_fn_id          = 0;
+bool               bip_ended          = false;
+uint8_t            bip_return_type    = 0;
+/* CALLBACKS --------------------------------------------------------------- */
+bip_error_t        bip_error_fun;
+BPM_PRINT_T        bip_print_fun;
+BPM_INPUT_T        bip_data_in_fun;
+BPM_SERIAL_T       bip_serial_fun;
+
 #define BP_SYS_BOUNDS(R, B, E) \
   DCD_NEXT; \
   R = bip_relation(); \
@@ -23,7 +44,7 @@
 
 /* SYSTEM CALL WITH 1 RELATION PARAMETER ----------------------------------- */
 
-#define BP_SYS_REL_1(F, T) \
+#define BP_SYS_RELATION(F, T) \
   if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \
     for(uint16_t i = 0; i < sizeof(bip_string); i++) \
@@ -43,7 +64,7 @@
 
 /* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
 
-#define BP_SYS_STR_1(F, V) \
+#define BP_SYS_STRING(F, V) \
   DCD_NEXT; \
   if(bip_ignore(BP_VAR_ADDR)) { \
     V = bip_get_variable(*(dcd_ptr - 1) - BP_OFFSET) - 48;\
@@ -56,7 +77,7 @@
   } return V;
 
 /* SYSTEM CALL WITH 2 EXPRESSION PARAMETER --------------------------------- */
-#define BP_SYS_EXP_2(F) \
+#define BP_SYS_EXPRESSION_2(F) \
   BP_VAR_T bip_sys_exp = bip_expression(); \
   BP_EXPECT(BP_COMMA); \
   F(bip_sys_exp, bip_expression());
@@ -98,27 +119,6 @@
     uint8_t bp_var_addr_call_addr = *(dcd_ptr - 1) - BP_OFFSET; \
     BP_SET_VARIABLE(bp_var_addr_call_addr, bip_relation()); \
   }
-
-/* BUFFERS ----------------------------------------------------------------- */
-BP_VAR_T           bip_variables     [BP_VARIABLES];
-uint8_t            bip_memory        [BP_MEM_SIZE];
-char               bip_string        [BP_STRING_MAX];
-char               bip_strings       [BP_STRINGS][BP_STRING_MAX];
-struct bip_cycle_t bip_cycles        [BP_CYCLE_DEPTH];
-struct bip_fun_t   bip_functions     [BP_FUN_DEPTH];
-struct bip_def_t   bip_definitions   [BP_FUN_MAX];
-bip_files_t        bip_files         [BP_FILES_MAX];
-/* STATE ------------------------------------------------------------------- */
-char              *bip_program_start  = NULL;
-uint8_t            bip_fw_id          = 0;
-int                bip_fn_id          = 0;
-bool               bip_ended          = false;
-uint8_t            bip_return_type    = 0;
-/* CALLBACKS --------------------------------------------------------------- */
-bip_error_t        bip_error_fun;
-BPM_PRINT_T        bip_print_fun;
-BPM_INPUT_T        bip_data_in_fun;
-BPM_SERIAL_T       bip_serial_fun;
 
 /* END PROGRAM ------------------------------------------------------------- */
 void bip_end_call() { BP_EXPECT(BP_END); bip_ended = true; };
@@ -178,11 +178,11 @@ BP_VAR_T bip_get_file_id() {
 
 /* INITIALIZE INTERPRETER -------------------------------------------------- */
 void bip_init(
-  char *program,
-  bip_error_t error,
-  BPM_PRINT_T print,
-  BPM_INPUT_T data_input,
-  BPM_SERIAL_T    s
+  char        *program,
+  bip_error_t  error,
+  BPM_PRINT_T  print,
+  BPM_INPUT_T  data_input,
+  BPM_SERIAL_T s
 ) {
   bip_program_start = program;
   bip_set_default();
@@ -197,9 +197,7 @@ void bip_init(
 };
 
 void bip_set_default() {
-  bip_fw_id = 0;
-  bip_fn_id = 0;
-  bip_ended = false;
+  bip_fw_id = 0, bip_fn_id = 0, bip_ended = false;
   for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
   for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
   for(BP_VAR_T i = 0; i < BP_STRINGS; i++)
@@ -461,8 +459,7 @@ void bip_mem_assignment_call() {
   else { bip_error(dcd_ptr, BP_ERROR_RESULT_SET); }
 
 BP_VAR_T bip_result_get_call() {
-  if(bip_fn_id > 0)
-    return bip_functions[bip_fn_id - 1].result;
+  if(bip_fn_id > 0) return bip_functions[bip_fn_id - 1].result;
   else bip_error(dcd_ptr, BP_ERROR_RESULT_GET);
   return 0;
 };
@@ -629,15 +626,12 @@ BP_VAR_T bip_io_get_call() {
 void bip_io_set_call() {
   char c = dcd_current;
   DCD_NEXT;
-  if(dcd_current == BP_WRITE) {
-    BP_SYS_EXP_2(BPM_IO_WRITE);
-  } else if(dcd_current == BP_OPEN) {
-    BP_SYS_EXP_2(BPM_IO_MODE);
-  }
+  if(dcd_current == BP_WRITE) { BP_SYS_EXPRESSION_2(BPM_IO_WRITE); }
+  else if(dcd_current == BP_OPEN) { BP_SYS_EXPRESSION_2(BPM_IO_MODE); }
 };
 
 /* CURSOR ------------------------------------------------------------------ */
-void bip_cursor_call() { BP_SYS_EXP_2(BPM_PRINT_CURSOR); };
+void bip_cursor_call() { BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR); };
 
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
 void bip_file_set_call() {
@@ -651,7 +645,7 @@ void bip_file_set_call() {
   } else {
     BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
       BP_EXPECT(BP_COMMA);
-      BP_SYS_REL_1(BPM_FILE_WRITE, bip_files[r].file);
+      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file);
     }
   }
 };
@@ -690,7 +684,7 @@ BP_VAR_T bip_serial_call() {
   BP_VAR_T r;
   DCD_NEXT;
   if(c == BP_WRITE) {
-    BP_SYS_REL_1(BPM_SERIAL_WRITE, bip_serial_fun);
+    BP_SYS_RELATION(BPM_SERIAL_WRITE, bip_serial_fun);
   } else if(c == BP_READ) {
     BPM_SERIAL_READ(bip_serial_fun);
     DCD_NEXT;
@@ -710,7 +704,7 @@ BP_VAR_T bip_sizeof_call() {
 };
 
 /* ATOL - LTOA ------------------------------------------------------------- */
-BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STR_1(BPM_ATOL, v); };
+BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
 
 uint16_t bip_ltoa_call() {
   BP_VAR_T v = bip_relation(), s = 0;
@@ -729,7 +723,7 @@ BP_VAR_T bip_random_call() {
 };
 
 /* SYSTEM (Passes a :string or string literal to the environment) ---------- */
-BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STR_1(BPM_SYSTEM, v); };
+BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STRING(BPM_SYSTEM, v); };
 
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {
