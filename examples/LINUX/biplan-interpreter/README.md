@@ -11,7 +11,7 @@ The `biplan` executable can be used to execute BIP machine language, in this exa
 
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. Digit `biplan fib.bip`
+3. Digit `biplan -i fib.bip`
 
 Expected output:
 ```
@@ -26,7 +26,9 @@ Interpreter output:
 Execution duration: 798395 microseconds
 ```
 
-You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it. `biplan` supports additional arguments:
+You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it. 
+
+`biplan` supports additional arguments:
 - `-a` passes an argument to the program
 - `-b` specifies the serial baudrate
 - `-s` specifies the serial port

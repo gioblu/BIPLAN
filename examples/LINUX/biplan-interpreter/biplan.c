@@ -24,13 +24,11 @@ void error_callback(char *position, const char *string) {
   exit(0);
 };
 
-
-int main(int argc, char *argv[]) {
-  printf("BIPLAN interpreter - Giovanni Blu Mitolo 2021 \n");
-  printf("Source: %s", argv[1]);
-  p_file = fopen(argv[1], "r");
+void init_program(char *path) {
+  printf("Source: %s", path);
+  p_file = fopen(path, "r");
   if(p_file == NULL) {
-    printf("\nFile error");
+    printf("\nFile error\n");
     exit(-3);
   } // Obtain file size:
   fseek(p_file, 0, SEEK_END);
@@ -49,31 +47,38 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   fclose(p_file);
-  bip_init(program, error_callback, s, s, s);
-  while((opt = getopt(argc, argv, "a:s:b:h")) != -1) {
+};
+
+
+int main(int argc, char *argv[]) {
+  printf("BIPLAN interpreter - Giovanni Blu Mitolo 2021 \n");
+  while((opt = getopt(argc, argv, "i:a:s:b:h::")) != -1) {
     switch(opt) {
+      case 'i': init_program(optarg); break;
       case 'a': bip_process_argument(optarg); break;
       case 's': 
         serial_name = optarg; printf("Serial name: %s \n", serial_name); break;
       case 'b': 
-        serial_bd = atoi(optarg); printf("Baudrate: %s \n", serial_bd); break;
+        serial_bd = atoi(optarg); printf("Baudrate: %d \n", serial_bd); break;
       case 'h': 
-        printf("\n-a: Passes argument to program (-a 40 makes args[0] = 40)");
+        printf("\n-a: Passes argument to program (-a hi -> args[0] = \"hi\")");
         printf("\n-b: Sets serial bardrate (-b 9600)");
-        printf("\n-h: Prints this help message");
         printf("\n-s: Sets serial port (-s COM1)");
+        printf("\n-h: Prints this help message\n");
+        exit(1);
         break;
       case '?': printf("\nInvalid argument received");
       break;
     }
   }
   if(serial_name && serial_bd) {
-    s = serialOpen(argv[2], atoi(argv[3]));
+    s = serialOpen(serial_name, serial_bd);
     if(int(s) < 0) {
       printf("Serial fail!\n");
       exit(-4);
-    } else bip_serial_fun = s;
+    }
   }
+  bip_init(program, error_callback, s, s, s);
   // Initialize interpreter using cout as print and stdin as input
   printf("\nInterpreter output: \n\n");
   uint32_t t = BPM_MICROS();
