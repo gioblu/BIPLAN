@@ -29,7 +29,7 @@
 
 class BCC {
 public:
-  char var_id = BP_OFFSET, string_id = BP_OFFSET, fun_id = BP_OFFSET;
+  char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
   bip_error_t error_callback = NULL;
   bool fail = false;
   char *stop;
@@ -384,6 +384,7 @@ public:
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
     compile_char(prog, "step", BP_COMMA);
     compile(prog, "not", "1-");
+    compile(prog, "args[", "S");
     compile_char(prog, BP_IF_HUMAN, BP_IF);
     compile_char(prog, BP_IO_HUMAN, BP_IO);
     compile_char(prog, "to", BP_COMMA);
@@ -400,7 +401,7 @@ public:
     remove(prog, BP_LF);
     remove(prog, BP_SPACE);
     remove(prog, BP_TAB);
-    var_id = BP_OFFSET, string_id = BP_OFFSET, fun_id = BP_OFFSET;
+    var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
     post_compilation_checks(prog);
     return !fail;
   };

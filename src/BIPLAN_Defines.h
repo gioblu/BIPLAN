@@ -59,10 +59,16 @@
   #define BP_VARIABLES 50
 #endif
 
-/* Strings amount, set higher if required (max 92) ------------------------- */
+/* Strings amount, set higher if required (max 92 - BP_ARGS) --------------- */
 
 #ifndef BP_STRINGS
   #define BP_STRINGS 20
+#endif
+
+/* Program arguments amount, set higher if required (max 92 - BP_STRINGS) */
+/* handle args: https://www.thegeekstuff.com/2013/01/c-argc-argv/ */
+#ifndef BP_ARGS
+  #define BP_ARGS 5
 #endif
 
 /* Functions amount, set higher if required (max 92) ----------------------- */

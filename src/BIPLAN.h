@@ -33,6 +33,8 @@ void bip_index_definitions(char* program);
 
 void bip_process_labels(char* program);
 
+void bip_process_argument(char *a);
+
 BP_VAR_T bip_get_file_id();
 
 void bip_init(char *, bip_error_t, BPM_PRINT_T, BPM_INPUT_T, BPM_SERIAL_T);

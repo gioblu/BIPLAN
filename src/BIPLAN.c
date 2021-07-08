@@ -29,6 +29,7 @@ bip_files_t        bip_files         [BP_FILES_MAX];
 char              *bip_program_start  = NULL;
 uint8_t            bip_fw_id          = 0;
 int                bip_fn_id          = 0;
+int                bip_arg_id         = 0;
 bool               bip_ended          = false;
 uint8_t            bip_return_type    = 0;
 /* CALLBACKS --------------------------------------------------------------- */
@@ -163,6 +164,12 @@ void bip_process_labels(char* program) {
     if(dcd_current == BP_LABEL) bip_statement();
     else DCD_NEXT;
   }
+};
+
+/* PROCESS ARGUMENTS ------------------------------------------------------- */
+void bip_process_argument(char *a) {
+  for(uint16_t s = 0; s < sizeof a; s++) bip_strings[bip_arg_id][s] = a[s];
+  if(++bip_arg_id >= BP_ARGS) bip_error(dcd_ptr, BP_E_T_BOUND, BP_E_ARGS);
 };
 
 /* GET FILE ID ------------------------------------------------------------- */

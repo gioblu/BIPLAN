@@ -26,4 +26,8 @@ Interpreter output:
 Execution duration: 798395 microseconds
 ```
 
-You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it.
+You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it. `biplan` supports additional arguments:
+- `-a` passes an argument to the program
+- `-b` specifies the serial baudrate
+- `-s` specifies the serial port
+- `-h` prints help 
