@@ -12,9 +12,8 @@ FILE  *p_file;
 long   p_size;
 size_t result;
 
-void error_callback(char *position, const char *type, const char *string) {
+void error_callback(char *position, const char *string) {
   printf("\nerror: ");
-  printf("%s ", type);
   printf("%s ", string);
   if(position) {
     printf("%c", *position);
