@@ -168,8 +168,8 @@ void bip_process_labels(char* program) {
 
 /* PROCESS ARGUMENTS ------------------------------------------------------- */
 void bip_process_argument(char *a) {
-  for(uint16_t s = 0; s < sizeof a; s++) bip_strings[bip_arg_id][s] = a[s];
-  if(++bip_arg_id >= BP_ARGS) bip_error(dcd_ptr, BP_E_T_BOUND, BP_E_ARGS);
+  for(uint16_t s = 0; s < strlen(a); s++) bip_strings[bip_arg_id][s] = a[s];
+  if(++bip_arg_id >= BP_ARGS) bip_error(dcd_ptr, BP_ERROR_ARGS_MAX);
 };
 
 /* GET FILE ID ------------------------------------------------------------- */
@@ -207,7 +207,7 @@ void bip_set_default() {
   bip_fw_id = 0, bip_fn_id = 0, bip_ended = false;
   for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
   for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
-  for(BP_VAR_T i = 0; i < BP_STRINGS; i++)
+  for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
     for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
   BP_EMPTY_STRING;
 };

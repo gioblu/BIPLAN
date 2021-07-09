@@ -28,6 +28,16 @@ print adc read A0
 
 ---
 
+### `args`
+Using the `args` keyword it is possible to access to arguments that have been passed to the program.
+
+```php
+print args[0]
+# Prints the first argument passed to the program
+```
+
+---
+
 ### `cursor`
 ```
 cursor [number or variable], [number or variable]

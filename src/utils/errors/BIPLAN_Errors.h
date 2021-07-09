@@ -1,4 +1,5 @@
 
+#define BP_ERROR_ARGS_MAX            "too many arguments"
 #define BP_ERROR_STATEMENT           "unexpected statement"
 #define BP_ERROR_SYMBOL              "unexpected symbol"
 #define BP_ERROR_VARIABLE_GET        "variable read failure"
