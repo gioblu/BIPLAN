@@ -10,24 +10,7 @@ BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental int
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-The graph below showcases the structure and the features of the BIP CR.1 computer architecture that operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
-
-```
-BIP CR.1 COMPUTER ARCHITECTURE                    
- _______________________________ _______________________________
-|                               |                               |
-| BIP DECODER                   | BIP INTERPRETER               |
-|_____________ ___________ _____|_______ ___________ ___________|
-|             |           |             |           |           |
-| 88 FUNCTION | 2^31/2^63 | 88 VARIABLE | 88 STRING | 88 FILE   |
-| REGISTERS   | MEMORY    | REGISTERS   | REGISTERS | REGISTERS |
-|             | REGISTERS |             |           |           |
-|_____________|___________|_____________|___________|___________|
-|             |           |     |       |           |           |
-| SERIAL      | I-O       | ADC | MONO  | TEXT MODE | FILE      |
-| INTERFACE   | INTERFACE | DAC | SOUND | GRAPHICS  | INTERFACE |
-|_____________|___________|_____|_______|___________|___________|
-```
+This tiny language implements the virtual or "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
 
 The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
 
@@ -66,7 +49,11 @@ Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
 102334155
 ```
-On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm.
+On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm. 
+
+### Performance
+
+For now BIPLAN is around 2 times slower than python on my linux machine and around 10 times quicker than TinyBasicPlus when running on Arduino compatible boards.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
