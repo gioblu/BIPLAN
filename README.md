@@ -12,11 +12,9 @@ BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental int
 
 This tiny language implements the virtual or "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.  
 
-The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
-
 ### Why?
 
-In 2017 I built a couple of stand-alone computers using Arduino boards and I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language; quick, portable, modern, but at the same time small enough to run on limited micro-controllers.
+In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language; quick, portable, modern, but at the same time small enough to run on limited micro-controllers.
 
 ### Code example
 
@@ -111,3 +109,5 @@ following conditions:
   OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
   EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
 ```
+
+The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
