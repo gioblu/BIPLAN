@@ -67,7 +67,7 @@ Using the `file` keyword along with `read`, `write`, `open` and `close` it is po
 
 #### `file open`
 ```
-file open [string or string address], [number or variable]
+file open [string or string literal], [number or variable]
 ```
 It receives two parameters, the file path and the mode. It returns the pointer to the file.
 
@@ -103,7 +103,7 @@ $c = file read $f
 #### `file write`
 
 ```
-file write [pointer to file], [string, string address, variable or value]
+file write [pointer to file], [string, string literal, variable or number]
 ```
 It receives two parameters, the file pointer and the value to be written in the file.
 
@@ -220,7 +220,7 @@ print millis
 
 ### `numeric`
 ```
-numeric [variable or numeric value]
+numeric [variable or number]
 ```
 Returns true if the input value is a numeric character, false if it is not a numeric character.
 ```php
@@ -236,7 +236,7 @@ print numeric $num, " ", numeric $chr
 ```
 print [comma separated parameter list]
 ```
-Receives a comma separated parameter list of type number, variable or string. It prints the parameters received. `char` can be used within print to convert numeric values to characters.
+Receives a comma separated parameter list of type number, variable or string. It prints the parameters received. `char` can be used within print to convert numbers to characters.
 ```php
 print "Hello world!"
 ```
@@ -248,7 +248,7 @@ print restart
 
 ### `random`
 ```
-random [variable or numeric value]
+random [variable or number]
 ```
 It receives a single parameter, the exclusive maximum value. Returns a randomly generated number.
 ```php
@@ -275,7 +275,7 @@ Using the `serial` keyword along with `read`, `write`, `open` and `close` it is 
 
 #### `serial write`
 ```
-serial write [variable, numeric value or string]
+serial write [variable, number, string or string literal]
 ```
 Receives a single parameter of type number or variable or string. Transmits via serial the parameter's value.
 ```php
@@ -295,19 +295,19 @@ print serial read
 
 #### `serial open`
 ```
-serial open [variable or numeric value]
+serial open [string or string literal], [variable or number]
 ```
 Returns 1 if the serial port was correctly initialized, -1 if initialization failed.
 ```php
-print serial open 9600
-# Opens serial at 9600Bd
+serial open "COM1", 9600
+# Opens serial COM1 at 9600Bd
 ```
 
 ---
 
 ### `size`
 ```
-size [variable, numeric value or string]
+size [variable, number, string or string literal]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php
@@ -322,7 +322,7 @@ print size :s
 
 ### `system`
 ```
-system [string or string address]
+system [string or string literal]
 ```
 Passes a command or program name to the host environment, returns after the command has been completed.
 ```php
@@ -334,7 +334,7 @@ system "ls"
 
 ### `sqrt`
 ```
-sqrt [variable or numeric value]
+sqrt [variable or number]
 ```
 Receives a single parameter of type variable or string. Returns the length of the parameter received.
 ```php
