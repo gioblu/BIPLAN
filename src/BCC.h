@@ -43,11 +43,11 @@ public:
   };
 
   /* Checks consistency of syntax delimiters ------------------------------- */
-  bool check_delimeter(char *prog, char a, char b, char c = 0) {
+  bool check_delimeter(char *prog, char a, char b, char c = 0, bool aa = 0) {
     uint16_t ia = 0, ib = 0;
     char *p = prog;
     while(*p != 0) {
-      if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1))) {
+      if(!is_in_string(prog, p) && (aa || !BCC_IS_ADDRESS(*(p - 1)))) {
         if(*p == a) ia++;
         if(*p == b) ib++;
         if(c && (*p == c)) ib++;
@@ -301,7 +301,7 @@ public:
   bool pre_compilation_checks(char *prog) {
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
       error(0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
-    if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END))
+    if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, 0, 1))
       error(0, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
     if(!check_delimeter(prog, BP_STRING, BP_STRING))
       error(0, BP_ERROR_STRING_END);         // Check "" string separator
