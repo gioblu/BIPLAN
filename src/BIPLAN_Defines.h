@@ -53,25 +53,25 @@
   #define BP_OFFSET 35
 #endif
 
-/* Variables amount, set higher if required (max 92) ----------------------- */
+/* Variables amount, set higher if required (max 88 - BP_PARAMS) ----------- */
 
 #ifndef BP_VARIABLES
   #define BP_VARIABLES 50
 #endif
 
-/* Strings amount, set higher if required (max 92 - BP_ARGS) --------------- */
+/* Strings amount, set higher if required (max 88 - BP_ARGS) --------------- */
 
 #ifndef BP_STRINGS
   #define BP_STRINGS 20
 #endif
 
-/* Program arguments amount, set higher if required (max 92 - BP_STRINGS) */
+/* Program arguments amount, set higher if required (max 88 - BP_STRINGS) */
 /* handle args: https://www.thegeekstuff.com/2013/01/c-argc-argv/ */
 #ifndef BP_ARGS
   #define BP_ARGS 5
 #endif
 
-/* Functions amount, set higher if required (max 92) ----------------------- */
+/* Functions amount, set higher if required (max 88) ----------------------- */
 
 #ifndef BP_FUN_MAX
   #define BP_FUN_MAX 20
@@ -206,6 +206,7 @@ __________________________________________________|_____________|______| */
 #define BP_IF_HUMAN          "if"                 //            |      |
 //______________________________________________________________|______|
 #define BP_FOR               '@'                  // 64         | used |
+#define BP_GLOBAL_HUMAN      '@'                  //            |      |
 #define BP_FOR_HUMAN         "for"                //            |      |
 //______________________________________________________________|______|
 #define BP_LOGIC_AND         'A'                  // 65         | used |
@@ -267,10 +268,10 @@ __________________________________________________|_____________|______| */
 #define BP_NOT_EQ_HUMAN      "!="                 //            |      |
 //______________________________________________________________|______|
 #define BP_MEM_ACC           'U'                  // 85         | used |
-#define BP_MEM_ACC_HUMAN     "@["                 //            |      |
+#define BP_MEM_ACC_HUMAN     "mem["               //            |      |
 //______________________________________________________________|______|
 #define BP_VAR_ACC           'V'                  // 86         | used |
-#define BP_VAR_ACC_HUMAN     "$["                 //            |      |
+#define BP_VAR_ACC_HUMAN     "@["                 //            |      |
 //______________________________________________________________|______|
 #define BP_WRITE             'W'                  // 87         | used |
 #define BP_WRITE_HUMAN       "write"              //            |      |
@@ -292,13 +293,13 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_XOR               '^'                  // 94         | used |
 //______________________________________________________________|______|
-#define BP_INDEX             '_'                  // 95         | used |
-#define BP_INDEX_HUMAN       "index"              //            |      |
+//                            _                   // 97         |      |
 //______________________________________________________________|______|
 #define BP_INCREMENT         '`'                  // 96         | used |
 #define BP_INCREMENT_HUMAN   "++"                 //            |      |
 //______________________________________________________________|______|
-//                            a                   // 97         |      |
+#define BP_INDEX             'a'                  // 97         | used |
+#define BP_INDEX_HUMAN       "index"              //            |      |
 //______________________________________________________________|______|
 #define BP_CHAR              'b'                  // 98         | used |
 #define BP_CHAR_HUMAN        "char "              //            |      |

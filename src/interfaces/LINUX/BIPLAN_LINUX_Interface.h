@@ -36,6 +36,12 @@
   #define LSBFIRST 1
   #define MSBFIRST 2
 
+  /* Maximum length of a number (represented as a string) ----------------- */
+
+  #ifndef BP_NUM_MAX
+    #define BP_NUM_MAX 20 // Handle 64 bits machine limit
+  #endif
+
   uint32_t micros();
 
   uint32_t millis();
@@ -148,6 +154,10 @@
 
   #ifndef BPM_SERIAL_T
     #define BPM_SERIAL_T int16_t
+  #endif
+
+  #ifndef BPM_SERIAL_OPEN
+    #define BPM_SERIAL_OPEN(S, N, B) S = serialOpen(N, B);
   #endif
 
   #ifndef BPM_SERIAL_WRITE

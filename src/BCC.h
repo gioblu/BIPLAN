@@ -168,16 +168,17 @@ public:
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
+    bool vt = (var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN);
     char *p, str[BP_KEYWORD_MAX], code[4] =
-      {var_type == BP_VAR_ADDR_HUMAN ? BP_VAR_ADDR : var_type, 0, 0, 0};
+      {vt ? BP_VAR_ADDR : var_type, 0, 0, 0};
     uint8_t n;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
-      *p = (var_type == BP_VAR_ADDR_HUMAN) ? BP_VAR_ADDR : var_type;
+      *p = vt ? BP_VAR_ADDR : var_type;
       str[n++] = *(++p);
-      if(var_type == BP_VAR_ADDR_HUMAN) if(BCC_IS_ADDRESS(var_id)) var_id++;
+      if(vt && BCC_IS_ADDRESS(var_id)) var_id++;
       else if(BCC_IS_ADDRESS(string_id)) string_id++;
-      *(p++) = (var_type == BP_VAR_ADDR_HUMAN) ? var_id : string_id;
+      *(p++) = vt ? var_id : string_id;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
@@ -189,12 +190,12 @@ public:
         } else break;
       if(n) {
         str[n] = 0;
-        code[1] = (var_type == BP_VAR_ADDR_HUMAN) ? var_id : string_id;
+        code[1] = vt ? var_id : string_id;
         code[2] = 0;
         compile(position, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !is_in_string(prog, p)) return p;
-        if(var_type == BP_VAR_ADDR_HUMAN) var_id++; else string_id++;
+        if(vt) var_id++; else string_id++;
         return (char *)position;
       } return p;
     } return NULL;
@@ -344,6 +345,7 @@ public:
     for(uint8_t i = 0; i < BP_FUN_MAX; i++) compile_functions(prog);
     var_id = BP_OFFSET;
     find_end(prog);
+    compile_variables(prog, BP_GLOBAL_HUMAN);
     compile_variables(prog, BP_VAR_ADDR_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
     compile_char(prog, BP_RND_HUMAN, BP_RND);
@@ -382,9 +384,9 @@ public:
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
     compile_for(prog);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
+    compile(prog, "args[", "S");
     compile_char(prog, "step", BP_COMMA);
     compile(prog, "not", "1-");
-    compile(prog, "args[", "S");
     compile_char(prog, BP_IF_HUMAN, BP_IF);
     compile_char(prog, BP_IO_HUMAN, BP_IO);
     compile_char(prog, "to", BP_COMMA);
