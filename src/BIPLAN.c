@@ -661,7 +661,7 @@ BP_VAR_T bip_file_get_call() {
   DCD_NEXT;
   if(dcd_current == BP_OPEN) {
     DCD_NEXT;
-    BP_VAR_T f = bip_get_file_id();
+    BP_VAR_T f = bip_get_file_id(), id = BP_FILES_MAX;
     if(f == BP_FILES_MAX) return BP_FILES_MAX;
     if(dcd_current == BP_STRING) {
       bip_read_string(bip_string);
@@ -669,15 +669,18 @@ BP_VAR_T bip_file_get_call() {
       BP_VAR_T v = bip_relation();
       BPM_FILE_OPEN(bip_files[f].file, bip_string, v);
       BP_EMPTY_STRING;
-    } else if(bip_ignore(BP_STR_ADDR)) {
-      uint8_t id = *(dcd_ptr - 1) - BP_OFFSET;
-      BP_EXPECT(BP_COMMA);
-      BP_VAR_T v = bip_relation();
-      BPM_FILE_OPEN(bip_files[f].file, bip_strings[id], v);
+    } else {
+      if(bip_ignore(BP_STR_ADDR)) id = *(dcd_ptr - 1) - BP_OFFSET;
+      else if(dcd_current == BP_STR_ACC) id = bip_access(BP_STR_ACC);
+      if(id != BP_FILES_MAX) {
+        BP_EXPECT(BP_COMMA);
+        BP_VAR_T v = bip_relation();
+        BPM_FILE_OPEN(bip_files[f].file, bip_strings[id], v);
+      }
     }
     if(bip_files[f].file == NULL) bip_error(dcd_ptr, BP_ERROR_FILE_OPEN);
     return f;
-  } else if (dcd_current == BP_READ) {
+  } else if(dcd_current == BP_READ) {
     BP_VAR_T r;
     BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX)
     else return BPM_FILE_READ(bip_files[r].file);
