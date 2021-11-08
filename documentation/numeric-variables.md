@@ -12,7 +12,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Numeric variables
-BIPLAN supports only one numeric variable type that is by default `long` but can be easily changed editing `BIPLAN_Defines.h`, although it must be signed, see [configuration](/documentation/configuration.md). Numeric variables are identified by `@`. The name of variables must not contain numbers, must be composed by lowercase and or uppercase letters and or the symbol `_`. Each variable is just an entry of a global array of variables. BIPLAN supports up to 92 variables.
+BIPLAN supports only one numeric variable type that is by default `long` but can be easily changed editing `BIPLAN_Defines.h`, although it must be signed, see [configuration](/documentation/configuration.md). Numeric variables are identified by `@`. The name of variables must not contain numbers, must be composed by lowercase and or uppercase letters and or the symbol `_`. Each variable is just an entry of a global array of variables. BIPLAN supports up to 88 variables.
 
 See below how to define a variable:
 

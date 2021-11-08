@@ -47,7 +47,7 @@ Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
 102334155
 ```
-On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm. 
+On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm.
 
 ### Performance
 
