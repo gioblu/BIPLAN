@@ -5,7 +5,7 @@
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - **[Cycles](/documentation/cycles.md)** [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
 - [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
-- [Numeric variables](/documentation/numeric-variables.md) [`$`](/documentation/numeric-variables.md) [`$[]`](/documentation/numeric-variables.md)
+- [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
 - [Strings](/documentation/strings.md) [`:`](/documentation/strings.md) [`:[]`](/documentation/strings.md)
 - [System functions](/documentation/system-functions.md) [`adc read`](/documentation/system-functions.md#adc-read) [`char`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`file close`](/documentation/system-functions.md#file-close) [`file open`](/documentation/system-functions.md#file-open) [`file read`](/documentation/system-functions.md#file-read) [`file write`](/documentation/system-functions.md#file-write) [`jump`](/documentation/system-functions.md#jump) [`io open`](/documentation/system-functions.md#io-open) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`index`](/documentation/system-functions.md#index) [`input`](/documentation/system-functions.md#input) [`millis`](/documentation/system-functions.md#millis) [`print`](/documentation/system-functions.md#print) [`random`](/documentation/system-functions.md#random) [`restart`](/documentation/system-functions.md#restart) [`serial open`](/documentation/system-functions.md#serial-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`size`](/documentation/system-functions.md#size) [`sqrt`](/documentation/system-functions.md#sqrt) [`stop`](/documentation/system-functions.md#stop) [`system`](/documentation/system-functions.md#system)
@@ -17,7 +17,7 @@ for [variable assignment] to [expression] step [expression]
   [statement]
 next
 ```
-The `for` is a cycle that supports a single local variable that can be set with an initial value and a limit value that is specified after `to`:  
+The `for` is a cycle that supports a single local variable identified by `$` that can be set with an initial value and a limit value that is specified after `to`:  
 ```php
 for $i = 0 to 5
   print $i
@@ -46,7 +46,7 @@ next
 ```
 
 #### `break`
-The BIPLAN `for` supports the `break` statement as other programming languages do:
+The BIPLAN `for` supports `break` as other programming languages do:
 ```php
 for $i = 0 to 5
   if $i == 2 break end
@@ -56,10 +56,10 @@ print "Finished"
 
 # Prints 0, 1, Finished
 ```
-When the `break` statement is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
+When `break` is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
 
 #### `continue`
-The BIPLAN `for` supports the `continue` statement as other programming languages do:
+The BIPLAN `for` supports `continue` as other programming languages do:
 ```php
 for $i = 0 to 5
   if $i == 2 continue end
@@ -69,7 +69,7 @@ print "Finished"
 
 # Prints 0, 1, 3, 4, 5, Finished
 ```
-When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
+When `continue` is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
 ---
 
@@ -79,7 +79,7 @@ while [condition]
   [statement]
 next
 ```
-The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until a `next` statement is encountered.   
+The `while` statement, if the condition is truthy, forces the cyclical execution of the following statements until `next` is encountered.   
 ```php
 while io read 12 == HIGH
   print "The pin is HIGH"
@@ -89,7 +89,7 @@ next
 ```
 
 #### `break`
-The BIPLAN `while` supports the `break` statement as other programming languages do:
+The BIPLAN `while` supports `break` as other programming languages do:
 ```php
 while true
   if io read 12 == HIGH
@@ -100,20 +100,20 @@ print "Button pressed!"
 
 # Prints Button pressed when pin 12 is HIGH
 ```
-When the `break` statement is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
+When `break` is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
 
 #### `continue`
-The BIPLAN `while` supports the `continue` statement as other programming languages do:
-```php
-$treshold = 512
+The BIPLAN `while` supports `continue` as other programming languages do:
+```ruby
+@treshold = 512
 while true
-  if adc read A0 > $treshold
+  if adc read A0 > @treshold
     continue
   else
     print "Alert"
   end
 next
 
-# Prints Alert if the reading is less than $treshold
+# Prints Alert if the reading is less than 512
 ```
-When the `continue` statement is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
+When `continue` is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
