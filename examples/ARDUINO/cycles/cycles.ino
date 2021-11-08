@@ -23,23 +23,23 @@ void error_callback(char *position, const char *string) {
 char program[] =
 "# Test inc speed \n\
 print \"BIPLAN cycles test start...\n\" \n\
-$inc = 0 \n\
-$time = millis \n\
+@inc = 0 \n\
+@time = millis \n\
 for $i = 0 to 10000 \n\
- ++$inc \n\
+ ++@inc \n\
 next \n\
-print millis - $time, \"ms  - for   10000 increments\", \"\n\" \n\
-$inc = 0\n\
-$time = millis\n\
-while $inc < 10000 \n\
-  ++$inc \n\
+print millis - @time, \"ms  - for   10000 increments\", \"\n\" \n\
+@inc = 0\n\
+@time = millis\n\
+while @inc < 10000 \n\
+  ++@inc \n\
 next \n\
-print millis - $time, \"ms - while 10000 increments\", \"\n\" \n\
-$inc = 0\n\
-$time = millis\n\
-label $loop \n\
-if ++$inc < 10000 jump $loop end \n\
-print millis - $time, \"ms - jump  10000 increments\", \"\n\" \n\
+print millis - @time, \"ms - while 10000 increments\", \"\n\" \n\
+@inc = 0\n\
+@time = millis\n\
+label @loop \n\
+if ++@inc < 10000 jump @loop end \n\
+print millis - @time, \"ms - jump  10000 increments\", \"\n\" \n\
 print \"BIPLAN cycles test ended.\n\" \n\
 stop\n";
 

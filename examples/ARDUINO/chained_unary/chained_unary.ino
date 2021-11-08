@@ -22,10 +22,10 @@ void error_callback(char *position, const char *string) {
 char program[] =
 "# Unary test \n\
 print \"Chained unary test:\n\" \n\
-$unary = 0 \n\
-print \"Expected: 2 - Computed: \", ++++$unary \n\
-print \"Expected: 0 - Computed: \", ----$unary \n\
-print \"Expected: 1 - Computed: \", --++++$unary \n\
+@unary = 0 \n\
+print \"Expected: 2 - Computed: \", ++++@unary \n\
+print \"Expected: 0 - Computed: \", ----@unary \n\
+print \"Expected: 1 - Computed: \", --++++@unary \n\
 stop\n";
 
 void setup() {

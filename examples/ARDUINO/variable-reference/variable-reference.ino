@@ -22,23 +22,23 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# Variables \n\
-$a = 10\n\
-$b = 22\n\
-$c = 14\n\
-$d = 9\n\
+@a = 10\n\
+@b = 22\n\
+@c = 14\n\
+@d = 9\n\
 print \"Variables initial state \n\" \n\
 # Print all variables \n\
 for $i = 0 to 3 \n\
-  print $[$i], \"\n\" \n\
+  print @[$i], \"\n\" \n\
 next \n\
 # Set all variables \n\
 for $i = 0 to 3 \n\
-  $[$i] = $i \n\
+  @[$i] = $i \n\
 next \n\
 print \"Variables state changed by reference \n\" \n\
 # Print all variables \n\
 for $i = 0 to 3 \n\
-  print $[$i], \"\n\" \n\
+  print @[$i], \"\n\" \n\
 next \n\
 stop\n";
 

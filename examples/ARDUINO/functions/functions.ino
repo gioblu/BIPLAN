@@ -24,8 +24,8 @@ char program[] =
 print \"\nComputing sum of 1 + 1 = \", sum(1, 1) \n\
 print \"\nComputing mul of 2 x 2 = \", mul(2, 2) \n\
 print \"\nComputing div of 10 / 2 = \", div(10, 2) \n\
-$test = div(100, 2) \n\
-print \"\nexpected return value 50: \", $test, \"\nempty_func return value: \", empty_func() \n\
+@test = div(100, 2) \n\
+print \"\nexpected return value 50: \", @test, \"\nempty_func return value: \", empty_func() \n\
 print \"\nBIPLAN test ended.\" \n\
 stop # Program end \n\
 function sum($a, $b) \n\

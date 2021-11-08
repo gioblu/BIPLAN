@@ -25,7 +25,6 @@ char program[] =
 "# Condition test \n\
 print \"BIPLAN conditions test start...\n\" \n\
 block(false) \n\
-block(true) \n\
 stop\n\
 function block($condition) \n\
   if $condition  \n\
@@ -34,12 +33,7 @@ function block($condition) \n\
   if not $condition \n\
     print \"Block if ok\n\" \n\
   end \n\
-  if $condition \n\
-    print \"Block if fail\n\" \n\
-  else  \n\
-    print \"Block else ok\n\" \n\
-  end \n\
-return\n";
+return 0\n";
 
 void setup() {
   pinMode(13, OUTPUT);

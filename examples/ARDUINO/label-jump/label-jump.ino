@@ -21,14 +21,14 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# BIPLAN jump to known statement \n\
-jump $loop\n\
+jump @loop\n\
 label $back \n\
   print \"Program finished.\" \n\
   stop \n\
 # Count up to 10 \n\
-label $loop \n\
-  print ++$i, \"\n\" \n\
-  if $i < 10 jump $loop end \n\
+label @loop \n\
+  print ++@i, \"\n\" \n\
+  if @i < 10 jump @loop end \n\
   jump $back \n\
 \n";
 

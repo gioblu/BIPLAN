@@ -21,15 +21,15 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "print \"X Drawer example \n Please input resolution between 3 and 9:\" \n\
-$res = 0 \n\
-while $res < 3 \n\
-  $res = serialRead \n\
-  if ($res >= 0) $res = number $res end \n\
+@res = 0 \n\
+while @res < 3 \n\
+  @res = serialRead \n\
+  if (@res >= 0) @res = number @res end \n\
 next \n\
-print \" \", $res--, \"\n\" \n\
-for $y = 0 to $res \n\
-  for $x = 0 to $res \n\
-    if $x == $y || ($x + $y == $res) \n\
+print \" \", @res--, \"\n\" \n\
+for $y = 0 to @res \n\
+  for $x = 0 to @res \n\
+    if $x == $y || ($x + $y == @res) \n\
       print \"X\" \n\
     else \n\
       print \" \" \n\

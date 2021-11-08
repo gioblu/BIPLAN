@@ -22,39 +22,41 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "print \"\nBIPLAN CR.1 prime calculator \nDigit the test range: \" \n\
-$index = 0 \n\
-$range = 0 \n\
-$result = 0 \n\
+@index = 0 \n\
+@range = 0 \n\
+@result = 0 \n\
 while true \n\
-  $value = serialRead \n\
-  if $value < 0 continue end \n\
-  if $value == CR break end \n\
-  if not numeric $value \n\
+  @value = serialRead \n\
+  if @value < 0 continue end \n\
+  if @value == CR break end \n\
+  if not numeric @value \n\
     print \"Only numbers are accepted \n\" \n\
     restart \n\
   end \n\
-  :str[$index++] = $value \n\
+  :str[@index++] = @value \n\
 next \n\
 print :str, \"\n\" \n\
-$range = number :str \n\
-$time = millis \n\
-for $i = 0 to $range \n\
+@range = number :str \n\
+@time = millis \n\
+for $i = 0 to @range \n\
   if prime($i) \n\
     print $i, \"\n\" \n\
-    ++$result \n\
+    ++@result \n\
   end \n\
 next \n\
-print \"Elapsed time: \", millis - $time, \" milliseconds \n\" \n\
-print \"Prime numbers found: \", $result, \"\n\" \n\
+print \"Elapsed time: \", millis - @time, \" milliseconds \n\" \n\
+print \"Prime numbers found: \", @result, \"\n\" \n\
 restart \n\
 function prime($n) \n\
-  if $n <= 1 return 0 end \n\
-  if $n <= 3 return 1 end \n\
-  if ($n % 2 == 0) || ($n % 3 == 0) return 0 end \n\
-  for $u = 2 to sqrt($n) + 1 \n\
-    if($n % $u == 0) return 0 end \n\
-    if $n == $u return 1 end \n\
-  next \n\
+  if $n <= 1 result = 0 end \n\
+  else if $n <= 3 result = 1 end \n\
+  else if ($n % 2 == 0) || ($n % 3 == 0) result = 0 end \n\
+  else \n\
+    for $u = 2 to sqrt($n) + 1 \n\
+      if($n % $u == 0) result = 0 end \n\
+      if $n == $u result = 1 end \n\
+    next \n\
+  end \n\
 return 1 \n\
 \n";
 

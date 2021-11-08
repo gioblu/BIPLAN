@@ -22,23 +22,23 @@ void error_callback(char *position, const char *string) {
 
 char program[] =
 "# Memory update \n\
-@[0] = 10\n\
-@[1] = 22\n\
-@[2] = 14\n\
-@[3] = 9\n\
+mem[0] = 10\n\
+mem[1] = 22\n\
+mem[2] = 14\n\
+mem[3] = 9\n\
 print \"Variables initial state \n\" \n\
 # Print memory \n\
 for $i = 0 to 3 \n\
-  print @[$i], \"\n\" \n\
+  print mem[$i], \"\n\" \n\
 next \n\
 # Update memory \n\
 for $i = 0 to 3 \n\
-  @[$i] = $i \n\
+  mem[$i] = $i \n\
 next \n\
 print \"Memory state changed by reference \n\" \n\
 # Print memory \n\
 for $i = 0 to 3 \n\
-  print @[$i], \"\n\" \n\
+  print mem[$i], \"\n\" \n\
 next \n\
 stop\n";
 
