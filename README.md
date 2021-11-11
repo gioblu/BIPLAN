@@ -33,7 +33,7 @@ return result
 ```
 Compiled in 43 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#40)xf#$#$%$&)$&1@'0,$#-1$%$&$&tt$%+$&nrt
+p~#40)xf#{K{L{M){M1@#0,{K-1{L{M{Mtt{L+{Mnrt
 ```
 Compiler output:
 ```
