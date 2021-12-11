@@ -91,14 +91,28 @@ file close @f
 #### `file read`
 
 ```
-file read [pointer to file]
+file read [pointer to file], [variable or number]
 ```
-It receives a single parameter, the file pointer. It returns one character.
+It receives two parameters, the file pointer and the mode; It returns one character.
 
 ```ruby
-@c = file read @f
-# Reads one character from test.txt
+@c = file read @f, 0
+# Reads one character from test.txt using read mode
 ```
+Available modes:
+
+- `0`: read (r)
+- `1`: read binary (rb)
+- `2`: read write (r+)
+- `3`: read write binary (rb+)
+- `4`: write (w)
+- `5`: write binary (wb)
+- `6`: write read (w+)
+- `7`: write read binary (wb+)
+- `8`: append (a)
+- `9`: append binary (ab)
+- `10`: append read write (a+)
+- `11`: append binary read write (ab+)
 
 #### `file write`
 
