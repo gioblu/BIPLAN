@@ -204,11 +204,12 @@ void bip_init(
 };
 
 void bip_set_default() {
-  bip_fw_id = 0, bip_fn_id = 0, bip_ended = false;
+  bip_fw_id = 0, bip_fn_id = 0, bip_ended = false, bip_arg_id = 0;
   for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
   for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
   for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
     for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
+  for(uint16_t i = 0; i < BP_FILES_MAX; i++) bip_files[i].free = true;
   BP_EMPTY_STRING;
 };
 
@@ -266,7 +267,7 @@ BP_VAR_T bip_access(BP_VAR_T v) {
 
 /* FACTOR: (n) ------------------------------------------------------------- */
 BP_VAR_T bip_factor() {
-  BP_VAR_T v = 0, b;
+  BP_VAR_T v = 0;
   bool bitwise_not = 0, minus = 0;
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
@@ -419,7 +420,7 @@ void bip_skip_block() {
     if(dcd_current == BP_ENDOFINPUT) bip_error(dcd_ptr, BP_ERROR_BLOCK);
     DCD_NEXT;
   } while(id >= 1);
-}
+};
 
 /* IF ---------------------------------------------------------------------- */
 void bip_if_call() {
