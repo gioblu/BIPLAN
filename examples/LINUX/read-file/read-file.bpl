@@ -1,7 +1,7 @@
 
 # This program reads and prints itself in the console
 
-@f = file open "read_file.bip", 0
+@f = file open "read-file.bip", READ
 label @loop
 @i = file read @f
 if @i != EOF
