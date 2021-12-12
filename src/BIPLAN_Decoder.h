@@ -41,7 +41,7 @@ uint8_t dcd_next_code() {
   if(*dcd_ptr == BP_STRING) {
     dcd_next_ptr = dcd_ptr;
     do {
-      ++dcd_next_ptr;
+      if(*dcd_next_ptr++ == BP_BACKSLASH) dcd_next_ptr++;
     } while(*dcd_next_ptr != BP_STRING);
     ++dcd_next_ptr;
     return BP_STRING;
@@ -82,16 +82,32 @@ uint8_t dcd_next_code() {
 #define DCD_IGNORE(C, V) \
   if(V = (C == dcd_current)) { DCD_NEXT; }
 
+/* Removes backslash from string ------------------------------------------- */
+  void remove_backslash(char *s) {
+    uint16_t j = 0;
+    for(uint16_t i = 0; s[i] != '\0'; ++i) {
+      if(s[i] != '\\') {
+        s[j] = s[i];
+        ++j;
+      }
+    }
+    s[j] = '\0';
+  };
+
 /* Decodes a string -------------------------------------------------------- */
 bool decoder_string(char *d, uint16_t l) {
   char *string_end;
   uint16_t string_length;
+  bool bs = false;
   if(dcd_current != BP_STRING) return false;
   string_end = strchr(dcd_ptr + 1, BP_STRING);
+  while(*(string_end - 1) == 92 && (bs = true))
+    string_end = strchr(string_end + 1, BP_STRING);
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
   if(l < string_length) string_length = l;
   memcpy(d, dcd_ptr + 1, string_length);
   d[string_length] = 0;
+  if(bs) remove_backslash(d);
   return true;
 };

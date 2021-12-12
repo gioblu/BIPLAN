@@ -67,6 +67,7 @@ public:
     bool in_str = false;
     char *p = prog;
     while(pos >= p) {
+      if(in_str && *p == BP_BACKSLASH) { p += 2; continue; } // Jump escape + 1
       // Returns false if " is found outside a string
       if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
       if(*p == BP_STRING) in_str = !in_str;
