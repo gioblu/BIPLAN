@@ -291,6 +291,7 @@ public:
         }
       } else return longest;
     } while(*p && p);
+    return NULL;
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
