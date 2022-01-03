@@ -91,17 +91,11 @@ public:
   /* Remove comments from program ------------------------------------------ */
   void remove_comments(char *prog) {
     if(fail) return;
-    char *i = prog, *j = prog;
-    bool in_str = false;
-    while(*j != 0) {
-      *i = *j++;
-      if(*i == BP_STRING) in_str = !in_str;
-      if(*i != BP_REM) i++;
-      else {
-        if(in_str) i++;
-        else while((*j != BP_CR) && (*j != BP_LF)) (void)(*j++);
-      }
-    } *i = 0;
+    const char c[2] = {BP_REM, 0};
+    char *p;
+    while(p = strstr(prog, c))
+      if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1)))
+        while((*p != BP_CR) && (*p != BP_LF)) *(p++) = ' ';
   };
 
   /* Compiles character constants suh as '@' into 64 (its decimal value) --- */
