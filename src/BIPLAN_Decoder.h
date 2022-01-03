@@ -85,8 +85,8 @@ uint8_t dcd_next_code() {
 /* Removes backslash from string ------------------------------------------- */
   void remove_backslash(char *s) {
     uint16_t j = 0;
-    for(uint16_t i = 0; s[i] != '\0'; ++i) {
-      if(s[i] != '\\') {
+    for(uint16_t i = 0; s[i] != '\0'; i++) {
+      if(s[i] != BP_BACKSLASH) {
         s[j] = s[i];
         ++j;
       }
@@ -101,7 +101,7 @@ bool decoder_string(char *d, uint16_t l) {
   bool bs = false;
   if(dcd_current != BP_STRING) return false;
   string_end = strchr(dcd_ptr + 1, BP_STRING);
-  while(*(string_end - 1) == 92 && (bs = true))
+  while(*(string_end - 1) == BP_BACKSLASH && (bs = true))
     string_end = strchr(string_end + 1, BP_STRING);
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
