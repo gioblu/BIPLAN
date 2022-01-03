@@ -320,6 +320,7 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
+    compile(prog, "'\\''", "39");
     compile_char_constants(prog);
     remove_comments(prog);
     if(!pre_compilation_checks(prog)) return false;
