@@ -20,7 +20,6 @@ A macro is a capitalized keyword associated with a single line of code containin
 
 
 ```php
-# Macro definition
 macro WAIT delay 100 
 
 while true
@@ -29,12 +28,14 @@ while true
 next
 ```
 
-Macros are useful for the following use cases:
+After the pre-processing phase the code above looks like this:
 
-1. Associate a keyword with an integer constant, without consuming a variable address
-2. Associate a keyword with a string literal constant, without consuming a string address
-3. Associate a keyword with a system function call with a predefined set of parameters
-4. Associate a keyword with a function call with a predefined set of parameters
-5. Associate a keyword to language syntax
 
+```php
+while true
+  print "Hello World!"
+  delay 1000
+next
+```
+Macros are useful to associate a keyword with an integer constant or a string literal, without consuming a variable address. Macros can be used also to associate a keyword to a system function call or a function call with a predefined set of parameters.
 
