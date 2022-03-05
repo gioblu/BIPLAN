@@ -21,6 +21,10 @@
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
 
+/* Checks if the character passed is an acceptable keyword's symbol -------- */
+#define BCC_IS_CAP_KEYWORD(C) \
+  ((C >= 'A' && C <= 'Z') || (C == '_'))
+
 /* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDRESS(C) ( \
   (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || \
@@ -324,7 +328,7 @@ public:
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
       while(*p == BP_SPACE) p++;
       uint8_t i;
-      for(i = 0; BCC_IS_KEYWORD(*p); i++, p++) {
+      for(i = 0; BCC_IS_CAP_KEYWORD(*p); i++, p++) {
         macro_name[i] = *p;
         *p = BP_SPACE;
       }
