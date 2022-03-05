@@ -16,5 +16,5 @@ def fibonacci(n):
 for i in range(100000):
  fibonacci(40)
 
-print fibonacci(40)
+print(fibonacci(40))
 print(datetime.datetime.now() - begin_time)

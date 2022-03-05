@@ -17,11 +17,11 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
-/* Checks if the character passed is an acceptable keyword's symbol -------- */
+/* Checks if the character is an acceptable keyword symbol ----------------- */
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
 
-/* Checks if the character passed is an acceptable keyword's symbol -------- */
+/* Checks if the character is an acceptable capitalized keyword symbol ------*/
 #define BCC_IS_CAP_KEYWORD(C) \
   ((C >= 'A' && C <= 'Z') || (C == '_'))
 

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <BCC.h>
 
-#define BCC_MAX_PROGRAM_SIZE 2000
 char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;
 
