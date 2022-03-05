@@ -58,6 +58,8 @@ public:
   /* Finds the end of a program -------------------------------------------- */
   void find_end(char *prog) {
     char *p;
+    if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE) 
+      return error(0, BP_ERROR_PROGRAM_LENGTH);
     for(p = prog; *p != 0; p++);
     stop = p;
   };
@@ -133,9 +135,21 @@ public:
         if(p && *p) return p;
         else return NULL;
       }
-      for(uint16_t i = 0; i < kl; i++, p++)
-        if(i < cl && code[i]) *p = code[i];
-        else *p = BP_SPACE;
+      if(kl >= cl) {
+        for(uint16_t i = 0; i < kl; i++, p++)
+          if(i < cl && code[i]) *p = code[i];
+          else *p = BP_SPACE;
+      } else {
+        uint8_t ofs = cl - kl;
+        if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE) 
+          error(0, BP_ERROR_PROGRAM_LENGTH);
+        else {  
+          memmove(p + ofs, p, strlen(p));
+          *(stop + cl) = 0;
+          for(uint16_t i = 0; i < cl; i++, p++) *p = code[i];
+          find_end(prog);
+        }
+      }
       if(post) {
         while(*p == BP_SPACE) p++;
         if(*p == post) *p = BP_SPACE;
@@ -230,9 +244,8 @@ public:
 
   /* Compile user-defined functions in BIP byte-code ----------------------- */
   char *compile_function_pass(char *prog, char *pos) {
-    char fn_keyword[BP_KEYWORD_MAX];
-    char fn_address[3];
-    char *p = find_longest_fun_name(prog), *p2 = p;
+    char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
+    char *p = find_longest_keyword(prog, true), *p2 = p;
     uint8_t keyword_length = 0;
     if(p && *p) {
       if(BCC_IS_ADDRESS(fun_id)) fun_id++;
@@ -268,14 +281,16 @@ public:
     while(pos) pos = compile_function_pass(prog, pos);
   };
 
-  char *find_longest_fun_name(char *prog) {
+  /* Longest keyword  ----------------------------------------------------- */
+
+  char *find_longest_keyword(char *prog, bool t) {
     char *p = prog, *p2, *longest = NULL;
     do {
       uint8_t i = 0, result = 0;
-      p = strstr(p, BP_FUN_DEF_HUMAN), p2 = p;
+      p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF), p2 = p;
       if(p && *p) {
         if(is_in_string(prog, p)) {
-          p = strstr(p + 1, BP_FUN_DEF_HUMAN), p2 = p;
+          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF), p2 = p;
           if(!p || !*p) return NULL;
         }
         while(BCC_IS_KEYWORD(*p)) p++;
@@ -286,12 +301,44 @@ public:
           result = i;
         }
         if(i >= BP_KEYWORD_MAX) {
-          error(0, BP_ERROR_FUNCTION_NAME);
+          error(0, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
           return NULL;
         }
       } else return longest;
     } while(*p && p);
     return NULL;
+  };
+
+  /* Pre-processor macros -------------------------------------------------- */
+  void compile_macros(char *prog) {
+    if(fail) return;
+    char *p = prog;
+    while(compile_macro(p));
+  };
+
+  bool compile_macro(char *prog) {
+    char macro_name[BP_KEYWORD_MAX];
+    char macro_code[BP_MACRO_MAX];
+    char *p = find_longest_keyword(prog, false);
+    if(p && *p) {
+      while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
+      while(*p == BP_SPACE) p++;
+      uint8_t i;
+      for(i = 0; BCC_IS_KEYWORD(*p); i++, p++) {
+        macro_name[i] = *p;
+        *p = BP_SPACE;
+      }
+      macro_name[i] = 0;
+      while(*p == BP_SPACE) p++;
+      for(i = 0; (*p != BP_CR) && (*p != BP_LF); i++) {
+        macro_code[i] = *p;
+        *(p++) = BP_SPACE;
+      }
+      macro_code[i] = 0;
+      compile(prog, macro_name, macro_code);
+      if(find_longest_keyword(prog, false)) return true;
+    }
+    return false;
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
@@ -320,6 +367,7 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
+    compile_macros(prog);
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);
     remove_comments(prog);

@@ -17,6 +17,12 @@
 
 #include "utils/errors/BIPLAN_Errors.h"
 
+/* BIPLAN maximum program size --------------------------------------------- */
+
+#ifndef BP_MAX_PROGRAM_SIZE
+  #define BCC_MAX_PROGRAM_SIZE 2000
+#endif
+
 /* BIPLAN memory size ------------------------------------------------------ */
 
 #ifndef BP_MEM_SIZE
@@ -65,6 +71,12 @@
   #define BP_STRINGS 20
 #endif
 
+/* Preprocessor macros maximum length -------------------------------------- */
+
+#ifndef BP_MACRO_MAX
+  #define BP_MACRO_MAX 255
+#endif
+
 /* Program arguments amount, set higher if required (max 88 - BP_STRINGS) */
 /* handle args: https://www.thegeekstuff.com/2013/01/c-argc-argv/ */
 #ifndef BP_ARGS
@@ -106,6 +118,13 @@
 #ifndef BP_CYCLE_DEPTH
   #define BP_CYCLE_DEPTH 20
 #endif
+
+/* Pre-processor macro symbol ---------------------------------------------- */
+
+#ifndef BP_MACRO_DEF
+  #define BP_MACRO_DEF "macro"
+#endif
+
 
 /* BIP and BIPLAN language syntax ---------------------------------------------
 _______________________________________________________________________
