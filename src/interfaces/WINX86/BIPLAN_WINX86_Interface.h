@@ -19,7 +19,7 @@
 #pragma once
 
 #if defined(_WIN32)
-
+  #include "BIPLAN_Bounds.h"
   #include <chrono>
   #include <thread>
   #include <sstream>

@@ -19,6 +19,7 @@
 #pragma once
 
 #if defined(RPI)
+  #include "BIPLAN_Bounds.h"
   #include <inttypes.h>
   #include <stdlib.h>
   #include <string.h>

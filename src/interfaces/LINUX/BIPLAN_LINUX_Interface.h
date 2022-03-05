@@ -20,6 +20,7 @@
 #pragma once
 
 #if defined(LINUX) || defined(ANDROID)
+  #include "BIPLAN_Bounds.h"
   #include <string.h>
   #include <unistd.h>
   #include <fcntl.h>

@@ -20,6 +20,7 @@
 
 #if defined(ARDUINO)
   #include "Arduino.h"
+  #include "BIPLAN_Bounds.h"
 
   /* String conversion ---------------------------------------------------- */
 
