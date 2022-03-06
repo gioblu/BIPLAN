@@ -10,7 +10,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2021 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2022 - gioscarab@gmail.com
   BIP interpreter bounds and byte-code symbols */
 
 #pragma once
