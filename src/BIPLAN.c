@@ -75,7 +75,9 @@ BPM_SERIAL_T       bip_serial_fun;
     bip_read_string(bip_string); \
     V = F(bip_string); \
     BP_EMPTY_STRING; \
-  } return V;
+  } else if(dcd_current == BP_STR_ACC) \
+    V = F(bip_strings[bip_access(dcd_current)]); \
+  return V;
 
 /* SYSTEM CALL WITH 2 EXPRESSION PARAMETER --------------------------------- */
 #define BP_SYS_EXPRESSION_2(F) \
