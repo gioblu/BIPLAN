@@ -39,13 +39,13 @@
   #define BP_OFFSET 35
 #endif
 
-/* Variables amount, set higher if required (max 88 - BP_PARAMS) ----------- */
+/* Variables amount, set higher if required (max 91 - BP_PARAMS) ----------- */
 
 #ifndef BP_VARIABLES
   #define BP_VARIABLES 25
 #endif
 
-/* Strings amount, set higher if required (max 88 - BP_ARGS) --------------- */
+/* Strings amount, set higher if required (max 91 - BP_ARGS) --------------- */
 
 #ifndef BP_STRINGS
   #define BP_STRINGS 10

@@ -39,16 +39,16 @@
   #define BP_OFFSET 35
 #endif
 
-/* Variables amount, set higher if required (max 88 - BP_PARAMS) ----------- */
+/* Variables amount, set higher if required (max 91 - BP_PARAMS) ----------- */
 
 #ifndef BP_VARIABLES
-  #define BP_VARIABLES 78
+  #define BP_VARIABLES 81
 #endif
 
-/* Strings amount, set higher if required (max 88 - BP_ARGS) --------------- */
+/* Strings amount, set higher if required (max 91 - BP_ARGS) --------------- */
 
 #ifndef BP_STRINGS
-  #define BP_STRINGS 83
+  #define BP_STRINGS 86
 #endif
 
 /* Preprocessor macros maximum length -------------------------------------- */
@@ -63,10 +63,10 @@
   #define BP_ARGS 5
 #endif
 
-/* Functions amount, set higher if required (max 88) ----------------------- */
+/* Functions amount, set higher if required (max 91) ----------------------- */
 
 #ifndef BP_FUN_MAX
-  #define BP_FUN_MAX 88
+  #define BP_FUN_MAX 91
 #endif
 
 /* Function parameters amount, set higher if required ---------------------- */
