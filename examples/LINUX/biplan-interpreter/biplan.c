@@ -1,8 +1,6 @@
 #include <iostream>
 #include <BIPLAN.c>
 
-#define BCC_MAX_PROGRAM_SIZE 2000
-
 char   program[BCC_MAX_PROGRAM_SIZE];
 char  *serial_name = NULL;
 int    serial_bd = 0, s;
