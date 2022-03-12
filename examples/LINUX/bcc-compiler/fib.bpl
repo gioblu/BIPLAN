@@ -2,7 +2,7 @@
 # It is used as an example and to benchmark BIPLAN against python.
 # Run also fib.py using python for performance comparison
 
-for $i = 2 to 100000
+for $i = 0 to 100000
   fibonacci(40)
 next
 
@@ -12,7 +12,7 @@ stop
 
 function fibonacci($n, locals: $a, $b)
   ++$b
-  for $r = 1 to $n
+  for $r = 0 to $n
     $a = $b
     $b = result
     result = $a + $b

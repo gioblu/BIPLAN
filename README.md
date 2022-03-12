@@ -24,16 +24,16 @@ print fibonacci(40)
 stop
 function fibonacci($n, locals: $a, $b)
   $b = 1
-  for $r = 0 to $n - 1
+  for $r = 0 to $n
     $a = $b
     $b = result
     result = $a + $b
   next
 return result
 ```
-Compiled in 43 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 41 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#40)xf#{j{k{l){l1@#0,{j-1{k{l{ltt{k+{lnrt
+p~#40)xf#{j{k{l){l1@#0,{j{k{l{ltt{k+{lnrt
 ```
 Compiler output:
 ```

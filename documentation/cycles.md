@@ -68,7 +68,7 @@ for $i = 0 to 5
 next
 print "Finished"
 
-# Prints 0, 1, 3, 4, 5, Finished
+# Prints 0, 1, 3, 4, Finished
 ```
 When `continue` is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
 
