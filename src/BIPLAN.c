@@ -568,7 +568,7 @@ void bip_for_call() {
     } // Move global variable in for buffer
     BP_GET_VARIABLE(vi, bip_cycles[++bip_fw_id - 1].var);
     BP_SET_VARIABLE(vi, v); // Save for local variable in global buffer
-    bip_cycles[bip_fw_id - 1].to = l + 1;
+    bip_cycles[bip_fw_id - 1].to = l;
     bip_cycles[bip_fw_id - 1].var_id = vi;
     if(bip_ignore(BP_COMMA)) bip_cycles[bip_fw_id - 1].step = bip_relation();
     else bip_cycles[bip_fw_id - 1].step = (v < l) ? 1 : -1;

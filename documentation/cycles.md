@@ -24,7 +24,7 @@ for $i = 0 to 5
   print $i
 next
 
-# Prints 0, 1, 2, 3, 4, 5
+# Prints 0, 1, 2, 3, 4
 ```
 In the example above `$i` is locally declared with a value of 0 and it will be incremented by 1 at each cycle. The `for` iterates the local variable up or down to the desired limit in both directions:
 ```php
@@ -32,7 +32,7 @@ for $i = 5 to 0
   print $i
 next
 
-# Prints 5, 4, 3, 2, 1, 0
+# Prints 5, 4, 3, 2, 1
 ```
 Each time `next` is encountered the variable is incremented or decremented by 1 and the cycle restart if the limit defined after the `to` is not reached. Consider that `for`, unlike `for` defined by other programming languages, evaluates and caches the limit the first time the `for` statement is encountered. For this reason the `for` is a quick iterator, if you need to conditionally exit from a loop use `while` instead.
 
@@ -43,7 +43,7 @@ for $i = 0 to 10 step 2
   print $i
 next
 
-# Prints 0, 2, 4, 6, 8, 10
+# Prints 0, 2, 4, 6, 8
 ```
 
 #### `break`
