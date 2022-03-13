@@ -8,7 +8,7 @@ The `biplan.cpp` file is a complete and ready to use interpreter. It is able to 
 4. Digit `sudo make install`
 
 #### How to use it
-The `biplan` executable can be used to execute BIP machine language, in this example's directory you find [`fib.bip`](fib.bip), this file contains a program in BIP machine language that computes the 40th number of the Fibonacci sequence 100.000 times. Here you find the human readable version [bcc-compiler](../bcc-compiler/fib.bpl). You can use the `biplan` executable to interpret [`fib.bip`](fib.bip) and benchmark its performance against other programming languages.
+The `bcc` executable is copied in `usr/bin` to be reachable everywhere within your system, you can then use it to interpret BIP machine language, in this directory you find [`fib.bip`](fib.bip), this file contains a program in BIP machine language that computes the 40th number of the Fibonacci sequence 100.000 times (the human-readable version is [fib.bpl](../bcc-compiler/fib.bpl)). You can use the `biplan` executable to interpret [`fib.bip`](fib.bip) or any other BIPLAN program. To do so:
 
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
@@ -16,7 +16,7 @@ The `biplan` executable can be used to execute BIP machine language, in this exa
 
 Expected output:
 ```
-BIPLAN interpreter - Giovanni Blu Mitolo 2021
+BIPLAN interpreter - Giovanni Blu Mitolo 2022
 Source: fib.bip
 Source length: 64B
 
