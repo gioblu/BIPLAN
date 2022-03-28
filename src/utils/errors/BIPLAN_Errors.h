@@ -31,3 +31,6 @@
 #define BP_ERROR_RESULT_GET          "result read failure"
 #define BP_ERROR_PROGRAM_LENGTH      "program too long"
 #define BP_ERROR_MACRO_NAME          "macro name too long"
+#define BP_ERROR_INCLUDE_PATH        "included file not found"
+#define BP_ERROR_INCLUDE_READ        "included file read failure"
+

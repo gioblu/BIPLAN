@@ -17,6 +17,12 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
+/* Pre-processor macro symbol ---------------------------------------------- */
+#define BP_MACRO_DEF_HUMAN     "macro"
+
+/* File inclusion symbol --------------------------------------------------- */
+#define BP_INCLUDE_DEF_HUMAN "include"
+
 /* Checks if the character is an acceptable keyword symbol ----------------- */
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
@@ -291,10 +297,10 @@ public:
     char *p = prog, *p2, *longest = NULL;
     do {
       uint8_t i = 0, result = 0;
-      p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF), p2 = p;
+      p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
       if(p && *p) {
         if(is_in_string(prog, p)) {
-          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF), p2 = p;
+          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
           if(!p || !*p) return NULL;
         }
         while(BCC_IS_KEYWORD(*p)) p++;
@@ -345,6 +351,57 @@ public:
     return false;
   };
 
+  /* Include files ---------------------------------------------------------- */
+  void compile_includes(char *prog) {
+    if(fail) return;
+    char *pos = prog;
+    while(pos) pos = compile_include(prog, pos);
+  };
+
+  char *compile_include(char *prog, char *pos) {
+    char include_path[BP_INCLUDE_PATH_MAX];
+    FILE * p_file;
+    long p_size;
+    size_t result;
+    char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN), * p2;
+    if(p && *p) {
+      if(is_in_string(pos, p)) return compile_include(prog, p + 1);
+      p2 = p;
+      while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
+      while(*p == BP_SPACE) p++;
+      *(p++) = ' ';
+      uint8_t i = 0;
+      for(i = 0; *p != BP_STRING; i++, p++) {
+        include_path[i] = *p;
+        *p = ' '; 
+      }
+      include_path[i] = 0;
+      *(p++) = ' ';
+      p_file = fopen(include_path, "r");
+      if(p_file == NULL) {
+        error(0, BP_ERROR_INCLUDE_PATH);
+        return NULL;
+      }
+      fseek(p_file, 0, SEEK_END);
+      p_size = ftell(p_file);
+      rewind(p_file);
+      if(((sizeof(char) * p_size) + strlen(prog))  >= BCC_MAX_PROGRAM_SIZE) 
+        error(0, BP_ERROR_PROGRAM_LENGTH);
+      else {
+        result = fread(stop, 1, p_size, p_file);
+        *(stop + p_size) = 0;
+        if(result != p_size) {
+          error(0, BP_ERROR_INCLUDE_READ);
+          return NULL;
+        }
+      }
+      fclose(p_file);
+      find_end(prog);
+      return p;
+    }
+    return NULL;
+  };
+
   /* Pre-compilation checks ------------------------------------------------ */
   bool pre_compilation_checks(char *prog) {
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
@@ -371,6 +428,7 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
+    compile_includes(prog);
     compile_macros(prog);
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);

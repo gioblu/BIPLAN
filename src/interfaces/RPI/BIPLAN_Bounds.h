@@ -98,3 +98,10 @@
 #ifndef BP_CYCLE_DEPTH
   #define BP_CYCLE_DEPTH 100
 #endif
+
+/* Maximum length of the path used by include ------------------------------ */
+
+#ifndef BP_INCLUDE_PATH_MAX
+  #define BP_INCLUDE_PATH_MAX 256
+#endif
+

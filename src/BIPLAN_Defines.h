@@ -18,12 +18,6 @@
 #include "utils/errors/BIPLAN_Errors.h"
 #include "interfaces/BIPLAN_Interfaces.h"
 
-/* Pre-processor macro symbol ---------------------------------------------- */
-
-#ifndef BP_MACRO_DEF
-  #define BP_MACRO_DEF "macro"
-#endif
-
 
 /* BIP and BIPLAN language syntax ---------------------------------------------
 _______________________________________________________________________
