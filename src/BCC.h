@@ -363,15 +363,14 @@ public:
     FILE * p_file;
     long p_size;
     size_t result;
-    char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN), * p2;
+    char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN);
     if(p && *p) {
       if(is_in_string(pos, p)) return compile_include(prog, p + 1);
-      p2 = p;
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
       while(*p == BP_SPACE) p++;
       *(p++) = ' ';
       uint8_t i = 0;
-      for(i = 0; *p != BP_STRING; i++, p++) {
+      for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
         include_path[i] = *p;
         *p = ' '; 
       }
