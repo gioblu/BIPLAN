@@ -274,6 +274,7 @@ BP_VAR_T bip_factor() {
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
   switch(dcd_current) {
+    case BP_INDEX: ;
     case BP_VAR_ADDR: ;
     case BP_STR_ADDR: ;
     case BP_INCREMENT: ;
