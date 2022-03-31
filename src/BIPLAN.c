@@ -97,12 +97,12 @@ BPM_SERIAL_T       bip_serial_fun;
 
 /* GET VARIABLE ------------------------------------------------------------ */
 #define BP_GET_VARIABLE(N, V) \
-  if(N >= 0 && N <= BP_VARIABLES) { V =  bip_variables[N]; } \
+  if(N >= 0 && N < BP_VARIABLES) { V =  bip_variables[N]; } \
   else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_GET); }
 
 /* SET VARIABLE ------------------------------------------------------------ */
 #define BP_SET_VARIABLE(N, V) \
-  if(N >= 0 && N <= BP_VARIABLES) { bip_variables[N] = V; } \
+  if(N >= 0 && N < BP_VARIABLES) { bip_variables[N] = V; } \
   else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_SET); }
 
 /* UNARY -- ++ ------------------------------------------------------------- */
