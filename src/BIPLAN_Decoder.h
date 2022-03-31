@@ -29,6 +29,16 @@ uint8_t dcd_finished() {
 
 /* Get next code from BIP code --------------------------------------------- */
 uint8_t dcd_next_code() {
+  if(
+    *dcd_ptr == BP_VAR_ADDR ||
+    *dcd_ptr == BP_STR_ADDR ||
+    *dcd_ptr == BP_FUNCTION ||
+    *dcd_ptr == BP_FUN_DEF  ||
+    *dcd_ptr == BP_FOR
+  ) {
+    dcd_next_ptr = dcd_ptr + 2;
+    return *dcd_ptr;
+  }
   // if digit (0-9)
   if(*dcd_ptr >= 48 && *dcd_ptr <= 57) {
     for(uint8_t i = 0; i < BP_NUM_MAX; ++i)
@@ -45,16 +55,6 @@ uint8_t dcd_next_code() {
     } while(*dcd_next_ptr != BP_STRING);
     ++dcd_next_ptr;
     return BP_STRING;
-  }
-  if(
-    *dcd_ptr == BP_VAR_ADDR ||
-    *dcd_ptr == BP_STR_ADDR ||
-    *dcd_ptr == BP_FUNCTION ||
-    *dcd_ptr == BP_FUN_DEF  ||
-    *dcd_ptr == BP_FOR
-  ) {
-    dcd_next_ptr = dcd_ptr + 2;
-    return *dcd_ptr;
   }
   if(*dcd_ptr > 0) {
     dcd_next_ptr = dcd_ptr + 1;
