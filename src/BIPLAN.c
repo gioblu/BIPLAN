@@ -114,13 +114,13 @@ BPM_SERIAL_T       bip_serial_fun;
 
 /* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
 #define BP_VAR_ADDR_CALL \
-  if(dcd_current == BP_VAR_ACC) { \
-    BP_VAR_T bp_var_addr_call_acc = bip_access(BP_VAR_ACC); \
-    BP_SET_VARIABLE(bp_var_addr_call_acc, bip_relation()); \
-  } else { \
+  if(dcd_current == BP_VAR_ADDR) { \
     DCD_NEXT; \
     uint8_t bp_var_addr_call_addr = *(dcd_ptr - 1) - BP_OFFSET; \
     BP_SET_VARIABLE(bp_var_addr_call_addr, bip_relation()); \
+  } else { \
+    BP_VAR_T bp_var_addr_call_acc = bip_access(BP_VAR_ACC); \
+    BP_SET_VARIABLE(bp_var_addr_call_acc, bip_relation()); \
   }
 
 /* END PROGRAM ------------------------------------------------------------- */
@@ -274,6 +274,10 @@ BP_VAR_T bip_factor() {
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
   switch(dcd_current) {
+    case BP_VAR_ADDR: ;
+    case BP_STR_ADDR: ;
+    case BP_INCREMENT: ;
+    case BP_DECREMENT: v = bip_var_factor(); break;
     case BP_NUMBER: v = BPM_ATOL(dcd_ptr); BP_EXPECT(BP_NUMBER); break;
     case BP_VAR_ACC: v = bip_get_variable(bip_access(BP_VAR_ACC)); break;
     case BP_STR_ACC:
@@ -299,7 +303,6 @@ BP_VAR_T bip_factor() {
     case BP_ATOL: v = bip_atol_call(0); break;
     case BP_NUMERIC:
       DCD_NEXT; v = bip_relation(); v = (v >= 48) && (v <= 57); break;
-    default: v = bip_var_factor();
   } v = (minus) ? -v : v;
   return (bitwise_not) ? ~v : v;
 };
