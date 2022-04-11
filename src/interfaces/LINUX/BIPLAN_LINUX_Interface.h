@@ -73,15 +73,11 @@
   /* String conversion ---------------------------------------------------- */
 
   #ifndef BPM_LTOA
-    #define BPM_LTOA(L, A) fast_ltoa(L, A);
+    #define BPM_LTOA(L, A, S) fast_ltoa(L, A, S);
   #endif
 
   #ifndef BPM_ATOL
     #define BPM_ATOL fast_atol
-  #endif
-
-  #ifndef BPM_LTOA
-    #define BPM_LTOA(B, L) sprintf(B, "%ld", L);
   #endif
 
   /* Generic constants ---------------------------------------------------- */

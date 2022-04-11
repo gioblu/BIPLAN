@@ -391,9 +391,9 @@ stop
 
 ### `string`
 ```
-string [variable or number], [string]
+string [variable or number], [string], [variable or number]
 ```
-Converts a variable or a number to a string and returns its value.
+Converts a variable or a number to a string and returns its length. It receives the number to be converted, the string where to save the conversion and optionally the position in the string where to start writing.
 ```ruby
 @test = 123
 string @test, :str

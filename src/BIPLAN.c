@@ -57,7 +57,8 @@ BPM_SERIAL_T       bip_serial_fun;
       F(T, bip_strings[id][i]); \
   } else { \
     BP_VAR_T r = bip_relation(); \
-    BPM_LTOA(r, bip_string); \
+    if(bip_ignore(BP_COMMA)) BPM_LTOA(r, bip_string, bip_relation()); \
+    BPM_LTOA(r, bip_string, 0); \
     for(uint16_t i = 0; i < BP_STRING_MAX; i++) \
       F(T, bip_string[i]); \
     BP_EMPTY_STRING; \
@@ -729,8 +730,8 @@ uint16_t bip_ltoa_call() {
   DCD_NEXT;
   s = *(dcd_ptr - 1) - BP_OFFSET;
   if((s < 0) || (s >= BP_STRINGS)) bip_error(dcd_ptr, BP_ERROR_STRING_GET);
-  else BPM_LTOA(v, bip_strings[s]);
-  return s;
+  if(bip_ignore(BP_COMMA)) return BPM_LTOA(v, bip_strings[s], bip_relation());
+  return BPM_LTOA(v, bip_strings[s], 0);
 };
 
 /* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */
