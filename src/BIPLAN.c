@@ -385,6 +385,7 @@ void bip_read_string(char *s) {
 /* PRINT ------------------------------------------------------------------- */
 void bip_print_call() {
   do {
+    bip_return_type = 0;
     BP_VAR_T v = 0;
     bip_ignore(BP_COMMA);
     bool is_char = bip_ignore(BP_CHAR);
@@ -413,7 +414,6 @@ void bip_print_call() {
       else if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
       else BPM_PRINT_WRITE(bip_print_fun, v);
     }
-    bip_return_type = 0;
   } while(dcd_current == BP_COMMA);
 };
 
