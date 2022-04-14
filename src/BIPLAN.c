@@ -57,8 +57,8 @@ BPM_SERIAL_T       bip_serial_fun;
       F(T, bip_strings[id][i]); \
   } else { \
     BP_VAR_T r = bip_relation(); \
-    if(bip_ignore(BP_COMMA)) BPM_LTOA(r, bip_string, bip_relation()); \
-    BPM_LTOA(r, bip_string, 0); \
+    if(bip_ignore(BP_COMMA)) { BPM_LTOA(r, bip_string, bip_relation()); \
+    } else BPM_LTOA(r, bip_string, 0); \
     for(uint16_t i = 0; i < BP_STRING_MAX; i++) \
       F(T, bip_string[i]); \
     BP_EMPTY_STRING; \
@@ -725,10 +725,14 @@ BP_VAR_T bip_sizeof_call() {
 BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
 
 uint16_t bip_ltoa_call() {
+  DCD_NEXT;
   BP_VAR_T v = bip_relation(), s = 0;
   BP_EXPECT(BP_COMMA);
-  DCD_NEXT;
-  s = *(dcd_ptr - 1) - BP_OFFSET;
+  if(dcd_current == BP_STR_ACC) s = bip_access(BP_STR_ACC);
+  else {
+    DCD_NEXT;
+    s = *(dcd_ptr - 1) - BP_OFFSET;
+  }
   if((s < 0) || (s >= BP_STRINGS)) bip_error(dcd_ptr, BP_ERROR_STRING_GET);
   if(bip_ignore(BP_COMMA)) return BPM_LTOA(v, bip_strings[s], bip_relation());
   return BPM_LTOA(v, bip_strings[s], 0);
@@ -769,8 +773,8 @@ void bip_statement() {
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_FILE:       return bip_file_set_call();
+    case BP_LTOA:       bip_ltoa_call(); return;
     case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
-    case BP_LTOA:       DCD_NEXT; bip_ltoa_call(); return;
     case BP_RESTART:    return bip_restart_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);

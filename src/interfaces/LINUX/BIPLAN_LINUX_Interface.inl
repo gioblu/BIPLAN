@@ -114,19 +114,18 @@ int serialGetCharacter(const int fd) {
 
 /* ltoa atol --------------------------------------------------------------- */
 
-int fast_ltoa(unsigned long value, char* string, uint16_t shift = 0) {
+int fast_ltoa(unsigned long value, char* string, uint16_t shift) {
   unsigned char index = BP_NUM_MAX;
   char buffer[BP_NUM_MAX];
   string = string + shift;
   do {
     buffer[--index] = '0' + (value % 10);
   } while (value /= 10);
+  shift = BP_NUM_MAX - index;
   do {
     *string++ = buffer[index++];
-  } while(index < BP_NUM_MAX);
-  *string = 0;
-
-  return index;
+  } while((index < BP_NUM_MAX) && buffer[index] >= '0');
+  return shift;
 };
 
 long fast_atol(const char *p) {
