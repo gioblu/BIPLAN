@@ -51,7 +51,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-For now BIPLAN is around 1.5 times slower than python on my linux machine and around 10 times quicker than TinyBasicPlus when running on Arduino compatible boards.
+For now BIPLAN is around 1.47 times slower than python on my linux machine and around 10 times quicker than TinyBasicPlus when running on Arduino compatible boards.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
