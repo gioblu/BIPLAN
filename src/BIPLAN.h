@@ -113,6 +113,6 @@ BP_VAR_T bip_system_call(BP_VAR_T v);
 
 BP_VAR_T bip_atol_call(BP_VAR_T v);
 
-uint16_t bip_ltoa_call();
+void bip_ltoa_call();
 
 void bip_statement();

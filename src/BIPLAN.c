@@ -724,7 +724,7 @@ BP_VAR_T bip_sizeof_call() {
 /* ATOL - LTOA ------------------------------------------------------------- */
 BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
 
-uint16_t bip_ltoa_call() {
+void bip_ltoa_call() {
   DCD_NEXT;
   BP_VAR_T v = bip_relation(), s = 0;
   BP_EXPECT(BP_COMMA);
@@ -734,8 +734,8 @@ uint16_t bip_ltoa_call() {
     s = *(dcd_ptr - 1) - BP_OFFSET;
   }
   if((s < 0) || (s >= BP_STRINGS)) bip_error(dcd_ptr, BP_ERROR_STRING_GET);
-  if(bip_ignore(BP_COMMA)) return BPM_LTOA(v, bip_strings[s], bip_relation());
-  return BPM_LTOA(v, bip_strings[s], 0);
+  if(bip_ignore(BP_COMMA)) BPM_LTOA(v, bip_strings[s], bip_relation());
+  BPM_LTOA(v, bip_strings[s], 0);
 };
 
 /* RANDOM CALL (Expects one parameter: the exclusive maximum value) -------- */

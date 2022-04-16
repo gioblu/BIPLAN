@@ -119,7 +119,7 @@ public:
           error(0, BP_ERROR_SINGLE_QUOTE);
           return;
         }
-        BPM_LTOA(*(++p), b);
+        BPM_LTOA(*(++p), b, 0);
         p--;
         for(uint8_t i = 0; i < 3; i++)
           *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
