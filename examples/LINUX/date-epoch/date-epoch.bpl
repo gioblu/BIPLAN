@@ -4,13 +4,13 @@
 
 include "/usr/local/BIPLAN/time.bpl" # Includes time library
 
-@date_string = epoch(29, 3, 2022, 12, 10, 10)
+@date_epoch = epoch(29, 3, 2022, 12, 10, 10)
 
-print "Epoch: ", @date_string
+print "Epoch: ", @date_epoch
 
 :date_string = ""
 
-date(@date_string, :date_string)
+date(@date_epoch, :date_string)
 
 print " Date: ", :date_string
 
