@@ -275,6 +275,7 @@ BP_VAR_T bip_factor() {
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
   switch(dcd_current) {
+    case BP_FUNCTION: v = bip_function_call(); DCD_NEXT; break;
     case BP_INDEX: ;
     case BP_VAR_ADDR: ;
     case BP_STR_ADDR: ;
@@ -294,7 +295,6 @@ BP_VAR_T bip_factor() {
     case BP_ADC: v = bip_adc_call(); break;
     case BP_RND: DCD_NEXT;  v = bip_random_call(); break;
     case BP_SQRT: DCD_NEXT; v = sqrt(bip_expression()); break;
-    case BP_FUNCTION: v = bip_function_call(); DCD_NEXT; break;
     case BP_SERIAL: v = bip_serial_call(); break;
     case BP_INPUT: v = BPM_INPUT(bip_data_in_fun); DCD_NEXT; break;
     case BP_L_RPARENT:
