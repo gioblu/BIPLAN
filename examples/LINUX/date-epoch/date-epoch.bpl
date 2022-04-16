@@ -6,10 +6,10 @@ include "/usr/local/BIPLAN/time.bpl" # Includes time library
 
 print "Epoch: ", epoch(29, 3, 2022, 12, 10, 10)
 
-:date = "ciao"
+:date_string = ""
 
-date(epoch(29, 3, 2022, 12, 10, 10), :date)
+date(epoch(29, 3, 2022, 12, 10, 10), :date_string)
 
-print " Date: ", :date
+print " Date: ", :date_string
 
 stop
