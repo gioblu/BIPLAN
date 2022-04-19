@@ -102,6 +102,7 @@ function date($e, $str, locals: $D, $M, $Y, $h, $m, $s, $et, $o)
   next
   if $D > 0 ++$M end
   $e = $e - (($D - 1) * 86400)
+  if leap_year($Y) $e = $e - 86400 end
   $h = ($e / 3600)
   $m = ($e % 3600) / 60
   $s = ($e % 3600) % 60
