@@ -60,6 +60,8 @@ function epoch($D, $M, $Y, $h, $m, $s, $r)
     $D = $D + days($i)
   next
   result = (result + (($D - 1) * 86400) + ($h * 3600) + ($m * 60) + $s) * $r
+  # If is January and is a leap year subtract one day (still not occurred)
+  if $M == 1 && leap_year($Y) result = result - 86400 end
 return result 
 
 # Format 2 digits portions of a date (days, months, hours, minutes and seconds)
