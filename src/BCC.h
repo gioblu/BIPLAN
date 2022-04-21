@@ -272,7 +272,7 @@ public:
         p++;
       }
       stop = p;
-      var_id = BP_OFFSET + BP_VARIABLES - BP_PARAMS;
+      var_id = BP_OFFSET + (BP_VARIABLES - BP_PARAMS) - 1;
       compile_variables(p2, BP_VAR_ADDR_HUMAN);
       fn_keyword[keyword_length] = 0;
       fn_address[0] = BP_FUNCTION;
