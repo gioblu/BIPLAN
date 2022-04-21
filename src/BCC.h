@@ -278,7 +278,7 @@ public:
       fn_address[0] = BP_FUNCTION;
       fn_address[1] = fun_id++;
       fn_address[2] = 0;
-      compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true);
+      compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
       p = strstr(pos, fn_keyword);
       if(p && *p) return p;
       return NULL;
