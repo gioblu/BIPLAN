@@ -146,22 +146,29 @@ public:
     char *pos,
     const char *key,
     const char *code,
-    char post = 0,
-    bool pre = 0
+    char kill_postfix = 0,
+    bool avoid_addr = 0,
+    char ends_with = 0
   ) {
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
-    if(p && *p) {
-      if(is_in_string(prog, p) || (pre && BCC_IS_ADDRESS(*(p - 1)))) {
+    if(p && *p) { 
+      if(is_in_string(prog, p) || (avoid_addr && BCC_IS_ADDRESS(*(p - 1)))) {
         p = strstr(p + kl, key);
-        if(p && *p) return p;
-        else return NULL;
+        if(p && *p) return p; else return NULL;
+      }
+      if(ends_with) {
+        uint8_t i = kl;
+        for(; *(p + i) == BP_SPACE; i++);
+        if(*(p + i) != ends_with) {
+          p = strstr(p + kl, key);
+          if(p && *p) return p; else return NULL;
+        }
       }
       if(kl >= cl) {
         for(uint16_t i = 0; i < kl; i++, p++)
-          if(i < cl && code[i]) *p = code[i];
-          else *p = BP_SPACE;
+          if(i < cl && code[i]) *p = code[i]; else *p = BP_SPACE;
       } else {
         uint8_t ofs = cl - kl;
         if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE) 
@@ -173,29 +180,40 @@ public:
           find_end(prog);
         }
       }
-      if(post) {
+      if(kill_postfix) {
         while(*p == BP_SPACE) p++;
-        if(*p == post) *p = BP_SPACE;
+        if(*p == kill_postfix) *p = BP_SPACE;
       }
       return p;
     } else return NULL;
   };
 
   void compile(
-    char *prog, const char *key, const char *code, char post = 0, bool pre = 0
+    char *prog, 
+    const char *key, 
+    const char *code, 
+    char kill_postfix = 0, 
+    bool avoid_addr = 0, 
+    char ends_with = 0
   ) {
     if(fail) return;
     char *p = prog;
-    while(p) p = compile_pass(prog, p, key, code, post, pre);
+    while(p) p = 
+      compile_pass(prog, p, key, code, kill_postfix, avoid_addr, ends_with);
   };
 
   void compile_char(
-    char *prog, const char *key, const char code, char post = 0, bool pre = 0
+    char *prog, 
+    const char *key, 
+    const char code, 
+    char kill_postfix = 0, 
+    bool avoid_addr = 0
   ) {
     if(fail) return;
     char *p = prog;
     const char c[2] = {code, 0};
-    while(p) p = compile_pass(prog, p, key, (const char *)c, post, pre);
+    while(p) p = 
+      compile_pass(prog, p, key, (const char *)c, kill_postfix, avoid_addr);
   };
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
