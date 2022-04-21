@@ -87,6 +87,19 @@ public:
     } return in_str;
   };
 
+  /* Computes the for nest level ------------------------------------------- */
+  uint8_t for_nest_level(char *prog, char *pos) {
+    uint8_t n = 0;
+    char *p = prog;
+    do {
+      if(!is_in_string(prog, p) && !((p > prog) && BCC_IS_ADDRESS(*(p - 1)))) { 
+        if(*p == BP_FOR) n++;
+        if(*p == BP_NEXT) n--;
+      }
+    } while(pos >= ++p);
+    return n;
+  };
+
   /* Remove a given symbol from the program -------------------------------- */
   void remove(char *s, char v) {
     if(fail) return;
@@ -319,6 +332,34 @@ public:
     return NULL;
   };
 
+  /* Compile for 
+
+   Each for variable gets a memory address relative to the for nest level. 
+   The compiler stores all for variables present in the program in 
+   BP_CYCLE_DEPTH addresses. ----------------------------------------------- */
+
+  void compile_for(char *prog) {
+    char *p = prog, *p2 = prog;
+    uint8_t vid = var_id;
+    do {
+      while((*p != BP_FOR) && (p && *p)) p++;
+      if(!is_in_string(prog, p)) {
+        p2 = p;
+        while((*p != BP_COMMA) && (p && *p)) p++;
+        stop = p;
+        var_id = (
+          (BP_OFFSET + BP_VARIABLES - BP_PARAMS) - 
+          (BP_CYCLE_DEPTH - for_nest_level(prog, p))
+        ) - 1;
+        compile_variables(p2, BP_VAR_ADDR_HUMAN);
+        find_end(prog);
+        var_id = vid;
+      }
+    } while(++p && *p);    
+    char c[2] = {BP_FOR, 0};
+    compile(prog, c, c, BP_VAR_ADDR, 1);
+  };
+
   /* Pre-processor macros -------------------------------------------------- */
   void compile_macros(char *prog) {
     if(fail) return;
@@ -452,7 +493,6 @@ public:
     var_id = BP_OFFSET;
     find_end(prog);
     compile_variables(prog, BP_GLOBAL_HUMAN);
-    compile_variables(prog, BP_VAR_ADDR_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
@@ -488,14 +528,14 @@ public:
     compile_char(prog, BP_LABEL_HUMAN, BP_LABEL);
     compile_char(prog, BP_END_HUMAN, BP_END);
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
-    compile_for(prog);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
     compile(prog, "args[", "S");
     compile_char(prog, "step", BP_COMMA);
     compile(prog, "not", "1-");
     compile_char(prog, BP_IF_HUMAN, BP_IF);
     compile_char(prog, BP_IO_HUMAN, BP_IO);
-    compile_char(prog, "to", BP_COMMA);
+    compile_char(prog, BP_TO_HUMAN, BP_COMMA);
+    compile_for(prog);
     compile(prog, "OUTPUT", "1");
     compile(prog, "INPUT", "0");
     compile(prog, "HIGH", "1");
