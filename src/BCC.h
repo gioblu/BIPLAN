@@ -428,10 +428,10 @@ public:
   bool run(char *prog) {
     find_end(prog);
     compile_includes(prog);
+    remove_comments(prog);
     compile_macros(prog);
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);
-    remove_comments(prog);
     if(!pre_compilation_checks(prog)) return false;
     compile_char(prog, BP_STR_ACC_HUMAN, BP_STR_ACC);
     compile_char(prog, BP_VAR_ACC_HUMAN, BP_VAR_ACC);
