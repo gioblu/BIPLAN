@@ -17,12 +17,6 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
-/* Pre-processor macro symbol ---------------------------------------------- */
-#define BP_MACRO_DEF_HUMAN     "macro"
-
-/* File inclusion symbol --------------------------------------------------- */
-#define BP_INCLUDE_DEF_HUMAN "include"
-
 /* Checks if the character is an acceptable keyword symbol ----------------- */
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
