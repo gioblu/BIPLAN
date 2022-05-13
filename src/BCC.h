@@ -271,12 +271,6 @@ public:
     else return NULL;
   };
 
-  /* Intermediate for compilation, @ $# to @  # BP_VAR_ADDR is removed ----- */
-  void compile_for(char *prog) {
-    char c[2] = {BP_FOR, 0};
-    compile(prog, c, c, BP_VAR_ADDR, 1);
-  };
-
   /* Compile user-defined functions in BIP byte-code ----------------------- */
   char *compile_function_pass(char *prog, char *pos) {
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
