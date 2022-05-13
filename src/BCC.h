@@ -271,7 +271,12 @@ public:
     else return NULL;
   };
 
-  /* Compile user-defined functions in BIP byte-code ----------------------- */
+  /* Compiles user-defined functions:
+
+     Funtion parameters are stored at the end of the address space.
+     Each function uses the same addresses for its parameters consuming only 
+     BP_PARAMS addresses for all functions present in the program. --------- */
+
   char *compile_function_pass(char *prog, char *pos) {
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p;
@@ -310,8 +315,7 @@ public:
     while(pos) pos = compile_function_pass(prog, pos);
   };
 
-  /* Longest keyword  ----------------------------------------------------- */
-
+  /* Finds longest keyword  ------------------------------------------------ */
   char *find_longest_keyword(char *prog, bool t) {
     char *p = prog, *p2, *longest = NULL;
     do {
@@ -348,7 +352,6 @@ public:
     char *p = prog, *p2 = prog;
     uint8_t vid = var_id;
     do {
-      while((*p != BP_FOR) && (p && *p)) p++;
       if(!is_in_string(prog, p)) {
         p2 = p;
         while((*p != BP_COMMA) && (p && *p)) p++;
@@ -361,7 +364,10 @@ public:
         find_end(prog);
         var_id = vid;
       }
-    } while(++p && *p);    
+    } while(
+        ((p = find_longest_var_name(prog, BP_VAR_ADDR_HUMAN)) != NULL) &&
+        !is_in_string(prog, p)
+      );    
     char c[2] = {BP_FOR, 0};
     compile(prog, c, c, BP_VAR_ADDR, 1);
   };
@@ -398,7 +404,10 @@ public:
     return false;
   };
 
-  /* Include files ---------------------------------------------------------- */
+  /* Includes files:
+  
+     Files contents are copied at the end of the program. ------------------ */
+
   void compile_includes(char *prog) {
     if(fail) return;
     char *pos = prog;
