@@ -552,11 +552,9 @@ void bip_continue_call() {
 void bip_break_call() {
   bip_continue_call();
   DCD_NEXT;
-  if(bip_cycles[bip_fw_id - 1].var_id != BP_VARIABLES)
-    BP_SET_VARIABLE(
-      bip_cycles[bip_fw_id - 1].var_id, bip_cycles[bip_fw_id - 1].var
-    );
-  bip_cycles[--bip_fw_id].var_id = BP_VARIABLES;
+  if(bip_cycles[bip_fw_id].var_id != BP_VARIABLES)
+    BP_SET_VARIABLE(bip_cycles[bip_fw_id].var_id, bip_cycles[bip_fw_id].var);
+  bip_cycles[bip_fw_id].var_id = BP_VARIABLES;
 };
 
 /* CYCLE ------------------------------------------------------------------- */
@@ -767,7 +765,7 @@ void bip_statement() {
     case BP_WHILE:      DCD_NEXT; return bip_while_call();
     case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
     case BP_JUMP:       DCD_NEXT; return bip_jump_call();
-    case BP_BREAK:      return bip_break_call();
+    case BP_BREAK:      --bip_fw_id; return bip_break_call();
     case BP_CONTINUE:   return bip_continue_call();
     case BP_IO:         DCD_NEXT; return bip_io_set_call();
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
