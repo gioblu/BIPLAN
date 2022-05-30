@@ -101,7 +101,7 @@ public:
     bool in_str = false;
     while(*j != 0) {
       *i = *j++;
-      if(*i == BP_STRING) in_str = !in_str;
+      if(*i == BP_STRING && *(i - 1) != BP_BACKSLASH) in_str = !in_str;
       if(*i != v) i++;
       else if(in_str) i++;
     } *i = 0;
