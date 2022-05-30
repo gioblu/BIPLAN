@@ -351,23 +351,19 @@ public:
   void compile_for(char *prog) {
     char *p = prog, *p2 = prog;
     uint8_t vid = var_id;
-    do {
-      if(!is_in_string(prog, p)) {
-        p2 = p;
-        while((*p != BP_COMMA) && (p && *p)) p++;
-        stop = p;
-        var_id = (
-          (BP_OFFSET + BP_VARIABLES - BP_PARAMS) - 
-          (BP_CYCLE_DEPTH - for_nest_level(prog, p))
-        ) - 1;
-        compile_variables(p2, BP_VAR_ADDR_HUMAN);
-        find_end(prog);
-        var_id = vid;
-      }
-    } while(
-        ((p = find_longest_var_name(prog, BP_VAR_ADDR_HUMAN)) != NULL) &&
-        !is_in_string(prog, p)
-      );    
+    while((p = find_longest_var_name(prog, BP_VAR_ADDR_HUMAN)) != NULL) {
+      if(is_in_string(prog, p)) continue;
+      p2 = p;
+      while((*p != BP_COMMA) && (p && *p)) p++;
+      stop = p;
+      var_id = (
+        (BP_OFFSET + BP_VARIABLES - BP_PARAMS) - 
+        (BP_CYCLE_DEPTH - for_nest_level(prog, p))
+      ) - 1;
+      compile_variables(p2, BP_VAR_ADDR_HUMAN);
+      find_end(prog);
+      var_id = vid;
+    }
     char c[2] = {BP_FOR, 0};
     compile(prog, c, c, BP_VAR_ADDR, 1);
   };
