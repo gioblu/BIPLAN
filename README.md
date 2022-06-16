@@ -1,5 +1,5 @@
 
-## BIPLAN™ CR.1
+## BIPLAN CR.1
 BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental interpreted programming language that fits in less than 12KB of program memory. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua.
 
 | Programming language | Minimum requirements |
