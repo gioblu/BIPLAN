@@ -55,14 +55,7 @@ BPM_SERIAL_T       bip_serial_fun;
     uint8_t id = *(dcd_ptr - 1) - BP_OFFSET; \
     for(uint16_t i = 0; i < sizeof(bip_strings[id]); i++) \
       F(T, bip_strings[id][i]); \
-  } else { \
-    BP_VAR_T r = bip_relation(); \
-    if(bip_ignore(BP_COMMA)) { BPM_LTOA(r, bip_string, bip_relation()); \
-    } else BPM_LTOA(r, bip_string, 0); \
-    for(uint16_t i = 0; i < BP_STRING_MAX; i++) \
-      F(T, bip_string[i]); \
-    BP_EMPTY_STRING; \
-  }
+  } 
 
 /* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
 
