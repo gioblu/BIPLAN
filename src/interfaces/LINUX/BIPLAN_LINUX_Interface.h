@@ -80,6 +80,10 @@
     #define BPM_ATOL fast_atol
   #endif
 
+  #ifndef BPM_ATOF
+    #define BPM_ATOF atof
+  #endif
+
   /* Generic constants ---------------------------------------------------- */
 
   #ifndef A0
@@ -116,6 +120,28 @@
   #if !defined(BPM_IO_PULL_DOWN)
     #define BPM_IO_PULL_DOWN(P)
   #endif
+
+  /* Math  ------------------------------------------------------- */
+  #ifndef BPM_SQRT
+    #define BPM_SQRT(X, P) (sqrt(X) * P)
+  #endif
+
+  #ifndef BPM_SIN
+    #define BPM_SIN(X, P) (sin(X) * P)
+  #endif
+
+  #ifndef BPM_COS
+    #define BPM_COS(X, P) (cos(X) * P)
+  #endif
+
+  #ifndef BPM_TAN
+    #define BPM_TAN(X, P) (tan(X) * P)
+  #endif
+
+  #ifndef BPM_ROUND
+    #define BPM_ROUND nearbyint
+  #endif
+
 
   /* Random --------------------------------------------------------------- */
 

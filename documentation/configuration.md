@@ -68,7 +68,14 @@ BIPLAN supports a maximum amount of 88 functions defined by the user.
 You can configure the maximum length of user-defined keywords using the `BP_KEYWORD_MAX` as follows:
 
 ```cpp
-#ifndef BP_KEYWORD_MAX
-  #define BP_KEYWORD_MAX 20
-#endif
+#define BP_KEYWORD_MAX 20
+#include "BIPLAN.h"
+```
+
+### Fixed point precision
+Define `BP_FIXED_P` constant with a value of 1000 to store 4 fractional digits:
+
+```c
+#define BP_FIXED_P 10000
+#include "BIPLAN.h"
 ```

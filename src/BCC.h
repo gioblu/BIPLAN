@@ -17,6 +17,9 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
+/* Checks if the character is an acceptable numeric symbol ----------------- */
+#define BCC_IS_NUM(C) (C >= '0' && C <= '9')
+
 /* Checks if the character is an acceptable keyword symbol ----------------- */
 #define BCC_IS_KEYWORD(C) \
   ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
@@ -133,6 +136,31 @@ public:
       } else p++;
     }
   };
+
+  /* Compiles 3.141 in 3141 (by default BP_FIXED_P = 1000) ----------------- */
+
+  void compile_numbers(char *prog) {
+    char *p = prog;
+    char n[BP_NUM_MAX + 1] = {0};
+    char r[BP_NUM_MAX] = {0};
+    float v = 0;
+    while(p && *p) {
+      if(
+        (*p == '.') && !is_in_string(prog, p) && 
+        BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1)) 
+      ) {
+        do { p--; } while(BCC_IS_NUM(*p)); 
+        v = BP_FIXED_P * BPM_ATOF(p + 1);
+        BPM_ROUND(v);
+        BPM_LTOA(v, r, 0);
+        for(uint8_t i = 0; (*(++p) == '.') || BCC_IS_NUM(*p); i++) 
+          if(i <= BP_NUM_MAX) n[i] = *(p);
+          else *p = ' ';
+        compile(prog, n, r);
+      }
+      p++;
+    }
+  }
 
   /* Compiles BIPLAN keywords into BIP byte-code --------------------------- */
   char *compile_pass(
@@ -482,6 +510,7 @@ public:
     compile_includes(prog);
     remove_comments(prog);
     compile_macros(prog);
+    compile_numbers(prog);
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);
     if(!pre_compilation_checks(prog)) return false;
@@ -505,9 +534,13 @@ public:
     find_end(prog);
     compile_variables(prog, BP_GLOBAL_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
+    char precision[BP_NUM_MAX];
+    BPM_LTOA(BP_FIXED_P, precision, 0);
+    compile(prog, BP_PRECISION_HUMAN, precision);
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
     compile_char(prog, BP_DELAY_HUMAN, BP_DELAY);
+    compile_char(prog, BP_FIXED_HUMAN, BP_FIXED);
     compile_char(prog, BP_SQRT_HUMAN, BP_SQRT);
     compile_char(prog, BP_SERIAL_HUMAN, BP_SERIAL);
     compile_char(prog, BP_RESULT_HUMAN, BP_RESULT);
@@ -540,6 +573,9 @@ public:
     compile_char(prog, BP_END_HUMAN, BP_END);
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
+    compile_char(prog, BP_SIN_HUMAN, BP_SIN);
+    compile_char(prog, BP_COS_HUMAN, BP_COS);
+    compile_char(prog, BP_TAN_HUMAN, BP_TAN);
     compile(prog, "args[", "S");
     compile_char(prog, "step", BP_COMMA);
     compile(prog, "not", "1-");

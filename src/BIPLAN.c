@@ -294,7 +294,10 @@ BP_VAR_T bip_factor() {
     case BP_MILLIS: DCD_NEXT; v = (BPM_MILLIS() % BP_VAR_MAX); break;
     case BP_ADC: v = bip_adc_call(); break;
     case BP_RND: DCD_NEXT;  v = bip_random_call(); break;
-    case BP_SQRT: DCD_NEXT; v = sqrt(bip_expression()); break;
+    case BP_SQRT: DCD_NEXT; v = BPM_SQRT(bip_expression(), BP_FIXED_P); break;
+    case BP_SIN: DCD_NEXT; v = BPM_SIN(bip_expression(), BP_FIXED_P); break;
+    case BP_COS: DCD_NEXT; v = BPM_COS(bip_expression(), BP_FIXED_P); break;
+    case BP_TAN: DCD_NEXT; v = BPM_TAN(bip_expression(), BP_FIXED_P); break;
     case BP_SERIAL: v = bip_serial_call(); break;
     case BP_INPUT: v = BPM_INPUT(bip_data_in_fun); DCD_NEXT; break;
     case BP_L_RPARENT:
@@ -389,7 +392,10 @@ void bip_print_call() {
     BP_VAR_T v = 0;
     bip_ignore(BP_COMMA);
     bool is_char = bip_ignore(BP_CHAR);
-    if(dcd_current == BP_STR_ACC) {
+    if(dcd_current == BP_FIXED) {
+      DCD_NEXT;
+      BPM_PRINT_WRITE(bip_print_fun, bip_expression() / (float)(BP_FIXED_P));
+    } else if(dcd_current == BP_STR_ACC) {
       v = bip_access(BP_STR_ACC);
       if(dcd_current == BP_ACCESS)
         BPM_PRINT_WRITE(bip_print_fun, bip_strings[v][bip_access(BP_ACCESS)]);

@@ -22,10 +22,14 @@
 /* BIP and BIPLAN language syntax ------------------------------------------ */
 
 /* Pre-processor macro symbol ---------------------------------------------- */
-#define BP_MACRO_DEF_HUMAN     "macro"
+#define BP_MACRO_DEF_HUMAN   "macro"
 
 /* File inclusion symbol --------------------------------------------------- */
-#define BP_INCLUDE_DEF_HUMAN "include" /*
+#define BP_INCLUDE_DEF_HUMAN "include" 
+
+/* Fixed point math precision ---------------------------------------------- */
+#define BP_PRECISION_HUMAN   "precision" /*
+
 _______________________________________________________________________
  Constant name                                    | Decimal     | used |
 __________________________________________________|_____________|______| */
@@ -227,7 +231,8 @@ __________________________________________________|_____________|______| */
 #define BP_CONTINUE          'c'                  // 99         | used |
 #define BP_CONTINUE_HUMAN    "continue"           //            |      |
 //______________________________________________________________|______|
-                           // d                   // 100        |      |
+#define BP_FIXED             'd'                  // 100        | used |
+#define BP_FIXED_HUMAN       "fixed"              //            |      |
 //______________________________________________________________|______|
 #define BP_INPUT             'e'                  // 101        | used |
 #define BP_INPUT_HUMAN       "input"              //            |      |
@@ -256,7 +261,8 @@ __________________________________________________|_____________|______| */
 #define BP_SIZEOF            'm'                  // 109        | used |
 #define BP_SIZEOF_HUMAN      "size"               //            |      |
 //______________________________________________________________|______|
-                           // n                   // 110        |      |
+#define BP_TAN               'n'                  // 110        | used |
+#define BP_TAN_HUMAN         "tan"                //            |      |
 //______________________________________________________________|______|
 #define BP_FILE              'o'                  // 111        | used |
 #define BP_FILE_HUMAN        "file"               //            |      |
@@ -276,9 +282,11 @@ __________________________________________________|_____________|______| */
 #define BP_RESULT            't'                  // 116        | used |
 #define BP_RESULT_HUMAN      "result"             //            |      |
 //______________________________________________________________|______|
-                          //  u                   // 117        |      |
+#define BP_SIN               'u'                  // 117        | used |
+#define BP_SIN_HUMAN         "sin"                //            |      |
 //______________________________________________________________|______|
-                          //  v                   // 118        |      |
+#define BP_COS               'v'                  // 118        | used |
+#define BP_COS_HUMAN         "cos"                //            |      |
 //______________________________________________________________|______|
 #define BP_WHILE             'w'                  // 119        | used |
 #define BP_WHILE_HUMAN       "while"              //            |      |
