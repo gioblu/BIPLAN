@@ -34,7 +34,7 @@ After the pre-processing phase the code above looks like this:
 ```php
 while true
   print "Hello World!"
-  delay 1000
+  delay 100
 next
 ```
 Macros are useful to associate a keyword with an integer constant or a string literal, without consuming a variable address. Macros can be used also to associate a keyword to a system function call or a function call with a predefined set of parameters.
