@@ -15,7 +15,7 @@
 ## System functions
 
 ### `adc`
-Using the `adc` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle the adc.
+Using the `adc` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle the ADC (Analog to Digital Converter).
 
 #### `adc read`
 ```
@@ -130,7 +130,7 @@ file write @f, "Hello world!"
 ---
 
 ### `io`
-Using the `io` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle io ports.
+Using the `io` keyword along with `read`, `write`, `open` and `close` it is possible to fully handle IO (Input Output) ports.
 
 #### `io read`
 ```
