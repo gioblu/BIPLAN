@@ -34,7 +34,7 @@ next
 
 # Prints 5, 4, 3, 2, 1
 ```
-Each time `next` is encountered the variable is incremented or decremented by 1 and the cycle restart if the limit defined after the `to` is not reached. Consider that `for`, unlike `for` defined by other programming languages, evaluates and caches the limit the first time the `for` statement is encountered. For this reason the `for` is a quick iterator, if you need to conditionally exit from a loop use `while` instead.
+Each time `next` is encountered the variable is incremented or decremented by 1 and the cycle restarts if the limit defined after the `to` is not reached. Consider that `for`, unlike `for` defined by other programming languages, evaluates and computes the limit the first time the `for` statement is encountered. For this reason the `for` is a quick iterator, if you need to conditionally exit from a loop use `while` instead.
 
 #### `step`
 Optionally the `for` the increment or decrement value can be configured after `step`:  
