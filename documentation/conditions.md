@@ -29,7 +29,7 @@ else
   [statement]
 end
 ```
-An `if`, if its condition is truthy, executes the following statements until `end` is encountered, otherwise it executes the statements that follow the next `else` until `end` is encountered. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
+An `if`, if its condition is truthy, executes the following statements until `end` is encountered, otherwise it executes the statements that follow the next `end` or the next `else` until `end` is encountered. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
 ```ruby
 @fine = true
 if @fine print "All is fine!" end
