@@ -9,7 +9,7 @@
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
 - [Strings](/documentation/strings.md) [`:`](/documentation/strings.md) [`:[]`](/documentation/strings.md)
-- **[System functions](/documentation/system-functions.md)** [`adc read`](/documentation/system-functions.md#adc-read) [`char`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`file close`](/documentation/system-functions.md#file-close) [`file open`](/documentation/system-functions.md#file-open) [`file read`](/documentation/system-functions.md#file-read) [`file write`](/documentation/system-functions.md#file-write) [`jump`](/documentation/system-functions.md#jump) [`io open`](/documentation/system-functions.md#io-open) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`index`](/documentation/system-functions.md#index) [`input`](/documentation/system-functions.md#input) [`millis`](/documentation/system-functions.md#millis) [`number`](/documentation/system-functions.md#number) [`numeric`](/documentation/system-functions.md#numeric) [`print`](/documentation/system-functions.md#print) [`random`](/documentation/system-functions.md#random) [`restart`](/documentation/system-functions.md#restart) [`serial open`](/documentation/system-functions.md#serial-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`size`](/documentation/system-functions.md#size) [`sqrt`](/documentation/system-functions.md#sqrt) [`stop`](/documentation/system-functions.md#stop) [`string`](/documentation/system-functions.md#string) [`system`](/documentation/system-functions.md#system)
+- **[System functions](/documentation/system-functions.md)** [`adc read`](/documentation/system-functions.md#adc-read) [`args`](/documentation/system-functions.md#args) [`char`](/documentation/system-functions.md#print) [`cursor`](/documentation/system-functions.md#cursor) [`delay`](/documentation/system-functions.md#delay) [`file close`](/documentation/system-functions.md#file-close) [`file open`](/documentation/system-functions.md#file-open) [`file read`](/documentation/system-functions.md#file-read) [`file write`](/documentation/system-functions.md#file-write) [`include`](/documentation/system-functions.md#include) [`index`](/documentation/system-functions.md#index) [`input`](/documentation/system-functions.md#input) [`io open`](/documentation/system-functions.md#io-open) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`jump`](/documentation/system-functions.md#jump) [`label`](/documentation/system-functions.md#label) [`millis`](/documentation/system-functions.md#millis) [`number`](/documentation/system-functions.md#number) [`numeric`](/documentation/system-functions.md#numeric) [`print`](/documentation/system-functions.md#print) [`random`](/documentation/system-functions.md#random) [`restart`](/documentation/system-functions.md#restart) [`serial open`](/documentation/system-functions.md#serial-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`size`](/documentation/system-functions.md#size) [`sqrt`](/documentation/system-functions.md#sqrt) [`stop`](/documentation/system-functions.md#stop) [`string`](/documentation/system-functions.md#string) [`system`](/documentation/system-functions.md#system)
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## System functions
@@ -126,6 +126,49 @@ It receives two parameters, the file pointer and the value to be written in the 
 file write @f, "Hello world!"
 # Writes Hello world! test.txt
 ```
+---
+
+### `include`
+With the `include` keyword it is possible to add at the end of the program the content of a `.bpl` file. 
+
+```
+include [string literal]
+```
+The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.bpl` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
+
+```ruby
+include "hello_world.bpl" 
+hello_world()
+stop 
+
+```
+
+---
+
+### `index`
+```
+index [variable or string]
+```
+Receives a single parameter of type variable or string. Returns the position in the buffer of the parameter received.
+```ruby
+@roll = 125  
+@yaw  = 150
+print index @roll
+# Prints 0
+```
+
+---
+
+### `input`
+```
+input
+```
+Returns the user's input. On the Arduino returns -1 if no input is received on Linux instead it blocks the execution until a carriage return is detected. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
+```ruby
+@i = input
+if @i >= 0 print char @i end
+# Prints user's input
+```
 
 ---
 
@@ -163,22 +206,6 @@ It receives two parameters, the pin number and the mode (0 or INPUT, 1 or OUTPUT
 io open 12, OUTPUT
 # Sets pin 12 mode as output
 ```
----
-
-### `include`
-With the `include` keyword it is possible to add at the end of the program the content of a `.bpl` file. 
-
-```
-include [string literal]
-```
-The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.bpl` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
-
-```ruby
-include "hello_world.bpl" 
-hello_world()
-stop 
-
-```
 
 ---
 
@@ -192,33 +219,6 @@ label @loop
   print "Hello world \n"
 jump @loop
 # Prints Hello word cyclically
-```
-
----
-
-### `index`
-```
-index [variable or string]
-```
-Receives a single parameter of type variable or string. Returns the position in the buffer of the parameter received.
-```ruby
-@roll = 125  
-@yaw  = 150
-print index @roll
-# Prints 0
-```
-
----
-
-### `input`
-```
-input
-```
-Returns the user's input. On the Arduino returns -1 if no input is received on Linux instead it blocks the execution until a carriage return is detected. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
-```ruby
-@i = input
-if @i >= 0 print char @i end
-# Prints user's input
 ```
 
 ---
