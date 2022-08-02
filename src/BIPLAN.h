@@ -41,23 +41,23 @@ void bip_init(char *, bip_error_t, BPM_PRINT_T, BPM_INPUT_T, BPM_SERIAL_T);
 
 void bip_set_default();
 
-bool bip_ignore(char c);
+static bool bip_ignore(char c);
 
-BP_VAR_T bip_get_variable(int n);
+static BP_VAR_T bip_get_variable(int n);
 
-char bip_string_char(int s, int c);
+static char bip_string_char(int s, int c);
 
-BP_VAR_T bip_var_factor();
+static BP_VAR_T bip_var_factor();
 
-BP_VAR_T bip_access(BP_VAR_T v);
+static BP_VAR_T bip_access(BP_VAR_T v);
 
-BP_VAR_T bip_factor();
+static BP_VAR_T bip_factor();
 
-BP_VAR_T bip_term();
+static BP_VAR_T bip_term();
 
-BP_VAR_T bip_expression();
+static BP_VAR_T bip_expression();
 
-BP_VAR_T bip_relation();
+static BP_VAR_T bip_relation();
 
 void bip_jump_call();
 
@@ -69,15 +69,13 @@ void bip_skip_block();
 
 void bip_if_call();
 
-void bip_variable_assignment_call();
-
 void bip_string_assignment_call();
 
 void bip_mem_assignment_call();
 
-BP_VAR_T bip_return_call();
+static BP_VAR_T bip_return_call();
 
-BP_VAR_T bip_function_call();
+static BP_VAR_T bip_function_call();
 
 void bip_continue_call();
 
@@ -86,8 +84,6 @@ void bip_break_call();
 void bip_for_call();
 
 void bip_label_call();
-
-void bip_next_call();
 
 void bip_while_call();
 

@@ -28,7 +28,7 @@ uint8_t dcd_finished() {
 };
 
 /* Get next code from BIP code --------------------------------------------- */
-uint8_t dcd_next_code() {
+static uint8_t dcd_next_code() {
   if(
     *dcd_ptr == BP_VAR_ADDR ||
     *dcd_ptr == BP_STR_ADDR ||
