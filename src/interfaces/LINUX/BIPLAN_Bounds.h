@@ -39,10 +39,10 @@
   #define BP_OFFSET 35
 #endif
 
-/* Variables amount, set higher if required (max 91 - BP_PARAMS) ----------- */
+/* Variables amount, max 91 - BP_PARAMS - BP_CYCLE_DEPTH ------------------- */
 
 #ifndef BP_VARIABLES
-  #define BP_VARIABLES 81
+  #define BP_VARIABLES 91
 #endif
 
 /* Strings amount, set higher if required (max 91 - BP_ARGS) --------------- */
@@ -93,10 +93,10 @@
   #define BP_STRING_MAX 100
 #endif
 
-/* Cycle (for, while) maximum depth, higher if required -------------------- */
+/* Cycle (for, while) maximum depth, set higher if required ---------------- */
 
 #ifndef BP_CYCLE_DEPTH
-  #define BP_CYCLE_DEPTH 100
+  #define BP_CYCLE_DEPTH 10
 #endif
 
 /* Maximum length of the path used by include ------------------------------ */
