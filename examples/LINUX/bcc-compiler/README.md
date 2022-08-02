@@ -24,11 +24,12 @@ The `bcc` executable is copied in `usr/bin` to be reachable everywhere within yo
 
 Expected output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
-Source: fib.bpl
-Target: ../biplan-interpreter/fib.bip
-Source length: 411B, BIP length: 59B, reduction: 85.644768%
-Compilation time: 395 microseconds
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021 
+Source: fib.bpl 
+Target: ../biplan-interpreter/fib.bip 
+Source length: 410B, BIP length: 57B, reduction: 86.097565% 
+Compilation time: 1241 microseconds 
+
 ```
 
 The compiler should have created `fib.bip` inside the `biplan-interpreter` directory.

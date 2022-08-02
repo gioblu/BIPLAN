@@ -22,9 +22,9 @@ Fibonacci sequence computation in 166 bytes of BIPLAN code:
 ```php
 print fibonacci(40)
 stop
-function fibonacci($n, locals: $a, $b)
+function fibonacci($a, locals: $b)
   $b = 1
-  for $r = 0 to $n
+  for $r = 0 to $a
     $a = $b
     $b = result
     result = $a + $b
@@ -33,15 +33,15 @@ return result
 ```
 Compiled in 41 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
 ```
-p~#40)xf#{j{k{l){l1@#0,{j{k{l{ltt{k+{lnrt
+p~#40)xf#{s{t){t1@j0,{s{s{t{ttt{s+{t;rt
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
-Source: fib.bpl
-Target: ../biplan-interpreter/fib.bip
-Source length: 166B, BIP length: 43B, reduction: 74.096390%
-Compilation time: 264 microseconds
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021 
+Source: fib.bpl 
+Target: fib.bip 
+Source length: 157B, BIP length: 39B, reduction: 75.159233% 
+Compilation time: 292 microseconds 
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
@@ -51,7 +51,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-For now BIPLAN is around 1.47 times slower than python on my linux machine and around 10 times quicker than TinyBasicPlus when running on Arduino compatible boards.
+For now BIPLAN is around 1.43 times slower than python on my linux machine and much quicker than TinyBasicPlus when running on Arduino compatible boards.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)

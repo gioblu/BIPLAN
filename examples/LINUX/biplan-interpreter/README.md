@@ -16,15 +16,15 @@ The `bcc` executable is copied in `usr/bin` to be reachable everywhere within yo
 
 Expected output:
 ```
-BIPLAN interpreter - Giovanni Blu Mitolo 2022
+BIPLAN interpreter - Giovanni Blu Mitolo 2021 
 Source: fib.bip
-Source length: 64B
+Source length: 57B 
 
-Interpreter output:
+Interpreter output: 
 
 102334155
 
-Execution duration: 721975 microseconds
+Execution duration: 648949 microseconds 
 ```
 
 You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it. 
