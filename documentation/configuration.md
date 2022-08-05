@@ -26,7 +26,7 @@ Each variable is just an entry of a statically allocated array. The `BP_VARIABLE
 #define BP_VARIABLES 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to 88 variables defined by the user, such as `$my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
+BIPLAN supports up to 91 variables defined by the user, such as `@my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
 
 ---
 
@@ -36,13 +36,12 @@ Each string is just an entry of a statically allocated array, the `BP_STRINGS` c
 #define BP_STRINGS 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to 88 strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
+BIPLAN supports up to 91 strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
 ```cpp
 // Sets BIPLAN string maximum length to 50
 #define BP_STRING_MAX 50
 #include "BIPLAN.h"
 ```
-
 ---
 
 ### Functions
@@ -56,14 +55,17 @@ The maximum amount of parameters available can be configured as follows:
 #define BP_PARAMS 5
 #include "BIPLAN.h"
 ```
+Consider that program parameters are stored in the variable address-space, so the maximum amount of user-defined variables is affected by the number of supported parameters.
+
 The maximum function call depth can be configured as follows:
 ```cpp
 #define BP_FUN_DEPTH 5
 #include "BIPLAN.h"
 ```
-BIPLAN supports a maximum amount of 88 functions defined by the user.
+BIPLAN supports a maximum amount of 91 functions defined by the user.
 
 ---
+
 ### Keyword length
 You can configure the maximum length of user-defined keywords using the `BP_KEYWORD_MAX` as follows:
 
@@ -71,11 +73,44 @@ You can configure the maximum length of user-defined keywords using the `BP_KEYW
 #define BP_KEYWORD_MAX 20
 #include "BIPLAN.h"
 ```
+---
 
 ### Fixed point precision
-Define `BP_FIXED_P` constant with a value of 10000 to store 4 fractional digits:
+The precision of fixed point calculations can be configured defining `BP_FIXED_P` before including BIPLAN.h:
 
 ```c
-#define BP_FIXED_P 10000
+// Fixed point numbers store 4 fractional digits
+#define BP_FIXED_P 10000 
 #include "BIPLAN.h"
 ```
+---
+
+### Macro length
+The maximum length of user-defined macros can be configured defining `BP_MACRO_MAX` before including BIPLAN.h: 
+```c
+// The maximum length of a macro is 512 characters
+#define BP_MACRO_MAX 512 
+#include "BIPLAN.h"
+```
+---
+
+### Program arguments
+The maximum amount of program arguments can be configured defining `BP_ARGS` before including BIPLAN.h: 
+```c
+// Accept up to 10 program arguments
+#define BP_ARGS 10 
+#include "BIPLAN.h"
+```
+Consider that program arguments are stored in the string address-space, so the maximum amount of user-defined strings is affected by the number of supported program arguments.
+
+---
+
+### Nested for and while
+The maximum amount of nested `for` and `while` can be configured defining `BP_CYCLE_DEPTH` before including BIPLAN.h: 
+```c
+// Accept up to 10 nested for/while
+#define BP_CYCLE_DEPTH 10 
+#include "BIPLAN.h"
+```
+Consider that one address in the variable address-space is used for each level of nesting, so the maximum amount of user-defined variables is affected by the nest level supported.
+

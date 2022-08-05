@@ -24,3 +24,21 @@
 |                    | `>=` Greater or equal |                   |                          |
 |                    | `&&` And              |                   |                          |
 |                    | `\|\|` Or             |                   |                          |
+
+
+### Operator precedence
+
+BIPLAN implements a recursive descent parser for this reason there is no operator precedence and calculations are executed in the order specified by the user. 
+
+### Operator syntax
+
+In BIPLAN the following program is incorrect:
+```ruby
+if 1 == 1 || 0 == 0 print "OK" end
+```
+The correct form is:
+```ruby
+if (1 == 1) || (0 == 0) print "OK" end
+```
+Parenthesis are required for the interpreter to detect a nested relation and compute it before the primary relation.
+
