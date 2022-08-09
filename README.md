@@ -14,7 +14,7 @@ The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architec
 
 ### Why?
 
-In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language; quick, portable, modern, but at the same time small enough to run on limited micro-controllers.
+In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language: simple, portable, modern, but at the same time small enough to run on limited micro-controllers.
 
 ### Code example
 
@@ -77,14 +77,14 @@ Definitions.
 permissions granted by this License.
 
 "Software" shall mean the source code, associated documentation
-and configuration files included in the BIPLAN directory
+and configuration files included in the BIPLAN directory.
 
 "License" shall mean the conditions for use, copy, modify, merge, publish or
 distribute the Software as defined by Section 1 through 3 of this document.
 
 BIPLAN Experimenter's License
 
-Copyright 2021 Giovanni Blu Mitolo
+Copyright 2022 Giovanni Blu Mitolo
 
 Permission is hereby granted to You, free of charge, the rights to use, copy,
 modify, merge, publish or distribute copies of the Software, subject to the
@@ -94,7 +94,7 @@ following conditions:
   experimental or educational purposes.
 
 2.Companies, institutions, organizations and corporations don't have the right
-  to use, copy, modify, merge, publish or distribute the Software
+  to use, copy, modify, merge, publish or distribute the Software.
 
 3.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
