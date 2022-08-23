@@ -58,6 +58,7 @@ public:
         if(*p == a) ia++;
         if(*p == b) ib++;
         if(c && (*p == c)) ib++;
+        if(ib > ia) return false;
       } p++;
     } return (ia == ib);
   };
