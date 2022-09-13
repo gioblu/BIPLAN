@@ -141,10 +141,10 @@ public:
 
   void compile_numbers(char *prog) {
     char *p = prog;
-    char n[BP_NUM_MAX + 1] = {0};
-    char r[BP_NUM_MAX] = {0};
     float v = 0;
     while(p && *p) {
+      char n[BP_NUM_MAX + 1] = {0};
+      char r[BP_NUM_MAX] = {0};
       if(
         (*p == '.') && !is_in_string(prog, p) && 
         BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1)) 
