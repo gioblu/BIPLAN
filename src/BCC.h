@@ -399,8 +399,7 @@ public:
   /* Pre-processor macros -------------------------------------------------- */
   void compile_macros(char *prog) {
     if(fail) return;
-    char *p = prog;
-    while(compile_macro(p));
+    while(compile_macro(prog));
   };
 
   bool compile_macro(char *prog) {
@@ -411,13 +410,13 @@ public:
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
       while(*p == BP_SPACE) p++;
       uint8_t i;
-      for(i = 0; BCC_IS_CAP_KEYWORD(*p); i++, p++) {
+      for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < BP_KEYWORD_MAX); i++, p++) {
         macro_name[i] = *p;
         *p = BP_SPACE;
       }
       macro_name[i] = 0;
       while(*p == BP_SPACE) p++;
-      for(i = 0; (*p != BP_CR) && (*p != BP_LF); i++) {
+      for(i = 0; (*p != BP_CR) && (*p != BP_LF) && (p && *p); i++) {
         macro_code[i] = *p;
         *(p++) = BP_SPACE;
       }
