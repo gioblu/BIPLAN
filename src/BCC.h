@@ -117,7 +117,7 @@ public:
     char *p;
     while(p = strstr(prog, c))
       if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1)))
-        while((*p != BP_CR) && (*p != BP_LF)) *(p++) = ' ';
+        while((*p != BP_CR) && (*p != BP_LF) && (p && *p)) *(p++) = ' ';
   };
 
   /* Compiles character constants suh as '@' into 64 (its decimal value) --- */
