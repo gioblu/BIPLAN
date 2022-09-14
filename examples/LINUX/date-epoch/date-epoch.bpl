@@ -4,7 +4,7 @@
 
 include "/usr/local/BIPLAN/time.bpl" # Includes time library
 
-@date_epoch = epoch(29, 3, 2022, 12, 10, 10)
+@date_epoch = epoch(14, 9, 2022, 20,35,20)
 
 print "Epoch: ", @date_epoch
 
