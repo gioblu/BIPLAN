@@ -123,19 +123,19 @@
 
   /* Math  ------------------------------------------------------- */
   #ifndef BPM_SQRT
-    #define BPM_SQRT(X, P) (sqrt(X) * P)
+    #define BPM_SQRT(X, P) (sqrt(X / (float)P) * P)
   #endif
 
   #ifndef BPM_SIN
-    #define BPM_SIN(X, P) (sin(X) * P)
+    #define BPM_SIN(X, P) (sin(X / (float)P) * P) 
   #endif
 
   #ifndef BPM_COS
-    #define BPM_COS(X, P) (cos(X) * P)
+    #define BPM_COS(X, P) (cos(X / (float)P) * P)
   #endif
 
   #ifndef BPM_TAN
-    #define BPM_TAN(X, P) (tan(X) * P)
+    #define BPM_TAN(X, P) (tan(X / (float)P) * P)
   #endif
 
   #ifndef BPM_ROUND
