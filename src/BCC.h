@@ -240,17 +240,18 @@ public:
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
-    bool vt = (var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN);
-    char *p, str[BP_KEYWORD_MAX], code[4] =
-      {vt ? BP_VAR_ADDR : var_type, 0, 0, 0};
+    char type;
+    if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
+      type = BP_VAR_ADDR;
+    else type = var_type;
+    char *p, str[BP_KEYWORD_MAX], code[4] = {type, 0, 0, 0};
     uint8_t n;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
-      *p = vt ? BP_VAR_ADDR : var_type;
+      *p = type;
       str[n++] = *(++p);
-      if(vt && BCC_IS_ADDRESS(var_id)) var_id++;
-      else if(BCC_IS_ADDRESS(string_id)) string_id++;
-      *(p++) = vt ? var_id : string_id;
+      if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) *(p++) = ++var_id;
+      if(type == BP_STR_ADDR) *(p++) = ++string_id;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
@@ -262,12 +263,14 @@ public:
         } else break;
       if(n) {
         str[n] = 0;
-        code[1] = vt ? var_id : string_id;
+        if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) code[1] = var_id;
+        else code[1] = string_id;
         code[2] = 0;
         compile(position, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !is_in_string(prog, p)) return p;
-        if(vt) var_id++; else string_id++;
+        if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) var_id++;
+        else string_id++;
         return (char *)position;
       } return p;
     } return NULL;
@@ -305,7 +308,7 @@ public:
      Each function uses the same addresses for its parameters consuming only 
      BP_PARAMS addresses for all functions present in the program. --------- */
 
-  char *compile_function_pass(char *prog, char *pos) {
+  bool compile_function_pass(char *prog) {
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p;
     uint8_t keyword_length = 0;
@@ -331,16 +334,13 @@ public:
       fn_address[1] = fun_id++;
       fn_address[2] = 0;
       compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
-      p = strstr(pos, fn_keyword);
-      if(p && *p) return p;
-      return NULL;
-    } return NULL;
+      return true;
+    } return false;
   };
 
   void compile_functions(char *prog) {
     if(fail) return;
-    char *pos = prog;
-    while(pos) pos = compile_function_pass(prog, pos);
+    while(compile_function_pass(prog));
   };
 
   /* Finds longest keyword  ------------------------------------------------ */
@@ -379,21 +379,18 @@ public:
   void compile_for(char *prog) {
     char *p = prog, *p2 = prog;
     uint8_t vid = var_id;
-    while((p = find_longest_var_name(prog, BP_VAR_ADDR_HUMAN)) != NULL) {
+    while((p = find_longest_var_name(prog, BP_FOR_ADDR_HUMAN)) != NULL) {
       if(is_in_string(prog, p)) continue;
       p2 = p;
       while((*p != BP_COMMA) && (p && *p)) p++;
       stop = p;
-      var_id = (
-        (BP_OFFSET + BP_VARIABLES - BP_PARAMS) - 
-        (BP_CYCLE_DEPTH - for_nest_level(prog, p))
-      ) - 1;
-      compile_variables(p2, BP_VAR_ADDR_HUMAN);
+      var_id = BP_OFFSET + (for_nest_level(prog, p) - 1);
+      compile_variables(p2, BP_FOR_ADDR_HUMAN);
       find_end(prog);
       var_id = vid;
     }
     char c[2] = {BP_FOR, 0};
-    compile(prog, c, c, BP_VAR_ADDR, 1);
+    compile(prog, c, c, BP_FOR_ADDR, 1);
   };
 
   /* Pre-processor macros -------------------------------------------------- */
@@ -528,7 +525,7 @@ public:
     compile_char(prog, BP_INCREMENT_HUMAN, BP_INCREMENT);
     compile_char(prog, BP_DECREMENT_HUMAN, BP_DECREMENT);
     compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
-    for(uint8_t i = 0; i < BP_FUN_MAX; i++) compile_functions(prog);
+    compile_functions(prog);
     var_id = BP_OFFSET;
     find_end(prog);
     compile_variables(prog, BP_GLOBAL_HUMAN);

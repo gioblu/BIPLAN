@@ -32,6 +32,7 @@ static uint8_t dcd_next_code() {
   if(
     *dcd_ptr == BP_VAR_ADDR ||
     *dcd_ptr == BP_STR_ADDR ||
+    *dcd_ptr == BP_FOR_ADDR ||
     *dcd_ptr == BP_FUNCTION ||
     *dcd_ptr == BP_FUN_DEF  ||
     *dcd_ptr == BP_FOR
