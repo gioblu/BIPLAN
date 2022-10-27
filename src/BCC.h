@@ -542,7 +542,6 @@ public:
     compile_char(prog, BP_RESULT_HUMAN, BP_RESULT);
     compile_char(prog, BP_CONTINUE_HUMAN, BP_CONTINUE);
     compile_char(prog, BP_RESTART_HUMAN, BP_RESTART);
-    compile_char(prog, BP_NUMERIC_HUMAN, BP_NUMERIC);
     compile_char(prog, BP_RETURN_HUMAN, BP_RETURN);
     compile_char(prog, BP_SYSTEM_HUMAN, BP_SYSTEM);
     compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR);

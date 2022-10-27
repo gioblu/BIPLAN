@@ -313,8 +313,6 @@ static BP_VAR_T bip_factor() {
     case BP_SIZEOF: v = bip_sizeof_call(); break;
     case BP_SYSTEM: v = bip_system_call(0); break;
     case BP_ATOL: v = bip_atol_call(0); break;
-    case BP_NUMERIC:
-      DCD_NEXT; v = bip_relation(); v = (v >= 48) && (v <= 57); break;
   } v = (minus) ? -v : v;
   return (bitwise_not) ? ~v : v;
 };
