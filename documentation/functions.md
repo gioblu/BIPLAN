@@ -18,7 +18,7 @@ function [name]([parameter], [parameter], locals: [parameter], [parameter])
   [statement]
 return [expression]
 ```
-A function is a group of statements that together perform a task and can return a value. Each function is just an entry of a global array of up to 88 functions, each function stores up to 88 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
+A function is a group of statements identified by a unique name that together perform a task and can return a value. Each function is just an entry of a global array of up to 88 functions, each function stores up to 88 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
 
 ```php
 # Call
@@ -31,7 +31,7 @@ function sum($a, $b)
 return $a + $b
 ```
 
-All statements contained in the function definition are executed until `return` is encountered. Only one `return` is supported and must be the last statement of the function definition. Function definitions must be placed after `stop`.
+All statements contained in the function definition are executed until `return` is encountered. Function definitions must be placed after `stop`.
 
 The following function `fibonacci` prints the Fibonacci series. As you can see the local variables must be defined along with the function parameters after the `locals:` keyword. The value of uninitialized parameters and local variables is guaranteed to be `0`.
 ```php
@@ -49,4 +49,4 @@ function fibonacci($x, locals: $a, $b)
   next
 return result
 ```
- `result` is a local variable present in each function that can be used to temporarily store the result of the operation.
+ `result` is a local variable available in each function that can be used to temporarily store the result.

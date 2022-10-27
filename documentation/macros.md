@@ -16,7 +16,7 @@
 ```
 macro [name] [code]
 ```
-A macro is a capitalized keyword associated with a single line of code containing at least one statement. Every time the keyword occurs in the codebase it is substituted with its associated line of code. This task is executed by the pre-processor before the compilation phase is executed.
+A macro is a capitalized keyword of at least 2 characters associated with a single line of code containing at least one statement. Each time the macro's keyword occurs in the source it is substituted with its associated line of code. This task is executed by the pre-processor before the compilation phase starts.
 
 
 ```php
