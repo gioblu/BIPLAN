@@ -500,6 +500,7 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
+    remove_comments(prog);
     compile_includes(prog);
     remove_comments(prog);
     compile_macros(prog);
