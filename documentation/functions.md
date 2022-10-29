@@ -39,12 +39,11 @@ fibonacci(10) // Prints 0 1 1 2 3 5 8
 
 stop
 
-function fibonacci($x, locals: $a, $b)
+function fibonacci($a, locals: $b)
   $b = 1
-  while $n < $x
-    print $n, " "
+  for #r = 0 to $a
     $a = $b
-    $b = $n
+    $b = result
     result = $a + $b
   next
 return result

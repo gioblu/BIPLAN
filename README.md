@@ -19,12 +19,12 @@ In 2017 I built a couple of stand-alone computers using Arduino boards, I was fo
 ### Code example
 
 Fibonacci sequence computation in 166 bytes of BIPLAN code:
-```php
+```c
 print fibonacci(40)
 stop
 function fibonacci($a, locals: $b)
   $b = 1
-  for $r = 0 to $a
+  for #r = 0 to $a
     $a = $b
     $b = result
     result = $a + $b
@@ -41,7 +41,7 @@ BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021
 Source: fib.bpl 
 Target: fib.bip 
 Source length: 157B, BIP length: 39B, reduction: 75.159233% 
-Compilation time: 292 microseconds 
+Compilation time: 239 microseconds 
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
