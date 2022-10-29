@@ -1,1 +1,6 @@
-p"PI: ",d314159,p"Pythagoras constant or sqrt(2): ",d141421p"Theodorus constant or sqrt(3): ",d173205p"Golden ratio: ",d161803p"Conways constant: ",d130357p"Laplace limit: ",d66274p"Gravitational constant: ",d667430p"Speed of light: ",299792458p"Planck constant: ",d662607x
+p"PI: ",d314159,"
+"p"Pythagoras constant or sqrt(2): ",d141421,"
+"p"Theodorus constant or sqrt(3): ",d173205,"
+"p"Golden ratio: ",d161803,"
+"p"Conways constant: ",d130357,"
+"p"Laplace limit: ",d66274x

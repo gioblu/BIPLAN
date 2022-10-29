@@ -1,7 +1,6 @@
 import datetime
 
 begin_time = datetime.datetime.now()
-nxt = 0
 
 def fibonacci(n):
  a = 0

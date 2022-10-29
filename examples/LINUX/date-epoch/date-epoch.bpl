@@ -1,8 +1,9 @@
 
-# When the compiler is built BIPLAN libraries are copied in /usr/local/BIPLAN
-# Include them from there
+// When the compiler is built BIPLAN the standard library 
+// is copied in /usr/local/BIPLAN 
+// You can include it from there
 
-include "/usr/local/BIPLAN/time.bpl" # Includes time library
+include "/usr/local/BIPLAN/time.bpl"
 
 @date_epoch = epoch(14, 9, 2022, 20,35,20)
 
