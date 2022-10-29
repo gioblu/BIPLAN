@@ -14,29 +14,28 @@
 
 ## Strings
 String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 88 strings of 2^31 or 2^63 bits length.
-```php
+```c
 :test = "Hello world!"
 ```
 String can be accessed by name:
-```php
+```c
 :test = "Hello world!"
-print :test # Prints "Hello world!"
+print :test // Prints "Hello world!"
 ```
 All strings can be accessed by reference using `:[]`:
-```php
+```c
 :test = "Hello world!"
-print :[0] # Prints "Hello world!"
+print :[0] // Prints "Hello world!"
 ```
 Characters of strings can be accessed as shown below:
-```php
+```c
 :test = "Hello world!"
-print :test[0] # Prints "H"
+print :test[0] // Prints "H"
 ```
 The reference of a string can be obtained prepending its name with `index`:
-```php
-:a_string = "Hello world" # index 0
-:b_string = "World"       # index 1
-:c_string = "Hello"       # index 2
-
-print index :c_string # Prints 2 or the index of :c_string
+```c
+:a_string = "Hello world" // index 0
+:b_string = "World"       // index 1
+:c_string = "Hello"       // index 2
+print index :c_string     // Prints 2 or the index of :c_string
 ```

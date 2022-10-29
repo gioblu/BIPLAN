@@ -17,19 +17,16 @@
 BIPLAN supports only prefix increment and decrement unary operators. Prefix unary operators are used to increment or decrement its operand. The increment operator `++` adds 1, the decrement operator `--` subtracts 1. Both `++` and `--` can be used as prefix operators (before the operand: `++v`). For example `++v` increments the value of `v` before it is used.
 
 Prefix unary operators in statement must be used only when incrementing or decrementing variables:
-```ruby
+```c
 @a = 0
-print ++@a
-# Prints "1" and sets a = 1 in memory
+print ++@a // Prints "1" and sets a = 1 in memory
 ```
 BIPLAN unary operators can be chained:
 
-```ruby
+```c
 @a = 0
-print ++++@a
-# Sets a = 2 in memory and prints "2"
+print ++++@a // Sets a = 2 in memory and prints "2"
 
 @a = 1
-print ----@a
-# Sets a = -1 in memory and prints "-1"
+print ----@a // Sets a = -1 in memory and prints "-1"
 ```

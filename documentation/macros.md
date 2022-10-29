@@ -19,7 +19,7 @@ macro [name] [code]
 A macro is a capitalized keyword of at least 2 characters associated with a single line of code containing at least one statement. Each time the macro's keyword occurs in the source it is substituted with its associated line of code. This task is executed by the pre-processor before the compilation phase starts.
 
 
-```php
+```c
 macro WAIT delay 100 
 
 while true
@@ -31,7 +31,7 @@ next
 After the pre-processing phase the code above looks like this:
 
 
-```php
+```c
 while true
   print "Hello World!"
   delay 100

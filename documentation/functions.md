@@ -20,13 +20,13 @@ return [expression]
 ```
 A function is a group of statements identified by a unique name that together perform a task and can return a value. Each function is just an entry of a global array of up to 88 functions, each function stores up to 88 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
 
-```php
-# Call
+```c
+// Call
 print sum(1, 1)
 
-stop # end of the program
+stop // end of the program
 
-# Definition
+// Definition
 function sum($a, $b)
 return $a + $b
 ```
@@ -34,8 +34,8 @@ return $a + $b
 All statements contained in the function definition are executed until `return` is encountered. Function definitions must be placed after `stop`.
 
 The following function `fibonacci` prints the Fibonacci series. As you can see the local variables must be defined along with the function parameters after the `locals:` keyword. The value of uninitialized parameters and local variables is guaranteed to be `0`.
-```php
-fibonacci(10) # Prints 0 1 1 2 3 5 8
+```c
+fibonacci(10) // Prints 0 1 1 2 3 5 8
 
 stop
 

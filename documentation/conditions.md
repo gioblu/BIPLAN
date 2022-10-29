@@ -30,17 +30,17 @@ else
 end
 ```
 An `if`, if its condition is truthy, executes the following statements until `end` is encountered, otherwise it executes the statements that follow the next `end` or the next `else` until `end` is encountered. It is used where code needs to be executed only if a given condition is true. An `if` or `else` statement can execute a single statement and fit in a single line:
-```ruby
+```c
 @fine = true
 if @fine print "All is fine!" end
 
-# Or
+// Or
 
 if not @fine print "Some error occurred"
 else print "All is fine!" end
 ```
 or can also conditionally execute a group of statements:
-```php
+```c
 # Condition block
 
 if 1 == 1
