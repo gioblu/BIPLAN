@@ -113,9 +113,8 @@ public:
   /* Remove comments from program ------------------------------------------ */
   void remove_comments(char *prog) {
     if(fail) return;
-    const char c[2] = {BP_REM, 0};
     char *p;
-    while(p = strstr(prog, c))
+    while(p = strstr(prog, BP_COMMENT))
       if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1)))
         while((*p != BP_CR) && (*p != BP_LF) && (p && *p)) *(p++) = ' ';
   };
@@ -269,8 +268,6 @@ public:
         compile(position, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !is_in_string(prog, p)) return p;
-        if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) var_id++;
-        else string_id++;
         return (char *)position;
       } return p;
     } return NULL;
@@ -379,13 +376,13 @@ public:
   void compile_for(char *prog) {
     char *p = prog, *p2 = prog;
     uint8_t vid = var_id;
-    while((p = find_longest_var_name(prog, BP_FOR_ADDR_HUMAN)) != NULL) {
+    while((p = find_longest_var_name(prog, BP_FOR_ADDR)) != NULL) {
       if(is_in_string(prog, p)) continue;
       p2 = p;
       while((*p != BP_COMMA) && (p && *p)) p++;
       stop = p;
-      var_id = BP_OFFSET + (for_nest_level(prog, p) - 1);
-      compile_variables(p2, BP_FOR_ADDR_HUMAN);
+      var_id = BP_OFFSET + for_nest_level(prog, p);
+      compile_variables(p2, BP_FOR_ADDR);
       find_end(prog);
       var_id = vid;
     }

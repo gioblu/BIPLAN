@@ -21,6 +21,8 @@
 
 /* BIP and BIPLAN language syntax ------------------------------------------ */
 
+/* Comments ---------------------------------------------------------------- */
+#define BP_COMMENT           "//"
 /* Pre-processor macro symbol ---------------------------------------------- */
 #define BP_MACRO_DEF_HUMAN   "macro"
 
@@ -74,7 +76,7 @@ __________________________________________________|_____________|______| */
 //______________________________________________________________|______|
 #define BP_STRING            '"'                  // 34         | used |
 //______________________________________________________________|______|
-#define BP_REM               '#'                  // 35         | used |
+#define BP_FOR_ADDR          '#'                  // 35         | ADDR |
 //______________________________________________________________|______|
 #define BP_VAR_ADDR_HUMAN    '$'                  // 36         | used |
 // Used by BIPLAN as variable identifier                        |      |
@@ -177,8 +179,7 @@ __________________________________________________|_____________|______| */
 #define BP_LOGIC_OR          'O'                  // 79         | used |
 #define BP_LOGIC_OR_HUMAN    "||"                 //            |      |
 //______________________________________________________________|______|
-#define BP_FOR_ADDR          'P'                  // 80         | used |
-#define BP_FOR_ADDR_HUMAN    '{'                  //            | ADDR |
+                          // '{'                  // 80         |      |
 //______________________________________________________________|______|
 #define BP_EQ                'Q'                  // 81         | used |
 #define BP_EQ_HUMAN          "=="                 //            |      |
@@ -315,18 +316,51 @@ __________________________________________________|_____________|______| */
 #define BP_NUMBER            128                  // 128        | used |
 //______________________________________________________________|______|
 
+/* TODO 
+   1 implement numeric in BIPLAN in math module
+   2 remove numeric function it should be implemented in BIPLAN
+   3 adc write
+   4 serial flush
+   5 serial open
+   6 abs
+   7 cursor becomes print cursor
+   8 ++result should work too
+   9 compile_macro checks for being in string?
+  10 Access should be a symbol for both str and number (if not much slower)
+  11 always use end instead of next, potentially return, 
+  12 include per function 
 
-// TODO - Condense codes serial, write, read, open, close
+   TOOD - FIX ADDRESSING VARIABILI FOR E COLLISIONE PARAMETRI VARIABILI FOR
+   
+   Parameters should be saved in an isolated area they should have their 
+   own symbol, then avoid read and write in function and return
 
-// #define BP_CLRSCR
-// #define BP_GOTOXY
-// #define BP_AWRITE
-// #define BP_SFLUSH
-// #define BP_SBEGIN
-// #define BP_ABS
-// #define BP_MIN
-// #define BP_MAX
-// #define BP_MAP
+   variabili for vengono compilate come di norma (in base al nest level 
+   ignorando le chiamate a funzione) ma con un simbolo diverso che rappresenta
+   le variabili for. Nell'interprete l'indirizzo della variabile for viene 
+   computato aggiungendo al nest level attuale il valore dell'indirizzo piu' 
+   un offset che shifti l'indice all'area di memoria dove questi vengono
+   conservati. Fatto cio' si salvera' il valore iniziale e si evitera' di 
+   swappare il valore in memoria (non piu' necessario).
+
+   Sara' necessario perdere un indirizzo e riorganizzare il byte-code in modo 
+   che gli indirizzi inutili siano in fondo.
+
+   Potenzialmente le variabili for potrebbero esistere in un buffer a parte
+   cosi' da non consumare indirizzi delle globali.
+
+   fatto questo sara' possibile mantenere l'ordine di compilazione attuale
+   evitando che la variabili for vengano compilate insieme ai parametri.
+
+   Sara' poi necessario controllare che l'ordine di compilazione delle funzioni
+   e delle macro sia rispettato (prima piu' lunghe). 
+  
+   
+  
+
+
+   */
+
 
 /* Data types -------------------------------------------------------------- */
 
