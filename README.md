@@ -10,11 +10,14 @@ BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental pro
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII machine language. It includes fixed-point arithmetics, serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
+The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII byte-code. It includes fixed-point arithmetics, serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 ### Why?
 
-In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". After some experiments I understood there was space for a new language: simple, portable, modern, but at the same time small enough to run on limited micro-controllers.
+In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" . After some experiments I understood there was space for a new language: simple, portable, modern, but at the same time small enough to run on limited micro-controllers.
+
+### How?
+The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (594 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (786 lines of code).
 
 ### Code example
 
@@ -31,7 +34,7 @@ function fibonacci($a, locals: $b)
   next
 return result
 ```
-Compiled in 41 bytes of BIP virtual-machine language by the [`BCC`](/src/BCC.h) class:
+Compiled in 41 bytes of BIP byte-code by the [`BCC`](/src/BCC.h) class:
 ```
 p~#40)xf#{s{t){t1@j0,{s{s{t{ttt{s+{t;rt
 ```
