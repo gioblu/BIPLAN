@@ -381,7 +381,7 @@ public:
       p2 = p;
       while((*p != BP_COMMA) && (p && *p)) p++;
       stop = p;
-      var_id = BP_OFFSET + for_nest_level(prog, p);
+      var_id = BP_OFFSET + (for_nest_level(prog, p) - 1) - 1;
       compile_variables(p2, BP_FOR_ADDR);
       find_end(prog);
       var_id = vid;

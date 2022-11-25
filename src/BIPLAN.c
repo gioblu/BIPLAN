@@ -251,7 +251,7 @@ static BP_VAR_T bip_var_factor() {
     return id + pre;
   else if(type == BP_FOR_ADDR) {
     uint8_t fi = (bip_fn_id) ? (id + bip_functions[bip_fn_id - 1].cid) : id;
-    v = bip_for_variables[fi - 1] + pre;
+    v = bip_for_variables[fi] + pre;
     if(pre != 0) bip_for_variables[fi] += pre;
   } else if(type == BP_VAR_ADDR) {
     BP_GET_VARIABLE(id, v);
