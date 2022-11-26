@@ -18,7 +18,7 @@
 
 /* BUFFERS ----------------------------------------------------------------- */
 BP_VAR_T           bip_variables     [BP_VARIABLES];
-BP_VAR_T           bip_for_variables [BP_CYCLE_DEPTH];
+BP_VAR_T           bip_for_variables [BP_FOR_VARIABLES];
 uint8_t            bip_memory        [BP_MEM_SIZE];
 char               bip_string        [BP_STRING_MAX];
 char               bip_strings       [BP_STRINGS][BP_STRING_MAX];
@@ -116,7 +116,6 @@ BPM_SERIAL_T       bip_serial_fun;
   } else if(dcd_current == BP_FOR_ADDR) { \
     DCD_NEXT; \
     uint8_t bp_vac_for = *(dcd_ptr - 1) - BP_OFFSET; \
-    if(bip_fn_id) bp_vac_for += bip_functions[bip_fn_id - 1].cid; \
     bip_for_variables[bp_vac_for - 1] = bip_relation(); \
   } else { \
     BP_VAR_T bp_vac_acc = bip_access(BP_VAR_ACC); \
@@ -250,9 +249,8 @@ static BP_VAR_T bip_var_factor() {
   if(index && ((type == BP_VAR_ADDR) || (type == BP_STR_ADDR)))
     return id + pre;
   else if(type == BP_FOR_ADDR) {
-    uint8_t fi = (bip_fn_id) ? (id + bip_functions[bip_fn_id - 1].cid) : id;
-    v = bip_for_variables[fi] + pre;
-    if(pre != 0) bip_for_variables[fi] += pre;
+    v = bip_for_variables[id] + pre;
+    if(pre != 0) bip_for_variables[id] += pre;
   } else if(type == BP_VAR_ADDR) {
     BP_GET_VARIABLE(id, v);
     v += pre;
@@ -568,7 +566,6 @@ void bip_break_call() {
 /* CYCLE ------------------------------------------------------------------- */
 void bip_for_call() {
   uint8_t vi = *(dcd_ptr - 1) - BP_OFFSET;
-  vi = (bip_fn_id) ? (vi + bip_functions[bip_fn_id - 1].cid) : vi;
   BP_VAR_T l, v;
   if(bip_fw_id < BP_CYCLE_DEPTH) {
     v = bip_expression();
@@ -578,8 +575,9 @@ void bip_for_call() {
       DCD_NEXT;
       return;
     } 
-    bip_for_variables[bip_fw_id++] = v;
-    bip_cycles[bip_fw_id - 1].type = 0;
+    ++bip_fw_id;
+    bip_for_variables[vi] = v;
+    bip_cycles[bip_fw_id - 1].var_id = vi;
     bip_cycles[bip_fw_id - 1].to = l;
     if(bip_ignore(BP_COMMA)) bip_cycles[bip_fw_id - 1].step = bip_relation();
     else bip_cycles[bip_fw_id - 1].step = (v < l) ? 1 : -1;
@@ -597,7 +595,7 @@ void bip_label_call() {
 /* NEXT -------------------------------------------------------------------- */
 #define BP_NEXT_CALL \
   if(bip_fw_id) { \
-    if(bip_cycles[bip_fw_id - 1].type) { \
+    if(bip_cycles[bip_fw_id - 1].var_id == BP_VARIABLES) { \
       char *bp_while_next_addr = dcd_ptr; \
       DCD_GOTO(bip_cycles[bip_fw_id - 1].address); \
       if(bip_relation() <= 0) { \
@@ -605,10 +603,11 @@ void bip_label_call() {
         bip_fw_id--; \
       } \
     } else { \
-      bip_for_variables[bip_fw_id - 1] += bip_cycles[bip_fw_id - 1].step; \
-      if(bip_for_variables[bip_fw_id - 1] != bip_cycles[bip_fw_id - 1].to) { \
+      uint8_t bp_next_addr = bip_cycles[bip_fw_id - 1].var_id; \
+      bip_for_variables[bp_next_addr] += bip_cycles[bip_fw_id - 1].step; \
+      if(bip_for_variables[bp_next_addr] != bip_cycles[bip_fw_id - 1].to) { \
         DCD_GOTO(bip_cycles[bip_fw_id - 1].address); \
-      } else bip_fw_id--; \
+      } else bip_cycles[--bip_fw_id].var_id = BP_VARIABLES; \
     } \
   } else { bip_error(dcd_ptr, BP_ERROR_NEXT); }
 
@@ -617,8 +616,7 @@ void bip_while_call() {
   char *start = dcd_ptr;
   if(bip_relation() > 0) {
     if(bip_fw_id < BP_CYCLE_DEPTH) {
-      bip_cycles[bip_fw_id].address = start;
-      bip_cycles[bip_fw_id++].type = 1;
+      bip_cycles[bip_fw_id++].address = start;
     } else bip_error(dcd_ptr, BP_ERROR_WHILE_MAX);
   } else bip_break_call();
 };

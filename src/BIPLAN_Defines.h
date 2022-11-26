@@ -350,8 +350,8 @@ struct bip_def_t {
 
 struct bip_cycle_t {
   char *address;
-  bool type = 0;
   BP_VAR_T var = 0;
+  uint8_t var_id = BP_VARIABLES;
   BP_VAR_T step = 0;
   BP_VAR_T to = 0;
 };

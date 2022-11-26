@@ -30,13 +30,14 @@
 
 /* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDRESS(C) ( \
-  (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || \
+  (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FOR_ADDR) || \
   (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
 )
 
 class BCC {
 public:
   char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
+
   bip_error_t error_callback = NULL;
   bool fail = false;
   char *stop;
@@ -82,19 +83,6 @@ public:
       if(*p == BP_STRING) in_str = !in_str;
       p++;
     } return in_str;
-  };
-
-  /* Computes the for nest level ------------------------------------------- */
-  uint8_t for_nest_level(char *prog, char *pos) {
-    uint8_t n = 0;
-    char *p = prog;
-    do {
-      if(!is_in_string(prog, p) && !((p > prog) && BCC_IS_ADDRESS(*(p - 1)))) { 
-        if(*p == BP_FOR) n++;
-        if(*p == BP_NEXT) n--;
-      }
-    } while(pos >= ++p);
-    return n;
   };
 
   /* Remove a given symbol from the program -------------------------------- */
@@ -167,22 +155,22 @@ public:
     char *pos,
     const char *key,
     const char *code,
-    char kill_postfix = 0,
-    bool avoid_addr = 0,
-    char ends_with = 0
+    char post = 0,
+    bool addr = 0,
+    char end = 0
   ) {
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
     if(p && *p) { 
-      if(is_in_string(prog, p) || (avoid_addr && BCC_IS_ADDRESS(*(p - 1)))) {
+      if(is_in_string(prog, p) || (addr && BCC_IS_ADDRESS(*(p - 1)))) {
         p = strstr(p + kl, key);
         if(p && *p) return p; else return NULL;
       }
-      if(ends_with) {
+      if(end) {
         uint8_t i = kl;
         for(; *(p + i) == BP_SPACE; i++);
-        if(*(p + i) != ends_with) {
+        if(*(p + i) != end) {
           p = strstr(p + kl, key);
           if(p && *p) return p; else return NULL;
         }
@@ -201,9 +189,9 @@ public:
           find_end(prog);
         }
       }
-      if(kill_postfix) {
+      if(post) {
         while(*p == BP_SPACE) p++;
-        if(*p == kill_postfix) *p = BP_SPACE;
+        if(*p == post) *p = BP_SPACE;
       }
       return p;
     } else return NULL;
@@ -213,28 +201,26 @@ public:
     char *prog, 
     const char *key, 
     const char *code, 
-    char kill_postfix = 0, 
-    bool avoid_addr = 0, 
-    char ends_with = 0
+    char post = 0, 
+    bool addr = 0, 
+    char end = 0
   ) {
     if(fail) return;
     char *p = prog;
-    while(p) p = 
-      compile_pass(prog, p, key, code, kill_postfix, avoid_addr, ends_with);
+    while(p) p = compile_pass(prog, p, key, code, post, addr, end);
   };
 
   void compile_char(
     char *prog, 
     const char *key, 
     const char code, 
-    char kill_postfix = 0, 
-    bool avoid_addr = 0
+    char post = 0, 
+    bool addr = 0
   ) {
     if(fail) return;
     char *p = prog;
     const char c[2] = {code, 0};
-    while(p) p = 
-      compile_pass(prog, p, key, (const char *)c, kill_postfix, avoid_addr);
+    while(p) p = compile_pass(prog, p, key, (const char *)c, post, addr);
   };
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
@@ -369,22 +355,18 @@ public:
 
   /* Compile for 
 
-   Each for variable gets a memory address relative to the for nest level. 
-   The compiler stores all for variables present in the program in 
-   BP_CYCLE_DEPTH addresses. ----------------------------------------------- */
+   For variables are compiled inefficiently, each for gets a new address. -- */
 
   void compile_for(char *prog) {
     char *p = prog, *p2 = prog;
-    uint8_t vid = var_id;
+    var_id = BP_OFFSET;
     while((p = find_longest_var_name(prog, BP_FOR_ADDR)) != NULL) {
       if(is_in_string(prog, p)) continue;
       p2 = p;
-      while((*p != BP_COMMA) && (p && *p)) p++;
       stop = p;
-      var_id = BP_OFFSET + (for_nest_level(prog, p) - 1) - 1;
+      while((*p != BP_COMMA) && (p && *p)) p++;
       compile_variables(p2, BP_FOR_ADDR);
       find_end(prog);
-      var_id = vid;
     }
     char c[2] = {BP_FOR, 0};
     compile(prog, c, c, BP_FOR_ADDR, 1);
