@@ -1,12 +1,4 @@
 
-// X drawer, you pass 3, you get:
-
-// X X 
-//  X
-// X X
-
-// Giovanni Blu Mitolo 2022
-
 print "
 X drawer example
 Please input resolution between 3 and 9:" 
@@ -29,5 +21,3 @@ for #y = 0 to @res
 next 
 
 stop
-
- 
