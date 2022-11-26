@@ -41,10 +41,17 @@
 
 /* Maximum amount of variables (max 91). The end of the variable address-space 
    is used by parameters and for variables. The maximum amount of user-defined 
-   global variables is: 91 - BP_PARAMS - BP_CYCLE_DEPTH -------------------- */
+   global variables is: 91 - BP_PARAMS ------------------------------------- */
 
 #ifndef BP_VARIABLES
   #define BP_VARIABLES 91
+#endif
+
+/* Maximum amount of for variables (max 91). For now for variables addressess
+   are compiled very infecciently. Each for variable gets a new address. --- */
+
+#ifndef BP_FOR_VARIABLES
+  #define BP_FOR_VARIABLES 91
 #endif
 
 /* Maximum amount of program arguments ------------------------------------- */
