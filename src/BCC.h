@@ -469,8 +469,6 @@ public:
 
   /* Post-compilation checks ----------------------------------------------- */
   void post_compilation_checks(char *prog) {
-    if(!check_delimeter(prog, BP_NEXT, BP_FOR, BP_WHILE))
-      error(0, BP_ERROR_NEXT);  // Check for/while-next
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK); // Check if-end
     // Check variables, strings and functions buffer bounds
