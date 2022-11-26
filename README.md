@@ -17,7 +17,7 @@ The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architec
 In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" . After some experiments I understood there was space for a new language: simple, portable, modern, but at the same time small enough to run on limited micro-controllers.
 
 ### How?
-The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (594 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (786 lines of code).
+The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (576 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (784 lines of code).
 
 ### Code example
 
