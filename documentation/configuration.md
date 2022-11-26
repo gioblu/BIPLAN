@@ -26,7 +26,7 @@ Each variable is just an entry of a statically allocated array. The `BP_VARIABLE
 #define BP_VARIABLES 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to 91 variables defined by the user, such as `@my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
+BIPLAN supports up to `91 - BP_PARAMS` user-defined variables, such as `@my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
 
 ---
 
@@ -36,7 +36,7 @@ Each string is just an entry of a statically allocated array, the `BP_STRINGS` c
 #define BP_STRINGS 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to 91 strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
+BIPLAN supports up to `91 - BP_ARGS` strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
 ```cpp
 // Sets BIPLAN string maximum length to 50
 #define BP_STRING_MAX 50
@@ -83,6 +83,8 @@ The precision of fixed point calculations can be configured defining `BP_FIXED_P
 #define BP_FIXED_P 10000 
 #include "BIPLAN.h"
 ```
+Consider that both `bcc` and `biplan` use this constant and so both will need to be recompiled.
+
 ---
 
 ### Macro length
@@ -105,7 +107,14 @@ Consider that program arguments are stored in the string address-space, so the m
 
 ---
 
-### Nested for and while
+### for and while
+Each for variable is just an entry of a statically allocated array. The `BP_FOR_VARIABLES` constant can be used as shown below to configure the maximum amount of variables available:
+```cpp
+#define BP_FOR_VARIABLES 50
+#include "BIPLAN.h"
+```
+The maximum value supported is 91.
+
 The maximum amount of nested `for` and `while` can be configured defining `BP_CYCLE_DEPTH` before including BIPLAN.h: 
 ```c
 // Accept up to 10 nested for/while
