@@ -34,9 +34,9 @@ function fibonacci($a, locals: $b)
   next
 return result
 ```
-Compiled in 41 bytes of BIP byte-code by the [`BCC`](/src/BCC.h) class:
+Compiled in 39 bytes of BIP byte-code by the [`BCC`](/src/BCC.h) class:
 ```
-p~#40)xf#{s{t){t1@j0,{s{s{t{ttt{s+{t;rt
+p~$40)xf$}t}u)}u1@$0,}t}t}u}utt}t+}u;rt
 ```
 Compiler output:
 ```
@@ -50,7 +50,7 @@ Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
 102334155
 ```
-On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 35 microseconds to run the algorithm.
+On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/) needs around 30 microseconds to run the algorithm.
 
 ### Performance
 
