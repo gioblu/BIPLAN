@@ -230,7 +230,7 @@ public:
       type = BP_VAR_ADDR;
     else type = var_type;
     char *p, str[BP_KEYWORD_MAX], code[4] = {type, 0, 0, 0};
-    uint8_t n;
+    uint8_t n = 0;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
       *p = type;
