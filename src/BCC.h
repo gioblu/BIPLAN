@@ -329,17 +329,19 @@ public:
   /* Finds longest keyword  ------------------------------------------------ */
   char *find_longest_keyword(char *prog, bool t) {
     char *p = prog, *p2, *longest = NULL;
+    uint8_t result = 0;
     do {
-      uint8_t i = 0, result = 0;
-      p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
+      uint8_t i = 0;
+      p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
       if(p && *p) {
         if(is_in_string(prog, p)) {
           p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
           if(!p || !*p) return NULL;
         }
+        p2 = p;
         while(BCC_IS_KEYWORD(*p)) p++;
         while(*p == BP_SPACE) p++;
-        while(p && BCC_IS_KEYWORD(*(p++))) i++;
+        while(p && t ? BCC_IS_KEYWORD(*(p++)) : BCC_IS_CAP_KEYWORD(*(p++))) i++;
         if(i > result) {
           longest = p2;
           result = i;
