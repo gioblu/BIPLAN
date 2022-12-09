@@ -18,37 +18,6 @@ function leap_year($y)
   else result = true end
 return result
 
-// Get the amount of leap seconds from 1972 to a given year
-// $y must be an integer, returns an integer
-function leap_seconds($y) 
-  if $y >= 1972 result = 2 end
-  if $y >= 1973 result = result + 1 end
-  if $y >= 1974 result = result + 1 end
-  if $y >= 1975 result = result + 1 end
-  if $y >= 1976 result = result + 1 end
-  if $y >= 1977 result = result + 1 end
-  if $y >= 1978 result = result + 1 end
-  if $y >= 1979 result = result + 1 end
-  if $y >= 1981 result = result + 1 end
-  if $y >= 1982 result = result + 1 end
-  if $y >= 1983 result = result + 1 end
-  if $y >= 1985 result = result + 1 end
-  if $y >= 1987 result = result + 1 end
-  if $y >= 1989 result = result + 1 end
-  if $y >= 1990 result = result + 1 end
-  if $y >= 1992 result = result + 1 end
-  if $y >= 1993 result = result + 1 end
-  if $y >= 1994 result = result + 1 end
-  if $y >= 1995 result = result + 1 end
-  if $y >= 1997 result = result + 1 end
-  if $y >= 1998 result = result + 1 end
-  if $y >= 2005 result = result + 1 end
-  if $y >= 2008 result = result + 1 end
-  if $y >= 2012 result = result + 1 end
-  if $y >= 2015 result = result + 1 end
-  if $y >= 2016 result = result + 1 end
-return result
-
 // Get number of seconds since 1 Jan 1970
 // All parameters must be integers, returns an integer
 function epoch($D, $M, $Y, $h, $m, $s)
