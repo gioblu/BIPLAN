@@ -87,10 +87,9 @@ static uint8_t dcd_next_code() {
   void remove_backslash(char *s) {
     uint16_t j = 0;
     for(uint16_t i = 0; s[i] != '\0'; i++) {
-      if(s[i] != BP_BACKSLASH) {
-        s[j] = s[i];
-        ++j;
-      }
+      if((s[i] == BP_BACKSLASH) && (s[i + 1] == BP_STRING)) continue;
+      s[j] = s[i];
+      ++j;
     }
     s[j] = '\0';
   };
