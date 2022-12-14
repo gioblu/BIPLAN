@@ -34,6 +34,9 @@
   (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
 )
 
+/* Sets A to the next available address (avoiding reserved characters) ----- */
+#define BCC_NEW_ADDRESS(A) do { A++; } while(BCC_IS_ADDRESS(A));
+
 class BCC {
 public:
   char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
@@ -102,12 +105,12 @@ public:
   void remove_comments(char *prog) {
     if(fail) return;
     char *p;
-    while(p = strstr(prog, BP_COMMENT))
+    while((p = strstr(prog, BP_COMMENT)))
       if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1)))
         while((*p != BP_CR) && (*p != BP_LF) && (p && *p)) *(p++) = ' ';
   };
 
-  /* Compiles character constants suh as '@' into 64 (its decimal value) --- */
+  /* Compiles character constants such as '@' into 64 (its decimal value) -- */
   void compile_char_constants(char *prog) {
     char *p = prog, b[3] = {};
     while(*p != 0) {
@@ -235,8 +238,10 @@ public:
       str[n++] = var_type;
       *p = type;
       str[n++] = *(++p);
-      if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) *(p++) = ++var_id;
-      if(type == BP_STR_ADDR) *(p++) = ++string_id;
+      if(type == BP_STR_ADDR) {
+        BCC_NEW_ADDRESS(string_id);
+      } else BCC_NEW_ADDRESS(var_id);
+      *(p++) = (type == BP_STR_ADDR) ? string_id : var_id;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
@@ -248,8 +253,7 @@ public:
         } else break;
       if(n) {
         str[n] = 0;
-        if(type == BP_VAR_ADDR || type == BP_FOR_ADDR) code[1] = var_id;
-        else code[1] = string_id;
+        code[1] = (type == BP_STR_ADDR) ? string_id : var_id;
         code[2] = 0;
         compile(position, str, code, 0, 1);
         p = strstr(position, str);
@@ -296,7 +300,7 @@ public:
     char *p = find_longest_keyword(prog, true), *p2 = p;
     uint8_t keyword_length = 0;
     if(p && *p) {
-      if(BCC_IS_ADDRESS(fun_id)) fun_id++;
+      BCC_NEW_ADDRESS(fun_id);
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
       while(*p != BP_SPACE) *(p++) = BP_SPACE;
@@ -314,7 +318,7 @@ public:
       compile_variables(p2, BP_VAR_ADDR_HUMAN);
       fn_keyword[keyword_length] = 0;
       fn_address[0] = BP_FUNCTION;
-      fn_address[1] = fun_id++;
+      fn_address[1] = fun_id;
       fn_address[2] = 0;
       compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
       return true;
@@ -341,7 +345,10 @@ public:
         p2 = p;
         while(BCC_IS_KEYWORD(*p)) p++;
         while(*p == BP_SPACE) p++;
-        while(p && t ? BCC_IS_KEYWORD(*(p++)) : BCC_IS_CAP_KEYWORD(*(p++))) i++;
+        while(p && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
+          i++;
+          p++;
+        }
         if(i > result) {
           longest = p2;
           result = i;
