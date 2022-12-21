@@ -486,6 +486,8 @@ public:
   void post_compilation_checks(char *prog) {
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK); // Check if-end
+    if(!check_delimeter(prog, BP_FUN_DEF, BP_RETURN))
+      error(0, BP_ERROR_RETURN); // Check function return
     // Check variables, strings and functions buffer bounds
     if((fun_id - BP_OFFSET) >= BP_FUN_MAX) error(0, BP_ERROR_FUNCTION_MAX);
     if((string_id - BP_OFFSET) >= BP_STRINGS) error(0, BP_ERROR_STRING_MAX);
