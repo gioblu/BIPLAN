@@ -49,12 +49,12 @@ BPM_SERIAL_T       bip_serial_fun;
 #define BP_SYS_RELATION(F, T) \
   if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \
-    for(uint16_t i = 0; i < sizeof(bip_string); i++) \
+    for(uint16_t i = 0; bip_string[i] != 0; i++) \
       F(T, bip_string[i]); \
     BP_EMPTY_STRING; \
   } else if(bip_ignore(BP_STR_ADDR)) { \
     uint8_t id = *(dcd_ptr - 1) - BP_OFFSET; \
-    for(uint16_t i = 0; i < sizeof(bip_strings[id]); i++) \
+    for(uint16_t i = 0; bip_strings[id][i] != 0; i++) \
       F(T, bip_strings[id][i]); \
   } 
 
