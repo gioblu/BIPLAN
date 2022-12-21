@@ -166,7 +166,7 @@ public:
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
     if(p && *p) { 
-      if(is_in_string(prog, p) || (addr && BCC_IS_ADDRESS(*(p - 1)))) {
+      if(is_in_string(prog, p) || (addr && BCC_IS_ADDRESS(*(p - 1))) || (p >= stop)) {
         p = strstr(p + kl, key);
         if(p && *p) return p; else return NULL;
       }
@@ -255,7 +255,7 @@ public:
         str[n] = 0;
         code[1] = (type == BP_STR_ADDR) ? string_id : var_id;
         code[2] = 0;
-        compile(position, str, code, 0, 1);
+        compile(prog, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !is_in_string(prog, p)) return p;
         return (char *)position;
@@ -312,16 +312,22 @@ public:
       while((*p != BP_R_RPARENT) || ((*p - 1) == BP_VAR_ADDR)) {
         if((*p == BP_COMMA) && !((*p - 1) == BP_VAR_ADDR)) *p = BP_SPACE;
         p++;
+      } // Find the return keyword at the end of the function
+      while((p = strstr(p, BP_RETURN_HUMAN)) && *p && is_in_string(prog, p));
+      if(p && *p) { // find the end of the line
+        while(*p != BP_CR && *p != BP_LF) p++;
+        stop = p;
+        var_id = BP_OFFSET + (BP_VARIABLES - BP_PARAMS) - 1;
+        compile_variables(p2, BP_VAR_ADDR_HUMAN);
+        fn_keyword[keyword_length] = 0;
+        fn_address[0] = BP_FUNCTION;
+        fn_address[1] = fun_id;
+        fn_address[2] = 0;
+        find_end(prog);
+        compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
+        return true;
       }
-      stop = p;
-      var_id = BP_OFFSET + (BP_VARIABLES - BP_PARAMS) - 1;
-      compile_variables(p2, BP_VAR_ADDR_HUMAN);
-      fn_keyword[keyword_length] = 0;
-      fn_address[0] = BP_FUNCTION;
-      fn_address[1] = fun_id;
-      fn_address[2] = 0;
-      compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
-      return true;
+      error(0, BP_ERROR_RETURN);
     } return false;
   };
 
