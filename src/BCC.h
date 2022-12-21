@@ -29,13 +29,13 @@
   ((C >= 'A' && C <= 'Z') || (C == '_'))
 
 /* Checks if the character passed is an acceptable address ----------------- */
-#define BCC_IS_ADDRESS(C) ( \
+#define BCC_IS_ADDR(C) ( \
   (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FOR_ADDR) || \
   (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
 )
 
 /* Sets A to the next available address (avoiding reserved characters) ----- */
-#define BCC_NEW_ADDRESS(A) do { A++; } while(BCC_IS_ADDRESS(A));
+#define BCC_NEW_ADDR(A) do { A++; } while(BCC_IS_ADDR(A));
 
 class BCC {
 public:
@@ -58,7 +58,7 @@ public:
     uint16_t ia = 0, ib = 0;
     char *p = prog;
     while(*p != 0) {
-      if(!is_in_string(prog, p) && (aa || !BCC_IS_ADDRESS(*(p - 1)))) {
+      if(!in_string(prog, p) && (aa || !BCC_IS_ADDR(*(p - 1)))) {
         if(*p == a) ia++;
         if(*p == b) ib++;
         if(c && (*p == c)) ib++;
@@ -76,7 +76,7 @@ public:
   };
 
   /* Checks if a certain position in the program is within a string -------- */
-  bool is_in_string(char *prog, char *pos) {
+  bool in_string(char *prog, char *pos) {
     bool in_str = false;
     char *p = prog;
     while(pos >= p) {
@@ -106,7 +106,7 @@ public:
     if(fail) return;
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
-      if(!is_in_string(prog, p) && !BCC_IS_ADDRESS(*(p - 1)))
+      if(!in_string(prog, p) && !BCC_IS_ADDR(*(p - 1)))
         while((*p != BP_CR) && (*p != BP_LF) && (p && *p)) *(p++) = ' ';
   };
 
@@ -114,7 +114,7 @@ public:
   void compile_char_constants(char *prog) {
     char *p = prog, b[3] = {};
     while(*p != 0) {
-      if(!is_in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
+      if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
           error(0, BP_ERROR_SINGLE_QUOTE);
           return;
@@ -136,7 +136,7 @@ public:
       char n[BP_NUM_MAX + 1] = {0};
       char r[BP_NUM_MAX] = {0};
       if(
-        (*p == '.') && !is_in_string(prog, p) && 
+        (*p == '.') && !in_string(prog, p) && 
         BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1)) 
       ) {
         do { p--; } while(BCC_IS_NUM(*p)); 
@@ -166,7 +166,7 @@ public:
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
     if(p && *p) { 
-      if(is_in_string(prog, p) || (addr && BCC_IS_ADDRESS(*(p - 1))) || (p >= stop)) {
+      if(in_string(prog, p) || (addr && BCC_IS_ADDR(*(p - 1))) || (p >= stop)) {
         p = strstr(p + kl, key);
         if(p && *p) return p; else return NULL;
       }
@@ -239,8 +239,8 @@ public:
       *p = type;
       str[n++] = *(++p);
       if(type == BP_STR_ADDR) {
-        BCC_NEW_ADDRESS(string_id);
-      } else BCC_NEW_ADDRESS(var_id);
+        BCC_NEW_ADDR(string_id);
+      } else BCC_NEW_ADDR(var_id);
       *(p++) = (type == BP_STR_ADDR) ? string_id : var_id;
       for(uint16_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++)
         if(BCC_IS_KEYWORD(*p)) {
@@ -257,7 +257,7 @@ public:
         code[2] = 0;
         compile(prog, str, code, 0, 1);
         p = strstr(position, str);
-        if((p && *p) && !is_in_string(prog, p)) return p;
+        if((p && *p) && !in_string(prog, p)) return p;
         return (char *)position;
       } return p;
     } return NULL;
@@ -274,7 +274,7 @@ public:
     uint8_t result = 0;
     while((*p != 0) && (p <= stop))
       if(*(p++) == var_type) {
-        if(is_in_string(prog, p - 1) || BCC_IS_ADDRESS(*(p - 2))) continue;
+        if(in_string(prog, p - 1) || BCC_IS_ADDR(*(p - 2))) continue;
         uint8_t i = 0;
         while(BCC_IS_KEYWORD(*p)) {
           i++;
@@ -300,7 +300,7 @@ public:
     char *p = find_longest_keyword(prog, true), *p2 = p;
     uint8_t keyword_length = 0;
     if(p && *p) {
-      BCC_NEW_ADDRESS(fun_id);
+      BCC_NEW_ADDR(fun_id);
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
       while(*p != BP_SPACE) *(p++) = BP_SPACE;
@@ -313,7 +313,7 @@ public:
         if((*p == BP_COMMA) && !((*p - 1) == BP_VAR_ADDR)) *p = BP_SPACE;
         p++;
       } // Find the return keyword at the end of the function
-      while((p = strstr(p, BP_RETURN_HUMAN)) && *p && is_in_string(prog, p));
+      while((p = strstr(p, BP_RETURN_HUMAN)) && *p && in_string(prog, p));
       if(p && *p) { // find the end of the line
         while(*p != BP_CR && *p != BP_LF) p++;
         stop = p;
@@ -344,7 +344,7 @@ public:
       uint8_t i = 0;
       p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
       if(p && *p) {
-        if(is_in_string(prog, p)) {
+        if(in_string(prog, p)) {
           p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
           if(!p || !*p) return NULL;
         }
@@ -376,7 +376,7 @@ public:
     char *p = prog, *p2 = prog;
     var_id = BP_OFFSET;
     while((p = find_longest_var_name(prog, BP_FOR_ADDR)) != NULL) {
-      if(is_in_string(prog, p)) continue;
+      if(in_string(prog, p)) continue;
       p2 = p;
       stop = p;
       while((*p != BP_COMMA) && (p && *p)) p++;
@@ -435,7 +435,7 @@ public:
     size_t result;
     char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN);
     if(p && *p) {
-      if(is_in_string(pos, p)) return compile_include(prog, p + 1);
+      if(in_string(pos, p)) return compile_include(prog, p + 1);
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
       while(*p == BP_SPACE) p++;
       *(p++) = ' ';
