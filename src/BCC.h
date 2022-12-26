@@ -375,15 +375,22 @@ public:
   void compile_for(char *prog) {
     char *p = prog, *p2 = prog;
     var_id = BP_OFFSET;
-    while((p = find_longest_var_name(prog, BP_FOR_ADDR)) != NULL) {
+    char c[2] = {BP_FOR, 0}; // While you find a for
+    while((p = strstr(p, c)) && *p) {
       if(in_string(prog, p)) continue;
       p2 = p;
-      stop = p;
-      while((*p != BP_COMMA) && (p && *p)) p++;
-      compile_variables(p2, BP_FOR_ADDR);
-      find_end(prog);
+      int8_t n = 0; // Find the end of the for
+      while((++p && *p) && (n >= 0)) {
+        if(BCC_IS_ADDR(*(p - 1)) || in_string(prog, p)) continue;
+        if(*p == BP_FOR) n++;
+        if(*p == BP_NEXT) n--;
+      }
+      if(n != -1) return error(p, BP_ERROR_NEXT);
+      stop = p; // compile for variables within this for
+      compile_variable(p2, p2, BP_FOR_ADDR);
+      p = ++p2;
     }
-    char c[2] = {BP_FOR, 0};
+    find_end(prog); // remove variable type from for variable declaration
     compile(prog, c, c, BP_FOR_ADDR, 1);
   };
 
