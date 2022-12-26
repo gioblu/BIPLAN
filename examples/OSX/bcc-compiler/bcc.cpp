@@ -10,38 +10,38 @@ char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;
 
 void error_callback(char *position, const char *string) {
-  printf("\nCompilation error: ");
+  printf("\033[0;31m\nCompilation error: ");
   printf("%s", string);
 };
 
 int main(int argc, char* argv[]) {
-  printf("BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021 \n");
-  printf("Source: %s \n", argv[1]);
-  printf("Target: %s \n", argv[2]);
+  printf("\033[0;36m\nBCC (BIP Compiler Collection) compiler \nGiovanni Blu Mitolo 2022 \n\n");
+  printf("Source:\033[0;32m %s \033[0;36m", argv[1]);
+  printf("Target:\033[0;32m %s \033[0;36m \n", argv[2]);
   FILE * p_file;
   long p_size;
   size_t result;
   // Open file
   p_file = fopen(argv[1], "r");
   if(p_file == NULL) {
-    printf("Unable to open the source file.\n");
+    printf("\033[0;31m\nUnable to open the source file.\n");
     exit(-3);
   }
   // Obtain file size:
   fseek(p_file, 0, SEEK_END);
   p_size = ftell(p_file);
   rewind(p_file);
-  printf("Source length: ");
+  printf("BIPLAN size: \033[0;32m");
   std::cout << p_size;
-  printf("B");
+  printf("B\033[0;36m");
   if((sizeof(char) * p_size) >= BCC_MAX_PROGRAM_SIZE) {
-    printf("\nProgram too big, configure BCC_MAX_PROGRAM_SIZE.");
+    printf("\033[0;31m\nProgram too big, configure BCC_MAX_PROGRAM_SIZE.");
     exit(-2);
   }
   // Copy the file into the buffer:
   result = fread(program, 1, p_size, p_file);
   if(result != p_size) {
-    printf("\nUnable to read source file.");
+    printf("\033[0;31m\nUnable to read source file.");
     exit(-1);
   }
   // Close source file
@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
   compiler.error_callback = error_callback;
   uint32_t t = BPM_MICROS();
   if(!compiler.run(program)) {
-    printf("\nCompilation failed: check your code and retry\n");
+    printf("\033[0;31m\nCompilation failed: check your code and retry\n\n");
     exit(0);
   }
   t = BPM_MICROS() - t;
@@ -61,10 +61,10 @@ int main(int argc, char* argv[]) {
   fseek(o_file, 0, SEEK_END);
   int o_size = ftell(o_file);
   rewind(o_file);
-  printf(", BIP length: ");
+  printf(", BIP size: \033[0;32m");
   std::cout << o_size;
-  printf("B, reduction: %f", (100 - (100 / ((float)p_size / (float)o_size))));
+  printf("B\033[0;36m, reduction: \033[0;32m%f", (100 - (100 / ((float)p_size / (float)o_size))));
   fclose(o_file);
-  printf("%% \nCompilation time: %d microseconds \n", (int)(t));
+  printf("%% \033[0;36m \nCompilation time:\033[0;32m %d microseconds \n \n\033[0m", (int)(t));
   exit(1);
 };
