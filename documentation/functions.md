@@ -31,7 +31,7 @@ function sum($a, $b)
 return $a + $b
 ```
 
-All statements contained in the function definition are executed until `return` is encountered. Function definitions must be placed after `stop`.
+All statements contained in the function definition are executed until `return` is encountered. The `return` statement must be one and must be the last statement of the function. Function definitions must be placed after `stop`.
 
 The following function `fibonacci` prints the Fibonacci series. As you can see the local variables must be defined along with the function parameters after the `locals:` keyword. The value of uninitialized parameters and local variables is guaranteed to be `0`.
 ```c
