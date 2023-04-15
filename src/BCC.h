@@ -315,7 +315,7 @@ public:
       } // Find the return keyword at the end of the function
       while((p = strstr(p, BP_RETURN_HUMAN)) && *p && in_string(prog, p));
       if(p && *p) { // find the end of the line
-        while(*p != BP_CR && *p != BP_LF) p++;
+        while(*p && p && *p != BP_CR && *p != BP_LF) p++;
         stop = p;
         var_id = BP_OFFSET + (BP_VARIABLES - BP_PARAMS) - 1;
         compile_variables(p2, BP_VAR_ADDR_HUMAN);
