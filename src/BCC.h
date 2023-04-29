@@ -57,7 +57,7 @@ public:
   bool check_delimeter(char *prog, char a, char b, char c = 0, bool aa = 0) {
     uint16_t ia = 0, ib = 0;
     char *p = prog;
-    while(*p != 0) {
+    while(p && *p) {
       if(!in_string(prog, p) && (aa || !BCC_IS_ADDR(*(p - 1)))) {
         if(*p == a) ia++;
         if(*p == b) ib++;
@@ -69,7 +69,7 @@ public:
   /* Finds the end of a program -------------------------------------------- */
   void find_end(char *prog) {
     char *p;
-    if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE) 
+    if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
       return error(0, BP_ERROR_PROGRAM_LENGTH);
     for(p = prog; *p != 0; p++);
     stop = p;
@@ -79,7 +79,7 @@ public:
   bool in_string(char *prog, char *pos) {
     bool in_str = false;
     char *p = prog;
-    while(pos >= p) {
+    while((p && *p) && (pos >= p)) {
       if(in_str && *p == BP_BACKSLASH) { p += 2; continue; } // Jump escape + 1
       // Returns false if " is found outside a string
       if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
@@ -93,7 +93,7 @@ public:
     if(fail) return;
     char *i = s, *j = s;
     bool in_str = false;
-    while(*j != 0) {
+    while(j && *j) {
       *i = *j++;
       if(*i == BP_STRING && *(i - 1) != BP_BACKSLASH) in_str = !in_str;
       if(*i != v) i++;
@@ -107,13 +107,13 @@ public:
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
       if(!in_string(prog, p) && !BCC_IS_ADDR(*(p - 1)))
-        while((*p != BP_CR) && (*p != BP_LF) && (p && *p)) *(p++) = ' ';
+        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = ' ';
   };
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
   void compile_char_constants(char *prog) {
     char *p = prog, b[3] = {};
-    while(*p != 0) {
+    while(p && *p) {
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
           error(0, BP_ERROR_SINGLE_QUOTE);
@@ -165,7 +165,7 @@ public:
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
-    if(p && *p) { 
+    if(p && *p) {
       if(in_string(prog, p) || (addr && BCC_IS_ADDR(*(p - 1))) || (p >= stop)) {
         p = strstr(p + kl, key);
         if(p && *p) return p; else return NULL;
@@ -183,9 +183,9 @@ public:
           if(i < cl && code[i]) *p = code[i]; else *p = BP_SPACE;
       } else {
         uint8_t ofs = cl - kl;
-        if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE) 
+        if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE)
           error(0, BP_ERROR_PROGRAM_LENGTH);
-        else {  
+        else {
           memmove(p + ofs, p, strlen(p));
           *(stop + cl) = 0;
           for(uint16_t i = 0; i < cl; i++, p++) *p = code[i];
@@ -201,29 +201,29 @@ public:
   };
 
   void compile(
-    char *prog, 
-    const char *key, 
-    const char *code, 
-    char post = 0, 
-    bool addr = 0, 
+    char *prog,
+    const char *key,
+    const char *code,
+    char post = 0,
+    bool addr = 0,
     char end = 0
   ) {
     if(fail) return;
     char *p = prog;
-    while(p) p = compile_pass(prog, p, key, code, post, addr, end);
+    while(p && *p) p = compile_pass(prog, p, key, code, post, addr, end);
   };
 
   void compile_char(
-    char *prog, 
-    const char *key, 
-    const char code, 
-    char post = 0, 
+    char *prog,
+    const char *key,
+    const char code,
+    char post = 0,
     bool addr = 0
   ) {
     if(fail) return;
     char *p = prog;
     const char c[2] = {code, 0};
-    while(p) p = compile_pass(prog, p, key, (const char *)c, post, addr);
+    while(p && *p) p = compile_pass(prog, p, key, (const char *)c, post, addr);
   };
 
   /* Compiles user-defined variables in BIP byte-code ---------------------- */
@@ -266,13 +266,13 @@ public:
   void compile_variables(char *prog, char var_type) {
     if(fail) return;
     char *p = prog;
-    while(p) p = compile_variable(prog, p, var_type);
+    while(p && *p) p = compile_variable(prog, p, var_type);
   };
 
   char *find_longest_var_name(char *prog, char var_type) {
     char *p = prog, *longest = 0;
     uint8_t result = 0;
-    while((*p != 0) && (p <= stop))
+    while((p && *p) && (p <= stop))
       if(*(p++) == var_type) {
         if(in_string(prog, p - 1) || BCC_IS_ADDR(*(p - 2))) continue;
         uint8_t i = 0;
@@ -292,7 +292,7 @@ public:
   /* Compiles user-defined functions:
 
      Funtion parameters are stored at the end of the address space.
-     Each function uses the same addresses for its parameters consuming only 
+     Each function uses the same addresses for its parameters consuming only
      BP_PARAMS addresses for all functions present in the program. --------- */
 
   bool compile_function_pass(char *prog) {
@@ -304,7 +304,7 @@ public:
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
       while(*p != BP_SPACE) *(p++) = BP_SPACE;
-      while(p++ && (*p != BP_L_RPARENT)) {
+      while((++p && *p) && (*p != BP_L_RPARENT)) {
         fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
       } // Remove commas from definition
@@ -351,7 +351,7 @@ public:
         p2 = p;
         while(BCC_IS_KEYWORD(*p)) p++;
         while(*p == BP_SPACE) p++;
-        while(p && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
+        while((p && *p) && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
           i++;
           p++;
         }
@@ -368,7 +368,7 @@ public:
     return NULL;
   };
 
-  /* Compile for 
+  /* Compile for
 
    For variables are compiled inefficiently, each for gets a new address. -- */
 
@@ -414,7 +414,7 @@ public:
       }
       macro_name[i] = 0;
       while(*p == BP_SPACE) p++;
-      for(i = 0; (*p != BP_CR) && (*p != BP_LF) && (p && *p); i++) {
+      for(i = 0; (p && *p) && (*p != BP_CR) && (*p != BP_LF); i++) {
         macro_code[i] = *p;
         *(p++) = BP_SPACE;
       }
@@ -426,7 +426,7 @@ public:
   };
 
   /* Includes files:
-  
+
      Files contents are copied at the end of the program. ------------------ */
 
   void compile_includes(char *prog) {
