@@ -1,0 +1,26 @@
+## Syntax highlighting for BIP
+
+syntax bip "\.bip$"
+header "^#!.*bip"
+magic "BIP script"
+
+# Operators
+color red "C|S|Q|A|T|H|I|K|L|>|<"
+# Reserved words.
+color yellow "B|c|f|r|w|\!|\;|F|@|\?|b"
+# System function
+color brightyellow "\p|o|J|y|D|a|e|E|j|M|q|R|z|g|m|s|k|x|Y|Z|W|X|t"
+# Numbers
+color green "[0-9]"
+# Global variables
+color brightblue "}."
+# Function definitions
+color cyan "f."
+# For variables
+color brightblue "#."
+# Strings variables
+color blue ":."
+
+# Strings, double-quoted.
+color brightgreen ""([^"]|\\")*""
+

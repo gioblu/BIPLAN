@@ -1,0 +1,32 @@
+## Syntax highlighting for Ruby.
+
+syntax biplan "\.bpl$"
+header "^#!.*biplan"
+magic "BIPLAN script"
+comment "//"
+
+# Numbers
+color green "[0-9]"
+# Global variables
+color brightblue "\<[A-Z]+[A-Z_a-z]*|(\@)[A-Z_a-z]+"
+# Parameters
+color brightblue "\<[A-Z]+[A-Z_a-z]*|(\$)[A-Z_a-z]+"
+# Strings variables
+color brightblue "\<[A-Z]+[A-Z_a-z]*|(\:)[A-Z_a-z]+"
+# For variables
+color brightblue "\<[A-Z]+[A-Z_a-z]*|(\#)[A-Z_a-z]+"
+# Reserved words.
+color yellow "\<(break|continue|function|return|while|else|next|end|true|false|for|if|char)\>"
+# System function
+color brightyellow "\<(print|file|adc|args|cursor|delay|include|index|input|io|jump|label|millis|number|numeric|random|restart|serial|size|sqrt|string|system|stop|open|close|write|read)\>"
+# Strings, double-quoted.
+color brightgreen ""([^"]|\\")*""
+# ""([^"]|\\").*"|%[QW]?(\{[^}]*\}|\([^)]*\)|<[^>]*>|\[[^]]*\]|\$[^$]*\$|\^[^^]*\^|![^!]*!)"
+# Strings, single-quoted.
+color green "'([^']|\\')*'|%[qw](\{[^}]*\}|\([^)]*\)|<[^>]*>|\[[^]]*\]|\$[^$]*\$|\^[^^]*\^|![^!]*!)"
+
+# Comments.
+color magenta "//([^{#].*|$)"
+
+# Some common markers.
+color brightcyan "XXX|TODO|FIXME|\?\?\?"
