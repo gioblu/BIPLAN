@@ -87,6 +87,8 @@ void bip_label_call();
 
 void bip_while_call();
 
+char input_call();
+
 BP_VAR_T bip_io_get_call();
 
 BP_VAR_T bip_adc_call();

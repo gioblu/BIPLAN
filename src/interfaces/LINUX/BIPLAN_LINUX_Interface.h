@@ -28,6 +28,7 @@
   #include <thread>
   #include <math.h>
   #include <stdio.h>
+  #include <termios.h>
 
   #define OUTPUT 1
   #define INPUT 0
@@ -127,7 +128,7 @@
   #endif
 
   #ifndef BPM_SIN
-    #define BPM_SIN(X, P) (sin(X / (float)P) * P) 
+    #define BPM_SIN(X, P) (sin(X / (float)P) * P)
   #endif
 
   #ifndef BPM_COS
@@ -200,6 +201,11 @@
   #ifndef BPM_INPUT_T
     #define BPM_INPUT_T int
   #endif
+  // returns immediately the last keypress  #define BPM_INPUT(S) keypress()
+
+  #ifndef BPM_INPUT
+    #define BPM_INPUT_GET(S) keypress()
+  #endif
 
   #ifndef BPM_INPUT
     #define BPM_INPUT(S) getchar_unlocked()
@@ -230,7 +236,7 @@
   #endif
 
   #ifndef BPM_FILE_WRITE
-    #define BPM_FILE_WRITE(T, V) fprintf(T,"%c", V);
+    #define BPM_FILE_WRITE(T, V) fprintf(T, "%c", V);
   #endif
 
   #ifndef BPM_FILE_READ

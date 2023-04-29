@@ -56,7 +56,7 @@ BPM_SERIAL_T       bip_serial_fun;
     uint8_t id = *(dcd_ptr - 1) - BP_OFFSET; \
     for(uint16_t i = 0; bip_strings[id][i] != 0; i++) \
       F(T, bip_strings[id][i]); \
-  } 
+  }
 
 /* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
 
@@ -307,7 +307,7 @@ static BP_VAR_T bip_factor() {
     case BP_COS: DCD_NEXT; v = BPM_COS(bip_expression(), BP_FIXED_P); break;
     case BP_TAN: DCD_NEXT; v = BPM_TAN(bip_expression(), BP_FIXED_P); break;
     case BP_SERIAL: v = bip_serial_call(); break;
-    case BP_INPUT: v = BPM_INPUT(bip_data_in_fun); DCD_NEXT; break;
+    case BP_INPUT: v = input_call(); break;
     case BP_SIZEOF: v = bip_sizeof_call(); break;
     case BP_SYSTEM: v = bip_system_call(0); break;
     case BP_ATOL: v = bip_atol_call(0); break;
@@ -644,6 +644,16 @@ void bip_io_set_call() {
   DCD_NEXT;
   if(dcd_current == BP_WRITE) { BP_SYS_EXPRESSION_2(BPM_IO_WRITE); }
   else if(dcd_current == BP_OPEN) { BP_SYS_EXPRESSION_2(BPM_IO_MODE); }
+};
+
+/* INPUT ------------------------------------------------------------------ */
+char input_call() {
+  DCD_NEXT;
+  if(dcd_current == BP_READ) {
+    DCD_NEXT;
+    return BPM_INPUT_GET(bip_data_in_fun);
+  }
+  return BPM_INPUT(bip_data_in_fun);
 };
 
 /* CURSOR ------------------------------------------------------------------ */
