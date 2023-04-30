@@ -11,7 +11,7 @@ print restart, HINT
 draw_rect(@x, @y, 10, 5, 'X')
 
 while true
-  @k = input
+  @k = input read
   if @k == 'q' 
     break
   end

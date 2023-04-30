@@ -150,15 +150,26 @@ print index @roll // Prints 0
 ---
 
 ### `input`
+The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated
+
 ```
 input
 ```
-Returns the user's input. On the Arduino returns -1 if no input is received on Linux instead it blocks the execution until a carriage return is detected. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
+Returns the user's input, it blocks the execution until a carriage return is detected and it returns one character from the user's input.
 ```c
 @i = input
 if @i >= 0 print char @i end // Prints user's input
 ```
 
+
+```
+input read
+```
+Returns one character from the user's input immediately or -1 if no input is received. The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated.
+```c
+@i = input read
+if @i >= 0 print char @i end // Prints user's input
+```
 ---
 
 ### `io`

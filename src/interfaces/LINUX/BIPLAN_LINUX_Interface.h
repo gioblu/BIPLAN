@@ -203,7 +203,7 @@
   #endif
   // returns immediately the last keypress  #define BPM_INPUT(S) keypress()
 
-  #ifndef BPM_INPUT
+  #ifndef BPM_INPUT_GET
     #define BPM_INPUT_GET(S) keypress()
   #endif
 
