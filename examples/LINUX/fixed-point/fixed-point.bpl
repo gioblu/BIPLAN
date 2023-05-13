@@ -8,7 +8,7 @@ print "Value of PI is: ", fixed @v, "
 
 // Compute square root of 2
 
-print "Square root of 2: ", fixed sqrt 2.1, "
+print "Square root of 2: ", fixed sqrt 2.0, "
 "
 
 // Compute degrees to radians converison

@@ -117,6 +117,6 @@
 /* Number of digits after the comma ---------------------------------------- */
 
 #ifndef BP_FIXED_P
-  #define BP_FIXED_P 1000
+  #define BP_FIXED_P 100000
 #endif
 

@@ -7,7 +7,7 @@ include "/usr/local/BIPLAN/math-constants.bpl"
 // Converts radians to degrees
 // $r must be a fixed point number, returns a fixed point number 
 function rad_to_deg($r)
-	return $r * ((180 * precision) / PI)
+	return $r * ((180.0) / PI)
 
 // Converts degrees to radians
 // $d must be a fixed point number, returns a fixed point number 
