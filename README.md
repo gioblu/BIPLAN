@@ -40,7 +40,7 @@ p~$40)xf$}t}u)}u1@$0,}t}t}u}utt}t+}u;rt
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2021 
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2023
 Source: fib.bpl 
 Target: fib.bip 
 Source length: 157B, BIP length: 39B, reduction: 75.159233% 

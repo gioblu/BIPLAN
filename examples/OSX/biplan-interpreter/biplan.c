@@ -55,7 +55,7 @@ void init_program(char *path) {
 
 
 int main(int argc, char *argv[]) {
-  printf("\n\033[0;36mBIPLAN (Bytecoded Interpreted Programming LANguage) interpreter \nGiovanni Blu Mitolo 2022 \n\n");
+  printf("\n\033[0;36mBIPLAN (Bytecoded Interpreted Programming LANguage) interpreter \nGiovanni Blu Mitolo 2023 \n\n");
   while((opt = getopt(argc, argv, "i:a:s:b:h")) != -1) {
     switch(opt) {
       case 'i': init_program(optarg); break;

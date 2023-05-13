@@ -16,7 +16,7 @@ The `bcc` executable is copied in `usr/bin` to be reachable everywhere within yo
 
 Expected output:
 ```
-BIPLAN interpreter - Giovanni Blu Mitolo 2021 
+BIPLAN interpreter - Giovanni Blu Mitolo 2023
 Source: fib.bip
 Source length: 57B 
 
