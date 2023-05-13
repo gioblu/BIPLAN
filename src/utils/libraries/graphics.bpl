@@ -26,6 +26,9 @@ macro BG_WHITE  system "echo '\033[0;47m'"
 
 macro BT_RESET system "echo '\033[0m'"
 
+macro SHOW_CURSOR system "echo '\e[?25h'"
+macro HIDE_CURSOR system "echo '\e[?25l'"
+
 // Draw a rectangle at a given x and y position, with a given width and height
 function draw_rect($x, $y, $w, $h, $c)
   cursor $x, $y
