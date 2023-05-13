@@ -152,6 +152,7 @@ print index @roll // Prints 0
 ### `input`
 The user's input source can be configured when the `BIPLAN_Interpreter` is instantiated
 
+#### `input`
 ```
 input
 ```
@@ -161,7 +162,7 @@ Returns the user's input, it blocks the execution until a carriage return is det
 if @i >= 0 print char @i end // Prints user's input
 ```
 
-
+#### `input read`
 ```
 input read
 ```
