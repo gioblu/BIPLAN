@@ -52,9 +52,9 @@ void init_program(char *path) {
 
 
 int main(int argc, char *argv[]) {
-  while((opt = getopt(argc, argv, "i:a:s:b:h::")) != -1) {
+  while((opt = getopt(argc, argv, "d::i:a:s:b:h::")) != -1) {
     switch(opt) {
-      case 'v': verbose = true;
+      case 'd': verbose = true; break;
       case 'i': init_program(optarg); break;
       case 'a': bip_process_argument(optarg); break;
       case 's':
@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
       case 'h':
         printf("\n-a: Passes argument to program (-a hi -> args[0] = \"hi\")");
         printf("\n-b: Sets serial bardrate (-b 9600)");
+        printf("\n-d: Prints debug information");
         printf("\n-s: Sets serial port (-s COM1)");
         printf("\n-h: Prints this help message\n");
         exit(1);

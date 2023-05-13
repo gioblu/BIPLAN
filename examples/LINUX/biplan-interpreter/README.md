@@ -12,11 +12,11 @@ The `bcc` executable is copied in `usr/bin` to be reachable everywhere within yo
 
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. Digit `biplan -i fib.bip`
+3. Digit `biplan -i fib.bip -d`
 
 Expected output:
 ```
-BIPLAN interpreter - Giovanni Blu Mitolo 2021 
+BIPLAN interpreter - Giovanni Blu Mitolo 2023 
 Source: fib.bip
 Source length: 57B 
 
@@ -32,5 +32,6 @@ You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler
 `biplan` supports additional arguments:
 - `-a` passes an argument to the program
 - `-b` specifies the serial baudrate
+- `-d` prints debug information
 - `-s` specifies the serial port
 - `-h` prints help 
