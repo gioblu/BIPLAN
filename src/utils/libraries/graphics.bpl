@@ -51,7 +51,7 @@ function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
   if $y < $yy $sy = 1 else $sy = -1 end
     $e = $dx + $dy
   while true
-    cursor $x, $y
+    cursor $x + 1, $y + 1
     print char $c
     if ($x == $xx) && ($y == $yy) break end
     $ee = 2 * $e
