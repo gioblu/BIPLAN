@@ -42,3 +42,27 @@ function draw_rect($x, $y, $w, $h, $c)
     next
   next
 return 0
+
+// Draw a line with Bresenham's line algorithm 
+function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
+  $dx =  abs($xx - $x)
+  if $x < $xx $sx = 1 else $sx = -1 end
+  $dy = -abs($yy - $y)
+  if $y < $yy $sy = 1 else $sy = -1 end
+    $e = $dx + $dy
+  while true
+    cursor $x, $y
+    print char $c
+    if ($x == $xx) && ($y == $yy) break end
+    $ee = 2 * $e
+    if $ee >= $dy
+      $e = $e + $dy
+      $x = $x + $sx
+    end
+    if $ee <= $dx
+      $e = $e + $dx
+      $y = $y + $sy
+    end
+  next
+return 0
+
