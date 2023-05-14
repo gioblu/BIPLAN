@@ -4,6 +4,11 @@
 
 include "/usr/local/BIPLAN/math-constants.bpl"
 
+// Compute absolute value
+function abs($v)
+  if $v < 0 $v = -$v end
+return $v
+
 // Converts radians to degrees
 // $r must be a fixed point number, returns a fixed point number 
 function rad_to_deg($r)
