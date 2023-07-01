@@ -457,11 +457,10 @@ void bip_string_assignment_call() {
   if(dcd_current == BP_ACCESS) ci = bip_access(BP_ACCESS);
   if(ci == BP_STRING_MAX) {
     if(dcd_current == BP_STRING) bip_read_string(bip_strings[si]);
-    else if(bip_ignore(BP_STR_ADDR)) {
-      ci = *(dcd_ptr - 1) - BP_OFFSET;
+    else if(*dcd_ptr == BP_STR_ADDR) {
+      ci = *(dcd_ptr + 1) - BP_OFFSET;
       for(uint16_t i = 0; i < sizeof(bip_strings[ci]); i++)
         bip_strings[si][i] = bip_strings[ci][i];
-      DCD_NEXT;
     }
   } else {
     if(bip_ignore(BP_STRING)) {
