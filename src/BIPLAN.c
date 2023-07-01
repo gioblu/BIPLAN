@@ -447,7 +447,7 @@ void bip_if_call() {
 
 /* ASSIGN VALUE TO STRING -------------------------------------------------- */
 void bip_string_assignment_call() {
-  int ci = BP_STRING_MAX, si;
+  int ci = BP_STRING_MAX, si, o = 0;
   bool str_acc = (dcd_current == BP_STR_ACC);
   DCD_NEXT;
   if(str_acc) {
@@ -467,6 +467,14 @@ void bip_string_assignment_call() {
     if(bip_ignore(BP_STRING)) {
       bip_strings[si][ci] = (char)(*(dcd_ptr - 2));
     } else bip_strings[si][ci] = (uint8_t)bip_expression();
+  }
+  if(bip_ignore(BP_PLUS)) {
+    if(bip_ignore(BP_STR_ADDR)) {
+      o = 0;
+      while(bip_strings[si][o]) o++;
+      for(uint16_t i = 0; bip_strings[*(dcd_ptr - 1) - BP_OFFSET][i]; i++)
+        bip_strings[si][o + i] = bip_strings[*(dcd_ptr - 1) - BP_OFFSET][i];
+    }
   }
 };
 
