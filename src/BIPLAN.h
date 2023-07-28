@@ -61,7 +61,7 @@ static BP_VAR_T bip_relation();
 
 void bip_jump_call();
 
-void bip_read_string(char *s);
+void bip_read_string(char *s, uint16_t o);
 
 void bip_print_call();
 

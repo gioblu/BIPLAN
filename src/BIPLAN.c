@@ -382,8 +382,8 @@ static BP_VAR_T bip_relation() {
 void bip_jump_call() { DCD_GOTO(bip_program_start + bip_relation()); }
 
 /* READ SAFELY A STRING ---------------------------------------------------- */
-void bip_read_string(char *s) {
-  if(!decoder_string(s, sizeof(bip_string)))
+void bip_read_string(char *s, uint16_t o = 0) {
+  if(!decoder_string(s, sizeof(bip_string), o))
     bip_error(dcd_ptr, BP_ERROR_STRING_END);
   else BP_EXPECT(BP_STRING);
 };
@@ -457,23 +457,25 @@ void bip_string_assignment_call() {
   if(dcd_current == BP_ACCESS) ci = bip_access(BP_ACCESS);
   if(ci == BP_STRING_MAX) {
     if(dcd_current == BP_STRING) bip_read_string(bip_strings[si]);
-    else if(*dcd_ptr == BP_STR_ADDR) {
-      ci = *(dcd_ptr + 1) - BP_OFFSET;
-      for(uint16_t i = 0; i < sizeof(bip_strings[ci]); i++)
+    else if(bip_ignore(BP_STR_ADDR)) {
+      ci = *(dcd_ptr - 1) - BP_OFFSET;
+      for(uint16_t i = 0; i < strlen(bip_strings[ci]); i++)
         bip_strings[si][i] = bip_strings[ci][i];
+      DCD_NEXT;
     }
   } else {
     if(bip_ignore(BP_STRING)) {
       bip_strings[si][ci] = (char)(*(dcd_ptr - 2));
     } else bip_strings[si][ci] = (uint8_t)bip_expression();
   }
-  if(bip_ignore(BP_PLUS)) {
+  while(bip_ignore(BP_PLUS)) {
+    o = strlen(bip_strings[si]);
     if(bip_ignore(BP_STR_ADDR)) {
-      o = 0;
-      while(bip_strings[si][o]) o++;
-      for(uint16_t i = 0; bip_strings[*(dcd_ptr - 1) - BP_OFFSET][i]; i++)
-        bip_strings[si][o + i] = bip_strings[*(dcd_ptr - 1) - BP_OFFSET][i];
+      ci = *(dcd_ptr - 1) - BP_OFFSET;
+      for(uint16_t i = 0; bip_strings[ci][i]; i++)
+        bip_strings[si][o + i] = bip_strings[ci][i];
     }
+    if(dcd_current == BP_STRING) bip_read_string(bip_strings[si], o);
   }
 };
 

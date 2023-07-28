@@ -95,7 +95,7 @@ static uint8_t dcd_next_code() {
   };
 
 /* Decodes a string -------------------------------------------------------- */
-bool decoder_string(char *d, uint16_t l) {
+bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
   char *string_end;
   uint16_t string_length;
   bool bs = false;
@@ -106,8 +106,8 @@ bool decoder_string(char *d, uint16_t l) {
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
   if(l < string_length) string_length = l;
-  memcpy(d, dcd_ptr + 1, string_length);
-  d[string_length] = 0;
+  memcpy(d + o, dcd_ptr + 1, string_length);
+  d[string_length + o] = 0;
   if(bs) remove_backslash(d);
   return true;
 };
