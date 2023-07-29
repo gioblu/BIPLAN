@@ -386,6 +386,15 @@ void bip_read_string(char *s, uint16_t o = 0) {
   if(!decoder_string(s, sizeof(bip_string), o))
     bip_error(dcd_ptr, BP_ERROR_STRING_END);
   else BP_EXPECT(BP_STRING);
+  while(bip_ignore(BP_PLUS)) {
+    o = strlen(s);
+    if(bip_ignore(BP_STR_ADDR)) {
+      uint8_t ci = *(dcd_ptr - 1) - BP_OFFSET;
+      for(uint16_t i = 0; bip_strings[ci][i]; i++)
+        *(s + o + i) = bip_strings[ci][i];
+    }
+    if(dcd_current == BP_STRING) bip_read_string(s, o);
+  }
 };
 
 /* PRINT ------------------------------------------------------------------- */
@@ -467,15 +476,6 @@ void bip_string_assignment_call() {
     if(bip_ignore(BP_STRING)) {
       bip_strings[si][ci] = (char)(*(dcd_ptr - 2));
     } else bip_strings[si][ci] = (uint8_t)bip_expression();
-  }
-  while(bip_ignore(BP_PLUS)) {
-    o = strlen(bip_strings[si]);
-    if(bip_ignore(BP_STR_ADDR)) {
-      ci = *(dcd_ptr - 1) - BP_OFFSET;
-      for(uint16_t i = 0; bip_strings[ci][i]; i++)
-        bip_strings[si][o + i] = bip_strings[ci][i];
-    }
-    if(dcd_current == BP_STRING) bip_read_string(bip_strings[si], o);
   }
 };
 
