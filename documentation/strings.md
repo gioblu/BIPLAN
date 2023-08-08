@@ -22,7 +22,7 @@ A string can be accessed by name:
 :test = "Hello world!"
 print :test // Prints "Hello world!"
 ```
-Within a declaration strings can be concatenated as shown below:
+Strings can be concatenated:
 ```c
 :name = "Fred"
 :phrase = "Hi " + :name + "!" // Prints "Hi Fred!"
