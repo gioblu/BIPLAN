@@ -1,6 +1,8 @@
 
+include "/usr/local/BIPLAN/math.bpl"
+
 // Common graphics macros and functions
-// Giovanni Blu Mitolo 2022
+// Giovanni Blu Mitolo 2023
 
 // Change text color
 

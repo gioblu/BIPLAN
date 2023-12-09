@@ -1,7 +1,7 @@
 
 include "/usr/local/BIPLAN/graphics.bpl"
 
-macro WIDTH 99
+macro WIDTH  99
 macro HEIGHT 33
 
 for #i = 0 to WIDTH * HEIGHT
@@ -9,7 +9,9 @@ for #i = 0 to WIDTH * HEIGHT
 next
 
 print restart
+
 @t = TXT_GREEN  
+@c = HIDE_CURSOR
 
 for #z = 0 to HEIGHT 
   for #x = 0 to WIDTH
@@ -17,10 +19,11 @@ for #z = 0 to HEIGHT
       cursor #x, #y
       print char mem[#x + (#y * WIDTH)]
     next 
-    delay 2
+    delay 1
   next
 next
 
+@c = SHOW_CURSOR
 cursor 0, 35
 
 stop

@@ -470,7 +470,6 @@ void bip_string_assignment_call() {
       ci = *(dcd_ptr - 1) - BP_OFFSET;
       for(uint16_t i = 0; i < strlen(bip_strings[ci]); i++)
         bip_strings[si][i] = bip_strings[ci][i];
-      DCD_NEXT;
     }
   } else {
     if(bip_ignore(BP_STRING)) {

@@ -1,6 +1,6 @@
 
 // Common mathematical functions
-// Giovanni Blu Mitolo 2022
+// Giovanni Blu Mitolo 2023
 
 include "/usr/local/BIPLAN/math-constants.bpl"
 

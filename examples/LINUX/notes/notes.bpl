@@ -32,8 +32,9 @@ function get_string($s)
         print " ", char @c  
         --@i 
       else 
-        :[$s][@i] = @c 
-        ++@i 
+        if @c == LF :[$s][@i] = 0 
+        else :[$s][@i] = @c end
+        ++@i
       end
     end
   next
