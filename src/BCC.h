@@ -297,9 +297,10 @@ public:
 
   bool compile_function_pass(char *prog) {
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
-    char *p = find_longest_keyword(prog, true), *p2 = p;
-    uint8_t keyword_length = 0;
+    char *p = find_longest_keyword(prog, true), *p2 = p, *p3 = NULL;
+    uint8_t keyword_length = 0, f_id;
     if(p && *p) {
+      f_id = fun_id;
       BCC_NEW_ADDR(fun_id);
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
@@ -316,14 +317,24 @@ public:
       while((p = strstr(p, BP_RETURN_HUMAN)) && *p && in_string(prog, p));
       if(p && *p) { // find the end of the line
         while(*p && p && *p != BP_CR && *p != BP_LF) p++;
-        stop = p;
+        fn_keyword[keyword_length] = 0;
+        // Delete the definition if the function is never called
+        uint8_t count = 0;
+        p3 = prog;
+        while(((p3 = strstr(p3 + 1, fn_keyword)) != NULL) && (count <= 1))
+          count++;
+        if(count <= 1) {
+          while(p2 <= p) *(p2++) = ' ';
+          fun_id = f_id;
+          return true;
+        }
+        stop = p; // Compile parameters
         var_id = BP_OFFSET + (BP_VARIABLES - BP_PARAMS) - 1;
         compile_variables(p2, BP_VAR_ADDR_HUMAN);
-        fn_keyword[keyword_length] = 0;
+        find_end(prog);
         fn_address[0] = BP_FUNCTION;
         fn_address[1] = fun_id;
-        fn_address[2] = 0;
-        find_end(prog);
+        fn_address[2] = 0; // Compile function calls
         compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
         return true;
       }
