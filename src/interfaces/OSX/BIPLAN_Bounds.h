@@ -81,7 +81,7 @@
 /* Maximum amount of parameters -------------------------------------------- */
 
 #ifndef BP_PARAMS
-  #define BP_PARAMS 10
+  #define BP_PARAMS 20
 #endif
 
 /* Maximum amount of nested function calls --------------------------------- */
