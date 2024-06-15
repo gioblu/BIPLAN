@@ -323,7 +323,7 @@ public:
         p3 = prog;
         while(((p3 = strstr(p3 + 1, fn_keyword)) != NULL) && (count <= 1))
           count++;
-        if(count <= 1) {
+        if(count <= 0) {
           while(p2 <= p) *(p2++) = ' ';
           fun_id = f_id;
           return true;
