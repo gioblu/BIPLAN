@@ -425,9 +425,10 @@ public:
       }
       macro_name[i] = 0;
       while(*p == BP_SPACE) p++;
-      for(i = 0; (p && *p) && (*p != BP_CR) && (*p != BP_LF); i++) {
+      for(i = 0; p && *p; i++) {
         macro_code[i] = *p;
         *(p++) = BP_SPACE;
+        if(!in_string(prog, p) && ((*p == BP_CR) || (*p == BP_LF))) break;
       }
       macro_code[i] = 0;
       compile(prog, macro_name, macro_code);
