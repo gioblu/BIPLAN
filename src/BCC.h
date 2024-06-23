@@ -322,7 +322,7 @@ public:
         uint8_t count = 0;
         p3 = prog;
         while(((p3 = strstr(p3 + 1, fn_keyword)) != NULL) && (count <= 1))
-          count++;
+          if(!in_string(prog, p3)) count++;
         if(count <= 0) {
           while(p2 <= p) *(p2++) = ' ';
           fun_id = f_id;
@@ -430,7 +430,7 @@ public:
         *(p++) = BP_SPACE;
         if(!in_string(prog, p) && ((*p == BP_CR) || (*p == BP_LF))) break;
       }
-      macro_code[i] = 0;
+      macro_code[++i] = 0;
       compile(prog, macro_name, macro_code);
       if(find_longest_keyword(prog, false)) return true;
     }
