@@ -37,6 +37,11 @@
 /* Sets A to the next available address (avoiding reserved characters) ----- */
 #define BCC_NEW_ADDR(A) do { A++; } while(BCC_IS_ADDR(A));
 
+/* Ignores Space, tab, carriage return ------------------------------------- */
+#define BCC_IGNORE_SUGAR(P) \
+  while((*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB)) \
+    p++;
+
 class BCC {
 public:
   char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
@@ -136,23 +141,25 @@ public:
       char n[BP_NUM_MAX + 1] = {0};
       char r[BP_NUM_MAX] = {0};
       if(
-        (*p == '.') && !in_string(prog, p) && 
-        BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1)) 
+        (*p == '.') && !in_string(prog, p) &&
+        BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1))
       ) {
-        do { p--; } while(BCC_IS_NUM(*p)); 
-        v = BP_FIXED_P * BPM_ATOF(p + 1);
+        do { p--; } while(BCC_IS_NUM(*p));
+        v = BP_FIXED_P * BPM_ATOF(++p);
+        *p = ' ';
         BPM_ROUND(v);
         BPM_LTOA(v, r, 0);
-        for(uint8_t i = 0; (*(++p) == '.') || BCC_IS_NUM(*p); i++) 
+        for(uint8_t i = 0; (*(++p) == '.') || BCC_IS_NUM(*p); i++)
           if(i <= BP_NUM_MAX) n[i] = *(p);
           else *p = ' ';
+        printf("n: %s r: %s \n", n, r);
         compile(prog, n, r);
       }
       p++;
     }
   }
 
-  /* Compiles BIPLAN keywords into BIP byte-code --------------------------- */
+  /* Compiles BIPLAN keywords into BIP bytecode --------------------------- */
   char *compile_pass(
     char *prog,
     char *pos,
@@ -193,7 +200,7 @@ public:
         }
       }
       if(post) {
-        while(*p == BP_SPACE) p++;
+        BCC_IGNORE_SUGAR(p);
         if(*p == post) *p = BP_SPACE;
       }
       return p;
@@ -226,7 +233,7 @@ public:
     while(p && *p) p = compile_pass(prog, p, key, (const char *)c, post, addr);
   };
 
-  /* Compiles user-defined variables in BIP byte-code ---------------------- */
+  /* Compiles user-defined variables in BIP bytecode ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
     char type;
     if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
@@ -361,7 +368,7 @@ public:
         }
         p2 = p;
         while(BCC_IS_KEYWORD(*p)) p++;
-        while(*p == BP_SPACE) p++;
+        BCC_IGNORE_SUGAR(p);
         while((p && *p) && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
           i++;
           p++;
@@ -417,14 +424,14 @@ public:
     char *p = find_longest_keyword(prog, false);
     if(p && *p) {
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
-      while(*p == BP_SPACE) p++;
+      BCC_IGNORE_SUGAR(p);
       uint8_t i;
       for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < BP_KEYWORD_MAX); i++, p++) {
         macro_name[i] = *p;
         *p = BP_SPACE;
       }
       macro_name[i] = 0;
-      while(*p == BP_SPACE) p++;
+      BCC_IGNORE_SUGAR(p);
       for(i = 0; p && *p; i++) {
         macro_code[i] = *p;
         *(p++) = BP_SPACE;
@@ -456,12 +463,12 @@ public:
     if(p && *p) {
       if(in_string(pos, p)) return compile_include(prog, p + 1);
       while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
-      while(*p == BP_SPACE) p++;
+      BCC_IGNORE_SUGAR(p);
       *(p++) = ' ';
       uint8_t i = 0;
       for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
         include_path[i] = *p;
-        *p = ' '; 
+        *p = ' ';
       }
       include_path[i] = 0;
       *(p++) = ' ';
@@ -473,7 +480,7 @@ public:
       fseek(p_file, 0, SEEK_END);
       p_size = ftell(p_file);
       rewind(p_file);
-      if(((sizeof(char) * p_size) + strlen(prog))  >= BCC_MAX_PROGRAM_SIZE) 
+      if(((sizeof(char) * p_size) + strlen(prog)) >= BCC_MAX_PROGRAM_SIZE)
         error(0, BP_ERROR_PROGRAM_LENGTH);
       else {
         result = fread(stop, 1, p_size, p_file);
