@@ -132,33 +132,6 @@ public:
     }
   };
 
-  /* Compiles 3.141 in 3141 (by default BP_FIXED_P = 1000) ----------------- */
-
-  void compile_numbers(char *prog) {
-    char *p = prog;
-    float v = 0;
-    while(p && *p) {
-      char n[BP_NUM_MAX + 1] = {0};
-      char r[BP_NUM_MAX] = {0};
-      if(
-        (*p == '.') && !in_string(prog, p) &&
-        BCC_IS_NUM(*(p + 1)) && BCC_IS_NUM(*(p - 1))
-      ) {
-        do { p--; } while(BCC_IS_NUM(*p));
-        v = BP_FIXED_P * BPM_ATOF(++p);
-        *p = ' ';
-        BPM_ROUND(v);
-        BPM_LTOA(v, r, 0);
-        for(uint8_t i = 0; (*(++p) == '.') || BCC_IS_NUM(*p); i++)
-          if(i <= BP_NUM_MAX) n[i] = *(p);
-          else *p = ' ';
-        printf("n: %s r: %s \n", n, r);
-        compile(prog, n, r);
-      }
-      p++;
-    }
-  }
-
   /* Compiles BIPLAN keywords into BIP bytecode --------------------------- */
   char *compile_pass(
     char *prog,
@@ -527,7 +500,6 @@ public:
     compile_includes(prog);
     remove_comments(prog);
     compile_macros(prog);
-    compile_numbers(prog);
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);
     if(!pre_compilation_checks(prog)) return false;
@@ -557,8 +529,6 @@ public:
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
     compile_char(prog, BP_DELAY_HUMAN, BP_DELAY);
-    compile_char(prog, BP_FIXED_HUMAN, BP_FIXED);
-    compile_char(prog, BP_SQRT_HUMAN, BP_SQRT);
     compile_char(prog, BP_SERIAL_HUMAN, BP_SERIAL);
     compile_char(prog, BP_CONTINUE_HUMAN, BP_CONTINUE);
     compile_char(prog, BP_RESTART_HUMAN, BP_RESTART);
@@ -588,9 +558,6 @@ public:
     compile_char(prog, BP_END_HUMAN, BP_END);
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);
-    compile_char(prog, BP_SIN_HUMAN, BP_SIN);
-    compile_char(prog, BP_COS_HUMAN, BP_COS);
-    compile_char(prog, BP_TAN_HUMAN, BP_TAN);
     compile(prog, "args[", "S");
     compile_char(prog, "step", BP_COMMA);
     compile(prog, "not", "1-");
