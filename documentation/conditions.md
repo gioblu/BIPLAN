@@ -1,4 +1,5 @@
 ### Documentation
+- [Bytecode](/documentation/bytecode.md)
 - [Configuration](/documentation/configuration.md)
 - [Comments](/documentation/comments.md) [`#`](/documentation/comments.md)
 - **[Conditions](/documentation/conditions.md)** [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)

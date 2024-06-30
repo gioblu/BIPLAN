@@ -1,4 +1,5 @@
 ### Documentation
+- [Bytecode](/documentation/bytecode.md)
 - [Configuration](/documentation/configuration.md)
 - [Comments](/documentation/comments.md) [`#`](/documentation/comments.md)
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
@@ -13,7 +14,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## BIP CR.1 computer architecture
-The graph below showcases the structure and the features of the BIP CR.1 computer architecture that operates with the BIP ASCII byte-code and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
+The graph below showcases the structure and the features of the BIP CR.1 computer architecture that operates with the BIP ASCII bytecode and includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 
 ```

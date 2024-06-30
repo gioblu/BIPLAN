@@ -1,6 +1,6 @@
 
-1. Design a byte-code format that can be easily transmitted
-2. Design a byte-code format that can be easily read by a human
+1. Design a bytecode format that can be easily transmitted
+2. Design a bytecode format that can be easily read by a human
 3. Design a high-level language that is more readable and modern than BASIC
 4. The interpreter and the compiler must fit on an Arduino Duemilanove/UNO/Nano
 5. The interpreter must be faster than python3
