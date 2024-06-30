@@ -28,7 +28,7 @@ uint8_t dcd_finished() {
 };
 
 /* Get next code from BIP code --------------------------------------------- */
-static uint8_t dcd_next_code() {
+static void dcd_next_code() {
   if(
     *dcd_ptr == BP_VAR_ADDR ||
     *dcd_ptr == BP_STR_ADDR ||
@@ -38,46 +38,47 @@ static uint8_t dcd_next_code() {
     *dcd_ptr == BP_FOR
   ) {
     dcd_next_ptr = dcd_ptr + 2;
-    return *dcd_ptr;
+    dcd_current =  *dcd_ptr;
   }
   // if digit (0-9)
-  if(*dcd_ptr >= 48 && *dcd_ptr <= 57) {
+  else if(*dcd_ptr >= 48 && *dcd_ptr <= 57) {
     for(uint8_t i = 0; i < BP_NUM_MAX; ++i)
       if(dcd_ptr[i] < 48 || dcd_ptr[i] > 57) { // If not digit (0-9)
         dcd_next_ptr = dcd_ptr + i;
-        return BP_NUMBER;
+        dcd_current = BP_NUMBER;
+        break;
       }
-    return BP_ERROR;
+    if(dcd_current != BP_NUMBER)
+      dcd_current = BP_ERROR;
   }
-  if(*dcd_ptr == BP_STRING) {
+  else if(*dcd_ptr == BP_STRING) {
     dcd_next_ptr = dcd_ptr;
     do {
       if(*dcd_next_ptr++ == BP_BACKSLASH) dcd_next_ptr++;
     } while(*dcd_next_ptr != BP_STRING);
     ++dcd_next_ptr;
-    return BP_STRING;
+    dcd_current = BP_STRING;
   }
-  if(*dcd_ptr > 0) {
+  else if(*dcd_ptr > 0) {
     dcd_next_ptr = dcd_ptr + 1;
-    return *dcd_ptr;
-  } else return BP_ENDOFINPUT;
-  return BP_ERROR;
+    dcd_current = *dcd_ptr;
+  } else dcd_current = BP_ENDOFINPUT;
 };
 
 /* Gets the next code from BIP code ---------------------------------------- */
 #define DCD_NEXT \
   dcd_ptr = dcd_next_ptr; \
-  dcd_current = dcd_next_code();
+  dcd_next_code();
 
 /* Moves decoder to a certain position in the program ---------------------- */
 #define DCD_GOTO(P) \
   dcd_ptr = P; \
-  dcd_current = dcd_next_code();
+  dcd_next_code();
 
 /* Initializes the decoder ------------------------------------------------- */
 #define DCD_INIT(P) \
   DCD_GOTO(P); \
-  dcd_current = dcd_next_code();
+  dcd_next_code();
 
 /* Ignores a certain code -------------------------------------------------- */
 #define DCD_IGNORE(C, V) \

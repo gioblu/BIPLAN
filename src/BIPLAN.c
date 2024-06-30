@@ -10,7 +10,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2022 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2024 - gioscarab@gmail.com
   BIP byte-code interpreter */
 
 #pragma once
@@ -98,6 +98,11 @@ BPM_SERIAL_T       bip_serial_fun;
 /* SET VARIABLE ------------------------------------------------------------ */
 #define BP_SET_VARIABLE(N, V) \
   if(N >= 0 && N < BP_VARIABLES) { bip_variables[N] = V; } \
+  else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_SET); }
+
+/* INCREMENT VARIABLE ------------------------------------------------------- */
+#define BP_INCREMENT_VARIABLE(N, V) \
+  if(N >= 0 && N < BP_VARIABLES) { bip_variables[N] += V; } \
   else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_SET); }
 
 /* UNARY -- ++ ------------------------------------------------------------- */
@@ -215,9 +220,9 @@ void bip_set_default() {
 };
 
 /* IGNORE A CERTAIN CODE --------------------------------------------------- */
-static bool bip_ignore(char c) { 
-  if((c = (c == dcd_current))) DCD_NEXT; 
-  return c; 
+static bool bip_ignore(char c) {
+  if((c = (c == dcd_current))) DCD_NEXT;
+  return c;
 };
 
 /* GET VARIABLE ------------------------------------------------------------ */
@@ -235,35 +240,6 @@ static char bip_string_char(int s, int c) {
   } return bip_strings[s][c];
 };
 
-/* NUMERIC VARIABLE: 1234 ---------------------------------------------------*/
-static BP_VAR_T bip_var_factor() {
-  BP_VAR_T v;
-  uint8_t id = BP_VARIABLES;
-  int8_t pre = 0;
-  bool index;
-  BP_UNARY(pre);
-  DCD_IGNORE(BP_INDEX, index);
-  uint8_t type = dcd_current;
-  DCD_NEXT;
-  id = *(dcd_ptr - 1) - BP_OFFSET;
-  if(index && ((type == BP_VAR_ADDR) || (type == BP_STR_ADDR)))
-    return id + pre;
-  else if(type == BP_FOR_ADDR) {
-    v = bip_for_variables[id] + pre;
-    if(pre != 0) bip_for_variables[id] += pre;
-  } else if(type == BP_VAR_ADDR) {
-    BP_GET_VARIABLE(id, v);
-    v += pre;
-    if(pre != 0) BP_SET_VARIABLE(id, v);
-  } else if((type == BP_STR_ADDR) && (dcd_current == BP_ACCESS)) {
-    v = bip_string_char(id, bip_access(BP_ACCESS));
-    bip_return_type = BP_ACCESS;
-  } else {
-    bip_return_type = BP_STR_ADDR;
-    v = id;
-  } return v;
-};
-
 /* ACCESS MEMORY VIA INDEX [ ] --------------------------------------------- */
 static BP_VAR_T bip_access(BP_VAR_T v) {
   BP_EXPECT(v);
@@ -275,16 +251,39 @@ static BP_VAR_T bip_access(BP_VAR_T v) {
 /* FACTOR: (n) ------------------------------------------------------------- */
 static BP_VAR_T bip_factor() {
   BP_VAR_T v = 0;
-  bool bitwise_not = 0, minus = 0;
+  bool bitwise_not = 0, minus = 0, index = 0;
+  uint8_t id = BP_VARIABLES;
+  int8_t pre = 0;
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
+  BP_UNARY(pre);
+  DCD_IGNORE(BP_INDEX, index);
   switch(dcd_current) {
-    case BP_FOR_ADDR: ;
-    case BP_INDEX: ;
-    case BP_VAR_ADDR: ;
-    case BP_STR_ADDR: ;
-    case BP_INCREMENT: ;
-    case BP_DECREMENT: v = bip_var_factor(); break;
+    case BP_FOR_ADDR:
+      DCD_NEXT;
+      id = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return id;
+      if(pre != 0) bip_for_variables[id] += pre;
+      v = bip_for_variables[id];
+      break;
+    case BP_VAR_ADDR:
+      DCD_NEXT;
+      id = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return id;
+      BP_INCREMENT_VARIABLE(id, pre);
+      BP_GET_VARIABLE(id, v);
+      break;
+    case BP_STR_ADDR:
+      DCD_NEXT;
+      id = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return id;
+      if(dcd_current == BP_ACCESS) {
+        v = bip_string_char(id, bip_access(BP_ACCESS));
+        bip_return_type = BP_ACCESS;
+      }
+      bip_return_type = BP_STR_ADDR;
+      v = id;
+      break;
     case BP_NUMBER: v = BPM_ATOL(dcd_ptr); BP_EXPECT(BP_NUMBER); break;
     case BP_VAR_ACC: v = bip_get_variable(bip_access(BP_VAR_ACC)); break;
     case BP_STR_ACC:
@@ -295,7 +294,6 @@ static BP_VAR_T bip_factor() {
     case BP_MEM_ACC: v = bip_memory[bip_access(BP_MEM_ACC)]; break;
     case BP_L_RPARENT:
       DCD_NEXT; v = bip_relation(); BP_EXPECT(BP_R_RPARENT); break;
-    case BP_RESULT: DCD_NEXT; v = bip_result_get_call(); break;
     case BP_FUNCTION: v = bip_function_call(); DCD_NEXT; break;
     case BP_FILE: v = bip_file_get_call(); break;
     case BP_IO: v = bip_io_get_call(); break;
@@ -417,7 +415,7 @@ void bip_print_call() {
       BPM_PRINT_WRITE(bip_print_fun, bip_string);
       BP_EMPTY_STRING;
     } else if(dcd_current == BP_STR_ADDR) {
-      v = bip_var_factor();
+      v = bip_factor();
       if(bip_return_type == BP_ACCESS) {
         if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
         else BPM_PRINT_WRITE(bip_print_fun, v);
@@ -485,17 +483,6 @@ void bip_mem_assignment_call() {
   else bip_error(dcd_ptr, BP_ERROR_MEM_SET);
 };
 
-/* RESULT ------------------------------------------------------------------ */
-#define BP_RESULT_SET_CALL \
-  if(bip_fn_id > 0) bip_functions[bip_fn_id - 1].result = bip_relation(); \
-  else { bip_error(dcd_ptr, BP_ERROR_RESULT_SET); }
-
-BP_VAR_T bip_result_get_call() {
-  if(bip_fn_id > 0) return bip_functions[bip_fn_id - 1].result;
-  else bip_error(dcd_ptr, BP_ERROR_RESULT_GET);
-  return 0;
-};
-
 /* RETURN ------------------------------------------------------------------ */
 static BP_VAR_T bip_return_call() {
   BP_VAR_T rel = 0;
@@ -511,7 +498,6 @@ static BP_VAR_T bip_return_call() {
         );
         bip_functions[bip_fn_id].params[i].id = BP_VARIABLES;
         bip_functions[bip_fn_id].params[i].value = 0;
-        bip_functions[bip_fn_id].result = 0;
       } else break;
     DCD_GOTO(bip_functions[bip_fn_id].address);
     bip_fw_id = bip_functions[bip_fn_id].cid;
@@ -769,7 +755,6 @@ BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STRING(BPM_SYSTEM, v); };
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {
   switch(dcd_current) {
-    case BP_RESULT:     DCD_NEXT; BP_RESULT_SET_CALL; return;
     case BP_FOR_ADDR: ;
     case BP_VAR_ACC: ;  // assignment by reference
     case BP_VAR_ADDR:   BP_VAR_ADDR_CALL; return;
@@ -777,7 +762,7 @@ void bip_statement() {
     case BP_STR_ADDR:   return bip_string_assignment_call();
     case BP_FUNCTION:   bip_function_call(); DCD_NEXT; return;
     case BP_INCREMENT:  ; // same as decrement
-    case BP_DECREMENT:  bip_var_factor();  return;
+    case BP_DECREMENT:  bip_factor();  return;
     case BP_NEXT:       DCD_NEXT; BP_NEXT_CALL; return;
     case BP_FOR:        DCD_NEXT; return bip_for_call();
     case BP_IF:         DCD_NEXT; return bip_if_call();

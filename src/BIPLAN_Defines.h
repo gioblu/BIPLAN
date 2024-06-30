@@ -10,7 +10,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2023 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2024 - gioscarab@gmail.com
   BIP interpreter bounds and byte-code symbols */
 
 #pragma once
@@ -27,7 +27,7 @@
 #define BP_MACRO_DEF_HUMAN   "macro"
 
 /* File inclusion symbol --------------------------------------------------- */
-#define BP_INCLUDE_DEF_HUMAN "include" 
+#define BP_INCLUDE_DEF_HUMAN "include"
 
 /* Fixed point math precision ---------------------------------------------- */
 #define BP_PRECISION_HUMAN   "precision" /*
@@ -280,8 +280,7 @@ __________________________________________________|_____________|______| */
 #define BP_SQRT              's'                  // 115        | used |
 #define BP_SQRT_HUMAN        "sqrt"               //            |      |
 //______________________________________________________________|______|
-#define BP_RESULT            't'                  // 116        | used |
-#define BP_RESULT_HUMAN      "result"             //            |      |
+//                           't'                  // 116        |      |
 //______________________________________________________________|______|
 #define BP_SIN               'u'                  // 117        | used |
 #define BP_SIN_HUMAN         "sin"                //            |      |
@@ -340,7 +339,6 @@ struct bip_fun_t {
   char *address;
   uint8_t cid;
   bip_param_t params[BP_PARAMS];
-  BP_VAR_T result;
 };
 
 struct bip_def_t {
