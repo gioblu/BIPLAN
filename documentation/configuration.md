@@ -4,7 +4,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
@@ -75,32 +75,20 @@ You can configure the maximum length of user-defined keywords using the `BP_KEYW
 ```
 ---
 
-### Fixed point precision
-The precision of fixed point calculations can be configured defining `BP_FIXED_P` before including BIPLAN.h:
-
-```c
-// Fixed point numbers store 4 fractional digits
-#define BP_FIXED_P 10000 
-#include "BIPLAN.h"
-```
-Consider that both `bcc` and `biplan` use this constant and so both will need to be recompiled.
-
----
-
 ### Macro length
-The maximum length of user-defined macros can be configured defining `BP_MACRO_MAX` before including BIPLAN.h: 
+The maximum length of user-defined macros can be configured defining `BP_MACRO_MAX` before including BIPLAN.h:
 ```c
 // The maximum length of a macro is 512 characters
-#define BP_MACRO_MAX 512 
+#define BP_MACRO_MAX 512
 #include "BIPLAN.h"
 ```
 ---
 
 ### Program arguments
-The maximum amount of program arguments can be configured defining `BP_ARGS` before including BIPLAN.h: 
+The maximum amount of program arguments can be configured defining `BP_ARGS` before including BIPLAN.h:
 ```c
 // Accept up to 10 program arguments
-#define BP_ARGS 10 
+#define BP_ARGS 10
 #include "BIPLAN.h"
 ```
 Consider that program arguments are stored in the string address-space, so the maximum amount of user-defined strings is affected by the number of supported program arguments.
@@ -115,11 +103,10 @@ Each for variable is just an entry of a statically allocated array. The `BP_FOR_
 ```
 The maximum value supported is 91.
 
-The maximum amount of nested `for` and `while` can be configured defining `BP_CYCLE_DEPTH` before including BIPLAN.h: 
+The maximum amount of nested `for` and `while` can be configured defining `BP_CYCLE_DEPTH` before including BIPLAN.h:
 ```c
 // Accept up to 10 nested for/while
-#define BP_CYCLE_DEPTH 10 
+#define BP_CYCLE_DEPTH 10
 #include "BIPLAN.h"
 ```
 Consider that one address in the variable address-space is used for each level of nesting, so the maximum amount of user-defined variables is affected by the nest level supported.
-

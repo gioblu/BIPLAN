@@ -4,7 +4,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - **[Numeric variables](/documentation/numeric-variables.md)** [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
@@ -40,19 +40,3 @@ The reference of a variable can be obtained prepending its name with `index`:
 print index @var // Prints 2 or the index of $var
 ```
 The `bcc` compiler starts from the longest variable name, for this reason `@var` is the last to be compiled and acquires the reference 2.
-
-### Fixed point 
-BIPLAN uses fixed point arithmetics to represent fractional numbers and by default can store up to 3 fractional digits. The precision of non-integer values and so the amount of fractional digits stored must be defined before compiling `biplan` and `bcc` and cannot change at run-time. Within a BIPLAN program it is possible to use `precision` to get the configured precision:
-```c
-print precision // # Prints 1000
-```
-
-All system functions that return a non-integer value, like `sin`, `cos` or `sqrt`, return a fixed point number:
-```c
-print cos 0 // Prints 1000
-```
-
-The value returned is multiplied by `precision` to store a certain amount of fractional digits within a scaled integer value. When it is necessary to print a fixed-point number use `fixed`:
-```c
-print fixed cos 0 // Prints 1.000
-```

@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua.
+BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN virtual machine and the BCC compiler fit in an Arduino Duemilanove.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -13,10 +13,22 @@ BIPLAN CR.1 (Byte-coded Interpreted Programming Language) is an experimental pro
 The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII byte-code. It includes fixed-point arithmetics, serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 ### Why?
-
-In 2017 I built a couple of stand-alone computers using Arduino boards, I was forced to use BASIC because it was the only interpreted programming language that fitted in them. I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" . After some experiments I understood there was space for a new language: simple, portable, modern, but at the same time small enough to run on limited micro-controllers.
+In 2017 I built a couple of standalone programmable computers with a screen and a keyboard using Arduino boards and running software I could more or less understand. At the end I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation that fitted in them. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I really needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction, easy to port and analyze that could fit both in an Arduino and in my brain. After some experiments I decided to design and implement a new viable option for this use case, a programming language that is simple, portable, modern, but at the same time small enough to run even on limited micro-controllers.
 
 ### How?
+This is the original list of requirements I have defined at the time:
+
+1. Design a byte-code format that can be easily transmitted
+2. Design a byte-code format that can be easily read by a human
+3. Design a high-level language that is more readable and modern than BASIC
+4. The interpreter and the compiler must fit on an Arduino Duemilanove/UNO/Nano
+5. The interpreter must be faster than python3
+6. The compiler must be simple, no semantic analysis, no AST (Abstract Syntax Tree)
+7. Use only static memory allocation
+8. Do not use external dependencies, just C and its standard library
+9. Write less than 2000 lines of code to implement the interpeter and the compiler
+10. Implement a port for OSX, Windows and Linux, as well as the most popular Arduino boards
+
 The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (576 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (784 lines of code).
 
 ### Code example
@@ -25,14 +37,14 @@ Fibonacci sequence computation in 166 bytes of BIPLAN code:
 ```c
 print fibonacci(40)
 stop
-function fibonacci($a, locals: $b)
+function fibonacci($a, locals: $b, $c)
   $b = 1
   for #r = 0 to $a
     $a = $b
-    $b = result
-    result = $a + $b
+    $b = $c
+    $c = $a + $b
   next
-return result
+return $c
 ```
 Compiled in 39 bytes of BIP byte-code by the [`BCC`](/src/BCC.h) class:
 ```
@@ -40,11 +52,11 @@ p~$40)xf$}t}u)}u1@$0,}t}t}u}utt}t+}u;rt
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2023
-Source: fib.bpl 
-Target: fib.bip 
-Source length: 157B, BIP length: 39B, reduction: 75.159233% 
-Compilation time: 239 microseconds 
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2024
+Source: fib.bpl
+Target: fib.bip
+Source length: 157B, BIP length: 39B, reduction: 75.159233%
+Compilation time: 239 microseconds
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
@@ -54,7 +66,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-For now BIPLAN is around 1.43 times slower than python on my linux machine and orders of magnitude quicker than TinyBasicPlus when running on Arduino compatible boards.
+For now this implementation is around 2 times slower than python, requirement 5 is still not satisfied.
 
 ### Documentation
 - [Configuration](/documentation/configuration.md)
@@ -62,7 +74,7 @@ For now BIPLAN is around 1.43 times slower than python on my linux machine and o
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - [Numeric variables](/documentation/numeric-variables.md) [`$`](/documentation/numeric-variables.md) [`$[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)

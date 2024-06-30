@@ -2,7 +2,7 @@
 include "/usr/local/BIPLAN/math.bpl"
 
 // Common graphics macros and functions
-// Giovanni Blu Mitolo 2023
+// Giovanni Blu Mitolo 2024
 
 // Change text color
 
@@ -45,7 +45,7 @@ function draw_rect($x, $y, $w, $h, $c)
   next
 return 0
 
-// Draw a line with Bresenham's line algorithm 
+// Draw a line with Bresenham's line algorithm
 function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
   $dx =  abs($xx - $x)
   if $x < $xx $sx = 1 else $sx = -1 end
@@ -67,4 +67,3 @@ function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
     end
   next
 return 0
-

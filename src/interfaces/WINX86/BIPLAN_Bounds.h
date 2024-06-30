@@ -39,8 +39,8 @@
   #define BP_OFFSET 35
 #endif
 
-/* Maximum amount of variables (max 91). The end of the variable address-space 
-   is used by parameters and for variables. The maximum amount of user-defined 
+/* Maximum amount of variables (max 91). The end of the variable address-space
+   is used by parameters and for variables. The maximum amount of user-defined
    global variables is: 91 - BP_PARAMS ------------------------------------- */
 
 #ifndef BP_VARIABLES
@@ -59,7 +59,7 @@
   #define BP_ARGS 5
 #endif
 
-/* Maximum amount of strings (max 91 - BP_ARGS). 
+/* Maximum amount of strings (max 91 - BP_ARGS).
    Program arguments are saved at the start of the strings address-space --- */
 
 #ifndef BP_STRINGS
@@ -119,4 +119,3 @@
 #ifndef BP_FIXED_P
   #define BP_FIXED_P 1000
 #endif
-

@@ -4,7 +4,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`result`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
@@ -121,7 +121,7 @@ file write @f, "Hello world!" // Writes Hello world! test.txt
 ---
 
 ### `include`
-With the `include` keyword it is possible to add at the end of the program the content of a `.bpl` file. 
+With the `include` keyword it is possible to add at the end of the program the content of a `.bpl` file.
 
 ```
 include [string literal]
@@ -129,9 +129,9 @@ include [string literal]
 The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.bpl` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
 
 ```c
-include "hello_world.bpl" 
+include "hello_world.bpl"
 hello_world()
-stop 
+stop
 ```
 
 ---
@@ -142,7 +142,7 @@ index [variable or string]
 ```
 Receives a single parameter of type variable or string. Returns the position in the buffer of the parameter received.
 ```c
-@roll = 125  
+@roll = 125
 @yaw  = 150
 print index @roll // Prints 0
 ```
@@ -229,6 +229,22 @@ Saves the position in the program in a variable to be used by `jump` later. Rece
 label @loop
   print "Hello world \n"
 jump @loop // Prints Hello word cyclically
+```
+
+---
+
+### `mem`
+
+```
+mem[number or variable]
+
+mem[number or variable] = variable or character constant
+```
+Can read or write one byte of memory.
+
+```c
+mem[0] = 2024
+print mem[0] // Prints 2024
 ```
 
 ---
