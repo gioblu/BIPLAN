@@ -8,7 +8,7 @@ The `bcc.cpp` file is a complete and ready to use compiler. It is able to compil
 4. Digit `sudo make install`
 
 #### The bcc executable
-With `bcc` you can compile a BIPLAN program into BIP machine language. 
+With `bcc` you can compile a BIPLAN program into BIP machine language.
 
 ```
 bcc [BIPLAN input file] [BIP output file]
@@ -24,11 +24,11 @@ The `bcc` executable is copied in `usr/bin` to be reachable everywhere within yo
 
 Expected output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2023
-Source: fib.bpl 
-Target: ../biplan-interpreter/fib.bip 
-Source length: 410B, BIP length: 57B, reduction: 86.097565% 
-Compilation time: 1241 microseconds 
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2024
+Source: fib.bpl
+Target: ../biplan-interpreter/fib.bip
+Source length: 410B, BIP length: 57B, reduction: 86.097565%
+Compilation time: 1241 microseconds
 
 ```
 

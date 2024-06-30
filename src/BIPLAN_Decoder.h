@@ -10,8 +10,8 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2022 - gioscarab@gmail.com
-  BIP byte-code decoder */
+  Giovanni Blu Mitolo 2017-2024 - gioscarab@gmail.com
+  BIP bytecode decoder */
 
 #pragma once
 #include "BIPLAN_Defines.h"

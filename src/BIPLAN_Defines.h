@@ -11,7 +11,7 @@
                                            (O)
 
   Giovanni Blu Mitolo 2017-2024 - gioscarab@gmail.com
-  BIP interpreter bounds and byte-code symbols */
+  BIP interpreter bounds and bytecode dictionary */
 
 #pragma once
 
@@ -30,8 +30,9 @@
 #define BP_INCLUDE_DEF_HUMAN "include"
 
 /* Fixed point math precision ---------------------------------------------- */
-#define BP_PRECISION_HUMAN   "precision" /*
+#define BP_PRECISION_HUMAN   "precision"
 
+/*
 _______________________________________________________________________
  Constant name                                    | Decimal     | used |
 __________________________________________________|_____________|______| */
@@ -233,8 +234,7 @@ __________________________________________________|_____________|______| */
 #define BP_CONTINUE          'c'                  // 99         | used |
 #define BP_CONTINUE_HUMAN    "continue"           //            |      |
 //______________________________________________________________|______|
-#define BP_FIXED             'd'                  // 100        | used |
-#define BP_FIXED_HUMAN       "fixed"              //            |      |
+                          // 'd'                  // 100        | used |
 //______________________________________________________________|______|
 #define BP_INPUT             'e'                  // 101        | used |
 #define BP_INPUT_HUMAN       "input"              //            |      |
@@ -262,8 +262,7 @@ __________________________________________________|_____________|______| */
 #define BP_SIZEOF            'm'                  // 109        | used |
 #define BP_SIZEOF_HUMAN      "size"               //            |      |
 //______________________________________________________________|______|
-#define BP_TAN               'n'                  // 110        | used |
-#define BP_TAN_HUMAN         "tan"                //            |      |
+//                           'n'                  // 110        |      |
 //______________________________________________________________|______|
 #define BP_FILE              'o'                  // 111        | used |
 #define BP_FILE_HUMAN        "file"               //            |      |
@@ -277,16 +276,13 @@ __________________________________________________|_____________|______| */
 #define BP_RETURN            'r'                  // 114        | used |
 #define BP_RETURN_HUMAN      "return"             //            |      |
 //______________________________________________________________|______|
-#define BP_SQRT              's'                  // 115        | used |
-#define BP_SQRT_HUMAN        "sqrt"               //            |      |
+//                           's'                  // 115        |      |
 //______________________________________________________________|______|
 //                           't'                  // 116        |      |
 //______________________________________________________________|______|
-#define BP_SIN               'u'                  // 117        | used |
-#define BP_SIN_HUMAN         "sin"                //            |      |
+//                           'u'                  // 117        |      |
 //______________________________________________________________|______|
-#define BP_COS               'v'                  // 118        | used |
-#define BP_COS_HUMAN         "cos"                //            |      |
+//                           'v'                  // 118        |      |
 //______________________________________________________________|______|
 #define BP_WHILE             'w'                  // 119        | used |
 #define BP_WHILE_HUMAN       "while"              //            |      |
