@@ -314,9 +314,7 @@ __________________________________________________|_____________|______| */
    3 serial open
    4 abs implemented in BIPLAN
    5 cursor becomes print cursor
-   6 ++result should work too
-   7 compile_macro checks for being in string?
-   8 include per function */
+   7 compile_macro checks for being in string?  */
 
 
 /* Data types -------------------------------------------------------------- */
