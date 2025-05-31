@@ -15,7 +15,6 @@ declare -a results=(
 
 echo " "
 echo "biplan interpretation test run: examples/LINUX/ "
-echo "This run interprets examples that are expected to work as expected."
 echo " "
 
 length=${#tests[@]}
@@ -30,10 +29,10 @@ do
 	echo "$i. Testing interpretation of ../${tests[$i - 1]}"
 
 	if [[ "$result" == "$expected" ]]; then
-	  echo -e "Exit code: $code. Test result: \033[32m passed. \033[m"
+	  echo -e "Result: \033[32mpassed \033[m- Exit code: $code"
 	else
 	 echo "Expected: $expected, Result: $result"
-	 echo -e "Exit code: $code. Test result: \033[31m failed. \033[m"
+	 echo -e "Result: \033[31mfailed \033[m- Exit code: $code"
 	fi
 
 	echo " "

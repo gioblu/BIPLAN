@@ -17,7 +17,6 @@ declare -a tests=(
 
 echo " "
 echo "bcc compilation test run: examples/LINUX/ "
-echo "This run compiles examples that are expected to compile."
 echo " "
 
 length=${#tests[@]}
@@ -25,10 +24,10 @@ length=${#tests[@]}
 # Try to compile all files in the list above and print the result of the test
 for ((i=1; i<${length} + 1; i++ ));
 do
-	result=$(bcc "../${tests[$i - 1]}.bpl" ../bcc-compiler/fib.bip)
+	result=$(bcc "../${tests[$i - 1]}.bpl" test.bip)
 	code=$?
 	echo "$i. Testing compilation of ../${tests[$i - 1]}.bpl"
-	[ $code -eq 1 ] && echo -e "Exit code: $code. Test result: \033[32m passed. \033[m" || 
-	                   echo -e "Exit code: $code. Test result: \033[31m failed. \033[m"
+	[ $code -eq 1 ] && echo -e "Result: \033[32mpassed \033[m- Exit code: $code" || 
+	                   echo -e "Result: \033[31mfailed \033[m- Exit code: $code"
 	echo " "
 done
