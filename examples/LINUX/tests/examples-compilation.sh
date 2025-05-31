@@ -1,9 +1,5 @@
 #!/bin/bash
 
-SMILE='\U1F600';
-MUNCH='\U1F631';
-
-## declare an array variable
 declare -a tests=(
 	"bcc-compiler/fib" 
 	"x-drawer/x-drawer" 
