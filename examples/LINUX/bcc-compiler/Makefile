@@ -6,3 +6,4 @@ install:
 	cp bcc /usr/local/bin
 	cp -R ../../../src/utils/libraries/ /usr/local/BIPLAN	
 	$(info bcc compiled successfully, installing libraries in /usr/local/BIPLAN.)
+	@./../tests/examples-compilation.sh
