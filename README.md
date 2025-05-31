@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN virtual machine and the BCC compiler fit in an Arduino Duemilanove.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Duemilanove/Uno/Nano.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -10,10 +10,10 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental prog
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
-The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes fixed-point arithmetics, serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
+The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 ### Why?
-In 2017 I built a couple of standalone programmable computers with a screen and a keyboard using Arduino boards and running software I could more or less understand. At the end I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation that fitted in them. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I really needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction, easy to port and analyze that could fit both in an Arduino and in my brain. After some experiments I decided to design and implement a new viable option for this use case, a programming language that is simple, portable, modern, but at the same time small enough to run even on limited micro-controllers.
+In 2017 I built a couple of standalone programmable computers with a screen and a keyboard using Arduino boards and running software I could more or less understand. In this [video](https://www.youtube.com/watch?v=xRZ9abs5ywA) you can see one machine I made in operation. At the end I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation that fitted in them. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement a new viable option for this use case, a programming language that is simple, portable, modern, but at the same time small enough to run even on limited micro-controllers.
 
 ### How?
 

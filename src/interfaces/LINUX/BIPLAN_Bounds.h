@@ -113,10 +113,3 @@
 #ifndef BP_INCLUDE_PATH_MAX
   #define BP_INCLUDE_PATH_MAX 256
 #endif
-
-/* Number of digits after the comma ---------------------------------------- */
-
-#ifndef BP_FIXED_P
-  #define BP_FIXED_P 100000
-#endif
-

@@ -29,9 +29,6 @@
 /* File inclusion symbol --------------------------------------------------- */
 #define BP_INCLUDE_DEF_HUMAN "include"
 
-/* Fixed point math precision ---------------------------------------------- */
-#define BP_PRECISION_HUMAN   "precision"
-
 /*
 _______________________________________________________________________
  Constant name                                    | Decimal     | used |

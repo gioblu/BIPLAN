@@ -523,9 +523,6 @@ public:
     find_end(prog);
     compile_variables(prog, BP_GLOBAL_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
-    char precision[BP_NUM_MAX];
-    BPM_LTOA(BP_FIXED_P, precision, 0);
-    compile(prog, BP_PRECISION_HUMAN, precision);
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
     compile_char(prog, BP_DELAY_HUMAN, BP_DELAY);
