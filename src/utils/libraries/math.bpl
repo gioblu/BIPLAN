@@ -2,8 +2,6 @@
 // Common mathematical functions
 // Giovanni Blu Mitolo 2024
 
-include "/usr/local/BIPLAN/math-constants.bpl"
-
 // Compute absolute value
 function abs($v)
   if $v < 0 $v = -$v end
