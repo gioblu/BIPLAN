@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# All examples to be tested in this run
 declare -a tests=(
 	"bcc-compiler/fib" 
 	"x-drawer/x-drawer" 
@@ -21,7 +22,7 @@ echo " "
 
 length=${#tests[@]}
 
-# use for loop to read all values and indexes
+# Try to compile all files in the list above and print the result of the test
 for ((i=1; i<${length} + 1; i++ ));
 do
 	result=$(bcc "../${tests[$i - 1]}.bpl" ../bcc-compiler/fib.bip)
