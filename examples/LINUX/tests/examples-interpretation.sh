@@ -15,7 +15,7 @@ declare -a results=(
 
 echo " "
 echo "biplan interpretation test run: examples/LINUX/ "
-echo "This run compiles examples that are expected to compile."
+echo "This run interprets examples that are expected to work as expected."
 echo " "
 
 length=${#tests[@]}
