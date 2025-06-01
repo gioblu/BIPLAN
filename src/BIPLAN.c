@@ -282,7 +282,6 @@ static BP_VAR_T bip_factor() {
         bip_return_type = BP_ACCESS;
       }
       bip_return_type = BP_STR_ADDR;
-      v = id;
       break;
     case BP_NUMBER: v = BPM_ATOL(dcd_ptr); BP_EXPECT(BP_NUMBER); break;
     case BP_VAR_ACC: v = bip_get_variable(bip_access(BP_VAR_ACC)); break;
