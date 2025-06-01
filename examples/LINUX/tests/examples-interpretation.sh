@@ -5,12 +5,14 @@ declare -a tests=(
 	"bcc-compiler/fib.bip"
 	"read-file/read-file.bip"
 	"date-epoch/date-epoch.bip"
+	"mem-test/mem-test.bip"
 )
 
 declare -a results=(
 	"102334155"
 	'}%oY"read-file.bip",0l}$}&oX}%?}&T-1pb}&j}$FoZ}%x'
 	"Epoch: 1665434120 Date: 10/10/2022 20:35:20"
+	"Simplicity is best."
 )
 
 echo " "
