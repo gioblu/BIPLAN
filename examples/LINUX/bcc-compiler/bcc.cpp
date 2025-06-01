@@ -15,7 +15,7 @@ void error_callback(char *position, const char *string) {
 };
 
 int main(int argc, char* argv[]) {
-  printf("BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2023 \n");
+  printf("BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025 \n");
   printf("Source: %s \n", argv[1]);
   printf("Target: %s \n", argv[2]);
   FILE * p_file;
