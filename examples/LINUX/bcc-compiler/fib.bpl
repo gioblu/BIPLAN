@@ -9,11 +9,11 @@ next
 print fibonacci(40)
 stop
 
-function fibonacci($a, locals: $b)
+function fibonacci($a, locals: $b, $c)
   $b = 1 
   for #r = 0 to $a
     $a = $b
-    $b = result
-    result = $a + $b
+    $b = $c
+    $c = $a + $b
   next
-return result
+return $c
