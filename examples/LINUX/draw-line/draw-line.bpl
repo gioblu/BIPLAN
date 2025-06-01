@@ -1,5 +1,4 @@
 include "/usr/local/BIPLAN/graphics.bpl"
-include "/usr/local/BIPLAN/math.bpl"
 print restart
 draw_line(0, 0, 0, 10, '-')
 draw_line(10, 0, 10, 10, '-')
