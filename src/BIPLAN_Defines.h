@@ -312,9 +312,7 @@ __________________________________________________|_____________|______| */
    1 adc write
    2 serial flush
    3 serial open
-   4 abs implemented in BIPLAN
-   5 cursor becomes print cursor
-   7 compile_macro checks for being in string?  */
+   4 abs implemented in BIPLAN */
 
 
 /* Data types -------------------------------------------------------------- */

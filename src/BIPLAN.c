@@ -395,6 +395,10 @@ void bip_print_call() {
   do {
     bip_return_type = 0;
     BP_VAR_T v = 0;
+    if(bip_ignore(BP_CURSOR)) {
+      DCD_NEXT;
+      BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR);
+    }
     bip_ignore(BP_COMMA);
     bool is_char = bip_ignore(BP_CHAR);
     if(dcd_current == BP_STR_ACC) {
@@ -642,9 +646,6 @@ char input_call() {
   return BPM_INPUT(bip_data_in_fun);
 };
 
-/* CURSOR ------------------------------------------------------------------ */
-void bip_cursor_call() { BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR); };
-
 /* FILE SYSTEM FUNCTIONS --------------------------------------------------- */
 void bip_file_set_call() {
   DCD_NEXT;
@@ -771,7 +772,6 @@ void bip_statement() {
     case BP_PRINT:      DCD_NEXT; return bip_print_call();
     case BP_FILE:       return bip_file_set_call();
     case BP_LTOA:       bip_ltoa_call(); return;
-    case BP_CURSOR:     DCD_NEXT; return bip_cursor_call();
     case BP_RESTART:    return bip_restart_call();
     case BP_END:        return bip_end_call();
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);

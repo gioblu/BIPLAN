@@ -16,7 +16,7 @@ print restart
 for #z = 0 to HEIGHT 
   for #x = 0 to WIDTH
     for #y = 0 to random #z + 1
-      cursor #x, #y
+      print cursor #x, #y
       print char mem[#x + (#y * WIDTH)]
     next 
     delay 1
@@ -24,6 +24,6 @@ for #z = 0 to HEIGHT
 next
 
 @c = SHOW_CURSOR
-cursor 0, 35
+print cursor 0, 35
 
 stop
