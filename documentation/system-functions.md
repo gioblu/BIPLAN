@@ -38,17 +38,6 @@ print args[0] // Prints the first argument passed to the program
 
 ---
 
-### `cursor`
-```
-cursor [number or variable], [number or variable]
-```
-It receives two parameters. Moves the cursor to the coordinates received.
-```c
-cursor 0, 0 // Moves the cursor to x 0, y 0
-```
-
----
-
 ### `delay`
 ```
 delay [number or variable]
@@ -297,6 +286,11 @@ print "Hello world!"
 To clear the screen, if supported by your physical machine, use the `restart` keyword as shown below.
 ```c
 print restart
+```
+To move the cursor, if supported by your physical machine, use the `cursor` keyword as shown below.
+
+```c
+print cursor 0, 0 // Moves the cursor to x 0, y 0
 ```
 ---
 
