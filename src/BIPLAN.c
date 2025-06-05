@@ -395,10 +395,6 @@ void bip_print_call() {
   do {
     bip_return_type = 0;
     BP_VAR_T v = 0;
-    if(bip_ignore(BP_CURSOR)) {
-      DCD_NEXT;
-      BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR);
-    }
     bip_ignore(BP_COMMA);
     bool is_char = bip_ignore(BP_CHAR);
     if(dcd_current == BP_STR_ACC) {
@@ -419,6 +415,9 @@ void bip_print_call() {
     } else if(dcd_current == BP_RESTART) {
       BPM_PRINT_CLEAR;
       DCD_NEXT;
+    } else if(bip_ignore(BP_CURSOR)) {
+      DCD_NEXT;
+      BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR);
     } else {
       v = bip_relation();
       if(bip_return_type == BP_STR_ADDR)
