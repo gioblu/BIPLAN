@@ -21,7 +21,7 @@ echo " "
 
 length=${#tests[@]}
 
-# Try to compile all files in the list above and print the result of the test
+# Try to interpret all files in the list above and print the result of the test
 for ((i=1; i<${length} + 1; i++ ));
 do
 	result=$(biplan -i "../${tests[$i - 1]}" 2>&1)

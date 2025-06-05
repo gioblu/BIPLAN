@@ -233,8 +233,8 @@ mem[number or variable] = variable or character constant
 Can read or write one byte of memory.
 
 ```c
-mem[0] = 2024
-print mem[0] // Prints 2024
+mem[0] = 1
+print mem[0] // Prints 1
 ```
 
 ---
