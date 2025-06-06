@@ -54,7 +54,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-For now this implementation is around 2 times slower than python, requirement 5 is still not satisfied.
+For now this implementation is around 1.42 times slower than python.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
