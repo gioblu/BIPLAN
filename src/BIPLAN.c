@@ -220,20 +220,20 @@ void bip_set_default() {
 };
 
 /* IGNORE A CERTAIN CODE --------------------------------------------------- */
-static bool bip_ignore(char c) {
+BIP_TYPE bool bip_ignore(char c) {
   if((c = (c == dcd_current))) DCD_NEXT;
   return c;
 };
 
 /* GET VARIABLE ------------------------------------------------------------ */
-static BP_VAR_T bip_get_variable(int n) {
+BIP_TYPE BP_VAR_T bip_get_variable(int n) {
   if(n >= 0 && n <= BP_VARIABLES) return bip_variables[n];
   bip_error(dcd_ptr, BP_ERROR_VARIABLE_GET);
   return 0;
 };
 
 /* GET ONE CHAR FROM STRING ------------------------------------------------ */
-static char bip_string_char(int s, int c) {
+BIP_TYPE char bip_string_char(int s, int c) {
   if((c >= BP_STRING_MAX) || (s < 0 && s >= BP_STRINGS)) {
     bip_error(dcd_ptr, BP_ERROR_STRING_GET);
     return 0;
@@ -241,7 +241,7 @@ static char bip_string_char(int s, int c) {
 };
 
 /* ACCESS MEMORY VIA INDEX [ ] --------------------------------------------- */
-static BP_VAR_T bip_access(BP_VAR_T v) {
+BIP_TYPE BP_VAR_T bip_access(BP_VAR_T v) {
   BP_EXPECT(v);
   v = bip_relation();
   BP_EXPECT(BP_ACCESS_END);
@@ -249,7 +249,7 @@ static BP_VAR_T bip_access(BP_VAR_T v) {
 };
 
 /* FACTOR: (n) ------------------------------------------------------------- */
-static BP_VAR_T bip_factor() {
+BIP_TYPE BP_VAR_T bip_factor() {
   BP_VAR_T v = 0;
   bool bitwise_not = 0, minus = 0, index = 0;
   uint8_t id = BP_VARIABLES;
@@ -309,7 +309,7 @@ static BP_VAR_T bip_factor() {
 };
 
 /* TERM: *, /, % ------------------------------------------------------------*/
-static BP_VAR_T bip_term() {
+BIP_TYPE BP_VAR_T bip_term() {
   BP_VAR_T f1 = bip_factor(), f2 = 0;
   uint8_t op = dcd_current;
   while(op == BP_MULT || op == BP_DIV || op == BP_MOD) {
@@ -327,7 +327,7 @@ static BP_VAR_T bip_term() {
 };
 
 /* EXPRESSION +, -, &, | ----------------------------------------------------*/
-static BP_VAR_T bip_expression() {
+BIP_TYPE BP_VAR_T bip_expression() {
   BP_VAR_T t1 = bip_term(), t2 = 0;
   uint8_t op = dcd_current;
   while(
@@ -349,7 +349,7 @@ static BP_VAR_T bip_expression() {
 };
 
 /* RELATION <, >, = -------------------------------------------------------- */
-static BP_VAR_T bip_relation() {
+BIP_TYPE BP_VAR_T bip_relation() {
   BP_VAR_T r1 = bip_expression(), r2 = 0;
   uint8_t op = dcd_current;
   while(
@@ -479,7 +479,7 @@ void bip_mem_assignment_call() {
 };
 
 /* RETURN ------------------------------------------------------------------ */
-static BP_VAR_T bip_return_call() {
+BIP_TYPE BP_VAR_T bip_return_call() {
   BP_VAR_T rel = 0;
   DCD_NEXT;
   if(bip_fn_id > 0) {
@@ -504,7 +504,7 @@ static BP_VAR_T bip_return_call() {
 };
 
 /* FUNCTION ---------------------------------------------------------------- */
-static BP_VAR_T bip_function_call() {
+BIP_TYPE BP_VAR_T bip_function_call() {
   bip_functions[bip_fn_id].cid = bip_fw_id;
   BP_EXPECT(BP_FUNCTION);
   uint8_t i = 0, f = *(dcd_ptr - 1) - BP_OFFSET, v = BP_VARIABLES;

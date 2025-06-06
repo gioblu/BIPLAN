@@ -18,6 +18,11 @@
 #include "utils/errors/BIPLAN_Errors.h"
 #include "interfaces/BIPLAN_Interfaces.h"
 
+#ifdef BIP_INLINE
+  #define BIP_TYPE static inline
+#else
+  #define BIP_TYPE static 
+#endif
 
 /* BIP and BIPLAN language syntax ------------------------------------------ */
 
