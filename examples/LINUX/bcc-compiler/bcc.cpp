@@ -6,12 +6,15 @@
 #include <iostream>
 #include <BCC.h>
 
+#define MAX_ERROR_SOURCE 25
+
 char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;
 
 void error_callback(char *position, const char *string) {
-  printf("\nCompilation error: ");
-  printf("%s", string);
+  printf("\nCompilation error: %s", string);
+  printf("\nSee: %.*s ... \nLength: %ld", (int)((strlen(position) > MAX_ERROR_SOURCE) ? MAX_ERROR_SOURCE : strlen(position)), position, strlen(position));
+  exit(-4);
 };
 
 int main(int argc, char* argv[]) {
