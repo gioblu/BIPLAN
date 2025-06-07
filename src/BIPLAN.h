@@ -77,6 +77,10 @@ static BP_VAR_T bip_return_call();
 
 static BP_VAR_T bip_function_call();
 
+static void bip_next_call(); 
+
+static void bip_var_addr_call();
+
 void bip_continue_call();
 
 void bip_break_call();
