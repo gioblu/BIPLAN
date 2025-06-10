@@ -120,7 +120,8 @@ public:
     while(p && *p) {
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
-          error(0, BP_ERROR_SINGLE_QUOTE);
+          error(p, BP_ERROR_SINGLE_QUOTE);
+          fail = true;
           return;
         }
         BPM_LTOA(*(++p), b, 0);
@@ -226,7 +227,7 @@ public:
           str[n++] = *p;
           *p = BP_SPACE;
           if((i == (BP_KEYWORD_MAX - 2)) && (BCC_IS_KEYWORD(*(p + 1)))) {
-            error(0, BP_ERROR_VARIABLE_NAME);
+            error(p, BP_ERROR_VARIABLE_NAME);
             return NULL;
           }
         } else break;
@@ -350,7 +351,7 @@ public:
           result = i;
         }
         if(i >= BP_KEYWORD_MAX) {
-          error(0, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
+          error(p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
           return NULL;
         }
       } else return longest;
@@ -446,7 +447,7 @@ public:
       *(p++) = ' ';
       p_file = fopen(include_path, "r");
       if(p_file == NULL) {
-        error(0, BP_ERROR_INCLUDE_PATH);
+        error(p, BP_ERROR_INCLUDE_PATH);
         return NULL;
       }
       fseek(p_file, 0, SEEK_END);
@@ -471,6 +472,7 @@ public:
 
   /* Pre-compilation checks ------------------------------------------------ */
   bool pre_compilation_checks(char *prog) {
+    if(fail) return fail;
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
       error(0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
@@ -482,6 +484,7 @@ public:
 
   /* Post-compilation checks ----------------------------------------------- */
   void post_compilation_checks(char *prog) {
+    if(fail) return;
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
       error(0, BP_ERROR_BLOCK); // Check if-end
     if(!check_delimeter(prog, BP_FUN_DEF, BP_RETURN))
