@@ -1,7 +1,7 @@
 ### Documentation
 - **[Bytecode](/documentation/bytecode.md)**
 - [Configuration](/documentation/configuration.md)
-- [Comments](/documentation/comments.md) [`#`](/documentation/comments.md)
+- [Comments](/documentation/comments.md) [`//`](/documentation/comments.md)
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)

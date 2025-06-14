@@ -34,17 +34,17 @@ function fibonacci($a, locals: $b, $c)
   next
 return $c
 ```
-Compiled in 39 bytes of BIP bytecode by the [`BCC`](/src/BCC.h) class:
+Compiled in 44 bytes of BIP bytecode by the [`BCC`](/src/BCC.h) class:
 ```
-p~$40)xf$}t}u)}u1@$0,}t}t}u}utt}t+}u;rt
+p~$40)xf$}j}k}l)}k1@$0,}j}j}k}k}l}l}j+}k;r}l
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2024
-Source: fib.bpl
-Target: fib.bip
-Source length: 157B, BIP length: 39B, reduction: 75.159233%
-Compilation time: 239 microseconds
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025 
+Source: fib.bpl 
+Target: fib.bip 
+Source length: 149B, BIP length: 44B, reduction: 70.469803% 
+Compilation time: 294 microseconds 
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
@@ -59,7 +59,7 @@ For now this implementation is around 1.42 times slower than python.
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
 - [Configuration](/documentation/configuration.md)
-- [Comments](/documentation/comments.md) [`#`](/documentation/comments.md)
+- [Comments](/documentation/comments.md) [`//`](/documentation/comments.md)
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
