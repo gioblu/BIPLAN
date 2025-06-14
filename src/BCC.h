@@ -53,10 +53,21 @@ public:
   BCC() { };
 
   /* Function called in case of compilation error -------------------------- */
-  void error(char *position, const char *string) {
-    error_callback(position, string);
+  void error(uint16_t line, char *position, const char *string) {
+    error_callback(line, position, string);
     fail = true;
   };
+
+  /* Determines the program line at a certain position --------------------- */
+  uint16_t line(char *prog, char *pos) {
+    uint16_t i = 1;
+    char *p = prog;
+    while((p && *p) && (p <= pos)) {
+      if(!in_string(prog, p) && (*p == BP_LF)) i++;
+      p++;
+    }
+    return i;
+  }
 
   /* Checks consistency of syntax delimiters ------------------------------- */
   bool check_delimeter(char *prog, char a, char b, bool ignore = 0) {
@@ -74,7 +85,7 @@ public:
   void find_end(char *prog) {
     char *p;
     if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
-      return error(0, BP_ERROR_PROGRAM_LENGTH);
+      return error(0, 0, BP_ERROR_PROGRAM_LENGTH);
     for(p = prog; *p != 0; p++);
     stop = p;
   };
@@ -120,7 +131,7 @@ public:
     while(p && *p) {
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
-          error(p, BP_ERROR_SINGLE_QUOTE);
+          error(line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
           fail = true;
           return;
         }
@@ -164,7 +175,7 @@ public:
       } else {
         uint8_t ofs = cl - kl;
         if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE)
-          error(0, BP_ERROR_PROGRAM_LENGTH);
+          error(line(prog, p), p, BP_ERROR_PROGRAM_LENGTH);
         else {
           memmove(p + ofs, p, strlen(p));
           *(stop + cl) = 0;
@@ -227,7 +238,7 @@ public:
           str[n++] = *p;
           *p = BP_SPACE;
           if((i == (BP_KEYWORD_MAX - 2)) && (BCC_IS_KEYWORD(*(p + 1)))) {
-            error(p, BP_ERROR_VARIABLE_NAME);
+            error(line(prog, p), p, BP_ERROR_VARIABLE_NAME);
             return NULL;
           }
         } else break;
@@ -318,7 +329,7 @@ public:
         compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
         return true;
       }
-      error(0, BP_ERROR_RETURN);
+      error(0, 0, BP_ERROR_RETURN);
     } return false;
   };
 
@@ -351,7 +362,7 @@ public:
           result = i;
         }
         if(i >= BP_KEYWORD_MAX) {
-          error(p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
+          error(line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
           return NULL;
         }
       } else return longest;
@@ -376,7 +387,7 @@ public:
         if(*p == BP_FOR) n++;
         if(*p == BP_NEXT) n--;
       }
-      if(n != -1) return error(p, BP_ERROR_NEXT);
+      if(n != -1) return error(line(prog, p), p, BP_ERROR_NEXT);
       stop = p; // compile for variables within this for
       compile_variable(p2, p2, BP_FOR_ADDR);
       p = ++p2;
@@ -447,19 +458,19 @@ public:
       *(p++) = ' ';
       p_file = fopen(include_path, "r");
       if(p_file == NULL) {
-        error(p, BP_ERROR_INCLUDE_PATH);
+        error(line(prog, p), p, BP_ERROR_INCLUDE_PATH);
         return NULL;
       }
       fseek(p_file, 0, SEEK_END);
       p_size = ftell(p_file);
       rewind(p_file);
       if(((sizeof(char) * p_size) + strlen(prog)) >= BCC_MAX_PROGRAM_SIZE)
-        error(0, BP_ERROR_PROGRAM_LENGTH);
+        error(0, 0, BP_ERROR_PROGRAM_LENGTH);
       else {
         result = fread(stop, 1, p_size, p_file);
         *(stop + p_size) = 0;
         if(result != p_size) {
-          error(0, BP_ERROR_INCLUDE_READ);
+          error(0, 0, BP_ERROR_INCLUDE_READ);
           return NULL;
         }
       }
@@ -474,11 +485,11 @@ public:
   bool pre_compilation_checks(char *prog) {
     if(fail) return fail;
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
-      error(0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
+      error(0, 0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
-      error(0, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
+      error(0, 0, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
     if(!check_delimeter(prog, BP_STRING, BP_STRING))
-      error(0, BP_ERROR_STRING_END);         // Check "" string separator
+      error(0, 0, BP_ERROR_STRING_END);         // Check "" string separator
     return !fail;
   };
 
@@ -486,13 +497,13 @@ public:
   void post_compilation_checks(char *prog) {
     if(fail) return;
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
-      error(0, BP_ERROR_BLOCK); // Check if-end
+      error(0, 0, BP_ERROR_BLOCK); // Check if-end
     if(!check_delimeter(prog, BP_FUN_DEF, BP_RETURN))
-      error(0, BP_ERROR_RETURN); // Check function return
+      error(0, 0, BP_ERROR_RETURN); // Check function return
     // Check variables, strings and functions buffer bounds
-    if((fun_id - BP_OFFSET) >= BP_FUN_MAX) error(0, BP_ERROR_FUNCTION_MAX);
-    if((string_id - BP_OFFSET) >= BP_STRINGS) error(0, BP_ERROR_STRING_MAX);
-    if((var_id - BP_OFFSET) >= BP_VARIABLES) error(0, BP_ERROR_VARIABLE_MAX);
+    if((fun_id - BP_OFFSET) >= BP_FUN_MAX) error(0, 0, BP_ERROR_FUNCTION_MAX);
+    if((string_id - BP_OFFSET) >= BP_STRINGS) error(0, 0, BP_ERROR_STRING_MAX);
+    if((var_id - BP_OFFSET) >= BP_VARIABLES) error(0, 0, BP_ERROR_VARIABLE_MAX);
   };
 
   /* Run compilation process ----------------------------------------------- */

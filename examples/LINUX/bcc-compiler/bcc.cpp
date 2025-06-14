@@ -11,9 +11,11 @@
 char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;
 
-void error_callback(char *position, const char *string) {
-  printf("\n\033[31mCompilation error: %s", string);
-  printf("\nSee: %s \033[m \n", position);
+void error_callback(uint16_t line, char *position, const char *string) {
+  printf("\n\033[31mError: %s\nLine: %d\nCode: ", string, line);
+  for(uint16_t i = 0; position[i] != 0 && position[i] != BP_LF; i++)
+    printf("%c", position[i]);
+  printf("\033[m\n");
   exit(-4);
 };
 
