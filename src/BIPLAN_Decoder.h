@@ -23,12 +23,12 @@ char    *dcd_next_ptr;
 uint8_t  dcd_current = BP_ERROR;
 
 /* Checks if the decoder encountered the end of the program ---------------- */
-BIP_TYPE uint8_t dcd_finished() {
+BP_FUN_T uint8_t dcd_finished() {
   return *dcd_ptr == 0 || dcd_current == BP_ENDOFINPUT;
 };
 
 /* Get next code from BIP code --------------------------------------------- */
-BIP_TYPE void dcd_next_code() {
+BP_FUN_T void dcd_next_code() {
   if(
     *dcd_ptr == BP_VAR_ADDR ||
     *dcd_ptr == BP_STR_ADDR ||

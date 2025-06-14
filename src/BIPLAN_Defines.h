@@ -19,9 +19,9 @@
 #include "interfaces/BIPLAN_Interfaces.h"
 
 #ifdef BIP_INLINE
-  #define BIP_TYPE static inline
+  #define BP_FUN_T static inline
 #else
-  #define BIP_TYPE static 
+  #define BP_FUN_T static 
 #endif
 
 /* BIP and BIPLAN language syntax ------------------------------------------ */
@@ -322,7 +322,7 @@ __________________________________________________|_____________|______| */
 
 /* Data types -------------------------------------------------------------- */
 
-typedef void (*bip_error_t)(char *position, const char *string);
+typedef void (*bip_error_t)(uint16_t line, char *position, const char *string);
 
 struct bip_param_t {
   BP_VAR_T value;
