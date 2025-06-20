@@ -1,11 +1,11 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Duemilanove/Uno/Nano.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Mega.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
 | TinyBasicPlus        |  11KB ROM,  1KB RAM  |
-| BIPLAN               |  12KB ROM,  1KB RAM  |
+| BIPLAN               |  55KB ROM,  2KB RAM  |
 | Wasm3                |  64kB ROM, 10kB RAM  |
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
@@ -54,7 +54,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-For now this implementation is around 1.42 times slower than python.
+For now this implementation is around 1.3 times slower than python.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
@@ -75,10 +75,10 @@ For now this implementation is around 1.42 times slower than python.
 
 All you need to build BIPLAN is `g++`.
 
-- [How to build and use the compiler on Linux](/examples/LINUX/bcc-compiler/)
-- [How to build and use the compiler on OSX](/examples/OSX/bcc-compiler/)
-- [How to build and use the interpreter on Linux](/examples/LINUX/biplan-interpreter/)
-- [How to build and use the interpreter on OSX](/examples/OSX/biplan-interpreter/)
+- [Build the compiler on Linux](/examples/LINUX/bcc-compiler/)
+- [Build the compiler on OSX](/examples/OSX/bcc-compiler/)
+- [Build the interpreter on Linux](/examples/LINUX/biplan-interpreter/)
+- [Build the interpreter on OSX](/examples/OSX/biplan-interpreter/)
 - [Linux examples](/examples/LINUX/)
 - [OSX examples](/examples/OSX/)
 - [Arduino examples](/examples/ARDUINO/)
