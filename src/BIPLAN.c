@@ -258,7 +258,7 @@ BP_FUN_T BP_VAR_T bip_factor() {
       DCD_NEXT;
       id = *(dcd_ptr - 1) - BP_OFFSET;
       if(index) return id;
-      BP_INCREMENT_VARIABLE(id, pre);
+      if(pre != 0) BP_INCREMENT_VARIABLE(id, pre);
       BP_GET_VARIABLE(id, v);
       break;
     case BP_STR_ADDR:
@@ -303,14 +303,14 @@ BP_FUN_T BP_VAR_T bip_term() {
   while(op == BP_MULT || op == BP_DIV || op == BP_MOD) {
     DCD_NEXT;
     f2 = bip_factor();
-    if(!f2 && (op == BP_DIV)) bip_error(dcd_ptr, BP_ERROR_DIV_ZERO);
-    else {
-      switch(op) {
-        case BP_MULT: f1 = f1 * f2; break;
-        case BP_DIV:  f1 = f1 / f2; break;
-        case BP_MOD:  f1 = f1 % f2; break;
-      } op = dcd_current;
-    }
+    switch(op) {
+      case BP_MULT: f1 = f1 * f2; break;
+      case BP_DIV:  
+        if(!f2 && (op == BP_DIV)) bip_error(dcd_ptr, BP_ERROR_DIV_ZERO);
+        else f1 = f1 / f2; 
+        break;
+      case BP_MOD:  f1 = f1 % f2; break;
+    } op = dcd_current;
   } return f1;
 };
 
@@ -502,17 +502,14 @@ BP_FUN_T BP_VAR_T bip_function_call() {
       if(bip_definitions[f].params[i] == BP_PARAMS) break;
       v = bip_definitions[f].params[i] - BP_OFFSET;
       bip_functions[bip_fn_id].params[i].id = v;
-      if(i < BP_PARAMS) { // Stash global variabile value
-        BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
-        // Set global variable with parameter value
-        if(r) BP_SET_VARIABLE(v, bip_relation());
-      } else {
-        bip_error(dcd_ptr, BP_ERROR_FUNCTION_PARAMS);
-        return 0;
-      }
+      // Stash global variabile value
+      BP_GET_VARIABLE(v, bip_functions[bip_fn_id].params[i].value);
+      // Set global variable with parameter value
+      if(r) BP_SET_VARIABLE(v, bip_relation());
       DCD_IGNORE(BP_COMMA, r);
-    } while((++i < BP_PARAMS));
+    } while(++i < BP_PARAMS);
   }
+
   if(bip_fn_id < BP_FUN_DEPTH) {
     bip_functions[bip_fn_id++].address = dcd_ptr;
     DCD_GOTO(bip_definitions[f].address);
