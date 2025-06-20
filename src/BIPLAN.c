@@ -126,15 +126,13 @@ BP_FUN_T void bip_var_addr_call() {
     BP_VAR_T bp_vac_acc = bip_access(BP_VAR_ACC);
     BP_SET_VARIABLE(bp_vac_acc, bip_relation());
   }
+}
 
 /* END PROGRAM ------------------------------------------------------------- */
-void bip_end_call() { BP_EXPECT(BP_END); bip_ended = true; };
-
-/* FINISHED ---------------------------------------------------------------- */
-bool bip_finished() { return bip_ended || dcd_finished(); };
+void bip_end_call() { bip_ended = true; };
 
 /* RUN --------------------------------------------------------------------- */
-bool bip_run() { bip_statement(); return !bip_ended;  };
+BP_FUN_T bool bip_run() { bip_statement(); return !bip_ended;  };
 
 /* RESTART PROGRAM CALL ---------------------------------------------------- */
 void bip_restart_call() { bip_set_default(); DCD_INIT(bip_program_start); };
@@ -160,15 +158,6 @@ void bip_index_definitions(char* program) {
       } while(*dcd_ptr != BP_R_RPARENT);
       bip_definitions[l].address = dcd_ptr + 1;
     } DCD_NEXT;
-  }
-};
-
-/* PROCESS LABEL STATEMENTS ------------------------------------------------ */
-void bip_process_labels(char* program) {
-  DCD_INIT(program);
-  while(dcd_current != BP_ENDOFINPUT) {
-    if(dcd_current == BP_LABEL) bip_statement();
-    else DCD_NEXT;
   }
 };
 
@@ -199,7 +188,6 @@ void bip_init(
 ) {
   bip_program_start = program;
   bip_set_default();
-  bip_process_labels(program);
   DCD_INIT(program);
   bip_index_definitions(program);
   DCD_INIT(program);
@@ -574,13 +562,6 @@ void bip_for_call() {
   } else bip_error_fun(dcd_ptr, BP_ERROR_FOR_MAX);
 };
 
-/* LABEL ------------------------------------------------------------------- */
-void bip_label_call() {
-  DCD_NEXT;
-  int id = *(dcd_ptr - 1) - BP_OFFSET;
-  BP_SET_VARIABLE(id, dcd_ptr - bip_program_start);
-};
-
 /* NEXT -------------------------------------------------------------------- */
 BP_FUN_T void bip_next_call() {
   if(bip_fw_id) { 
@@ -763,8 +744,6 @@ void bip_statement() {
     case BP_ENDIF:      DCD_NEXT; return;
     case BP_MEM_ACC:    return bip_mem_assignment_call();
     case BP_WHILE:      DCD_NEXT; return bip_while_call();
-    case BP_LABEL:      DCD_NEXT; bip_label_call(); return;
-    case BP_JUMP:       DCD_NEXT; return bip_jump_call();
     case BP_BREAK:      --bip_fw_id; return bip_break_call();
     case BP_CONTINUE:   return bip_continue_call();
     case BP_IO:         DCD_NEXT; return bip_io_set_call();

@@ -563,8 +563,6 @@ public:
     compile_char(prog, BP_FILE_HUMAN, BP_FILE);
     compile_char(prog, BP_CHAR_HUMAN, BP_CHAR);
     compile_char(prog, BP_ELSE_HUMAN, BP_ELSE);
-    compile_char(prog, BP_JUMP_HUMAN, BP_JUMP);
-    compile_char(prog, BP_LABEL_HUMAN, BP_LABEL);
     compile_char(prog, BP_END_HUMAN, BP_END);
     compile_char(prog, BP_FOR_HUMAN, BP_FOR);
     compile_char(prog, BP_ADC_HUMAN, BP_ADC);

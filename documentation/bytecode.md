@@ -113,9 +113,9 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | [`serial`](/documentation/system-functions.md#serial-open)      | `g` | 103 |
 | [`string`](/documentation/system-functions.md#string)           | `h` | 104 |
 |                                                                 | `i` | 105 |
-| [`jump`](/documentation/system-functions.md#jump)               | `j` | 106 |
+|                                                                 | `j` | 106 |
 | [`system`](/documentation/system-functions.md#system)           | `k` | 107 |
-| [`label`](/documentation/system-functions.md#label)             | `l` | 108 |
+|                                                                 | `l` | 108 |
 | [`size`](/documentation/system-functions.md#size)               | `m` | 109 |
 |                                                                 | `n` | 110 |
 | [`file`](/documentation/system-functions.md#file-open)          | `o` | 111 |

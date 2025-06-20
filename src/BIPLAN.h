@@ -19,9 +19,7 @@
 
 /* DEFINITIONS ------------------------------------------------------------- */
 
-bool bip_finished();
-
-bool bip_run();
+static bool bip_run();
 
 void bip_restart_call();
 
