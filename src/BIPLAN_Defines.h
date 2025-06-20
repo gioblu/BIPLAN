@@ -322,7 +322,7 @@ __________________________________________________|_____________|______| */
 
 /* Data types -------------------------------------------------------------- */
 
-typedef void (*bip_error_t)(uint16_t line, char *position, const char *string);
+typedef void (*bip_error_t)(char *position, const char *string);
 
 struct bip_param_t {
   BP_VAR_T value;

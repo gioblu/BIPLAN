@@ -17,6 +17,8 @@
 #include "BIPLAN_Defines.h"
 #include "BCC.h"
 
+typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
+
 /* Checks if the character is an acceptable numeric symbol ----------------- */
 #define BCC_IS_NUM(C) (C >= '0' && C <= '9')
 
@@ -46,7 +48,7 @@ class BCC {
 public:
   char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
 
-  bip_error_t error_callback = NULL;
+  bcc_error_t error_callback = NULL;
   bool fail = false;
   char *stop;
 
