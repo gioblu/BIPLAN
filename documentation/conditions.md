@@ -42,7 +42,7 @@ else print "All is fine!" end
 ```
 or can also conditionally execute a group of statements:
 ```c
-# Condition block
+// Condition block
 
 if 1 == 1
   print "All is fine!"
