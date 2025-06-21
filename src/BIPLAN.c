@@ -359,9 +359,6 @@ BP_FUN_T BP_VAR_T bip_relation() {
   } return r1;
 };
 
-/* JUMP -------------------------------------------------------------------- */
-void bip_jump_call() { DCD_GOTO(bip_program_start + bip_relation()); }
-
 /* READ SAFELY A STRING ---------------------------------------------------- */
 void bip_read_string(char *s, uint16_t o = 0) {
   if(!decoder_string(s, sizeof(bip_string), o))

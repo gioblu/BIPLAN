@@ -57,8 +57,6 @@ static BP_VAR_T bip_expression();
 
 static BP_VAR_T bip_relation();
 
-void bip_jump_call();
-
 void bip_read_string(char *s, uint16_t o);
 
 void bip_print_call();
@@ -84,8 +82,6 @@ void bip_continue_call();
 void bip_break_call();
 
 void bip_for_call();
-
-void bip_label_call();
 
 void bip_while_call();
 
