@@ -124,7 +124,7 @@ public:
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
       if(!in_string(prog, p) && !BCC_IS_ADDR(*(p - 1)))
-        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = ' ';
+        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
   };
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
@@ -165,7 +165,7 @@ public:
       }
       if(end) {
         uint8_t i = kl;
-        for(; *(p + i) == BP_SPACE; i++);
+        BCC_IGNORE_SUGAR(p);
         if(*(p + i) != end) {
           p = strstr(p + kl, key);
           if(p && *p) return p; else return NULL;
@@ -317,7 +317,7 @@ public:
         while(((p3 = strstr(p3 + 1, fn_keyword)) != NULL) && (count <= 1))
           if(!in_string(prog, p3)) count++;
         if(count <= 0) {
-          while(p2 <= p) *(p2++) = ' ';
+          while(p2 <= p) *(p2++) = BP_SPACE;
           fun_id = f_id;
           return true;
         }
@@ -409,7 +409,7 @@ public:
     char macro_code[BP_MACRO_MAX];
     char *p = find_longest_keyword(prog, false);
     if(p && *p) {
-      while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
+      while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
       BCC_IGNORE_SUGAR(p);
       uint8_t i;
       for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < BP_KEYWORD_MAX); i++, p++) {
@@ -448,16 +448,16 @@ public:
     char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN);
     if(p && *p) {
       if(in_string(pos, p)) return compile_include(prog, p + 1);
-      while(BCC_IS_KEYWORD(*p)) *(p++) = ' ';
+      while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
       BCC_IGNORE_SUGAR(p);
-      *(p++) = ' ';
+      *(p++) = BP_SPACE;
       uint8_t i = 0;
       for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
         include_path[i] = *p;
-        *p = ' ';
+        *p = BP_SPACE;
       }
       include_path[i] = 0;
-      *(p++) = ' ';
+      *(p++) = BP_SPACE;
       p_file = fopen(include_path, "r");
       if(p_file == NULL) {
         error(line(prog, p), p, BP_ERROR_INCLUDE_PATH);
@@ -529,7 +529,7 @@ public:
     compile_char(prog, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND);
     compile_char(prog, BP_R_SHIFT_HUMAN, BP_R_SHIFT);
     compile_char(prog, BP_L_SHIFT_HUMAN, BP_L_SHIFT);
-    compile_char(prog, "=", ' '); // Remove syntactic sugar
+    compile_char(prog, "=", BP_SPACE); // Remove syntactic sugar
     compile_char(prog, BP_INCREMENT_HUMAN, BP_INCREMENT);
     compile_char(prog, BP_DECREMENT_HUMAN, BP_DECREMENT);
     compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
@@ -547,7 +547,7 @@ public:
     compile_char(prog, BP_RETURN_HUMAN, BP_RETURN);
     compile_char(prog, BP_SYSTEM_HUMAN, BP_SYSTEM);
     compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR);
-    compile_char(prog, "locals:", ' ');
+    compile_char(prog, "locals:", BP_SPACE);
     compile_char(prog, BP_LTOA_HUMAN, BP_LTOA);
     compile_char(prog, BP_ATOL_HUMAN, BP_ATOL);
     compile_char(prog, BP_INPUT_HUMAN, BP_INPUT);
