@@ -491,7 +491,7 @@ BP_FUN_T BP_VAR_T bip_return_call() {
 /* FUNCTION ---------------------------------------------------------------- */
 BP_FUN_T BP_VAR_T bip_function_call() {
   bip_functions[bip_fn_id].cid = bip_fw_id;
-  BP_EXPECT(BP_FUNCTION);
+  DCD_NEXT;
   uint8_t i = 0, f = *(dcd_ptr - 1) - BP_OFFSET, v = BP_VARIABLES;
   if(*dcd_ptr != BP_R_RPARENT) {
     bool r = true;
@@ -546,13 +546,12 @@ void bip_for_call() {
       DCD_NEXT;
       return;
     }
-    ++bip_fw_id;
     bip_for_variables[vi] = v;
-    bip_cycles[bip_fw_id - 1].var_id = vi;
-    bip_cycles[bip_fw_id - 1].to = l;
-    if(bip_ignore(BP_COMMA)) bip_cycles[bip_fw_id - 1].step = bip_relation();
-    else bip_cycles[bip_fw_id - 1].step = (v < l) ? 1 : -1;
-    bip_cycles[bip_fw_id - 1].address = dcd_ptr;
+    bip_cycles[bip_fw_id].var_id = vi;
+    bip_cycles[bip_fw_id].to = l;
+    if(bip_ignore(BP_COMMA)) bip_cycles[bip_fw_id].step = bip_relation();
+    else bip_cycles[bip_fw_id].step = (v < l) ? 1 : -1;
+    bip_cycles[bip_fw_id++].address = dcd_ptr;
   } else bip_error_fun(dcd_ptr, BP_ERROR_FOR_MAX);
 };
 
