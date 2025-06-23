@@ -1,0 +1,10 @@
+include "/usr/local/BIPLAN/math.bpl"
+@n = 100
+print "Example of use of math.bpl functions", char LF
+print "Square root of 144: ", sqrt(144), char LF
+print "40th number of the fibonacci series: ", fib(40), char LF
+print "absolute value of -10: ", abs(-10), char LF
+print "is 'A' numeric:  ", numeric('A'), char LF
+print "last digit of the number 1239: ", digit(1239, 0), char LF
+print "Power of base 12 exponent 2: ", pow(12, 2) 
+stop
