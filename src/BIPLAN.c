@@ -401,7 +401,6 @@ void bip_print_call() {
       BPM_PRINT_CLEAR;
       DCD_NEXT;
     } else if(bip_ignore(BP_CURSOR)) {
-      DCD_NEXT;
       BP_SYS_EXPRESSION_2(BPM_PRINT_CURSOR);
     } else {
       v = bip_relation();
