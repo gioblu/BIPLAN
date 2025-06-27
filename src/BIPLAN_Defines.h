@@ -18,7 +18,7 @@
 #include "utils/errors/BIPLAN_Errors.h"
 #include "interfaces/BIPLAN_Interfaces.h"
 
-#ifdef BIP_INLINE
+#ifdef BIP_FAST
   #define BP_FUN_T static inline
 #else
   #define BP_FUN_T static 

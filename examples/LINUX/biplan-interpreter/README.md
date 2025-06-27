@@ -4,7 +4,7 @@ The `biplan.cpp` file is a complete and ready to use BIP machine language interp
 #### How to build it
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. You can choose to build the standard interpreter using `sudo make` which does not include any optimization, or build the executable optimized for performance using `sudo make inline`, the resulting binary will be larger in size but around twice as fast if compared to the standard version 
+3. You can choose to build the compact interpreter using `sudo make compact` which is optimized for size, or build the executable optimized for performance using `sudo make fast`, the resulting binary will be larger in size but around twice as fast if compared to the standard version 
 4. Digit `sudo make install`
 5. Digit `sudo make clean` to remove the executable from the `usr/local/bin` directory
 
