@@ -89,6 +89,8 @@ char input_call();
 
 BP_VAR_T bip_io_get_call();
 
+void bip_io_set_call();
+
 BP_VAR_T bip_adc_call();
 
 void bip_pinMode_call();
@@ -102,6 +104,8 @@ void bip_result_set_call();
 BP_VAR_T bip_serial_call();
 
 BP_VAR_T bip_file_get_call();
+
+void bip_file_set_call();
 
 BP_VAR_T bip_sizeof_call();
 

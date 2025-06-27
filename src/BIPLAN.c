@@ -112,6 +112,35 @@ BPM_SERIAL_T       bip_serial_fun;
     DCD_NEXT; \
   }
 
+#define BP_STATEMENT \
+  switch(dcd_current) { \
+    case BP_FOR_ADDR: ; \
+    case BP_VAR_ACC: ;  /* assignment by reference */ \
+    case BP_VAR_ADDR:   bip_var_addr_call(); break; \
+    case BP_STR_ACC: ;  /* assignment by reference */ \
+    case BP_STR_ADDR:   bip_string_assignment_call(); break; \
+    case BP_FUNCTION:   bip_function_call(); DCD_NEXT; break; \
+    case BP_INCREMENT:  ; /* same as decrement */ \
+    case BP_DECREMENT:  bip_factor();  break; \
+    case BP_NEXT:       DCD_NEXT; bip_next_call(); break; \
+    case BP_FOR:        DCD_NEXT; bip_for_call(); break; \
+    case BP_IF:         DCD_NEXT; bip_if_call(); break; \
+    case BP_ELSE:       DCD_NEXT; bip_skip_block(); break; \
+    case BP_ENDIF:      DCD_NEXT; break; \
+    case BP_MEM_ACC:    bip_mem_assignment_call(); break; \
+    case BP_WHILE:      DCD_NEXT; bip_while_call(); break; \
+    case BP_BREAK:      --bip_fw_id; bip_break_call(); break; \
+    case BP_CONTINUE:   bip_continue_call(); break; \
+    case BP_IO:         DCD_NEXT; bip_io_set_call(); break; \
+    case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); break; \
+    case BP_PRINT:      DCD_NEXT; bip_print_call(); break; \
+    case BP_FILE:       bip_file_set_call(); break; \
+    case BP_LTOA:       bip_ltoa_call(); break; \
+    case BP_RESTART:    bip_restart_call(); break; \
+    case BP_END:        bip_end_call(); break; \
+    default: bip_error(dcd_ptr, BP_ERROR_STATEMENT); \
+  }
+
 /* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
 BP_FUN_T void bip_var_addr_call() {
   if(dcd_current == BP_VAR_ADDR) {
@@ -506,15 +535,21 @@ BP_FUN_T BP_VAR_T bip_function_call() {
     } while(++i < BP_PARAMS);
   }
 
-  if(bip_fn_id < BP_FUN_DEPTH) {
-    bip_functions[bip_fn_id++].address = dcd_ptr;
-    DCD_GOTO(bip_definitions[f].address);
-    while(dcd_current != BP_RETURN) bip_statement();
-    return bip_return_call();
-  } else {
+  if(bip_fn_id >= (BP_FUN_DEPTH - 1)) {
     bip_error(dcd_ptr, BP_ERROR_FUNCTION_CALL);
     return 0;
   }
+
+  bip_functions[bip_fn_id++].address = dcd_ptr;
+  DCD_GOTO(bip_definitions[f].address);
+  while(dcd_current != BP_RETURN) {
+    #ifdef BIP_INLINE;
+    BP_STATEMENT;
+    #else
+    bip_statement();
+    #endif
+  }
+  return bip_return_call();
 };
 
 /* CONTINUE ---------------------------------------------------------------- */
@@ -720,31 +755,5 @@ BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STRING(BPM_SYSTEM, v); };
 
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {
-  switch(dcd_current) {
-    case BP_FOR_ADDR: ;
-    case BP_VAR_ACC: ;  // assignment by reference
-    case BP_VAR_ADDR:   return bip_var_addr_call();;
-    case BP_STR_ACC: ;  // assignment by reference
-    case BP_STR_ADDR:   return bip_string_assignment_call();
-    case BP_FUNCTION:   bip_function_call(); DCD_NEXT; return;
-    case BP_INCREMENT:  ; // same as decrement
-    case BP_DECREMENT:  bip_factor();  return;
-    case BP_NEXT:       DCD_NEXT; bip_next_call(); return;
-    case BP_FOR:        DCD_NEXT; return bip_for_call();
-    case BP_IF:         DCD_NEXT; return bip_if_call();
-    case BP_ELSE:       DCD_NEXT; return bip_skip_block();
-    case BP_ENDIF:      DCD_NEXT; return;
-    case BP_MEM_ACC:    return bip_mem_assignment_call();
-    case BP_WHILE:      DCD_NEXT; return bip_while_call();
-    case BP_BREAK:      --bip_fw_id; return bip_break_call();
-    case BP_CONTINUE:   return bip_continue_call();
-    case BP_IO:         DCD_NEXT; return bip_io_set_call();
-    case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); return;
-    case BP_PRINT:      DCD_NEXT; return bip_print_call();
-    case BP_FILE:       return bip_file_set_call();
-    case BP_LTOA:       bip_ltoa_call(); return;
-    case BP_RESTART:    return bip_restart_call();
-    case BP_END:        return bip_end_call();
-    default: bip_error(dcd_ptr, BP_ERROR_STATEMENT);
-  }
+  BP_STATEMENT;
 };
