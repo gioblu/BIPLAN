@@ -5,7 +5,7 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental prog
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
 | TinyBasicPlus        |  11KB ROM,  1KB RAM  |
-| BIPLAN               |  38kB (compact) / 83kB (fast) ROM,  2KB RAM  |
+| BIPLAN               |  38KB ROM,  2KB RAM  |
 | Wasm3                |  64kB ROM, 10kB RAM  |
 | MycroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
