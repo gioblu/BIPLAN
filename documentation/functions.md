@@ -49,3 +49,21 @@ function fibonacci($a, locals: $b, $c)
   next
 return $c
 ```
+
+Functions receive numeric parameters, each parameter can represent a numeric value, a reference to a variable or a reference to a string:
+
+```c
+:test = "test"
+
+@result = cap(index :test)
+
+print :[@result], " ", :test // Prints "Test Test"
+
+stop
+
+function cap($s)
+  :[$s][0] = 'T'
+return $s
+```
+
+In the example above the reference to the string `:test` is passed to the `cap` function. The reference is then used to modify the first character. 
