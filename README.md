@@ -54,7 +54,7 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-When `biplan` is compiled using `sudo make fast` it is around 1.3 times slower than python, when compiled using `sudo make compact` it is around 2 times slower than python.
+When `biplan` is compiled using the target `fast` it is around 1.3 times slower than python, when compiled using the target `compact` it is around 2 times slower than python.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
