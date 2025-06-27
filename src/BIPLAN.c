@@ -269,7 +269,6 @@ BP_FUN_T BP_VAR_T bip_access(BP_VAR_T v) {
 BP_FUN_T BP_VAR_T bip_factor() {
   BP_VAR_T v = 0;
   bool bitwise_not = 0, minus = 0, index = 0;
-  uint8_t id = BP_VARIABLES;
   int8_t pre = 0;
   DCD_IGNORE(BP_BITWISE_NOT, bitwise_not);
   DCD_IGNORE(BP_MINUS, minus);
@@ -278,27 +277,26 @@ BP_FUN_T BP_VAR_T bip_factor() {
   switch(dcd_current) {
     case BP_FOR_ADDR:
       DCD_NEXT;
-      id = *(dcd_ptr - 1) - BP_OFFSET;
-      if(index) return id;
-      if(pre != 0) bip_for_variables[id] += pre;
-      v = bip_for_variables[id];
+      v = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return v;
+      if(pre != 0) bip_for_variables[v] += pre;
+      v = bip_for_variables[v];
       break;
     case BP_VAR_ADDR:
       DCD_NEXT;
-      id = *(dcd_ptr - 1) - BP_OFFSET;
-      if(index) return id;
-      if(pre != 0) BP_INCREMENT_VARIABLE(id, pre);
-      BP_GET_VARIABLE(id, v);
+      v = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return v;
+      if(pre != 0) BP_INCREMENT_VARIABLE(v, pre);
+      BP_GET_VARIABLE(v, v);
       break;
     case BP_STR_ADDR:
       DCD_NEXT;
-      id = *(dcd_ptr - 1) - BP_OFFSET;
-      if(index) return id;
+      v = *(dcd_ptr - 1) - BP_OFFSET;
+      if(index) return v;
       if(dcd_current == BP_ACCESS) {
-        v = bip_string_char(id, bip_access(BP_ACCESS));
+        v = bip_string_char(v, bip_access(BP_ACCESS));
         bip_return_type = BP_ACCESS;
-      }
-      bip_return_type = BP_STR_ADDR;
+      } else bip_return_type = BP_STR_ADDR;
       break;
     case BP_NUMBER: v = BPM_ATOL(dcd_ptr); BP_EXPECT(BP_NUMBER); break;
     case BP_VAR_ACC: v = bip_get_variable(bip_access(BP_VAR_ACC)); break;
@@ -727,7 +725,7 @@ BP_VAR_T bip_sizeof_call() {
   return 0;
 };
 
-/* ATOL - LTOA ------------------------------------------------------------- */
+/* ATOL - LTOA --------------------------------------------------------------- */
 BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
 
 void bip_ltoa_call() {
