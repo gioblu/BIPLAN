@@ -2,11 +2,12 @@
 // This program reads and prints itself in the console
 
 @f = file open "read-file.bip", 0
-label @loop
-@i = file read @f
-if @i != EOF
+@i = 0
+
+while(@i != EOF)
+  @i = file read @f
   print char @i
-  jump @loop
-end
+next
+
 file close @f
 stop

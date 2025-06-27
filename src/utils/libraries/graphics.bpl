@@ -33,12 +33,12 @@ macro HIDE_CURSOR system "echo '\e[?25l'"
 
 // Draw a rectangle at a given x and y position, with a given width and height
 function draw_rect($x, $y, $w, $h, $c)
-  cursor $x, $y
+  print cursor $x, $y
   for #y = 0 to $h + 1
     for #x = 0 to $w + 1
       if (#x == 0) || (#y == 0) || 
         (#x == $w) || (#y == $h)
-        cursor $x + #x, $y + #y
+        print cursor $x + #x, $y + #y
         print char $c
       end
     next
@@ -53,7 +53,7 @@ function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
   if $y < $yy $sy = 1 else $sy = -1 end
     $e = $dx + $dy
   while true
-    cursor $x + 1, $y + 1
+    print cursor $x + 1, $y + 1
     print char $c
     if ($x == $xx) && ($y == $yy) break end
     $ee = 2 * $e
