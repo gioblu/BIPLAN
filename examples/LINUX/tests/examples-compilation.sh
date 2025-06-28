@@ -8,6 +8,7 @@ declare -a tests=(
 	"read-file/read-file" 
 	"notes/notes" 
 	"graphics/graphics" 
+	"strings/strings" 
 	"draw-line/draw-line" 
 	"date-epoch/date-epoch"
 	"math/math" 
