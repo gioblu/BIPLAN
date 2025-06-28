@@ -4,7 +4,7 @@ The `bcc.cpp` file is a complete and ready to use compiler. It is able to compil
 #### How to build it
 1. Open the console
 2. Locate the `BIPLAN/examples/LINUX/bcc-compiler` directory
-3. Digit `sudo make`
+3. You can choose to build the compact compiler using `sudo make compact` which is optimized for size (~22KB), or build the executable optimized for performance using `sudo make fast`, the resulting binary will be larger in size (~34KB) but around twice as fast if compared to the `compact` target.
 4. Digit `sudo make install`
 
 #### The bcc executable

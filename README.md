@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 12KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Mega.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Mega.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |

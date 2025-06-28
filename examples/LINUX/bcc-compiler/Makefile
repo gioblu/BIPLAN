@@ -1,6 +1,8 @@
 all:
 	g++	-DLINUX	-I.	-I ../../../src	-std=gnu++11 bcc.cpp -o bcc -O1
 	$(info bcc compiler compilation started!)
+fast:
+	g++	-DLINUX	-I.	-I	../../../src -std=gnu++11 bcc.cpp -o bcc -O2
 compact:
 	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp -o	bcc	-Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
 	$(info bcc compiler compilation started!)
