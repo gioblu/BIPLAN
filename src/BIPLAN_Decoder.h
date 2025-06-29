@@ -78,15 +78,15 @@ BP_FUN_T void dcd_next_code() {
   dcd_next_code();
 
 /* Removes backslash from string ------------------------------------------- */
-  void remove_backslash(char *s) {
-    uint16_t j = 0;
-    for(uint16_t i = 0; s[i] != '\0'; i++) {
-      if((s[i] == BP_BACKSLASH) && (s[i + 1] == BP_STRING)) continue;
-      s[j] = s[i];
-      ++j;
-    }
-    s[j] = '\0';
-  };
+void remove_backslash(char *s) {
+  uint16_t j = 0;
+  for(uint16_t i = 0; s[i] != '\0'; i++) {
+    if((s[i] == BP_BACKSLASH) && (s[i + 1] == BP_STRING)) continue;
+    s[j] = s[i];
+    ++j;
+  }
+  s[j] = '\0';
+};
 
 /* Decodes a string -------------------------------------------------------- */
 bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
