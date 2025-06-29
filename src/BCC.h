@@ -33,7 +33,7 @@ typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
 /* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDR(C) ( \
   (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FOR_ADDR) || \
-  (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
+  (C == BP_FOR) || (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
 )
 
 /* Sets A to the next available address (avoiding reserved characters) ----- */

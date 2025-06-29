@@ -34,7 +34,7 @@ Hello World!6
 
 The BIP bytecode is just an ASCII string, so it does not require any tool to browse it, analize it or transmit it. BIP bytecode is saved in .bip files, that can be browsed as any other text file.
 
-Using the ASCII encoding and representing addresses with one character restricts their number to 88. The first 35 characters are not used and 4 (`:`, `f`, `~`, `}`) are reserved. This is why BIPLAN can work with a maximum of 88 functions, variables, parameters, strings and cycles.
+Using the ASCII encoding and representing addresses with one character restricts their number to 87. The first 34 characters are not used and 6 (`:`, `f`, `~`, `}`, `#`, `@` ) are reserved. This is why BIPLAN can work with a maximum of 87 functions, variables, parameters, strings and cycles.
 
 Not to drastically limit the memory available BIP bytecode supports a memory read and write instruction that expects a numeric address, so depending on the machine you are running BIPLAN on, you may be able to address 2^32 or 2^64 bytes of memory.
 
@@ -42,7 +42,7 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | --------------------------------------------------------------- | --- | --- |
 | [`else`](/documentation/conditions.md)                          | `!` | 33  |
 | `literal string separator`                                      | `"` | 34  |
-| `for variable`                                                  | `#` | 35  |
+| `for variable` (followed by address)                            | `#` | 35  |
 |                                                                 | `$` | 36  |
 | modulus                                                         | `%` | 37  |
 | bitwise and                                                     | `&` | 38  |
@@ -65,13 +65,13 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | number                                                          | `7` | 55  |
 | number                                                          | `8` | 56  |
 | number                                                          | `9` | 57  |
-| [`:`](/documentation/strings.md)                                | `:` | 58  |
+| [`:`](/documentation/strings.md) (followed by address)          | `:` | 58  |
 | [`next`](/documentation/cycles.md#next)                         | `;` | 59  |
 | less than                                                       | `<` | 60  |
 |                                                                 | `=` | 61  |
 | greater than                                                    | `>` | 62  |
 | [`if`](/documentation/conditions.md)                            | `?` | 63  |
-| [`for`](/documentation/cycles.md#for)                           | `@` | 64  |
+| [`for`](/documentation/cycles.md#for) (followed by address)     | `@` | 64  |
 | `logic and`                                                     | `A` | 65  |
 | [`break`](/documentation/cycles.md#break)                       | `B` | 66  |
 | [`--`](/documentation/unary-operators.md)                       | `C` | 67  |
@@ -109,7 +109,7 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | [`continue`](/documentation/cycles.md#continue)                 | `c` | 99  |
 |                                                                 | `d` | 100 |
 | [`input`](/documentation/system-functions.md#input)             | `e` | 101 |
-| [`function`](/documentation/functions.md)                       | `f` | 102 |
+| [`function`](/documentation/functions.md) (followed by address) | `f` | 102 |
 | [`serial`](/documentation/system-functions.md#serial-open)      | `g` | 103 |
 | [`string`](/documentation/system-functions.md#string)           | `h` | 104 |
 |                                                                 | `i` | 105 |
@@ -130,8 +130,8 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | [`end`](/documentation/conditions.md)                           | `x` | 120 |
 | [`cursor`](/documentation/system-functions.md#print)            | `y` | 121 |
 | [`restart`](/documentation/system-functions.md#restart)         | `z` | 122 |
-| function parameter                                              | `{` | 123 |
+|                                                                 | `{` | 123 |
 | bitwise or                                                      | `\|`| 124 |
-| [`@`](/documentation/numeric-variables.md)                      | `}` | 125 |
-| function call                                                   | `~` | 126 |
+| numeric variable, function parameter (followed by address)      | `}` | 125 |
+| function call (followed by address)                             | `~` | 126 |
 |                                                                 | DEL | 127 |

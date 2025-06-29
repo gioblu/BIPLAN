@@ -26,7 +26,7 @@ Each variable is just an entry of a statically allocated array. The `BP_VARIABLE
 #define BP_VARIABLES 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to `91 - BP_PARAMS` user-defined variables, such as `@my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
+BIPLAN supports up to `87 - BP_PARAMS` user-defined variables, such as `@my_var = 1` although it can get or set more variables using the access operator [`$[]`](/documentation/numeric-variables.md).
 
 ---
 
@@ -36,7 +36,7 @@ Each string is just an entry of a statically allocated array, the `BP_STRINGS` c
 #define BP_STRINGS 50
 #include "BIPLAN.h"
 ```
-BIPLAN supports up to `91 - BP_ARGS` strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
+BIPLAN supports up to `87 - BP_ARGS` strings defined by the user, such as `:my_string = "Hello world!"` although it can get or set more strings using the access operator [`:[]`](/documentation/strings.md). The maximum length of strings can be configured as follows:
 ```cpp
 // Sets BIPLAN string maximum length to 50
 #define BP_STRING_MAX 50
@@ -62,7 +62,7 @@ The maximum function call depth can be configured as follows:
 #define BP_FUN_DEPTH 5
 #include "BIPLAN.h"
 ```
-BIPLAN supports a maximum amount of 91 functions defined by the user.
+BIPLAN supports a maximum amount of 87 functions defined by the user.
 
 ---
 

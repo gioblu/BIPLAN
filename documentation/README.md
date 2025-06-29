@@ -24,7 +24,7 @@ BIP CR.1 COMPUTER ARCHITECTURE
 | BIP DECODER                   | BIP INTERPRETER               |
 |_____________ ___________ _____|_______ ___________ ___________|
 |             |           |             |           |           |
-| 88 FUNCTION | 2^31/2^63 | 88 VARIABLE | 88 STRING | 88 FILE   |
+| 87 FUNCTION | 2^31/2^63 | 87 VARIABLE | 87 STRING | 87 FILE   |
 | REGISTERS   | MEMORY    | REGISTERS   | REGISTERS | REGISTERS |
 |             | REGISTERS |             |           |           |
 |_____________|___________|_____________|___________|___________|

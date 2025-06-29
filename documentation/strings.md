@@ -14,7 +14,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Strings
-String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 88 strings of 2^31 or 2^63 bits length. A string can be declared:
+String are identified by `:`, their name must be composed by lowercase and or uppercase letters and must not contain symbols or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 87 strings of 2^31 or 2^63 bits length. A string can be declared:
 ```c
 :test = "Hello world!"
 ```

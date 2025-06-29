@@ -19,7 +19,7 @@ function [name]([parameter], [parameter], locals: [parameter], [parameter])
   [statement]
 return [expression]
 ```
-A function is a group of statements identified by a unique name that together perform a task and can return a value. Each function is just an entry of a global array of up to 88 functions, each function stores up to 88 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
+A function is a group of statements identified by a unique name that together perform a task and can return a value. Each function is just an entry of a global array of up to 87 functions, each function stores up to 87 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
 
 ```c
 // Call
