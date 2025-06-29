@@ -15,17 +15,10 @@
 
 #pragma once
 #include "BIPLAN_Defines.h"
-#include <ctype.h>
-#include <stdlib.h>
 
 char    *dcd_ptr;
 char    *dcd_next_ptr;
 uint8_t  dcd_current = BP_ERROR;
-
-/* Checks if the decoder encountered the end of the program ---------------- */
-BP_FUN_T uint8_t dcd_finished() {
-  return *dcd_ptr == 0 || dcd_current == BP_ENDOFINPUT;
-};
 
 /* Get next code from BIP code --------------------------------------------- */
 BP_FUN_T void dcd_next_code() {
@@ -65,24 +58,24 @@ BP_FUN_T void dcd_next_code() {
   } else dcd_current = BP_ENDOFINPUT;
 };
 
-/* Gets the next code from BIP code ---------------------------------------- */
-#define DCD_NEXT \
-  dcd_ptr = dcd_next_ptr; \
-  dcd_next_code();
-
 /* Moves decoder to a certain position in the program ---------------------- */
 #define DCD_GOTO(P) \
   dcd_ptr = P; \
   dcd_next_code();
+
+/* Ignores a certain code -------------------------------------------------- */
+#define DCD_IGNORE(C, V) \
+  if(V = (C == dcd_current)) { DCD_NEXT; }
 
 /* Initializes the decoder ------------------------------------------------- */
 #define DCD_INIT(P) \
   DCD_GOTO(P); \
   dcd_next_code();
 
-/* Ignores a certain code -------------------------------------------------- */
-#define DCD_IGNORE(C, V) \
-  if(V = (C == dcd_current)) { DCD_NEXT; }
+/* Gets the next code from BIP code ---------------------------------------- */
+#define DCD_NEXT \
+  dcd_ptr = dcd_next_ptr; \
+  dcd_next_code();
 
 /* Removes backslash from string ------------------------------------------- */
   void remove_backslash(char *s) {
