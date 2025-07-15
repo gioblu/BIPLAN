@@ -12,6 +12,7 @@
 #define BP_ERROR_FUNCTION_MAX        "too many functions"
 #define BP_ERROR_FUNCTION_NAME       "function name too long"
 #define BP_ERROR_FUNCTION_PARAMS     "too many parameters"
+#define BP_ERROR_KEYWORD             "Keywords cannot start with a number"
 #define BP_ERROR_RETURN              "non matching return"
 #define BP_ERROR_FOR_MAX             "too many nested for"
 #define BP_ERROR_NEXT                "non matching next"

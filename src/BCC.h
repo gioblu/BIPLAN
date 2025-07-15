@@ -23,12 +23,14 @@ typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
 #define BCC_IS_NUM(C) (C >= '0' && C <= '9')
 
 /* Checks if the character is an acceptable keyword symbol ----------------- */
-#define BCC_IS_KEYWORD(C) \
-  ((C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || (C == '_'))
+#define BCC_IS_KEYWORD(C) ( \
+  (C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || \
+  (C == '_') || (C >= '0' && C <= '9') \
+)
 
 /* Checks if the character is an acceptable capitalized keyword symbol ------*/
 #define BCC_IS_CAP_KEYWORD(C) \
-  ((C >= 'A' && C <= 'Z') || (C == '_'))
+  ((C >= 'A' && C <= 'Z') || (C == '_') || (C >= '0' && C <= '9'))
 
 /* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDR(C) ( \
@@ -134,7 +136,6 @@ public:
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
           error(line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
-          fail = true;
           return;
         }
         BPM_LTOA(*(++p), b, 0);
@@ -268,6 +269,10 @@ public:
     while((p && *p) && (p <= stop))
       if(*(p++) == var_type) {
         if(in_string(prog, p - 1) || BCC_IS_ADDR(*(p - 2))) continue;
+        if(BCC_IS_NUM(*p)) {
+          error(line(prog, p), p, BP_ERROR_KEYWORD);
+          return NULL;
+        }
         uint8_t i = 0;
         while(BCC_IS_KEYWORD(*p)) {
           i++;
@@ -353,6 +358,10 @@ public:
           if(!p || !*p) return NULL;
         }
         p2 = p;
+        if(BCC_IS_NUM(*p)) {
+          error(line(prog, p), p, BP_ERROR_KEYWORD);
+          return NULL;
+        } 
         while(BCC_IS_KEYWORD(*p)) p++;
         BCC_IGNORE_SUGAR(p);
         while((p && *p) && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
