@@ -3,8 +3,6 @@
 
 bool   verbose = false;
 char   program[BCC_MAX_PROGRAM_SIZE];
-char  *serial_name = NULL;
-int    serial_bd = 0, s;
 bool   error = false;
 int    opt = 0;
 FILE  *p_file;
@@ -57,19 +55,9 @@ int main(int argc, char *argv[]) {
       case 'd': verbose = true; break;
       case 'i': init_program(optarg); break;
       case 'a': bip_process_argument(optarg); break;
-      case 's':
-        serial_name = optarg;
-        if(verbose) printf("Serial name: %s \n", serial_name);
-        break;
-      case 'b':
-        serial_bd = atoi(optarg);
-        if(verbose) printf("Baudrate: %d \n", serial_bd);
-        break;
       case 'h':
         printf("\n-a: Passes argument to program (-a hi -> args[0] = \"hi\")");
-        printf("\n-b: Sets serial bardrate (-b 9600)");
         printf("\n-d: Prints debug information");
-        printf("\n-s: Sets serial port (-s COM1)");
         printf("\n-h: Prints this help message\n");
         exit(1);
         break;
@@ -77,15 +65,8 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-  if(serial_name && serial_bd) {
-    s = serialOpen(serial_name, serial_bd);
-    if(int(s) < 0) {
-      printf("Serial fail!\n");
-      exit(-4);
-    }
-  }
   if(verbose) printf("BIPLAN interpreter - Giovanni Blu Mitolo 2021 \n");
-  bip_init(program, error_callback, s, s, s);
+  bip_init(program, error_callback, NULL, NULL, NULL);
   // Initialize interpreter using cout as print and stdin as input
   if(verbose) printf("\nInterpreter output: \n\n");
   uint32_t t = BPM_MICROS();

@@ -52,48 +52,69 @@ void delay(uint32_t delay_value_ms) {
 /* Open serial port -------------------------------------------------------- */
 
 int serialOpen(const char *device, const int baud) {
-  /*speed_t bd;
   int fd;
+ 
+  // Open the file descriptor in non-blocking mode
+  fd = open(device, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
-  if((fd = open(device, O_NDELAY | O_NOCTTY | O_NONBLOCK | O_RDWR)) == -1)
-  return -1;
+  // Set up the control structure
+  struct termios toptions;
 
-  fcntl(fd, F_SETFL, O_RDWR);
+  // Get currently set options for the tty
+  tcgetattr(fd, &toptions);
 
-  struct termios2 config;
-  int state;
-  int r = ioctl(fd, TCGETS2, &config);
-  if(r) return -1;
+  // Configure bad rate according to baud parameter
+  speed_t bd = 0;
 
-  // Sets terminal to something like "raw" mode of Version 7 terminal driver
-  config.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
-                   | INLCR | IGNCR | ICRNL | IXON);
-  config.c_cflag &= ~(CSTOPB | CSIZE | PARENB);
-  config.c_cflag |= CS8;
-  config.c_lflag &= ~(ECHO | ECHOE | ECHONL | ICANON | ISIG | IEXTEN);
-  config.c_oflag &= ~OPOST;
+  switch(baud) {
+    case     50: bd = B50; break;
+    case     75: bd = B75; break;
+    case    110: bd = B110; break;
+    case    150: bd = B150; break;
+    case    200: bd = B200; break;
+    case    300: bd = B300; break;
+    case    600: bd = B600; break;
+    case   1200: bd = B1200; break;
+    case   1800: bd = B1800; break;
+    case   2400: bd = B2400; break;
+    case   4800: bd = B4800; break;
+    case   9600: bd = B9600; break;
+    case  19200: bd = B19200; break;
+    case  38400: bd = B38400; break;    
+    case  57600: bd = B57600; break;
+    case 115200: bd = B115200; break;
+    case 230400: bd = B230400; break;
+    default: bd = B0;  // Invalid baud rate
+  }
 
-  // sets the baudrate
-  config.c_ispeed = config.c_ospeed = baud;
-  config.c_cflag &= ~CBAUD;
-  config.c_cflag |= BOTHER;
+  cfsetispeed(&toptions, bd);
+  cfsetospeed(&toptions, bd);
+  // 8 bits, no parity, no stop bits
+  toptions.c_cflag &= ~PARENB;
+  toptions.c_cflag &= ~CSTOPB;
+  toptions.c_cflag &= ~CSIZE;
+  toptions.c_cflag |= CS8;
+  // No hardware flow control 
+  toptions.c_cflag &= ~CRTSCTS;
+  // Enable receiver, ignore status lines 
+  toptions.c_cflag |= CREAD | CLOCAL;
+  // Disable input/output flow control, disable restart chars
+  toptions.c_iflag &= ~(IXON | IXOFF | IXANY);
+  /* disable canonical input, disable echo, disable visually erase chars,
+  disable terminal-generated signals */
+  toptions.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+  // disable output processing
+  toptions.c_oflag &= ~OPOST;
 
-  config.c_cflag |= (CLOCAL | CREAD);
-  config.c_cc [VMIN] = 0;
-  config.c_cc [VTIME] = 50; // 5 seconds reception timeout
+  // wait for 1 character to come in before read returns 
+  toptions.c_cc[VMIN] = 1;
+  // 1 second reception timeout
+  toptions.c_cc[VTIME] = 10;  
 
-  r = ioctl(fd, TCSETS2, &config);
-  if(r) return -1;
-
-  r = ioctl(fd, TIOCMGET, &state);
-  if(r) return -1;
-
-  state |= (TIOCM_DTR | TIOCM_RTS);
-  r = ioctl(fd, TIOCMSET, &state);
-  if(r) return -1;
-
-  delayMicroseconds(10000);	// Sleep for 10 milliseconds
-  return fd;*/
+  // commit the options 
+  tcsetattr(fd, TCSANOW, &toptions);
+  tcflush(fd, TCIFLUSH);
+  return fd;
 };
 
 /* Returns the number of bytes of data available to be read in the buffer -- */
@@ -118,22 +139,19 @@ unsigned char keypress() {
   struct termios old_tio, new_tio;
 	unsigned char c;
 
-	/* get the terminal settings for stdin */
+	// get the terminal settings for stdin 
 	tcgetattr(STDIN_FILENO,&old_tio);
 
-	/* we want to keep the old setting to restore them a the end */
-	new_tio=old_tio;
-
-	/* disable canonical mode (buffered i/o) and local echo */
+	// we want to keep the old setting to restore them a the end 
+	new_tio = old_tio;
+	// disable canonical mode (buffered i/o) and local echo 
 	new_tio.c_lflag &=(~ICANON & ~ECHO);
 
-	/* set the new settings immediately */
-	tcsetattr(STDIN_FILENO,TCSANOW,&new_tio);
-
+	// set the new settings immediately 
+	tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
 	c = getchar();
-
-	/* restore the former settings */
-	tcsetattr(STDIN_FILENO,TCSANOW,&old_tio);
+	// restore the former settings 
+	tcsetattr(STDIN_FILENO, TCSANOW, &old_tio);
 
 	return c;
 }

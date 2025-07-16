@@ -135,6 +135,7 @@ BPM_SERIAL_T       bip_serial_fun;
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); break; \
     case BP_PRINT:      DCD_NEXT; bip_print_call(); break; \
     case BP_FILE:       bip_file_set_call(); break; \
+    case BP_SERIAL:     bip_serial_call(); break; \
     case BP_LTOA:       bip_ltoa_call(); break; \
     case BP_RESTART:    bip_restart_call(); break; \
     case BP_END:        bip_end_call(); break; \
@@ -708,9 +709,17 @@ BP_VAR_T bip_serial_call() {
   if(c == BP_WRITE) {
     BP_SYS_RELATION(BPM_SERIAL_WRITE, bip_serial_fun);
   } else if(c == BP_READ) {
-    BPM_SERIAL_READ(bip_serial_fun);
-    DCD_NEXT;
+    return BPM_SERIAL_READ(bip_serial_fun);
+  } else if(c == BP_OPEN) {
+    bip_read_string(bip_string);
+    BP_EXPECT(BP_COMMA);
+    BP_VAR_T bd = bip_factor();
+    BPM_SERIAL_OPEN(bip_serial_fun, bip_string, bd);
+    return bip_serial_fun;
+  } else if(c == BP_CLOSE) {
+    BPM_SERIAL_FLUSH(bip_serial_fun);
   }
+  return 0;
 };
 
 /* STRING LENGTH CALL ------------------------------------------------------ */

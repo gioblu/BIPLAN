@@ -341,9 +341,18 @@ print serial read // Prints what is received via serial
 ```
 serial open [string or string literal], [variable or number]
 ```
-Returns 1 if the serial port was correctly initialized, -1 if initialization failed.
+Initializes the serial port.
 ```c
 serial open "COM1", 9600 // Opens serial COM1 at 9600Bd
+```
+
+#### `serial close`
+```
+serial close [string or string literal], [variable or number]
+```
+Flushes the serial port.
+```c
+serial close // Flushes serial 
 ```
 
 ---

@@ -2,8 +2,6 @@
 #include <../../../src/BIPLAN.c>
 
 char   program[BCC_MAX_PROGRAM_SIZE];
-char  *serial_name = NULL;
-int    serial_bd = 0, s;
 bool   error = false;
 int    opt = 0;
 FILE  *p_file;
@@ -66,8 +64,6 @@ int main(int argc, char *argv[]) {
         serial_bd = atoi(optarg); printf("Baudrate: %d \n", serial_bd); break;
       case 'h':
         printf("\n-a: Passes argument to program (-a hi -> args[0] = \"hi\")");
-        printf("\n-b: Sets serial bardrate (-b 9600)");
-        printf("\n-s: Sets serial port (-s COM1)");
         printf("\n-h: Prints this help message\n");
         exit(1);
         break;
@@ -75,14 +71,7 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-  if(serial_name && serial_bd) {
-    s = serialOpen(serial_name, serial_bd);
-    if(int(s) < 0) {
-      printf("\033[0;31mSerial fail!\n");
-      exit(-4);
-    }
-  }
-  bip_init(program, error_callback, s, s, s);
+  bip_init(program, error_callback, NULL, NULL, NULL);
   // Initialize interpreter using cout as print and stdin as input
   printf("Interpreter output: \033[0m\n\n");
   t = BPM_MICROS();
