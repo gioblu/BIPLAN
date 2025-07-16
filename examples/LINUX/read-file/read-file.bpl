@@ -4,8 +4,9 @@
 @f = file open "read-file.bip", 0
 @i = 0
 
-while(@i != EOF)
+while(true)
   @i = file read @f
+  if @i == EOF break end
   print char @i
 next
 
