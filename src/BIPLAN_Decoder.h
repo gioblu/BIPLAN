@@ -100,8 +100,8 @@ bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
   if(l < string_length) string_length = l;
-  memcpy(d + o, dcd_ptr + 1, string_length);
-  d[string_length + o] = 0;
+  memcpy(d + o, dcd_ptr + 1, string_length - o);
+  d[string_length] = 0;
   if(bs) remove_backslash(d);
   return true;
 };
