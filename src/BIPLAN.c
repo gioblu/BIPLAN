@@ -542,7 +542,7 @@ BP_FUN_T BP_VAR_T bip_function_call() {
   bip_functions[bip_fn_id++].address = dcd_ptr;
   DCD_GOTO(bip_definitions[f].address);
   while(dcd_current != BP_RETURN) {
-    #ifdef BIP_FAST;
+    #ifdef BIP_FAST
     BP_STATEMENT;
     #else
     bip_statement();
