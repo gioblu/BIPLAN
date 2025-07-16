@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-  bip_init(program, error_callback, NULL, NULL, NULL);
+  bip_init(program, error_callback, 0, 0, 0);
   // Initialize interpreter using cout as print and stdin as input
   printf("Interpreter output: \033[0m\n\n");
   t = BPM_MICROS();

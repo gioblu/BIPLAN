@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     }
   }
   if(verbose) printf("BIPLAN interpreter - Giovanni Blu Mitolo 2021 \n");
-  bip_init(program, error_callback, NULL, NULL, NULL);
+  bip_init(program, error_callback, 0, 0, 0);
   // Initialize interpreter using cout as print and stdin as input
   if(verbose) printf("\nInterpreter output: \n\n");
   uint32_t t = BPM_MICROS();
