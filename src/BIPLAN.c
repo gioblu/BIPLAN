@@ -46,16 +46,16 @@ BPM_SERIAL_T       bip_serial_fun;
 
 /* SYSTEM CALL WITH 1 RELATION PARAMETER ----------------------------------- */
 
-#define BP_SYS_RELATION(F, T) \
+#define BP_SYS_RELATION(F, T, R) \
   if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \
     for(uint16_t i = 0; bip_string[i] != 0; i++) \
-      F(T, bip_string[i]); \
+      R = F(T, bip_string[i]); \
     BP_EMPTY_STRING; \
   } else if(bip_ignore(BP_STR_ADDR)) { \
     uint8_t id = *(dcd_ptr - 1) - BP_OFFSET; \
     for(uint16_t i = 0; bip_strings[id][i] != 0; i++) \
-      F(T, bip_strings[id][i]); \
+      R = F(T, bip_strings[id][i]); \
   }
 
 /* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
@@ -665,7 +665,8 @@ void bip_file_set_call() {
   } else {
     BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
       BP_EXPECT(BP_COMMA);
-      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file);
+      BP_VAR_T r = 0;
+      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, r);
     }
   }
 };
@@ -707,7 +708,9 @@ BP_VAR_T bip_serial_call() {
   BP_VAR_T r;
   DCD_NEXT;
   if(c == BP_WRITE) {
-    BP_SYS_RELATION(BPM_SERIAL_WRITE, bip_serial_fun);
+    BP_VAR_T r = 0;
+    BP_SYS_RELATION(BPM_SERIAL_WRITE, bip_serial_fun, r);
+    return r;
   } else if(c == BP_READ) {
     return BPM_SERIAL_READ(bip_serial_fun);
   } else if(c == BP_OPEN) {
