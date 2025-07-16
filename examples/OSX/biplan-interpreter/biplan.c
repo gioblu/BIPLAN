@@ -54,16 +54,14 @@ void init_program(char *path) {
 
 int main(int argc, char *argv[]) {
   printf("\n\033[0;36mBIPLAN (Bytecoded Interpreted Programming LANguage) interpreter \nGiovanni Blu Mitolo 2024 \n\n");
-  while((opt = getopt(argc, argv, "i:a:s:b:h")) != -1) {
+  while((opt = getopt(argc, argv, "d::i:a:h::")) != -1) {
     switch(opt) {
+      case 'd': verbose = true; break;
       case 'i': init_program(optarg); break;
       case 'a': bip_process_argument(optarg); break;
-      case 's':
-        serial_name = optarg; printf("Serial name: %s \n", serial_name); break;
-      case 'b':
-        serial_bd = atoi(optarg); printf("Baudrate: %d \n", serial_bd); break;
       case 'h':
         printf("\n-a: Passes argument to program (-a hi -> args[0] = \"hi\")");
+        printf("\n-d: Prints debug information");
         printf("\n-h: Prints this help message\n");
         exit(1);
         break;

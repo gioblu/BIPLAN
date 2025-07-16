@@ -32,7 +32,5 @@ You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler
 
 `biplan` supports additional arguments:
 - `-a` passes an argument to the program
-- `-b` specifies the serial baudrate
 - `-d` prints debug information
-- `-s` specifies the serial port
 - `-h` prints help 

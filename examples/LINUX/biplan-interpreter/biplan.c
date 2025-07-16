@@ -50,7 +50,7 @@ void init_program(char *path) {
 
 
 int main(int argc, char *argv[]) {
-  while((opt = getopt(argc, argv, "d::i:a:s:b:h::")) != -1) {
+  while((opt = getopt(argc, argv, "d::i:a:h::")) != -1) {
     switch(opt) {
       case 'd': verbose = true; break;
       case 'i': init_program(optarg); break;
