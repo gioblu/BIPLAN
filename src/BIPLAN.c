@@ -665,8 +665,8 @@ void bip_file_set_call() {
   } else {
     BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
       BP_EXPECT(BP_COMMA);
-      BP_VAR_T r = 0;
-      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, r);
+      BP_VAR_T result = 0;
+      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, result);
     }
   }
 };
