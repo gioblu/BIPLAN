@@ -41,7 +41,7 @@ p~$40)xf$}j}k}l)}k1@$0,}j}j}k}k}l}l}j+}k;r}l
 Compiler output:
 ```
 BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025 
-Source: fib.bpl 
+Source: fib.biplan 
 Target: fib.bip 
 Source length: 149B, BIP length: 44B, reduction: 70.469803% 
 Compilation time: 294 microseconds 

@@ -111,15 +111,15 @@ file write @f, "Hello world!" // Writes Hello world! test.txt
 ---
 
 ### `include`
-With the `include` keyword it is possible to add at the end of the program the content of a `.bpl` file.
+With the `include` keyword it is possible to add at the end of the program the content of a `.biplan` file.
 
 ```
 include [string literal]
 ```
-The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.bpl` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
+The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.biplan` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
 
 ```c
-include "hello_world.bpl"
+include "hello_world.biplan"
 hello_world()
 stop
 ```

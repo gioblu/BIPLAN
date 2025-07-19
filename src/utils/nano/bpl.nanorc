@@ -1,6 +1,6 @@
 ## Syntax highlighting for Ruby.
 
-syntax biplan "\.bpl$"
+syntax biplan "\.biplan$"
 header "^#!.*biplan"
 magic "BIPLAN script"
 comment "//"

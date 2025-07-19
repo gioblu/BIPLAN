@@ -26,9 +26,9 @@ length=${#tests[@]}
 # Try to compile all files in the list above and print the result of the test
 for ((i=1; i<${length} + 1; i++ ));
 do
-	result=$(bcc "../${tests[$i - 1]}.bpl" test.bip)
+	result=$(bcc "../${tests[$i - 1]}.biplan" test.bip)
 	code=$?
-	echo "$i. Testing compilation of ../${tests[$i - 1]}.bpl"
+	echo "$i. Testing compilation of ../${tests[$i - 1]}.biplan"
 	[ $code -eq 1 ] && echo -e "Result: \033[32mpassed \033[m- Exit code: $code" || 
 	                   echo -e "Result: \033[31mfailed \033[m- Exit code: $code"
 	echo " "
