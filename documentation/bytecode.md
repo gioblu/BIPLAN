@@ -51,7 +51,7 @@ Not to drastically limit the memory available BIP bytecode supports a memory rea
 | closed round parenthesis                                        | `)` | 41  |
 | multiplication                                                  | `*` | 42  |
 | addition                                                        | `+` | 43  |
-| value separator                                                 | `,` | 44  |
+| function parameter separator                                    | `,` | 44  |
 | subtraction                                                     | `-` | 45  |
 |                                                                 | `.` | 46  |
 | division                                                        | `/` | 47  |

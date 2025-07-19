@@ -21,7 +21,7 @@ The development of BIPLAN started in 2017, I wrote both the compiler and the int
 
 ### Code example
 
-Fibonacci sequence computation in 166 bytes of BIPLAN code:
+Fibonacci sequence computation in 149 bytes of BIPLAN code:
 ```c
 print fibonacci(40)
 stop
