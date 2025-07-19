@@ -57,7 +57,7 @@ public:
 
   /* Function called in case of compilation error -------------------------- */
   void error(uint16_t line, char *position, const char *string) {
-    error_callback(line, position, string);
+    if(error_callback) error_callback(line, position, string);
     fail = true;
   };
 
