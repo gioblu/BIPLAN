@@ -34,7 +34,7 @@ int                bip_arg_id         = 0;
 bool               bip_ended          = false;
 uint8_t            bip_return_type    = 0;
 /* CALLBACKS --------------------------------------------------------------- */
-bip_error_t        bip_error_fun;
+bip_error_t        bip_error_fun = NULL;
 BPM_PRINT_T        bip_print_fun;
 BPM_INPUT_T        bip_data_in_fun;
 BPM_SERIAL_T       bip_serial_fun;
