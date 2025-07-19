@@ -15,7 +15,6 @@
 
 #pragma once
 #include "BIPLAN_Defines.h"
-#include "BCC.h"
 
 typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
 
