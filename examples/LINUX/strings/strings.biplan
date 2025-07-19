@@ -1,4 +1,4 @@
-include "/usr/local/BIPLAN/strings.bpl"
+include "/usr/local/BIPLAN/strings.biplan"
 
 :s = "This is a test string"
 

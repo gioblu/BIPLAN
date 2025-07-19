@@ -3,7 +3,7 @@
 // is copied in /usr/local/BIPLAN 
 // You can include it from there
 
-include "/usr/local/BIPLAN/time.bpl"
+include "/usr/local/BIPLAN/time.biplan"
 
 @date_epoch = epoch(10, 10, 2022, 20,35,20)
 

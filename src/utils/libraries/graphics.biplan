@@ -1,5 +1,5 @@
 
-include "/usr/local/BIPLAN/math.bpl"
+include "/usr/local/BIPLAN/math.biplan"
 
 // Common graphics macros and functions
 // Giovanni Blu Mitolo 2024

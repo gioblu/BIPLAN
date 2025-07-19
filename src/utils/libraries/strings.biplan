@@ -2,14 +2,15 @@
 // Searches for the first occurrence of a substring within a string
 // Returns -1 if no occurrence is found or a numeric index if found
 
-function find_substring($haystack, $needle, locals: $r)
+function find_substring($haystack, $needle, locals: $r, $s)
 	$r = -1
 	for #h = 0 to size :[$haystack] 
-	  	if :[$haystack][#h] == 0 break end
 	  	for #n = 0 to size :[$needle]
-			if :[$needle][#n] != :[$haystack][#h + #n] break end
-	  		if :[$needle][#n] == 0 $r = #h - size :[$needle] end
+	  		if :[$haystack][#h + #n] == :[$needle][#n]
+	  			if $s == 0 $s = 1 $r = #n end 
+			else $r = -1 break end
 	  	next
+	  	if $r != -1 break end
   	next
 return $r
 

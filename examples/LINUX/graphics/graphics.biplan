@@ -1,4 +1,4 @@
-include "/usr/local/BIPLAN/graphics.bpl"
+include "/usr/local/BIPLAN/graphics.biplan"
 
 macro HINT "Press WASD to move the rectangle, press Q to terminate the program"
 

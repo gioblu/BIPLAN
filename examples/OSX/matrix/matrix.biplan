@@ -1,5 +1,5 @@
 
-include "/usr/local/BIPLAN/graphics.bpl"
+include "/usr/local/BIPLAN/graphics.biplan"
 
 macro WIDTH  99
 macro HEIGHT 33
