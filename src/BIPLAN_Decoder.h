@@ -95,7 +95,7 @@ bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
   bool bs = false;
   if(dcd_current != BP_STRING) return false;
   string_end = strchr(dcd_ptr + 1, BP_STRING);
-  while(*(string_end - 1) == BP_BACKSLASH && (bs = true))
+  while(string_end && *(string_end - 1) == BP_BACKSLASH && (bs = true))
     string_end = strchr(string_end + 1, BP_STRING);
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
