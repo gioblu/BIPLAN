@@ -43,7 +43,7 @@ typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
 /* Ignores Space, tab, carriage return ------------------------------------- */
 #define BCC_IGNORE_SUGAR(P) \
   while((*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB)) \
-    p++;
+    P++;
 
 class BCC {
 public:
