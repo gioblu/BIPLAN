@@ -100,7 +100,7 @@ BPM_SERIAL_T       bip_serial_fun;
   if(N >= 0 && N < BP_VARIABLES) { bip_variables[N] = V; } \
   else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_SET); }
 
-/* INCREMENT VARIABLE ------------------------------------------------------- */
+/* INCREMENT VARIABLE ------------------------------------------------------ */
 #define BP_INCREMENT_VARIABLE(N, V) \
   if(N >= 0 && N < BP_VARIABLES) { bip_variables[N] += V; } \
   else { bip_error(dcd_ptr, BP_ERROR_VARIABLE_SET); }
@@ -737,7 +737,7 @@ BP_VAR_T bip_sizeof_call() {
   return 0;
 };
 
-/* ATOL - LTOA --------------------------------------------------------------- */
+/* ATOL - LTOA ------------------------------------------------------------- */
 BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
 
 void bip_ltoa_call() {
