@@ -1,12 +1,6 @@
 
-// For printf and file used below
-#include <inttypes.h>
-//#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
+#include <iostream> // For std::cout
 #include <BCC.h>
-
-#define MAX_ERROR_SOURCE 25
 
 char program[BCC_MAX_PROGRAM_SIZE];
 BCC compiler;

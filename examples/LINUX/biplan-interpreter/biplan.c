@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-  if(verbose) printf("BIPLAN interpreter - Giovanni Blu Mitolo 2021 \n");
+  if(verbose) printf("BIPLAN interpreter - Giovanni Blu Mitolo 2025 \n");
   bip_init(program, error_callback, 0, 0, 0);
   // Initialize interpreter using cout as print and stdin as input
   if(verbose) printf("\nInterpreter output: \n\n");
