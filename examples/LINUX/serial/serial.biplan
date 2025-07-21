@@ -1,0 +1,12 @@
+// Sends the character "B" over serial once per second
+// This program must be run with superuser privileges (sudo)
+// to properly use the serial port
+
+serial open "/dev/ttyUSB0", 9600
+
+while true
+	serial write "B"
+	delay1000
+next
+
+stop
