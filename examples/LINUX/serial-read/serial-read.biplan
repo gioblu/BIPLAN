@@ -1,0 +1,15 @@
+// Blinks every time "B" is received over serial once per second
+
+// IMPORTANT: Set the serial identifier of the device you want to communicate
+// with and also run this program with superuser privileges (sudo)
+// to properly use the serial port
+
+serial open "/dev/ttyUSB0", 9600
+
+while true
+	if serial read == 'B'
+		print "BLINK"
+	end
+next
+
+stop
