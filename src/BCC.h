@@ -42,18 +42,15 @@ typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 
 /* Ignores Space, tab, carriage return ------------------------------------- */
 #define BCC_IGNORE_SUGAR(P) \
-  while((*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB)) \
-    P++;
+  while( \
+    (*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB) \
+  ) P++;
 
 class BCC {
-public:
-  char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
-
-  bcc_error_t error_callback = NULL;
+private:
   bool fail = false;
+  char var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
   char *stop;
-
-  BCC() { };
 
   /* Function called in case of compilation error -------------------------- */
   void error(uint16_t line, const char *position, const char *string) {
@@ -70,8 +67,7 @@ public:
     while((p && *p) && (p <= pos)) {
       if(!in_string(prog, p) && (*p == BP_LF)) i++;
       p++;
-    }
-    return i;
+    } return i;
   }
 
   /* Checks consistency of syntax delimiters ------------------------------- */
@@ -109,27 +105,28 @@ public:
     bool in_str = false;
     const char *p = prog;
     while((p && *p) && (pos >= p)) {
-      if(in_str && *p == BP_BACKSLASH) { p += 2; continue; } // Jump escape + 1
-      // Returns false if " is found outside a string
-      if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
-      if(*p == BP_STRING) in_str = !in_str;
-      p++;
+      if(in_str && *p == BP_BACKSLASH) p += 2; // Jump escape + 1
+      else { // Returns false if " is found outside a string
+        if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
+        if(*p == BP_STRING) in_str = !in_str;
+        p++;
+      }
     } return in_str;
   };
 
   /* Remove a given symbol from the program -------------------------------- */
-  void remove(char *s, char v) {
-    if(!s) error(0, 0, BP_ERROR_PROGRAM_GET);
+  void remove(char *prog, char v) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
     if(fail) return;
-    char *i = s, *j = s;
+    char *p = prog, *p2 = prog;
     bool in_str = false;
-    while(j && *j) {
-      *i = *j++;
-      if(i > s && *i == BP_STRING && *(i - 1) != BP_BACKSLASH) 
+    while(p2 && *p2) {
+      *p = *p2++;
+      if(p > prog && *p == BP_STRING && *(p - 1) != BP_BACKSLASH) 
         in_str = !in_str;
-      if(*i != v) i++;
-      else if(in_str) i++;
-    } *i = 0;
+      if(*p != v) p++;
+      else if(in_str) p++;
+    } *p = 0;
   };
 
   /* Remove comments from program ------------------------------------------ */
@@ -182,15 +179,15 @@ public:
         (addr && p > prog && BCC_IS_ADDR(*(p - 1))) || 
         (p >= stop)
       ) {
-        p = strstr(p + kl, key);
-        if(p && *p) return p; else return NULL;
+        if((p = strstr(p + kl, key)) && *p) return p;
+        return NULL;
       }
       if(end) {
         uint8_t i = kl;
         BCC_IGNORE_SUGAR(p);
         if(*(p + i) != end) {
-          p = strstr(p + kl, key);
-          if(p && *p) return p; else return NULL;
+          if((p = strstr(p + kl, key)) && *p) return p;
+          return NULL;
         }
       }
       if(kl >= cl) {
@@ -212,7 +209,7 @@ public:
         if(*p == post) *p = BP_SPACE;
       }
       return p;
-    } else return NULL;
+    } return NULL;
   };
 
   void compile(
@@ -238,7 +235,7 @@ public:
     if(fail) return;
     char *p = prog;
     const char c[2] = {code, 0};
-    while(p && *p) p = compile_pass(prog, p, key, (const char *)c, post, addr);
+    while(p && *p) p = compile_pass(prog, p, key, c, post, addr);
   };
 
   /* Compiles user-defined variables in BIP bytecode ---------------------- */
@@ -549,8 +546,15 @@ public:
     // Check variables, strings and functions buffer bounds
     if((fun_id - BP_OFFSET) >= BP_FUN_MAX) error(0, 0, BP_ERROR_FUNCTION_MAX);
     if((string_id - BP_OFFSET) >= BP_STRINGS) error(0, 0, BP_ERROR_STRING_MAX);
-    if((var_id - BP_OFFSET) >= BP_VARIABLES) error(0, 0, BP_ERROR_VARIABLE_MAX);
+    if((var_id - BP_OFFSET) >= BP_VARIABLES) 
+      error(0, 0, BP_ERROR_VARIABLE_MAX);
   };
+
+public:
+
+  BCC() { };
+  
+  bcc_error_t error_callback = NULL;
 
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
