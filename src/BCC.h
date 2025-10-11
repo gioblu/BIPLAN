@@ -16,7 +16,7 @@
 #pragma once
 #include "BIPLAN_Defines.h"
 
-typedef void (*bcc_error_t)(uint16_t line, char *position, const char *string);
+typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 
 /* Checks if the character is an acceptable numeric symbol ----------------- */
 #define BCC_IS_NUM(C) (C >= '0' && C <= '9')
@@ -56,15 +56,17 @@ public:
   BCC() { };
 
   /* Function called in case of compilation error -------------------------- */
-  void error(uint16_t line, char *position, const char *string) {
+  void error(uint16_t line, const char *position, const char *string) {
     if(error_callback) error_callback(line, position, string);
     fail = true;
   };
 
   /* Determines the program line at a certain position --------------------- */
-  uint16_t line(char *prog, char *pos) {
+  uint16_t line(const char *prog, const char *pos) {
+    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return 0;
     uint16_t i = 1;
-    char *p = prog;
+    const char *p = prog;
     while((p && *p) && (p <= pos)) {
       if(!in_string(prog, p) && (*p == BP_LF)) i++;
       p++;
@@ -73,11 +75,16 @@ public:
   }
 
   /* Checks consistency of syntax delimiters ------------------------------- */
-  bool check_delimeter(char *prog, char a, char b, bool ignore = 0) {
+  bool check_delimeter(const char *prog, char a, char b, bool ignore = 0) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return false;
     uint16_t ia = 0, ib = 0;
-    char *p = prog;
+    const char *p = prog;
     while(p && *p) {
-      if(!in_string(prog, p) && (ignore || !BCC_IS_ADDR(*(p - 1)))) {
+      if(
+        !in_string(prog, p) && 
+        (ignore || (p > prog && !BCC_IS_ADDR(*(p - 1))))
+      ) {
         if(*p == a) ia++;
         if(*p == b) ib++;
       } p++;
@@ -87,6 +94,8 @@ public:
   /* Finds the end of a program -------------------------------------------- */
   void find_end(char *prog) {
     char *p;
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return;
     if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
       return error(0, 0, BP_ERROR_PROGRAM_LENGTH);
     for(p = prog; *p != 0; p++);
@@ -94,9 +103,11 @@ public:
   };
 
   /* Checks if a certain position in the program is within a string -------- */
-  bool in_string(char *prog, char *pos) {
+  bool in_string(const char *prog, const char *pos) {
+    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return false;
     bool in_str = false;
-    char *p = prog;
+    const char *p = prog;
     while((p && *p) && (pos >= p)) {
       if(in_str && *p == BP_BACKSLASH) { p += 2; continue; } // Jump escape + 1
       // Returns false if " is found outside a string
@@ -108,12 +119,14 @@ public:
 
   /* Remove a given symbol from the program -------------------------------- */
   void remove(char *s, char v) {
+    if(!s) error(0, 0, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *i = s, *j = s;
     bool in_str = false;
     while(j && *j) {
       *i = *j++;
-      if(*i == BP_STRING && *(i - 1) != BP_BACKSLASH) in_str = !in_str;
+      if(i > s && *i == BP_STRING && *(i - 1) != BP_BACKSLASH) 
+        in_str = !in_str;
       if(*i != v) i++;
       else if(in_str) i++;
     } *i = 0;
@@ -121,6 +134,7 @@ public:
 
   /* Remove comments from program ------------------------------------------ */
   void remove_comments(char *prog) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
@@ -130,6 +144,8 @@ public:
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
   void compile_char_constants(char *prog) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return;
     char *p = prog, b[3] = {};
     while(p && *p) {
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
@@ -155,11 +171,17 @@ public:
     bool addr = 0,
     char end = 0
   ) {
+    if(!prog || !pos || !key || !code) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
     if(p && *p) {
-      if(in_string(prog, p) || (addr && BCC_IS_ADDR(*(p - 1))) || (p >= stop)) {
+      if(
+        in_string(prog, p) || 
+        (addr && p > prog && BCC_IS_ADDR(*(p - 1))) || 
+        (p >= stop)
+      ) {
         p = strstr(p + kl, key);
         if(p && *p) return p; else return NULL;
       }
@@ -221,6 +243,8 @@ public:
 
   /* Compiles user-defined variables in BIP bytecode ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
+    if(!prog || !position) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char type;
     if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
       type = BP_VAR_ADDR;
@@ -263,6 +287,8 @@ public:
   };
 
   char *find_longest_var_name(char *prog, char var_type) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char *p = prog, *longest = 0;
     uint8_t result = 0;
     while((p && *p) && (p <= stop))
@@ -293,6 +319,8 @@ public:
      BP_PARAMS addresses for all functions present in the program. --------- */
 
   bool compile_function_pass(char *prog) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p, *p3 = NULL;
     uint8_t keyword_length = 0, f_id;
@@ -346,6 +374,8 @@ public:
 
   /* Finds longest keyword  ------------------------------------------------ */
   char *find_longest_keyword(char *prog, bool t) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char *p = prog, *p2, *longest = NULL;
     uint8_t result = 0;
     do {
@@ -385,6 +415,8 @@ public:
    For variables are compiled inefficiently, each for gets a new address. -- */
 
   void compile_for(char *prog) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return;
     char *p = prog, *p2 = prog;
     var_id = BP_OFFSET;
     char c[2] = {BP_FOR, 0}; // While you find a for
@@ -413,6 +445,8 @@ public:
   };
 
   bool compile_macro(char *prog) {
+    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return false;
     char macro_name[BP_KEYWORD_MAX];
     char macro_code[BP_MACRO_MAX];
     char *p = find_longest_keyword(prog, false);
@@ -449,6 +483,8 @@ public:
   };
 
   char *compile_include(char *prog, char *pos) {
+    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(fail) return NULL;
     char include_path[BP_INCLUDE_PATH_MAX];
     FILE * p_file;
     long p_size;
@@ -492,7 +528,7 @@ public:
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
-  bool pre_compilation_checks(char *prog) {
+  bool pre_compilation_checks(const char *prog) {
     if(fail) return fail;
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
       error(0, 0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
@@ -504,7 +540,7 @@ public:
   };
 
   /* Post-compilation checks ----------------------------------------------- */
-  void post_compilation_checks(char *prog) {
+  void post_compilation_checks(const char *prog) {
     if(fail) return;
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
       error(0, 0, BP_ERROR_BLOCK); // Check if-end
