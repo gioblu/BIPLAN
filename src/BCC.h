@@ -106,7 +106,7 @@ private:
     const char *p = prog;
     while((p && *p) && (pos >= p)) {
       if(in_str && *p == BP_BACKSLASH) p += 2; // Jump escape + 1
-      else { // Returns false if " is found outside a string
+      else { // Returns false if " is found outside of a string
         if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
         if(*p == BP_STRING) in_str = !in_str;
         p++;
@@ -135,8 +135,10 @@ private:
     if(fail) return;
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
-      if(!in_string(prog, p) && !BCC_IS_ADDR(*(p - 1)))
-        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
+      if(
+        !in_string(prog, p) && 
+        ((p > prog) && !BCC_IS_ADDR(*(p - 1)) || (p == prog))
+      ) while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
   };
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
@@ -158,8 +160,8 @@ private:
     }
   };
 
-  /* Compiles BIPLAN keywords into BIP bytecode --------------------------- */
-  char *compile_pass(
+  /* Compiles a single occurrence of a keyword into bytecode --------------- */
+  char *compile_step(
     char *prog,
     char *pos,
     const char *key,
@@ -222,7 +224,7 @@ private:
   ) {
     if(fail) return;
     char *p = prog;
-    while(p && *p) p = compile_pass(prog, p, key, code, post, addr, end);
+    while(p && *p) p = compile_step(prog, p, key, code, post, addr, end);
   };
 
   void compile_char(
@@ -235,7 +237,7 @@ private:
     if(fail) return;
     char *p = prog;
     const char c[2] = {code, 0};
-    while(p && *p) p = compile_pass(prog, p, key, c, post, addr);
+    while(p && *p) p = compile_step(prog, p, key, c, post, addr);
   };
 
   /* Compiles user-defined variables in BIP bytecode ---------------------- */
@@ -272,7 +274,7 @@ private:
         compile(prog, str, code, 0, 1);
         p = strstr(position, str);
         if((p && *p) && !in_string(prog, p)) return p;
-        return (char *)position;
+        return position;
       } return p;
     } return NULL;
   };
@@ -305,19 +307,19 @@ private:
           result = i;
         }
       }
-    if(result) return (char *)longest;
+    if(result) return longest;
     else return NULL;
   };
 
-  /* Compiles user-defined functions:
+  /* Compiles a single user-defined function (longest name first):
 
      Funtion parameters are stored at the end of the address space.
      Each function uses the same addresses for its parameters consuming only
-     BP_PARAMS addresses for all functions present in the program. --------- */
+     BP_PARAMS addresses for all parameters present in the program. -------- */
 
-  bool compile_function_pass(char *prog) {
+  bool compile_function_step(char *prog) {
     if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
-    if(fail) return NULL;
+    if(fail) return false;
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p, *p3 = NULL;
     uint8_t keyword_length = 0, f_id;
@@ -366,7 +368,7 @@ private:
 
   void compile_functions(char *prog) {
     if(fail) return;
-    while(compile_function_pass(prog));
+    while(compile_function_step(prog));
   };
 
   /* Finds longest keyword  ------------------------------------------------ */
@@ -399,7 +401,9 @@ private:
           result = i;
         }
         if(i >= BP_KEYWORD_MAX) {
-          error(line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME);
+          error(
+            line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME
+          );
           return NULL;
         }
       } else return longest;
@@ -415,7 +419,7 @@ private:
     if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p = prog, *p2 = prog;
-    var_id = BP_OFFSET;
+    var_id = BP_OFFSET; // Reset variable address
     char c[2] = {BP_FOR, 0}; // While you find a for
     while((p = strstr(p, c)) && *p) {
       if(in_string(prog, p)) continue;
@@ -471,7 +475,7 @@ private:
 
   /* Includes files:
 
-     Files contents are copied at the end of the program. ------------------ */
+     The content of each included file is copied at the end of the program.  */
 
   void compile_includes(char *prog) {
     if(fail) return;
@@ -528,11 +532,11 @@ private:
   bool pre_compilation_checks(const char *prog) {
     if(fail) return fail;
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
-      error(0, 0, BP_ERROR_ROUND_PARENTHESIS);  // Check () parentheses
+      error(0, 0, BP_ERROR_ROUND_PARENTHESIS); // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
       error(0, 0, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
     if(!check_delimeter(prog, BP_STRING, BP_STRING))
-      error(0, 0, BP_ERROR_STRING_END);         // Check "" string separator
+      error(0, 0, BP_ERROR_STRING_END); // Check "" string separator
     return !fail;
   };
 
@@ -559,13 +563,18 @@ public:
   /* Run compilation process ----------------------------------------------- */
   bool run(char *prog) {
     find_end(prog);
+    // Remove comments to be able to compile the includes
     remove_comments(prog);
+    // Copy in includes, remove comments and process macros
     compile_includes(prog);
     remove_comments(prog);
     compile_macros(prog);
+    // Compile character constants
     compile(prog, "'\\''", "39");
     compile_char_constants(prog);
+    // Execute pre-compilation checks
     if(!pre_compilation_checks(prog)) return false;
+    // Compile operators (longest first)
     compile_char(prog, BP_STR_ACC_HUMAN, BP_STR_ACC);
     compile_char(prog, BP_VAR_ACC_HUMAN, BP_VAR_ACC);
     compile_char(prog, BP_MEM_ACC_HUMAN, BP_MEM_ACC);
@@ -577,15 +586,18 @@ public:
     compile_char(prog, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND);
     compile_char(prog, BP_R_SHIFT_HUMAN, BP_R_SHIFT);
     compile_char(prog, BP_L_SHIFT_HUMAN, BP_L_SHIFT);
-    compile_char(prog, "=", BP_SPACE); // Remove syntactic sugar
+    // A single = is just syntactic sugar in BIPLAN so it is removed
+    compile_char(prog, "=", BP_SPACE); 
     compile_char(prog, BP_INCREMENT_HUMAN, BP_INCREMENT);
     compile_char(prog, BP_DECREMENT_HUMAN, BP_DECREMENT);
     compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT);
+    // Compile functions and variables
     compile_functions(prog);
     var_id = BP_OFFSET;
     find_end(prog);
     compile_variables(prog, BP_GLOBAL_HUMAN);
     compile_variables(prog, BP_STR_ADDR);
+    // Compile syntax and system functions (longest first)
     compile_char(prog, BP_RND_HUMAN, BP_RND);
     compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS);
     compile_char(prog, BP_DELAY_HUMAN, BP_DELAY);
@@ -622,7 +634,9 @@ public:
     compile_char(prog, BP_IF_HUMAN, BP_IF);
     compile_char(prog, BP_IO_HUMAN, BP_IO);
     compile_char(prog, BP_TO_HUMAN, BP_COMMA);
+    // Compile for loops
     compile_for(prog);
+    // Compile constants (longest first)
     compile(prog, "OUTPUT", "1");
     compile(prog, "INPUT", "0");
     compile(prog, "HIGH", "1");
@@ -632,11 +646,13 @@ public:
     compile(prog, "true", "1");
     compile(prog, "LF", "10");
     compile(prog, "CR", "13");
+    // Remove sugar
     remove(prog, BP_CR);
     remove(prog, BP_LF);
     remove(prog, BP_SPACE);
     remove(prog, BP_TAB);
     var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
+    // Execute post-compilation checks
     post_compilation_checks(prog);
     return !fail;
   };
