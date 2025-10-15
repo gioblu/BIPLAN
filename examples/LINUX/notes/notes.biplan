@@ -1,11 +1,12 @@
 
-print "Notes 0.1 - Giovanni Blu Mitolo 2023", char LF, "Digit note's filename: "
-@i = 0
-@c = 0
-:s = ""
-:n = ""
+include "/usr/local/BIPLAN/strings.biplan"
 
-get_string(:n)
+print "Notes 0.1 - Giovanni Blu Mitolo 2025", char LF, "Digit note's filename: "
+
+@i = 0 @c = 0
+:s = "" :n = ""
+
+string_from_input(:n, LF, true)
 
 @f = file open :n, 4
 
@@ -13,7 +14,7 @@ print "Digit note: "
 @c = 0
 @i = 0
 
-get_string(:s)
+string_from_input(:s, LF, true)
 
 file write @f, :s
 file close @f
@@ -22,20 +23,3 @@ print "Note saved successfully, bye.", char LF
 
 stop
 
-function get_string($s)
-  while @c != LF
-    @c = input
-    if @c >= 0 
-      print char @c
-      // Handle character deletion
-      if @c == 8 && @i > 0 
-        print " ", char @c  
-        --@i 
-      else 
-        if @c == LF :[$s][@i] = 0 
-        else :[$s][@i] = @c end
-        ++@i
-      end
-    end
-  next
-return 0

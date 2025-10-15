@@ -2,13 +2,13 @@
 // Searches for the first occurrence of a substring within a string
 // Returns -1 if no occurrence is found or a numeric index if found
 
-function find_substring($haystack, $needle, locals: $r, $s)
+function find_substring($haystack, $needle, locals: $r)
 	$r = -1
-	for #h = 0 to size :[$haystack] 
+	for #h = 0 to size :[$haystack]
 	  	for #n = 0 to size :[$needle]
 	  		if :[$haystack][#h + #n] == :[$needle][#n]
-	  			if $s == 0 $s = 1 $r = #n end 
-			else $r = -1 break end
+	  			$r = #h end
+			  else $r = -1 break end
 	  	next
 	  	if $r != -1 break end
   	next
@@ -23,3 +23,27 @@ function find_char($str, $chr)
 		if :[$str][#i] == $chr $r = #i end
 	next
 return $r
+
+// Gets string from input (blocks until terminator character is found)
+// $index: string index where to write data coming from input 
+// $terminator: character at which the string should terminate
+// $output: when set to 1 prints out input and handles character deletion
+// Returns 0
+
+function string_from_input($index, $terminator, $output)
+  while @c != $terminator
+    @c = input
+    if @c >= 0
+      if $output print char @c end
+      // Handle character deletion
+      if @c == 8 && @i > 0
+        if $output print " ", char @c end
+        --@i
+      else
+        if @c == $terminator :[$index][@i] = 0
+        else :[$index][@i] = @c end
+        ++@i
+      end
+    end
+  next
+return 0
