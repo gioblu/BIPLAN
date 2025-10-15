@@ -8,7 +8,7 @@ serial open "/dev/ttyUSB0", 9600
 
 while true
 	serial write "B"
-	delay1000
+	delay 1000
 next
 
 stop

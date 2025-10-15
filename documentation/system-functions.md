@@ -197,32 +197,6 @@ io open 12, OUTPUT // Sets pin 12 mode as output
 
 ---
 
-### `jump`
-```
-jump [variable]
-```
-The `jump` statement transfers control to the location specified by the `label`. It receives a single parameter of type variable.
-```c
-label @loop
-  print "Hello world \n"
-jump @loop // Prints Hello word cyclically
-```
-
----
-
-### `label`
-```
-label [variable]
-```
-Saves the position in the program in a variable to be used by `jump` later. Receives a single parameter of type variable.
-```c
-label @loop
-  print "Hello world \n"
-jump @loop // Prints Hello word cyclically
-```
-
----
-
 ### `mem`
 
 ```

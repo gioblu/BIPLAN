@@ -24,6 +24,8 @@ for #z = 0 to HEIGHT
 next
 
 @c = SHOW_CURSOR
+@c = BT_RESET
+
 print cursor 0, 35
 
 stop
