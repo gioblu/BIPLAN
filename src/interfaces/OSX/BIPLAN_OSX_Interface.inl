@@ -1,4 +1,6 @@
 
+#if defined(__APPLE__)
+
 #ifndef BPM_OSX_SEPARATE_DEFINITION
     #define BPM_OSX_SEPARATE_DEFINITION
 #endif
@@ -130,3 +132,5 @@ long fast_atol(const char *p) {
   for(; c > 47 && c < 58; c = *(p++)) x = (x << 1) + (x << 3) + c - 48;
   return x;
 };
+
+#endif

@@ -122,9 +122,11 @@ private:
     bool in_str = false;
     while(p2 && *p2) {
       *p = *p2++;
-      if(p > prog && *p == BP_STRING && *(p - 1) != BP_BACKSLASH) 
-        in_str = !in_str;
-      if(*p != v) p++;
+      if(*p == BP_STRING) {
+        if(!in_str || (in_str && p > prog && (*(p - 1) != BP_BACKSLASH))) 
+          in_str = !in_str;
+      }
+      if((*p != v1) && (*p != v2) && (*p != v3) && (*p != v4)) p++;
       else if(in_str) p++;
     } *p = 0;
   };
@@ -135,10 +137,9 @@ private:
     if(fail) return;
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
-      if(
-        !in_string(prog, p) && 
-        ((p > prog) && !BCC_IS_ADDR(*(p - 1)) || (p == prog))
-      ) while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
+      if(!in_string(prog, p)) 
+        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) 
+          *(p++) = BP_SPACE;
   };
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
@@ -175,20 +176,16 @@ private:
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
     p = strstr(pos, key);
-    if(p && *p) {
-      if(
-        in_string(prog, p) || 
-        (addr && p > prog && BCC_IS_ADDR(*(p - 1))) || 
-        (p >= stop)
-      ) {
-        if((p = strstr(p + kl, key)) && *p) return p;
+    if(p && *p && (p < stop)) {
+      if(in_string(prog, p) || (addr && p > prog && BCC_IS_ADDR(*(p - 1)))) {
+        if(p = strstr(p + kl, key)) return p;
         return NULL;
       }
       if(end) {
         uint8_t i = kl;
         BCC_IGNORE_SUGAR(p);
         if(*(p + i) != end) {
-          if((p = strstr(p + kl, key)) && *p) return p;
+          if(p = strstr(p + kl, key)) return p;
           return NULL;
         }
       }
@@ -197,13 +194,14 @@ private:
           if(i < cl && code[i]) *p = code[i]; else *p = BP_SPACE;
       } else {
         uint8_t ofs = cl - kl;
-        if((strlen(prog) + ofs) >= BCC_MAX_PROGRAM_SIZE)
+        if((strlen(prog) + ofs + 1) >= BCC_MAX_PROGRAM_SIZE) {
           error(line(prog, p), p, BP_ERROR_PROGRAM_LENGTH);
-        else {
+          return NULL;
+        } else {
           memmove(p + ofs, p, strlen(p));
-          *(stop + cl) = 0;
           for(uint16_t i = 0; i < cl; i++, p++) *p = code[i];
-          find_end(prog);
+          *(stop + cl) = 0;
+          stop = stop + cl;
         }
       }
       if(post) {
@@ -290,9 +288,9 @@ private:
     if(fail) return NULL;
     char *p = prog, *longest = 0;
     uint8_t result = 0;
-    while((p && *p) && (p <= stop))
+    while((p && *p) && (p < stop))
       if(*(p++) == var_type) {
-        if(in_string(prog, p - 1) || BCC_IS_ADDR(*(p - 2))) continue;
+        if(in_string(prog, p - 1)) continue;
         if(BCC_IS_NUM(*p)) {
           error(line(prog, p), p, BP_ERROR_KEYWORD);
           return NULL;
@@ -338,7 +336,7 @@ private:
         if((*p == BP_COMMA) && !((*p - 1) == BP_VAR_ADDR)) *p = BP_SPACE;
         p++;
       } // Find the return keyword at the end of the function
-      while((p = strstr(p, BP_RETURN_HUMAN)) && *p && in_string(prog, p));
+      while((p = strstr(p, BP_RETURN_HUMAN)) && in_string(prog, p));
       if(p && *p) { // find the end of the line
         while(*p && p && *p != BP_CR && *p != BP_LF) p++;
         fn_keyword[keyword_length] = 0;
@@ -382,7 +380,8 @@ private:
       p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
       if(p && *p) {
         if(in_string(prog, p)) {
-          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN), p2 = p;
+          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
+          p2 = p;
           if(!p || !*p) return NULL;
         }
         p2 = p;
@@ -421,7 +420,7 @@ private:
     char *p = prog, *p2 = prog;
     var_id = BP_OFFSET; // Reset variable address
     char c[2] = {BP_FOR, 0}; // While you find a for
-    while((p = strstr(p, c)) && *p) {
+    while(p = strstr(p, c)) {
       if(in_string(prog, p)) continue;
       p2 = p;
       int8_t n = 0; // Find the end of the for
@@ -511,8 +510,8 @@ private:
       fseek(p_file, 0, SEEK_END);
       p_size = ftell(p_file);
       rewind(p_file);
-      if(((sizeof(char) * p_size) + strlen(prog)) >= BCC_MAX_PROGRAM_SIZE)
-        error(0, 0, BP_ERROR_PROGRAM_LENGTH);
+      if(p_size + strlen(prog) + 1 >= BCC_MAX_PROGRAM_SIZE)
+        error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
       else {
         result = fread(stop, 1, p_size, p_file);
         *(stop + p_size) = 0;
@@ -649,10 +648,7 @@ public:
     compile(prog, "LF", "10");
     compile(prog, "CR", "13");
     // Remove sugar
-    remove(prog, BP_CR);
-    remove(prog, BP_LF);
-    remove(prog, BP_SPACE);
-    remove(prog, BP_TAB);
+    remove(prog, BP_CR, BP_LF, BP_SPACE, BP_TAB);
     var_id = BP_OFFSET, string_id = BP_OFFSET + BP_ARGS, fun_id = BP_OFFSET;
     // Execute post-compilation checks
     post_compilation_checks(prog);

@@ -1,7 +1,7 @@
 
 /* BIPLAN maximum program size --------------------------------------------- */
 
-#ifndef BP_MAX_PROGRAM_SIZE
+#ifndef BCC_MAX_PROGRAM_SIZE
   #define BCC_MAX_PROGRAM_SIZE 65536
 #endif
 
