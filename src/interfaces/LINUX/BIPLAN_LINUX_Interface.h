@@ -29,6 +29,9 @@
   #include <math.h>
   #include <stdio.h>
   #include <termios.h>
+  #include <stdint.h>
+  #include <stdbool.h>
+  #include <iostream>
 
   #define OUTPUT 1
   #define INPUT 0
