@@ -60,7 +60,7 @@ private:
 
   /* Determines the program line at a certain position --------------------- */
   uint16_t line(const char *prog, const char *pos) {
-    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog || !pos) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return 0;
     uint16_t i = 1;
     const char *p = prog;
@@ -72,7 +72,7 @@ private:
 
   /* Checks consistency of syntax delimiters ------------------------------- */
   bool check_delimeter(const char *prog, char a, char b, bool ignore = 0) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return false;
     uint16_t ia = 0, ib = 0;
     const char *p = prog;
@@ -90,17 +90,17 @@ private:
   /* Finds the end of a program -------------------------------------------- */
   void find_end(char *prog) {
     char *p;
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
-      return error(0, 0, BP_ERROR_PROGRAM_LENGTH);
+      return error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
     for(p = prog; *p != 0; p++);
     stop = p;
   };
 
   /* Checks if a certain position in the program is within a string -------- */
   bool in_string(const char *prog, const char *pos) {
-    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog || !pos) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return false;
     bool in_str = false;
     const char *p = prog;
@@ -115,8 +115,8 @@ private:
   };
 
   /* Remove a given symbol from the program -------------------------------- */
-  void remove(char *prog, char v) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+  void remove(char *prog, char v1, char v2 = 0, char v3 = 0, char v4 = 0) {
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p = prog, *p2 = prog;
     bool in_str = false;
@@ -131,7 +131,7 @@ private:
 
   /* Remove comments from program ------------------------------------------ */
   void remove_comments(char *prog) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
@@ -143,7 +143,7 @@ private:
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
   void compile_char_constants(char *prog) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p = prog, b[3] = {};
     while(p && *p) {
@@ -170,7 +170,7 @@ private:
     bool addr = 0,
     char end = 0
   ) {
-    if(!prog || !pos || !key || !code) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog || !pos || !key || !code) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
     char *p;
     uint8_t kl = strlen(key), cl = strlen(code);
@@ -242,7 +242,7 @@ private:
 
   /* Compiles user-defined variables in BIP bytecode ---------------------- */
   char *compile_variable(char *prog, char *position, char var_type) {
-    if(!prog || !position) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog || !position) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
     char type;
     if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
@@ -286,7 +286,7 @@ private:
   };
 
   char *find_longest_var_name(char *prog, char var_type) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
     char *p = prog, *longest = 0;
     uint8_t result = 0;
@@ -318,7 +318,7 @@ private:
      BP_PARAMS addresses for all parameters present in the program. -------- */
 
   bool compile_function_step(char *prog) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return false;
     char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p, *p3 = NULL;
@@ -362,7 +362,7 @@ private:
         compile(prog, fn_keyword, fn_address, BP_L_RPARENT, true, '(');
         return true;
       }
-      error(0, 0, BP_ERROR_RETURN);
+      error(0, NULL, BP_ERROR_RETURN);
     } return false;
   };
 
@@ -373,7 +373,7 @@ private:
 
   /* Finds longest keyword  ------------------------------------------------ */
   char *find_longest_keyword(char *prog, bool t) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
     char *p = prog, *p2, *longest = NULL;
     uint8_t result = 0;
@@ -416,7 +416,7 @@ private:
    For variables are compiled inefficiently, each for gets a new address. -- */
 
   void compile_for(char *prog) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p = prog, *p2 = prog;
     var_id = BP_OFFSET; // Reset variable address
@@ -446,7 +446,7 @@ private:
   };
 
   bool compile_macro(char *prog) {
-    if(!prog) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return false;
     char macro_name[BP_KEYWORD_MAX];
     char macro_code[BP_MACRO_MAX];
@@ -484,7 +484,7 @@ private:
   };
 
   char *compile_include(char *prog, char *pos) {
-    if(!prog || !pos) error(0, 0, BP_ERROR_PROGRAM_GET);
+    if(!prog || !pos) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
     char include_path[BP_INCLUDE_PATH_MAX];
     FILE * p_file;
@@ -517,7 +517,7 @@ private:
         result = fread(stop, 1, p_size, p_file);
         *(stop + p_size) = 0;
         if(result != p_size) {
-          error(0, 0, BP_ERROR_INCLUDE_READ);
+          error(0, NULL, BP_ERROR_INCLUDE_READ);
           return NULL;
         }
       }
@@ -532,11 +532,11 @@ private:
   bool pre_compilation_checks(const char *prog) {
     if(fail) return fail;
     if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
-      error(0, 0, BP_ERROR_ROUND_PARENTHESIS); // Check () parentheses
+      error(0, NULL, BP_ERROR_ROUND_PARENTHESIS); // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
-      error(0, 0, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
+      error(0, NULL, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
     if(!check_delimeter(prog, BP_STRING, BP_STRING))
-      error(0, 0, BP_ERROR_STRING_END); // Check "" string separator
+      error(0, NULL, BP_ERROR_STRING_END); // Check "" string separator
     return !fail;
   };
 
@@ -544,14 +544,16 @@ private:
   void post_compilation_checks(const char *prog) {
     if(fail) return;
     if(!check_delimeter(prog, BP_IF, BP_ENDIF))
-      error(0, 0, BP_ERROR_BLOCK); // Check if-end
+      error(0, NULL, BP_ERROR_BLOCK); // Check if-end
     if(!check_delimeter(prog, BP_FUN_DEF, BP_RETURN))
-      error(0, 0, BP_ERROR_RETURN); // Check function return
+      error(0, NULL, BP_ERROR_RETURN); // Check function return
     // Check variables, strings and functions buffer bounds
-    if((fun_id - BP_OFFSET) >= BP_FUN_MAX) error(0, 0, BP_ERROR_FUNCTION_MAX);
-    if((string_id - BP_OFFSET) >= BP_STRINGS) error(0, 0, BP_ERROR_STRING_MAX);
+    if((fun_id - BP_OFFSET) >= BP_FUN_MAX) 
+      error(0, NULL, BP_ERROR_FUNCTION_MAX);
+    if((string_id - BP_OFFSET) >= BP_STRINGS) 
+      error(0, NULL, BP_ERROR_STRING_MAX);
     if((var_id - BP_OFFSET) >= BP_VARIABLES) 
-      error(0, 0, BP_ERROR_VARIABLE_MAX);
+      error(0, NULL, BP_ERROR_VARIABLE_MAX);
   };
 
 public:
