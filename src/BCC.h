@@ -79,12 +79,16 @@ private:
     while(p && *p) {
       if(
         !in_string(prog, p) && 
-        (ignore || (p > prog && !BCC_IS_ADDR(*(p - 1))))
+        (ignore || p == prog || (p > prog && !BCC_IS_ADDR(*(p - 1))))
       ) {
-        if(*p == a) ia++;
-        if(*p == b) ib++;
+        if((a == b) && (*p == a)) ia = !ia;
+        else {
+          if(*p == a) ia++;
+          if(*p == b) ib++;
+        }
       } p++;
-    } return (ia == ib);
+    }
+    return (ia == ib);
   };
 
   /* Finds the end of a program -------------------------------------------- */
@@ -541,7 +545,7 @@ private:
       error(0, NULL, BP_ERROR_ROUND_PARENTHESIS); // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
       error(0, NULL, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
-    if(!check_delimeter(prog, BP_STRING, BP_STRING))
+    if(!check_delimeter(prog, BP_STRING, BP_STRING, true))
       error(0, NULL, BP_ERROR_STRING_END); // Check "" string separator
     return !fail;
   };
