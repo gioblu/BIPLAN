@@ -250,7 +250,7 @@ private:
     if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
       type = BP_VAR_ADDR;
     else type = var_type;
-    char *p, str[BP_KEYWORD_MAX], code[4] = {type, 0, 0, 0};
+    char *p, str[BP_KEYWORD_MAX] = {0}, code[4] = {type, 0, 0, 0};
     uint8_t n = 0;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
       str[n++] = var_type;
@@ -264,10 +264,6 @@ private:
         if(BCC_IS_KEYWORD(*p)) {
           str[n++] = *p;
           *p = BP_SPACE;
-          if((i == (BP_KEYWORD_MAX - 2)) && (BCC_IS_KEYWORD(*(p + 1)))) {
-            error(line(prog, p), p, BP_ERROR_VARIABLE_NAME);
-            return NULL;
-          }
         } else break;
       if(n) {
         str[n] = 0;
@@ -308,6 +304,10 @@ private:
           longest = p - (i + 1);
           result = i;
         }
+        if(i >= BP_KEYWORD_MAX) {
+          error(line(prog, p), p, BP_ERROR_VARIABLE_NAME);
+          return NULL;
+        }
       }
     if(result) return longest;
     else return NULL;
@@ -322,7 +322,7 @@ private:
   bool compile_function_step(char *prog) {
     if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return false;
-    char fn_keyword[BP_KEYWORD_MAX], fn_address[3];
+    char fn_keyword[BP_KEYWORD_MAX] = {0}, fn_address[3];
     char *p = find_longest_keyword(prog, true), *p2 = p, *p3 = NULL;
     uint8_t keyword_length = 0, f_id;
     if(p && *p) {
@@ -391,9 +391,8 @@ private:
       p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
       if(p && *p) {
         if(in_string(prog, p)) {
-          p = strstr(p + 1, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
-          p2 = p;
-          if(!p || !*p) return NULL;
+          ++p;
+          continue;
         }
         p2 = p;
         if(BCC_IS_NUM(*p)) {
@@ -465,13 +464,13 @@ private:
       while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
       BCC_IGNORE_SUGAR(p);
       uint8_t i;
-      for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < BP_KEYWORD_MAX); i++, p++) {
+      for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
         macro_name[i] = *p;
-        *p = BP_SPACE;
+        *(p++) = BP_SPACE;
       }
       macro_name[i] = 0;
       BCC_IGNORE_SUGAR(p);
-      for(i = 0; p && *p; i++) {
+      for(i = 0; p && *p && (i < (BP_MACRO_MAX - 1)); i++) {
         macro_code[i] = *p;
         *(p++) = BP_SPACE;
         if(!in_string(prog, p) && ((*p == BP_CR) || (*p == BP_LF))) break;
@@ -541,7 +540,7 @@ private:
   /* Pre-compilation checks ------------------------------------------------ */
   bool pre_compilation_checks(const char *prog) {
     if(fail) return fail;
-    if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT))
+    if(!check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT, true))
       error(0, NULL, BP_ERROR_ROUND_PARENTHESIS); // Check () parentheses
     if(!check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, true))
       error(0, NULL, BP_ERROR_SQUARE_PARENTHESIS); // Check [] parentheses
