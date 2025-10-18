@@ -40,11 +40,11 @@ typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 /* Sets A to the next available address (avoiding reserved characters) ----- */
 #define BCC_NEW_ADDR(A) do { A++; } while(BCC_IS_ADDR(A));
 
+#define BCC_SUGAR(P) \
+  (*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB)
+
 /* Ignores Space, tab, carriage return ------------------------------------- */
-#define BCC_IGNORE_SUGAR(P) \
-  while( \
-    (*P == BP_SPACE) || (*P == BP_CR) || (*P == BP_LF) || (*P == BP_TAB) \
-  ) P++;
+#define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) P++;
 
 class BCC {
 private:
@@ -326,10 +326,17 @@ private:
       BCC_NEW_ADDR(fun_id);
       *(p++) = BP_FUN_DEF;
       *(p++) = fun_id;
-      while(*p != BP_SPACE) *(p++) = BP_SPACE;
-      while((++p && *p) && (*p != BP_L_RPARENT)) {
-        fn_keyword[keyword_length++] = *p;
-        *p = BP_SPACE;
+      while(!BCC_SUGAR(p)) *(p++) = BP_SPACE;
+      while(
+        (++p && *p) && 
+        (*p != BP_L_RPARENT) && 
+        (keyword_length < (BP_KEYWORD_MAX - 1))
+      ) {
+        // Ignore sugar postfix
+        if(!BCC_SUGAR(p)) {
+          fn_keyword[keyword_length++] = *p;
+          *p = BP_SPACE;
+        }
       } // Remove commas from definition
       *p = BP_SPACE;
       while((*p != BP_R_RPARENT) || ((*p - 1) == BP_VAR_ADDR)) {
