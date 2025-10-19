@@ -14,6 +14,8 @@ install:
 	cp -R ../../../src/utils/libraries/ /usr/local/BIPLAN	
 	$(info bcc compiled successfully, installing libraries in /usr/local/BIPLAN.)
 	@./../tests/examples-compilation.sh
+	@./../tests/errors-compilation.sh
+	@./../tests/syntax-compilation.sh
 clean:
 	rm bcc
 	rm -rf /usr/local/BIPLAN

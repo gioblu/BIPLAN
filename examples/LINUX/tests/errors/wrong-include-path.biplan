@@ -1,0 +1,7 @@
+// Include path check, the include path does not exist.
+// Compiler should return "included file not found" error
+
+include "/jiasjdiasjdisajdij/jasidjaisdjs/ajshdajsdhj"
+
+print "The directory should hopefully not exist"
+stop

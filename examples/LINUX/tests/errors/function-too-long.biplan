@@ -1,0 +1,15 @@
+
+
+// Function name length limit, the variable name used is 20 characters long.
+// When BP_KEYWORD_MAX is set to 20 bcc can compile keywords of
+// up to 19 characters
+
+
+asdasdasdasdasdasdas()
+
+stop
+
+
+function asdasdasdasdasdasdas()
+    print "Hello"
+return 0

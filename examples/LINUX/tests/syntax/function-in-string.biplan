@@ -1,0 +1,11 @@
+
+// String syntax check, the is within a string and should not
+// be touched by the compiler.
+// Compiler should return "non matching next" error
+
+
+print "sum(1, 1)"
+stop 
+
+function sum($a, $b)
+return $b + $b

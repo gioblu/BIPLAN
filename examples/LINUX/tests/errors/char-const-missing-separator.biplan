@@ -1,0 +1,8 @@
+
+
+// Character constant syntax check, separator is missing.
+// Compiler should return "non matching ''" error
+
+
+print 'H
+stop

@@ -1,0 +1,7 @@
+
+// String syntax check, the string printed contains a round parenthesis.
+// Compiler should not touch it and should not consider it when checking delimiters.
+
+print "(a + b"
+
+stop

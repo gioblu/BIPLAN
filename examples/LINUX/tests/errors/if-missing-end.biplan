@@ -1,0 +1,8 @@
+
+
+// If-end syntax check, this program is missing an end after the if statement.
+// Compiler should return "non matching if else end" error
+
+
+if true print "Hello!"
+stop

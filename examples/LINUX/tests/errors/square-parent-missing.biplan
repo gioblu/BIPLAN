@@ -1,0 +1,6 @@
+// Square parentheses check, this program missing a right square parenthesis.
+// Compiler should return "non matching []" error
+
+print mem[12
+
+stop

@@ -1,0 +1,9 @@
+
+// For syntax check, the for loop is not followed by an expected next.
+// Compiler should return "non matching next" error
+
+
+for #i = 0 to 100
+    print #i
+
+stop

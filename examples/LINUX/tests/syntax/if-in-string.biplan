@@ -1,0 +1,7 @@
+
+
+// String syntax check, the string contains an if that should
+// not be touched by the compiler.
+
+print "if true stop end"
+stop

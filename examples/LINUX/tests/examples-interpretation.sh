@@ -18,26 +18,28 @@ declare -a results=(
 )
 
 echo " "
-echo "biplan interpretation test run: examples/LINUX/ "
+echo "biplan examples interpretation test run: examples/LINUX/ "
 echo " "
 
 length=${#tests[@]}
+fail=0
 
 # Try to interpret all files in the list above and print the result of the test
 for ((i=1; i<${length} + 1; i++ ));
 do
+	space=$([ $i -lt 10 ] && echo " " || echo "")
 	result=$(biplan -i "../${tests[$i - 1]}" 2>&1)
 	code=$?
 	expected=${results[$i - 1]}
-
-	echo "$i. Testing interpretation of ../${tests[$i - 1]}"
-
-	if [[ "$result" == "$expected" ]]; then
-	  echo -e "Result: \033[32mpassed \033[m- Exit code: $code"
-	else
-	 echo "Expected: $expected, Result: $result"
-	 echo -e "Result: \033[31mfailed \033[m- Exit code: $code"
-	fi
-
-	echo " "
+	
+	[ "$result" == "$expected" ] && 
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}" ||
+		echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}"
+	[ $code != 1 ] && ((fail++))
 done
+
+plural=""
+[ $fail -gt 1 ] && plural="s" || plural="" 
+
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  || 
+echo -e "\nTest result:\033[31m $fail test$plural failed\033[m"

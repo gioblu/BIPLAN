@@ -1,0 +1,9 @@
+
+
+// String syntax check, the string a character constant 
+// separator. Compiler should not touch it and not consider
+// it while checking delimiters.
+
+
+print "'H"
+stop

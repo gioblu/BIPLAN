@@ -25,22 +25,28 @@ declare -a errors=(
 	"unable to read source file"
 )
 
-echo " "
-echo "bcc compilation test run: examples/LINUX/ "
-echo " "
-
+info="bcc compilation test run: examples/LINUX/ "
 tests_length=${#tests[@]}
 errors_length=${#errors[@]}
+fail=0
+
+echo -e "\n$info\n"
 
 # Try to compile all files in the list above and print the result of the test
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
-	result=$(bcc "../${tests[$i - 1]}.biplan" test.bip)
+	space=$([ $i -lt 10 ] && echo " " || echo "")
+	result=$(bcc "../${tests[$i - 1]}.biplan" "../${tests[$i - 1]}.bip")
 	code=$?
 	error="unknown"
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
-	echo "$i. Testing compilation of ../${tests[$i - 1]}.biplan"
-	[ $code -eq 0 ] && echo -e "Result: \033[32mpassed \033[m- Exit code: $code" || 
-	                   echo -e "Result: \033[31mfailed \033[m- Exit code: $code ($error)"
-	echo " "
+	[ $code -eq 1 ] && ((fail++))
+	[ $code -eq 0 ] && 
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}.biplan" || 
+	    echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}.biplan ($error)"
 done
+
+plural=""
+[ $fail -gt 1 ] && plural="s" || plural="" 
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  || 
+				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m"

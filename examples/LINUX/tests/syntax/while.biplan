@@ -1,0 +1,11 @@
+
+// While syntax check. 
+// Expected output: 9876543210
+
+@i = 10
+
+while @i 
+    print --@i
+next
+
+stop

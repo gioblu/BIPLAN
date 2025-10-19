@@ -10,6 +10,7 @@ compact:
 install:
 	cp biplan /usr/local/bin
 	@./../tests/examples-interpretation.sh
+	@./../tests/syntax-interpretation.sh
 clean:
 	rm biplan
 	rm -rf /usr/local/bin/biplan

@@ -1,0 +1,18 @@
+
+
+// For syntax check. 
+// Expected output: 0123451054321
+
+for #i = 0 to 5
+    print #i
+next
+
+for #i = 5 to 15 step 5
+    print #i
+next
+
+for #i = 5 to 0
+    print #i
+next
+
+stop

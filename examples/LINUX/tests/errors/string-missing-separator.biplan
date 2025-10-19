@@ -1,0 +1,7 @@
+
+
+// String syntax check, this program is missing a string separator (").
+// Compiler should return "string end not found" error
+
+print "I forgot nothing" 
+print "I forgot a separator 

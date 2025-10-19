@@ -1,0 +1,7 @@
+
+// String syntax check, the string contains a left square parenthesis.
+// Compiler should not touch is and not considering while checking delimiters.
+
+print "mem[12"
+
+stop
