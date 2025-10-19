@@ -6,7 +6,7 @@ BCC compiler;
 void error_callback(uint16_t line, const char *position, const char *string) {
   printf("| State    | \033[31mError: %s Line: %d", string, line);
   if(position != NULL) {
-    printf("\nCode: ");
+    printf(" Code: ");
     for(uint16_t i = 0; *position != 0 && *position != BP_LF; position++)
       printf("%c", *position);
   }

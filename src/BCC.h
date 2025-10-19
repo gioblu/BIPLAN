@@ -24,8 +24,7 @@ typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 /* Checks if the character is an acceptable keyword symbol ----------------- */
 #define BCC_IS_KEYWORD(C) ( \
   (C >= 'a' && C <= 'z') || (C >= 'A' && C <= 'Z') || \
-  (C == '_') || (C >= '0' && C <= '9') \
-)
+  (C == '_') || (C >= '0' && C <= '9') )
 
 /* Checks if the character is an acceptable capitalized keyword symbol ------*/
 #define BCC_IS_CAP_KEYWORD(C) \
@@ -34,8 +33,7 @@ typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 /* Checks if the character passed is an acceptable address ----------------- */
 #define BCC_IS_ADDR(C) ( \
   (C == BP_VAR_ADDR) || (C == BP_STR_ADDR) || (C == BP_FOR_ADDR) || \
-  (C == BP_FOR) || (C == BP_FUNCTION) || (C == BP_FUN_DEF) \
-)
+  (C == BP_FOR) || (C == BP_FUNCTION) || (C == BP_FUN_DEF) )
 
 /* Sets A to the next available address (avoiding reserved characters) ----- */
 #define BCC_NEW_ADDR(A) do { A++; } while(BCC_IS_ADDR(A));
@@ -87,19 +85,16 @@ private:
           if(*p == b) ib++;
         }
       } p++;
-    }
-    return (ia == ib);
+    } return (ia == ib);
   };
 
   /* Finds the end of a program -------------------------------------------- */
   void find_end(char *prog) {
-    char *p;
     if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
       return error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
-    for(p = prog; *p != 0; p++);
-    stop = p;
+    for(stop = prog; *stop != 0; stop++);
   };
 
   /* Checks if a certain position in the program is within a string -------- */
@@ -142,8 +137,7 @@ private:
     char *p;
     while((p = strstr(prog, BP_COMMENT)))
       if(!in_string(prog, p)) 
-        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) 
-          *(p++) = BP_SPACE;
+        while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
   };
 
   /* Compiles character constants such as '@' into 64 (its decimal value) -- */
@@ -201,12 +195,11 @@ private:
         if((strlen(prog) + ofs + 1) >= BCC_MAX_PROGRAM_SIZE) {
           error(line(prog, p), p, BP_ERROR_PROGRAM_LENGTH);
           return NULL;
-        } else {
-          memmove(p + ofs, p, strlen(p));
-          for(uint16_t i = 0; i < cl; i++, p++) *p = code[i];
-          *(stop + cl) = 0;
-          stop = stop + cl;
         }
+        memmove(p + ofs, p, strlen(p));
+        for(uint16_t i = 0; i < cl; i++, p++) *p = code[i];
+        *(stop + cl) = 0;
+        stop = stop + cl;
       }
       if(post) {
         BCC_IGNORE_SUGAR(p);
@@ -296,21 +289,17 @@ private:
           return NULL;
         }
         uint8_t i = 0;
-        while(BCC_IS_KEYWORD(*p)) {
-          i++;
-          p++;
-        }
-        if(i > result) {
-          longest = p - (i + 1);
-          result = i;
-        }
+        while((p && *p) && BCC_IS_KEYWORD(*p++)) i++;
         if(i >= BP_KEYWORD_MAX) {
           error(line(prog, p), p, BP_ERROR_VARIABLE_NAME);
           return NULL;
         }
+        if(i <= result) continue;
+        longest = p - (i + 1);
+        result = i;
       }
     if(result) return longest;
-    else return NULL;
+    return NULL;
   };
 
   /* Compiles a single user-defined function (longest name first):
@@ -343,7 +332,7 @@ private:
         }
       } // Remove commas from definition
       *p = BP_SPACE;
-      while((*p != BP_R_RPARENT) || ((*p - 1) == BP_VAR_ADDR)) {
+      while(p && *p && (*p != BP_R_RPARENT) || ((*p - 1) == BP_VAR_ADDR)) {
         if((*p == BP_COMMA) && !((*p - 1) == BP_VAR_ADDR)) *p = BP_SPACE;
         p++;
       } // Find the return keyword at the end of the function
@@ -478,8 +467,7 @@ private:
       macro_code[++i] = 0;
       compile(prog, macro_name, macro_code);
       if(find_longest_keyword(prog, false)) return true;
-    }
-    return false;
+    } return false;
   };
 
   /* Includes files:
@@ -533,8 +521,7 @@ private:
       fclose(p_file);
       find_end(prog);
       return p;
-    }
-    return NULL;
+    } return NULL;
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
