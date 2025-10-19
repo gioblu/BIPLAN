@@ -17,7 +17,7 @@ In 2017 I built a couple of standalone programmable computers with a screen and 
 
 ### How?
 
-The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (576 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (784 lines of code).
+The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (649 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (784 lines of code).
 
 ### Code example
 

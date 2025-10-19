@@ -10,6 +10,7 @@ declare -a tests=(
 	"for.bip"
 	"function.bip"
 	"while.bip"
+	"math.bip"
 )
 
 declare -a results=(
@@ -21,6 +22,7 @@ declare -a results=(
 	"0123451054321"
 	"2"
 	"9876543210"
+	"12 102334155 10 0 9 144 1 -1 0 20 90 10 100 100 0 0"
 )
 
 echo " "

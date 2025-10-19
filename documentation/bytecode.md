@@ -32,9 +32,9 @@ When executed prints:
 Hello World!6
 ```
 
-The BIP bytecode is just an ASCII string, so it does not require any tool to browse it, analize it or transmit it. BIP bytecode is saved in .bip files, that can be browsed as any other text file.
+The BIP bytecode is just an ASCII string saved in .bip files that can be browsed as any other text file.
 
-Using the ASCII encoding and representing addresses with one character restricts their number to 87. The first 34 characters are not used and 6 (`:`, `f`, `~`, `}`, `#`, `@` ) are reserved. This is why BIPLAN can work with a maximum of 87 functions, variables, parameters, strings and cycles.
+Using the ASCII encoding and representing addresses with one character restricts their number to 87. The first 34 characters are not used and 6 (`:`, `f`, `~`, `}`, `#`, `@` ) are reserved. This is why BIPLAN supports up to 87 functions, variables, parameters, strings and cycles.
 
 Not to drastically limit the memory available BIP bytecode supports a memory read and write instruction that expects a numeric address, so depending on the machine you are running BIPLAN on, you may be able to address 2^32 or 2^64 bytes of memory.
 

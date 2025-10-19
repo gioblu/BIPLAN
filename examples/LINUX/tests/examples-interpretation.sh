@@ -7,6 +7,7 @@ declare -a tests=(
 	"read-file/read-file.bip"
 	"date-epoch/date-epoch.bip"
 	"mem-test/mem-test.bip"
+	"strings/strings.bip"
 )
 
 declare -a results=(
@@ -15,6 +16,10 @@ declare -a results=(
 	'}%oY"read-file.bip",0l}$}&oX}%?}&T-1pb}&j}$FoZ}%x'
 	"Epoch: 1665434120 Date: 10/10/2022 20:35:20"
 	"Simplicity is best."
+	"Printing entire string: This is a test string
+Printing string character by character: This is a test string
+Printing string from \"a\" onwards: a test string
+"
 )
 
 echo " "

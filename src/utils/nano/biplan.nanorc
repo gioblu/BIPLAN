@@ -18,7 +18,7 @@ color brightblue "\<[A-Z]+[A-Z_a-z]*|(\#)[A-Z_a-z]+"
 # Reserved words.
 color yellow "\<(break|continue|function|return|while|else|next|end|true|false|for|if|char)\>"
 # System function
-color brightyellow "\<(print|file|adc|args|cursor|delay|include|index|input|io|jump|label|millis|number|numeric|random|restart|serial|size|sqrt|string|system|stop|open|close|write|read)\>"
+color brightyellow "\<(print|file|adc|args|cursor|delay|include|index|input|io|millis|number|numeric|random|restart|serial|size|sqrt|string|system|stop|open|close|write|read)\>"
 # Strings, double-quoted.
 color brightgreen ""([^"]|\\")*""
 # ""([^"]|\\").*"|%[QW]?(\{[^}]*\}|\([^)]*\)|<[^>]*>|\[[^]]*\]|\$[^$]*\$|\^[^^]*\^|![^!]*!)"

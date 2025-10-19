@@ -7,7 +7,7 @@ function find_substring($haystack, $needle, locals: $r)
 	for #h = 0 to size :[$haystack]
 	  	for #n = 0 to size :[$needle]
 	  		if :[$haystack][#h + #n] == :[$needle][#n]
-	  			$r = #h end
+	  			$r = #h
 			  else $r = -1 break end
 	  	next
 	  	if $r != -1 break end
