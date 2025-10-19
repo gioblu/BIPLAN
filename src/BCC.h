@@ -1,5 +1,5 @@
 
-/* BIPLAN CR.1 (Byte coded Interpreted Programming Language)
+/* BCC (BIPLAN Compiler Collection) - BIPLAN to BIP compiler
 
       _____              _________________________
      |   | |            |_________________________|
@@ -10,8 +10,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
-  BCC (BIPLAN Compiler Collection) - BIPLAN to BIP compiler  */
+  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com */
 
 #pragma once
 #include "BIPLAN_Defines.h"
@@ -103,14 +102,14 @@ private:
     if(fail) return false;
     bool in_str = false;
     const char *p = prog;
-    while((p && *p) && (pos >= p)) {
+    while((p && *p) && (pos >= p))
       if(in_str && *p == BP_BACKSLASH) p += 2; // Jump escape + 1
       else { // Returns false if " is found outside of a string
         if((pos == p) && (*p == BP_STRING) && !in_str) return in_str;
         if(*p == BP_STRING) in_str = !in_str;
         p++;
       }
-    } return in_str;
+    return in_str;
   };
 
   /* Remove a given symbol from the program -------------------------------- */
@@ -145,7 +144,7 @@ private:
     if(!prog) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return;
     char *p = prog, b[3] = {};
-    while(p && *p) {
+    while(p && *p) 
       if(!in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
         if(*(p + 2) != BP_SINGLE_QUOTE) {
           error(line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
@@ -156,7 +155,6 @@ private:
         for(uint8_t i = 0; i < 3; i++)
           *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
       } else p++;
-    }
   };
 
   /* Compiles a single occurrence of a keyword into bytecode --------------- */
@@ -239,10 +237,9 @@ private:
   char *compile_variable(char *prog, char *position, char var_type) {
     if(!prog || !position) error(0, NULL, BP_ERROR_PROGRAM_GET);
     if(fail) return NULL;
-    char type;
+    char type = var_type;
     if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
       type = BP_VAR_ADDR;
-    else type = var_type;
     char *p, str[BP_KEYWORD_MAX] = {0}, code[4] = {type, 0, 0, 0};
     uint8_t n = 0;
     if((p = find_longest_var_name(prog, var_type)) != NULL) {
@@ -289,7 +286,7 @@ private:
           return NULL;
         }
         uint8_t i = 0;
-        while((p && *p) && BCC_IS_KEYWORD(*p++)) i++;
+        while(BCC_IS_KEYWORD(*p) && (p && *(p++))) i++;
         if(i >= BP_KEYWORD_MAX) {
           error(line(prog, p), p, BP_ERROR_VARIABLE_NAME);
           return NULL;
