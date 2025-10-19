@@ -375,33 +375,32 @@ private:
     do {
       uint8_t i = 0;
       p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
-      if(p && *p) {
-        if(in_string(prog, p)) {
-          ++p;
-          continue;
-        }
-        p2 = p;
-        if(BCC_IS_NUM(*p)) {
-          error(line(prog, p), p, BP_ERROR_KEYWORD);
-          return NULL;
-        } 
-        while(BCC_IS_KEYWORD(*p)) p++;
-        BCC_IGNORE_SUGAR(p);
-        while((p && *p) && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
-          i++;
-          p++;
-        }
-        if(i > result) {
-          longest = p2;
-          result = i;
-        }
-        if(i >= BP_KEYWORD_MAX) {
-          error(
-            line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME
-          );
-          return NULL;
-        }
-      } else return longest;
+      if(!p || !*p) return longest;
+      if(in_string(prog, p)) {
+        ++p;
+        continue;
+      }
+      p2 = p;
+      if(BCC_IS_NUM(*p)) {
+        error(line(prog, p), p, BP_ERROR_KEYWORD);
+        return NULL;
+      } 
+      while(BCC_IS_KEYWORD(*p)) p++;
+      BCC_IGNORE_SUGAR(p);
+      while((p && *p) && t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p)) {
+        i++;
+        p++;
+      }
+      if(i > result) {
+        longest = p2;
+        result = i;
+      }
+      if(i >= BP_KEYWORD_MAX) {
+        error(
+          line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME
+        );
+        return NULL;
+      }
     } while(*p && p);
     return NULL;
   };
@@ -446,25 +445,25 @@ private:
     char macro_name[BP_KEYWORD_MAX];
     char macro_code[BP_MACRO_MAX];
     char *p = find_longest_keyword(prog, false);
-    if(p && *p) {
-      while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
-      BCC_IGNORE_SUGAR(p);
-      uint8_t i;
-      for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
-        macro_name[i] = *p;
-        *(p++) = BP_SPACE;
-      }
-      macro_name[i] = 0;
-      BCC_IGNORE_SUGAR(p);
-      for(i = 0; p && *p && (i < (BP_MACRO_MAX - 1)); i++) {
-        macro_code[i] = *p;
-        *(p++) = BP_SPACE;
-        if(!in_string(prog, p) && ((*p == BP_CR) || (*p == BP_LF))) break;
-      }
-      macro_code[++i] = 0;
-      compile(prog, macro_name, macro_code);
-      if(find_longest_keyword(prog, false)) return true;
-    } return false;
+    if(!p || !*p) return false;
+    while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
+    BCC_IGNORE_SUGAR(p);
+    uint8_t i;
+    for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
+      macro_name[i] = *p;
+      *(p++) = BP_SPACE;
+    }
+    macro_name[i] = 0;
+    BCC_IGNORE_SUGAR(p);
+    for(i = 0; p && *p && (i < (BP_MACRO_MAX - 1)); i++) {
+      macro_code[i] = *p;
+      *(p++) = BP_SPACE;
+      if(!in_string(prog, p) && ((*p == BP_CR) || (*p == BP_LF))) break;
+    }
+    macro_code[++i] = 0;
+    compile(prog, macro_name, macro_code);
+    if(find_longest_keyword(prog, false)) return true;
+    return false;
   };
 
   /* Includes files:
@@ -485,40 +484,39 @@ private:
     long p_size;
     size_t result;
     char * p = strstr(pos, BP_INCLUDE_DEF_HUMAN);
-    if(p && *p) {
-      if(in_string(pos, p)) return compile_include(prog, p + 1);
-      while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
-      BCC_IGNORE_SUGAR(p);
-      *(p++) = BP_SPACE;
-      uint8_t i = 0;
-      for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
-        include_path[i] = *p;
-        *p = BP_SPACE;
-      }
-      include_path[i] = 0;
-      *(p++) = BP_SPACE;
-      p_file = fopen(include_path, "r");
-      if(p_file == NULL) {
-        error(line(prog, p), p, BP_ERROR_INCLUDE_PATH);
+    if(!p || !*p) return NULL;
+    if(in_string(pos, p)) return compile_include(prog, p + 1);
+    while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
+    BCC_IGNORE_SUGAR(p);
+    *(p++) = BP_SPACE;
+    uint8_t i = 0;
+    for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
+      include_path[i] = *p;
+      *p = BP_SPACE;
+    }
+    include_path[i] = 0;
+    *(p++) = BP_SPACE;
+    p_file = fopen(include_path, "r");
+    if(p_file == NULL) {
+      error(line(prog, p), p, BP_ERROR_INCLUDE_PATH);
+      return NULL;
+    }
+    fseek(p_file, 0, SEEK_END);
+    p_size = ftell(p_file);
+    rewind(p_file);
+    if(p_size + strlen(prog) + 1 >= BCC_MAX_PROGRAM_SIZE)
+      error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
+    else {
+      result = fread(stop, 1, p_size, p_file);
+      *(stop + p_size) = 0;
+      if(result != p_size) {
+        error(0, NULL, BP_ERROR_INCLUDE_READ);
         return NULL;
       }
-      fseek(p_file, 0, SEEK_END);
-      p_size = ftell(p_file);
-      rewind(p_file);
-      if(p_size + strlen(prog) + 1 >= BCC_MAX_PROGRAM_SIZE)
-        error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
-      else {
-        result = fread(stop, 1, p_size, p_file);
-        *(stop + p_size) = 0;
-        if(result != p_size) {
-          error(0, NULL, BP_ERROR_INCLUDE_READ);
-          return NULL;
-        }
-      }
-      fclose(p_file);
-      find_end(prog);
-      return p;
-    } return NULL;
+    }
+    fclose(p_file);
+    find_end(prog);
+    return p;
   };
 
   /* Pre-compilation checks ------------------------------------------------ */
