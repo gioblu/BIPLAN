@@ -1,0 +1,8 @@
+include "/usr/local/BIPLAN/math.biplan"
+
+print sqrt(144), " ", fib(40), " ", abs(-10), " ", numeric('A'), " ", 
+digit(1239, 0), " ", pow(12, 2), " ", prime(17), " ", sign(-2), " ", 
+prime(10), " ", 10 + 10, " ", 100 - 10, " ", 100 / 10, " ", 10 * 10, " ",
+0 | 100, " ", 10 % 10, " ", 0 & 1 
+
+stop
