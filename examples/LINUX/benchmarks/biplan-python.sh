@@ -78,11 +78,11 @@ tests_length=${#tests[@]}
 total_bip=0
 total_py=0
 
-echo " ______________________________________________________________________________"
-echo "|                                       |            |            |            |"
-echo "| Benchmark                             | BIPLAN     | Python     | Iterations |"
-echo "|_______________________________________|____________|____________|____________|"
-echo "|                                       |            |            |            |"
+echo " ________________________________________________________________________________"
+echo "|                                       |             |             |            |"
+echo "| Benchmark                             |  BIPLAN     |  Python     | Iterations |"
+echo "|_______________________________________|_____________|_____________|____________|"
+echo "|                                       |             |             |            |"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
     start_bip=$(date +%s%6N)
@@ -111,7 +111,7 @@ do
         ms=$(( $1 / 1000 ))
         frac=$(( ($1 % 1000) / 10 ))
         # Format number with 2 decimals, producing a string like "12.34"
-        num_str=$(printf "%-8s" "$(printf "%d.%02dms" "$ms" "$frac")")
+        num_str=$(printf "%-9s" "$(printf "%d.%02dms" "$ms" "$frac")")
         # Append "ms" trailing unit
         printf "$num_str"
     }
@@ -124,7 +124,7 @@ do
     result=$(rm "programs/${tests[$i - 1]}.bip")
 done
 
-echo "|_______________________________________|____________|____________|____________|"
+echo "|_______________________________________|_____________|_____________|____________|"
 
 color_bip="\033[31m"
 color_py="\033[31m"
@@ -133,7 +133,7 @@ color_py="\033[31m"
 bip_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_bip/1000" | bc)")
 py_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_py/1000" | bc)")
 
-echo -e "                                         $color_bip ${bip_total_ms}ms\033[m   $color_py ${py_total_ms}ms\033[m"
+echo -e "                                         $color_bip ${bip_total_ms}ms\033[m    $color_py ${py_total_ms}ms\033[m"
 
 if [ $total_bip -lt $total_py ]; then
     ratio=$(echo "scale=2; $total_py/$total_bip" | bc)
