@@ -14,7 +14,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Bytecode
-When you compile a BIPLAN program with BCC, you are just translating your program in a more compact form designed to be efficiently interpreted.
+When you compile a BIPLAN program with `bcc`, you are just translating your program in a more compact form designed to be efficiently interpreted. 
 
 For example, this is a short BIPLAN program of 45 characters:
 ```c
@@ -32,11 +32,23 @@ When executed prints:
 Hello World!6
 ```
 
-The BIP bytecode is just an ASCII string saved in .bip files that can be browsed as any other text file.
+The BIP bytecode is just an ASCII string saved in a `.bip` file that can be browsed as any other text file. In BIP bytecode numbers, arithmetic operators and strings are still human readable, instead system functions, variables and other constructs are compiled in a shorter form. Here is a table of the substitutions required to compile the BIPLAN example above in BIP bytecode:
 
-Using the ASCII encoding and representing addresses with one character restricts their number to 87. The first 34 characters are not used and 6 (`:`, `f`, `~`, `}`, `#`, `@` ) are reserved. This is why BIPLAN supports up to 87 functions, variables, parameters, strings and cycles.
+| BIPLAN | BIP |
+| -------|---- |
+| `print`| `p` |
+| `@a`   | `}$`|
+| `stop` | `x` |
+
+After removing `LF`, `CR`, `TAB` and `SPACE` the final BIP bytecode is obtained. 
+
+The variable `@a` is compiled in `}$`, where `}` is the numeric variable identifier and `$` is the address (`36`, or `$` means address 0). 
+
+BIPLAN supports up to 87 functions, variables, parameters, strings and cycles. Using the ASCII encoding and representing addresses with one character restricts their number to 87 (the first 35 characters and `:`, `f`, `~`, `}`, `@` are reserved).
 
 Not to drastically limit the memory available BIP bytecode supports a memory read and write instruction that expects a numeric address, so depending on the machine you are running BIPLAN on, you may be able to address 2^32 or 2^64 bytes of memory.
+
+The following table contains the whole BIPLAN to BIP bytecode dictionary.
 
 | Description                                           | Character | Decimal |
 | --------------------------------------------------------------- | --- | --- |
