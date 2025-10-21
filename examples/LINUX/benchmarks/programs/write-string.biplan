@@ -1,0 +1,10 @@
+
+:b = "I am a string used for benchmarking."
+
+for #i = 0 to 100000
+  for #c = 0 to size :b
+    :b[#c] = #c
+  next
+next
+
+stop

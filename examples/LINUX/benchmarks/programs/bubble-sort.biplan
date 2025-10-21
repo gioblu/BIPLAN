@@ -1,0 +1,24 @@
+
+:s = "Reorder this please, now."
+
+for #i = 0 to 100000
+    bubble_sort(index :s)
+next
+
+stop
+function bubble_sort($s, locals: $n, $swap, $t)
+    $n = size :[$s]
+    for #i = 0 to $n - 1
+        $swap = false
+        for #n = 0 to ($n - #i) - 1
+            if :[$s][#n] > :[$s][#n + 1]
+                $t = :[$s][#n]
+                :[$s][#n] = :[$s][#n + 1] 
+                :[$s][#n + 1] = $t
+                $swap = true
+            end
+        next
+        if not $swap break end
+    next
+return 0
+

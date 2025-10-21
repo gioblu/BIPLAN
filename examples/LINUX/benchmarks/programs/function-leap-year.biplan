@@ -1,0 +1,10 @@
+@i = 0
+for #i = 0 to 100000
+    @i = leap_year(#i)
+next
+
+stop
+function leap_year($y, locals: $r)
+  if ($y % 4 == 0) && ($y % 100 != 0) || ($y % 400 == 0) $r = true
+  else $r = false end
+return $r

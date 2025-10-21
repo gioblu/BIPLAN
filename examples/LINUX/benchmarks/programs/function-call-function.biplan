@@ -1,0 +1,14 @@
+
+for #i = 0 to 100000
+  if op(#i, 1) < #i
+    print "This is string should never appear"
+  end
+next
+
+stop
+
+function op($a, $b)
+return sum($a, $b)
+
+function sum($a, $b)
+return $a + $b

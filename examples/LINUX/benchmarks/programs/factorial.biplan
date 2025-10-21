@@ -1,0 +1,13 @@
+
+for #i = 0 to 100000
+   factorial(20)
+next
+
+stop
+
+function factorial($n, locals: $r)
+   $r = 1
+   for #i = 2 to $n + 1 
+      $r = $r * #i
+   next
+return $r 

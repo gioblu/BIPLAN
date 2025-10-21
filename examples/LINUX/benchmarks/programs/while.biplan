@@ -1,0 +1,10 @@
+
+@a = 0
+
+while @a < 100000
+  ++@a  
+next
+
+print @a
+
+stop

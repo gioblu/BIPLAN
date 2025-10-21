@@ -54,7 +54,39 @@ On my linux computer the [biplan-interpreter](examples/LINUX/biplan-interpreter/
 
 ### Performance
 
-When `biplan` is compiled using the target `fast` it is around 1.3 times slower than python, when compiled using the target `compact` it is around 2 times slower than python.
+When `biplan` is compiled using the target `fast` it is around 1.3 times faster than python. To determine the performance of BIPLAN I have implemented [benchmarks](/examples/LINUX/benchmarks/) that compare the execution time of 20 different programs implemented in BIPLAN and Python, this is the output on my machine:
+
+```
+ ________________________________________________________________________________
+|                                       |             |             |            |
+| Benchmark                             |  BIPLAN     |  Python     | Iterations |
+|_______________________________________|_____________|_____________|____________|
+|                                       |             |             |            |
+|  1. Hello world!                      | 81.55ms     | 135.89ms    | 100000     |
+|  2. For loop incrementing global      | 9.62ms      | 71.17ms     | 100000     |
+|  3. For loop nested if                | 18.44ms     | 74.04ms     | 100000     |
+|  4. For prints index                  | 73.19ms     | 158.94ms    | 100000     |
+|  5. While loop incrementing global    | 18.86ms     | 69.60ms     | 10000      |
+|  6. While increment and break         | 24.60ms     | 68.55ms     | 10000      |
+|  7. Read elapsed time cyclically      | 15.63ms     | 87.61ms     | 100000     |
+|  8. Get size of string                | 13.14ms     | 76.14ms     | 100000     |
+|  9. Check if numeric                  | 54.20ms     | 71.54ms     | 100000     |
+| 10. Basic math operations             | 41.68ms     | 122.57ms    | 100000     |
+| 11. Bitwise operations                | 39.43ms     | 113.40ms    | 100000     |
+| 12. Bitshift operations               | 22.83ms     | 77.33ms     | 100000     |
+| 13. Function call within condition    | 46.56ms     | 86.55ms     | 100000     |
+| 14. Function calls another function   | 58.78ms     | 98.93ms     | 100000     |
+| 15. Function leap year                | 75.26ms     | 97.41ms     | 100000     |
+| 16. Write character of string         | 22.30ms     | 83.99ms     | 100000     |
+| 17. Read character of string          | 316.75ms    | 227.03ms    | 100000     |
+| 18. For computing prime numbers       | 746.80ms    | 725.51ms    | 100000     |
+| 19. Non-recursive fibonacci           | 534.39ms    | 482.48ms    | 100000     |
+| 20. Factorial 20                      | 152.60ms    | 244.22ms    | 100000     |
+|_______________________________________|_____________|_____________|____________|
+                                          2366.70ms     3172.99ms
+
+BIPLAN is 1.34 times faster than Python.
+```
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)

@@ -1,0 +1,13 @@
+
+// When the compiler is built BIPLAN the standard library 
+// is copied in /usr/local/BIPLAN 
+// You can include it from there
+
+include "/usr/local/BIPLAN/time.biplan"
+
+for #i to 10000
+    @date_epoch = epoch(10, 10, 2022, 20,35,20)
+    :date_string = ""
+    date(@date_epoch, :date_string)
+next
+stop
