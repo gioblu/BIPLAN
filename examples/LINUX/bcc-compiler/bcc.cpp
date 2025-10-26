@@ -49,13 +49,6 @@ int main(int argc, char* argv[]) {
 
   printf("| Source   | %s (%ldB)\n", argv[1], p_size);
 
-  // Open target file
-  FILE *o_file = fopen(argv[2], "w");
-  if(o_file == NULL) {
-    printf("| State    | \033[31mError: Unable to open the target file.\033[m\n\n");
-    exit(5);
-  }
-
   // Compile program
   compiler.error_callback = error_callback;
   uint32_t t = BPM_MICROS();
@@ -64,18 +57,22 @@ int main(int argc, char* argv[]) {
     exit(EXIT_FAILURE);
   }
   t = BPM_MICROS() - t;
-  
-  // Save program in target file
-  fwrite(program, sizeof(char), strlen(program), o_file);
-
-  // Obtain file size:
-  fseek(o_file, 0, SEEK_END);
-  int o_size = ftell(o_file);
-  rewind(o_file);
+  int o_size = 0;
+  if(strlen(program) > 0) {
+    FILE *o_file = fopen(argv[2], "w");
+    if(o_file == NULL) {
+      printf("| State    | \033[31mError: Unable to open the target file.\033[m\n\n");
+      exit(5);
+    }
+    fwrite(program, sizeof(char), strlen(program), o_file);
+    fseek(o_file, 0, SEEK_END);
+    o_size = ftell(o_file);
+    rewind(o_file);
+    fclose(o_file);
+  }
   
   printf("| Target   | %s (%dB)\n", argv[2], o_size);
   printf("| Duration | %.2f milliseconds \n", (float)(t) / 1000);
-  fclose(o_file);
   printf("| State    | \033[32mSuccess\033[m\n\n");
   exit(EXIT_SUCCESS);
 };
