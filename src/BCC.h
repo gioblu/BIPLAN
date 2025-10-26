@@ -416,7 +416,7 @@ private:
     var_id = BP_OFFSET; // Reset variable address
     char c[2] = {BP_FOR, 0}; // While you find a for
     while(p = strstr(p, c)) {
-      if(in_string(prog, p)) continue;
+      if(in_string(prog, p) && p++) continue;
       p2 = p;
       int8_t n = 0; // Find the end of the for
       while((++p && *p) && (n >= 0)) {
