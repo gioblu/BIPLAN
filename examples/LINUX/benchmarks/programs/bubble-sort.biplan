@@ -1,11 +1,10 @@
 
 :s = "Reorder this please, now."
-
 for #i = 0 to 100000
-    bubble_sort(index :s)
+    bubble_sort(:s)
 next
-
 stop
+
 function bubble_sort($s, locals: $n, $swap, $t)
     $n = size :[$s]
     for #i = 0 to $n - 1
@@ -21,4 +20,3 @@ function bubble_sort($s, locals: $n, $swap, $t)
         if not $swap break end
     next
 return 0
-
