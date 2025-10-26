@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
 declare -a tests=(
     "hello-world"
 	"for-loop"
@@ -73,23 +76,28 @@ declare -a iters=(
     "100000"
 )
 
-iterations=3
+iterations=1
 tests_length=${#tests[@]}
 total_bip=0
 total_py=0
 
+if ! command -v python3 >/dev/null 2>&1 ; then
+    echo "python3 not found, the benchmark cannot be run without it, please install it!"
+    exit 1
+fi
+
 echo " ________________________________________________________________________________"
 echo "|                                       |             |             |            |"
-echo "| Benchmark                             |  BIPLAN     |  Python     | Iterations |"
+echo "| Benchmark                             | biplan      | python3     | Iterations |"
 echo "|_______________________________________|_____________|_____________|____________|"
 echo "|                                       |             |             |            |"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
     start_bip=$(date +%s%6N)
-    bcc "programs/${tests[$i - 1]}.biplan" "programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
+    bcc "$SCRIPT_DIR/programs/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
     for ((it=0; it<${iterations}; it++ ));
     do
-        biplan -i "programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
+        biplan -i "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
     done
     end_bip=$(date +%s%6N)
     duration_bip=$((end_bip - start_bip))
@@ -97,7 +105,7 @@ do
     start_py=$(date +%s%6N)
     for ((it=0; it<${iterations}; it++ ));
     do
-        python3 "programs/${tests[$i - 1]}.py"  > /dev/null 2>&1
+        python3 "$SCRIPT_DIR/programs/${tests[$i - 1]}.py"  > /dev/null 2>&1
     done
     end_py=$(date +%s%6N)
 
@@ -110,9 +118,7 @@ do
     format_ms() {
         ms=$(( $1 / 1000 ))
         frac=$(( ($1 % 1000) / 10 ))
-        # Format number with 2 decimals, producing a string like "12.34"
         num_str=$(printf "%-9s" "$(printf "%d.%02dms" "$ms" "$frac")")
-        # Append "ms" trailing unit
         printf "$num_str"
     }
 
@@ -121,7 +127,7 @@ do
     space=""
     [ $i -lt 10 ] && space=" " 
     echo -e "| ${space}$i. ${descs[$i - 1]}  | ${color_bip}$bip_ms ${color_py}  | $py_ms   | ${iters[$i - 1]}     |"
-    result=$(rm "programs/${tests[$i - 1]}.bip")
+    result=$(rm "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip")
 done
 
 echo "|_______________________________________|_____________|_____________|____________|"
@@ -137,8 +143,8 @@ echo -e "                                         $color_bip ${bip_total_ms}ms\0
 
 if [ $total_bip -lt $total_py ]; then
     ratio=$(echo "scale=2; $total_py/$total_bip" | bc)
-    echo -e "\nBIPLAN is $ratio times faster than Python.\n"
+    echo -e "\nbiplan is $ratio times faster than python3.\n"
 else
     ratio=$(echo "scale=2; $total_bip/$total_py" | bc)
-    echo -e "\nPython is $ratio times faster than BIPLAN.\n"
+    echo -e "\npython3 is $ratio times faster than biplan.\n"
 fi
