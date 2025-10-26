@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
 # All examples to be tested in this run
 declare -a tests=(
 	"char-const-in-string"
@@ -9,7 +12,9 @@ declare -a tests=(
 	"if-in-string"
 	"round-parent-in-string"
 	"square-parent-in-string"
+	"variable-in-string"
 	"while"
+	"math"
 )
 
 # All expected errors from the compiler
@@ -32,7 +37,7 @@ echo -e "$info\n"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(bcc "../tests/syntax/${tests[$i - 1]}.biplan" "../tests/syntax/${tests[$i - 1]}.bip")
+	result=$(bcc "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.bip")
 	code=$?
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
 	[ $code -eq 0 ] && 

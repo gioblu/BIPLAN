@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
 # All examples to be tested in this run
 declare -a tests=(
 	"char-const-missing-separator" 
@@ -34,7 +37,7 @@ echo -e "\n$info\n"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(bcc "../tests/errors/${tests[$i - 1]}.biplan" test.bip)
+	result=$(bcc "$SCRIPT_DIR/errors/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/errors/test.bip")
 	code=$?
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
 	[ $code -eq 1 ] && 
@@ -47,5 +50,3 @@ plural=""
 [ $fail -gt 1 ] && plural="s" || plural="" 
 [ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  || 
 				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m\n"
-
-result=$(rm "test.bip")

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
 # All examples to be tested in this run
 declare -a tests=(
 	"bcc-compiler/fib.bip"
@@ -28,7 +31,7 @@ fail=0
 for ((i=1; i<${length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(biplan -i "../${tests[$i - 1]}" 2>&1)
+	result=$(biplan -i "$SCRIPT_DIR/../${tests[$i - 1]}" 2>&1)
 	code=$?
 	expected=${results[$i - 1]}
 	

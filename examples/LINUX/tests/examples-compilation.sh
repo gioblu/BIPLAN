@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
 # All examples to be tested in this run
 declare -a tests=(
 	"bcc-compiler/fib" 
@@ -36,7 +39,7 @@ echo -e "\n$info\n"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(bcc "../${tests[$i - 1]}.biplan" "../${tests[$i - 1]}.bip")
+	result=$(bcc "$SCRIPT_DIR/../${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../${tests[$i - 1]}.bip")
 	code=$?
 	error="unknown"
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
