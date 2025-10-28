@@ -38,7 +38,7 @@ do
 	[ "$result" == "$expected" ] && 
 		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}" ||
 		echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}"
-	[ $code != 1 ] && ((fail++))
+	[ $code != 0 ] && ((fail++))
 done
 
 plural=""
