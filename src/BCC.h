@@ -416,7 +416,7 @@ private:
     var_id = BP_OFFSET; // Reset variable address
     char c[2] = {BP_FOR, 0}; // While you find a for
     while(p = strstr(p, c)) {
-      if(in_string(prog, p) && p++) continue;
+      if(in_string(prog, p++)) continue;
       p2 = p;
       int8_t n = 0; // Find the end of the for
       while((++p && *p) && (n >= 0)) {
@@ -427,7 +427,7 @@ private:
       if(n != -1) return error(line(prog, p), p, BP_ERROR_NEXT);
       stop = p; // compile for variables within this for
       compile_variable(p2, p2, BP_FOR_ADDR);
-      p = ++p2;
+      p = p2;
     }
     find_end(prog); // remove variable type from for variable declaration
     compile(prog, c, c, BP_FOR_ADDR, 1);
