@@ -1,11 +1,11 @@
 all:
-	g++	-DLINUX	-I.	-I ../../../src	-std=gnu++11 bcc.cpp -o bcc -O1
+	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o bcc -O1
 	$(info bcc compiler compilation started!)
 fast:
-	g++	-DLINUX	-I.	-I	../../../src -std=gnu++11 bcc.cpp -o bcc -O2
+	g++	-DLINUX	-I.	-I	../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o bcc -O2
 	$(info bcc compiler compilation started! (target: fast))
 compact:
-	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp -o	bcc	-Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
+	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o	bcc	-Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
 	$(info bcc compiler compilation started! (target: compact))
 
 install:	
@@ -14,8 +14,8 @@ install:
 	cp -R ../../../src/utils/libraries/ /usr/local/BIPLAN	
 	$(info bcc compiled successfully, installing libraries in /usr/local/BIPLAN.)
 	@./../tests/examples-compilation.sh
-	@./../tests/errors-compilation.sh
 	@./../tests/syntax-compilation.sh
+	@./../tests/errors-compilation.sh
 clean:
 	rm bcc
 	rm -rf /usr/local/BIPLAN

@@ -1,12 +1,12 @@
 #include <BCC.h>
 
 char program[BCC_MAX_PROGRAM_SIZE];
-BCC compiler;
+bcc_error_t bcc_error_callback = NULL; 
 
-void error_callback(uint16_t line, const char *position, const char *string) {
+void error_handler(uint16_t line, const char *position, const char *string) {
   printf("| State    | \033[31mError: %s Line: %d", string, line);
   if(position != NULL) {
-    printf(" Code: ");
+    printf("\nCode: ");
     for(uint16_t i = 0; *position != 0 && *position != BP_LF; position++)
       printf("%c", *position);
   }
@@ -50,9 +50,9 @@ int main(int argc, char* argv[]) {
   printf("| Source   | %s (%ldB)\n", argv[1], p_size);
 
   // Compile program
-  compiler.error_callback = error_callback;
+  bcc_error_callback = error_handler;
   uint32_t t = BPM_MICROS();
-  if(!compiler.run(program)) {
+  if(!bcc_run(program)) {
     printf("| State    | \033[31mError: Compilation failed.\033[m\n\n");
     exit(EXIT_FAILURE);
   }
