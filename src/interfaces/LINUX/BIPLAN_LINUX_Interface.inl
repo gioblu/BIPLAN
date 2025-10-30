@@ -9,10 +9,10 @@
 #include "BIPLAN_LINUX_Interface.h"
 #include <asm-generic/ioctls.h>
 
-auto start_ts = std::chrono::high_resolution_clock::now();
-auto start_ts_ms = std::chrono::high_resolution_clock::now();
+static auto start_ts = std::chrono::high_resolution_clock::now();
+static auto start_ts_ms = std::chrono::high_resolution_clock::now();
 
-uint32_t micros() {
+inline uint32_t micros() {
   auto elapsed_usec =
   std::chrono::duration_cast<std::chrono::microseconds>(
     std::chrono::high_resolution_clock::now() - start_ts
@@ -24,14 +24,14 @@ uint32_t micros() {
   } else return elapsed_usec;
 };
 
-uint32_t millis() {
+inline uint32_t millis() {
   return (uint32_t)
   std::chrono::duration_cast<std::chrono::milliseconds>(
     std::chrono::high_resolution_clock::now() - start_ts_ms
   ).count();
 };
 
-void delayMicroseconds(uint32_t delay_value) {
+inline void delayMicroseconds(uint32_t delay_value) {
   struct timeval tv;
   if (delay_value < 1000000){
     tv.tv_sec = 0;
@@ -45,13 +45,13 @@ void delayMicroseconds(uint32_t delay_value) {
   select(0, NULL, NULL, NULL, &tv);
 };
 
-void delay(uint32_t delay_value_ms) {
+inline void delay(uint32_t delay_value_ms) {
   std::this_thread::sleep_for(std::chrono::milliseconds(delay_value_ms));
 };
 
 /* Open serial port -------------------------------------------------------- */
 
-int serialOpen(const char *device, const int baud) {
+inline int serialOpen(const char *device, const int baud) {
   int fd;
  
   // Open the file descriptor in non-blocking mode
@@ -119,7 +119,7 @@ int serialOpen(const char *device, const int baud) {
 
 /* Returns the number of bytes of data available to be read in the buffer -- */
 
-int serialDataAvailable(const int fd) {
+inline int serialDataAvailable(const int fd) {
   int result = 0;
   ioctl(fd, FIONREAD, &result);
   return result;
@@ -127,7 +127,7 @@ int serialDataAvailable(const int fd) {
 
 /* Reads a character from the serial buffer -------------------------------- */
 
-int serialGetCharacter(const int fd) {
+inline int serialGetCharacter(const int fd) {
   uint8_t result;
   if(read(fd, &result, 1) != 1) return -1;
   return ((int)result) & 0xFF;
@@ -135,7 +135,7 @@ int serialGetCharacter(const int fd) {
 
 /* Reads a single key-press (unbuffered) ----------------------------------- */
 
-unsigned char keypress() {
+inline unsigned char keypress() {
   struct termios old_tio, new_tio;
 	unsigned char c;
 
@@ -158,7 +158,7 @@ unsigned char keypress() {
 
 /* ltoa atol --------------------------------------------------------------- */
 
-void fast_ltoa(unsigned long value, char* string, uint16_t shift) {
+inline void fast_ltoa(unsigned long value, char* string, uint16_t shift) {
   unsigned char index = BP_NUM_MAX;
   char buffer[BP_NUM_MAX];
   string = string + shift;
@@ -171,7 +171,7 @@ void fast_ltoa(unsigned long value, char* string, uint16_t shift) {
   *string = 0;
 };
 
-long fast_atol(const char *p) {
+inline long fast_atol(const char *p) {
   int c = *(p++), x = 0;
   for(; c > 47 && c < 58; c = *(p++)) x = (x << 1) + (x << 3) + c - 48;
   return x;
