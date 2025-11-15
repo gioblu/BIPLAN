@@ -8,6 +8,7 @@
 #define BP_ERROR_VARIABLE_NAME       "variable name too long"
 #define BP_ERROR_FUNCTION_CALL       "too many nested calls"
 #define BP_ERROR_FUNCTION_DEFINITION "undefined function"
+#define BP_ERROR_FUNCTION_REDEF      "function redefinition"
 #define BP_ERROR_FUNCTION_END        "function end not found"
 #define BP_ERROR_FUNCTION_MAX        "too many functions"
 #define BP_ERROR_FUNCTION_NAME       "function name too long"
@@ -33,6 +34,7 @@
 #define BP_ERROR_PROGRAM_LENGTH      "program too long"
 #define BP_ERROR_PROGRAM_GET         "program read failure"
 #define BP_ERROR_MACRO_NAME          "macro name too long"
+#define BP_ERROR_MACRO_REDEF         "macro redefinition"
 #define BP_ERROR_INCLUDE_PATH        "included file not found"
 #define BP_ERROR_INCLUDE_READ        "included file read failure"
 

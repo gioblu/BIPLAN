@@ -1,6 +1,4 @@
-
 /* BCC (BIPLAN Compiler Collection) - BIPLAN to BIP compiler
-
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -49,7 +47,9 @@ char *bcc_stop = NULL;
 #define BCC_SUGAR(P) \
   (*(P) == BP_SPACE) || (*(P) == BP_CR) || (*(P) == BP_LF) || (*(P) == BP_TAB)
 
-#define BCC_RETURN_IF_FAIL(V) \
+/* Returns the value received and calls error if the program is 
+   terminated/not accessible or if something else failed previously -------- */
+#define BCC_RETURN_IF_FAILED(V) \
   if(!prog || bcc_fail) { \
     if(!bcc_fail) bcc_error(0, NULL, BP_ERROR_PROGRAM_GET); \
     return V; \
@@ -81,7 +81,7 @@ uint16_t bcc_line(const char *prog, const char *pos) {
 
 /* Checks consistency of syntax delimiters --------------------------------- */
 int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
-  BCC_RETURN_IF_FAIL(0);
+  BCC_RETURN_IF_FAILED(0);
   uint16_t ia = 0, ib = 0;
   const char *p = prog;
   while(p && *p) {
@@ -102,7 +102,7 @@ int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
 
 /* Finds the end of a program ---------------------------------------------- */
 void bcc_find_end(char *prog) {
-  BCC_RETURN_IF_FAIL();
+  BCC_RETURN_IF_FAILED();
   if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
     bcc_error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
   for(bcc_stop = prog; *bcc_stop != 0; bcc_stop++);
@@ -129,7 +129,7 @@ int bcc_in_string(const char *prog, const char *pos) {
 
 /* Remove a given symbol from the program ---------------------------------- */
 void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
-  BCC_RETURN_IF_FAIL();
+  BCC_RETURN_IF_FAILED();
   char *p = prog, *p2 = prog;
   int in_str = 0;
   while(p2 && *p2) {
@@ -146,7 +146,7 @@ void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
 
 /* Remove comments from program -------------------------------------------- */
 void bcc_remove_comments(char *prog) {
-  BCC_RETURN_IF_FAIL();
+  BCC_RETURN_IF_FAILED();
   char *p;
   while((p = strstr(prog, BP_COMMENT)))
     if(!bcc_in_string(prog, p)) {
@@ -156,7 +156,7 @@ void bcc_remove_comments(char *prog) {
 
 /* Compiles character constants such as '@' into 64 (its decimal value) ---- */
 void bcc_compile_char_constants(char *prog) {
-  BCC_RETURN_IF_FAIL();
+  BCC_RETURN_IF_FAILED();
   char *p = prog, b[3] = {0};
   while(p && *p) {
     if(!bcc_in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
@@ -254,7 +254,7 @@ void bcc_compile_char(
 
 /* Finds longest variable name  -------------------------------------------- */
 char *bcc_find_longest_var_name(char *prog, char var_type) {
-  BCC_RETURN_IF_FAIL(NULL);
+  BCC_RETURN_IF_FAILED(NULL);
   char *p = prog, *longest = NULL;
   uint8_t result = 0;
   while(p && *p && (p < bcc_stop)) {
@@ -324,7 +324,7 @@ void bcc_compile_variables(char *prog, char var_type) {
 
 /* Finds longest keyword  -------------------------------------------------- */
 char *bcc_find_longest_keyword(char *prog, int t) {
-  BCC_RETURN_IF_FAIL(NULL);
+  BCC_RETURN_IF_FAILED(NULL);
   char *p = prog, *p2, *longest = NULL;
   uint8_t result = 0;
   do {
@@ -362,36 +362,48 @@ char *bcc_find_longest_keyword(char *prog, int t) {
   return longest;
 }
 
-/* Check for function redefinitions before compilation */
-int bcc_check_function_redefinitions(const char *prog) {
-  BCC_RETURN_IF_FAIL(0);
+/* Generic redefinition check for functions and macros */
+int bcc_check_redefinition(const char *prog, int type) {
+  BCC_RETURN_IF_FAILED(0);
+  const char *keyword = type ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN;
   const char *p = prog;
-  while((p = strstr(p, BP_FUN_DEF_HUMAN))) {
+  while((p = strstr(p, keyword))) {
     if(!bcc_in_string(prog, p)) {
-      const char *fn_start = p + strlen(BP_FUN_DEF_HUMAN);
-      while(*fn_start && BCC_SUGAR(fn_start)) fn_start++;
-      char fn_name[BP_KEYWORD_MAX] = {0};
+      const char *name_start = p + strlen(keyword);
+      while(*name_start && BCC_SUGAR(name_start)) name_start++;
+      char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
       while(
-        *fn_start && 
-        BCC_IS_KEYWORD(*fn_start) && 
-        (i < BP_KEYWORD_MAX - 1)
-      ) fn_name[i++] = *fn_start++;
-      fn_name[i] = 0;
+        *name_start && (
+          type ? 
+            BCC_IS_KEYWORD(*name_start) : 
+            BCC_IS_CAP_KEYWORD(*name_start)
+        ) && (i < BP_KEYWORD_MAX - 1)
+      ) name[i++] = *name_start++;
+      name[i] = 0;
       if(i > 0) {
         uint16_t count = 0;
         const char *search_pos = prog;
-        while((search_pos = strstr(search_pos, BP_FUN_DEF_HUMAN))) {
+        while((search_pos = strstr(search_pos, keyword))) {
           if(!bcc_in_string(prog, search_pos)) {
-            const char *check_name = search_pos + strlen(BP_FUN_DEF_HUMAN);
+            const char *check_name = search_pos + strlen(keyword);
             while(*check_name && BCC_SUGAR(check_name)) check_name++;
             uint8_t match = 1;
             for(uint8_t j = 0; j < i; j++) 
-              if(check_name[j] != fn_name[j] && !(match = 0)) break;
-            if(match && !BCC_IS_KEYWORD(check_name[i]))
-              count++;
+              if(check_name[j] != name[j] && !(match = 0)) break;
+            if(
+              match && !(
+                type ? 
+                  BCC_IS_KEYWORD(check_name[i]) : 
+                  BCC_IS_CAP_KEYWORD(check_name[i])
+              )
+            ) count++;
             if(count > 1) {
-              bcc_error(bcc_line(prog, p), p, BP_ERROR_FUNCTION_REDEF);
+              bcc_error(
+                bcc_line(prog, p), 
+                p, 
+                type ? BP_ERROR_FUNCTION_REDEF : BP_ERROR_MACRO_REDEF
+              );
               return 0;
             }
           } search_pos++;
@@ -408,7 +420,7 @@ Each function uses the same addresses for its parameters consuming only
 BP_PARAMS addresses for all parameters present in the program. ------------- */
 
 int bcc_compile_function_step(char *prog) {
-  BCC_RETURN_IF_FAIL(0);
+  BCC_RETURN_IF_FAILED(0);
   char fn_keyword[BP_KEYWORD_MAX] = {0}, fn_address[3];
   char *p = bcc_find_longest_keyword(prog, 1), *p2 = p, *p3 = NULL;
   uint8_t keyword_length = 0, f_id;
@@ -471,7 +483,7 @@ void bcc_compile_functions(char *prog) {
 
 /* Compile for (inefficient compilation, each for gets a new address) ------ */
 void bcc_compile_for(char *prog) {
-  BCC_RETURN_IF_FAIL();
+  BCC_RETURN_IF_FAILED();
   char *p = prog, *p2 = prog;
   bcc_var_id = BP_OFFSET; // Reset variable address
   char c[2] = {BP_FOR, 0}; // While you find a for
@@ -498,7 +510,7 @@ void bcc_compile_for(char *prog) {
 
 /* Pre-processor macros ---------------------------------------------------- */
 int bcc_compile_macro(char *prog) {
-  BCC_RETURN_IF_FAIL(0);
+  BCC_RETURN_IF_FAILED(0);
   char macro_name[BP_KEYWORD_MAX];
   char macro_code[BP_MACRO_MAX];
   char *p = bcc_find_longest_keyword(prog, 0);
@@ -590,7 +602,6 @@ int bcc_pre_compilation_checks(const char *prog) {
     bcc_error(0, NULL, BP_ERROR_SQUARE_PARENTHESIS);
   if(!bcc_check_delimeter(prog, BP_STRING, BP_STRING, 1))
     bcc_error(0, NULL, BP_ERROR_STRING_END);
-  bcc_check_function_redefinitions(prog);
   return !bcc_fail;
 }
 
@@ -615,6 +626,8 @@ int bcc_run(char *prog) {
   bcc_remove_comments(prog);
   bcc_compile_includes(prog);
   bcc_remove_comments(prog);
+  bcc_check_redefinition(prog, 1); // Check function redefinition
+  bcc_check_redefinition(prog, 0); // Check macro redefinition
   bcc_compile_macros(prog);
   bcc_compile(prog, "'\\''", "39", 0, 0, 0);
   bcc_compile_char_constants(prog);
