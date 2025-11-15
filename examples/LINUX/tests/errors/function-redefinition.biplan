@@ -1,0 +1,16 @@
+
+
+// Function redefinition, 2 different function definitions are provided.
+
+redefined_fun()
+
+stop
+
+
+function redefined_fun()
+    print "Hello"
+return 0
+
+function redefined_fun()
+    print "Redefined!"
+return 0

@@ -7,6 +7,7 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 declare -a tests=(
 	"char-const-missing-separator" 
 	"for-missing-next" 
+	"function-redefinition"
 	"function-missing-return" 
 	"function-too-long" 
 	"if-missing-end" 

@@ -373,6 +373,33 @@ char *bcc_find_longest_keyword(char *prog, int t) {
   return longest;
 }
 
+/* Check for function redefinitions before compilation */
+int bcc_check_function_redefinitions(const char *prog) {
+  if(!prog || bcc_fail) {
+    if(!bcc_fail) bcc_error(0, NULL, BP_ERROR_PROGRAM_GET);
+    return 0;
+  }
+  const char *p = prog;
+  while((p = strstr(p, BP_FUN_DEF_HUMAN))) {
+    if(!bcc_in_string(prog, p)) {
+      char fn_name[BP_KEYWORD_MAX] = {0};
+      uint8_t name_len = bcc_extract_keyword_name(p, BP_FUN_DEF_HUMAN, fn_name, BP_KEYWORD_MAX);
+      
+      if(name_len > 0) {
+        uint16_t count = bcc_count_keyword_occurrences(prog, BP_FUN_DEF_HUMAN, fn_name, name_len);
+        if(count > 1) {
+          char error_msg[BP_KEYWORD_MAX + 32];
+          sprintf(error_msg, "function %s redefined", fn_name);
+          bcc_error(bcc_line(prog, p), p, error_msg);
+          return 0;
+        }
+      }
+    }
+    p++;
+  }
+  return 1;
+}
+
 /* Compiles a single user-defined function (longest name first):
 
 Funtion parameters are stored at the end of the address space.
@@ -567,6 +594,7 @@ int bcc_pre_compilation_checks(const char *prog) {
     bcc_error(0, NULL, BP_ERROR_SQUARE_PARENTHESIS);
   if(!bcc_check_delimeter(prog, BP_STRING, BP_STRING, 1))
     bcc_error(0, NULL, BP_ERROR_STRING_END);
+  bcc_check_function_redefinitions(prog);
   return !bcc_fail;
 }
 
