@@ -439,12 +439,8 @@ int bcc_compile_function_step(char *prog) {
         fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
       }
-    } 
-    fn_keyword[keyword_length] = 0;
-    
+    } // Remove commas from definition
     *p = BP_SPACE;
-    p2 = prog; // Reset p2 for next operations
-    // Remove commas from definition
     while(p && *p && (*p != BP_R_RPARENT) || (*(p - 1) == BP_VAR_ADDR)) {
       if((*p == BP_COMMA) && !((*(p - 1)) == BP_VAR_ADDR)) *p = BP_SPACE;
       p++;
