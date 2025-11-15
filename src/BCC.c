@@ -10,13 +10,16 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com */
+  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com 
+  
+  NOTE: despite its .c extension this file may be compiled as C++ if required
+  by the interface used. */
 
 #include "BCC.h"
 
 typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 
-int bcc_fail = 0;
+int  bcc_fail = 0;
 char bcc_var_id = BP_OFFSET;
 char bcc_string_id = BP_OFFSET + BP_ARGS;
 char bcc_fun_id = BP_OFFSET;
@@ -115,7 +118,7 @@ int bcc_in_string(const char *prog, const char *pos) {
   const char *p = prog;
   while((p && *p) && (pos >= p)) {
     if(in_str && *p == BP_BACKSLASH) p += 2;
-    else {
+    else {  // Returns false if " is found outside of a string
       if((pos == p) && (*p == BP_STRING) && !in_str) return 0;
       if(*p == BP_STRING) in_str = !in_str;
       p++;
@@ -172,7 +175,7 @@ void bcc_compile_char_constants(char *prog) {
       }
       BPM_LTOA(*(++p), b, 0);
       p--;
-      for(unsigned char i = 0; i < 3; i++)
+      for(uint8_t i = 0; i < 3; i++)
         *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
     } else p++;
   }
@@ -193,7 +196,7 @@ char *bcc_compile_step(
     return NULL;
   }
   char *p;
-  unsigned char kl = strlen(key), cl = strlen(code);
+  uint8_t kl = strlen(key), cl = strlen(code);
   p = strstr(pos, key);
   if(p && *p && (p < bcc_stop)) {
     if(bcc_in_string(prog, p) || (addr && p > prog && BCC_IS_ADDR(*(p - 1)))) {
@@ -201,7 +204,7 @@ char *bcc_compile_step(
       return NULL;
     }
     if(end) {
-      unsigned char i = kl;
+      uint8_t i = kl;
       bcc_IGNORE_SUGAR(p);
       if(*(p + i) != end) {
         if((p = strstr(p + kl, key))) return p;
@@ -209,18 +212,19 @@ char *bcc_compile_step(
       }
     }
     if(kl >= cl) {
-      for(unsigned int i = 0; i < kl; i++, p++)
+      for(uint8_t i = 0; i < kl; i++, p++)
         if(i < cl && code[i]) *p = code[i];
         else *p = BP_SPACE;
     } else {
-      unsigned char ofs = cl - kl;
-      if((strlen(prog) + ofs + 1) >= BCC_MAX_PROGRAM_SIZE) {
+      uint8_t ofs = cl - kl;
+      if((strlen(prog) + ofs + 1) > BCC_MAX_PROGRAM_SIZE) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_PROGRAM_LENGTH);
         return NULL;
       }
       memmove(p + ofs, p, strlen(p) + 1);
-      for(unsigned int i = 0; i < cl; i++, p++) *p = code[i];
+      for(uint8_t i = 0; i < cl; i++, p++) *p = code[i];
       bcc_stop = bcc_stop + cl;
+      // *(stop + cl) = 0;
     }
     if(post) {
       bcc_IGNORE_SUGAR(p);
@@ -264,7 +268,7 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
     return NULL;
   }
   char *p = prog, *longest = NULL;
-  unsigned char result = 0;
+  uint8_t result = 0;
   while(p && *p && (p < bcc_stop)) {
     if(*(p++) == var_type) {
       if(bcc_in_string(prog, p - 1)) continue;
@@ -272,7 +276,7 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
         return NULL;
       }
-      unsigned char i = 0;
+      uint8_t  i = 0;
       while(BCC_IS_KEYWORD(*p) && (p && *(p++))) i++;
       if(i >= BP_KEYWORD_MAX) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_VARIABLE_NAME);
@@ -296,7 +300,7 @@ char *bcc_compile_variable(char *prog, char *position, char var_type) {
   if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN)) 
     type = BP_VAR_ADDR;
   char *p, str[BP_KEYWORD_MAX] = {0}, code[4] = {type, 0, 0, 0};
-  unsigned char n = 0;
+  uint8_t n = 0;
   if((p = bcc_find_longest_var_name(prog, var_type)) != NULL) {
     str[n++] = var_type;
     *p = type;
@@ -304,7 +308,7 @@ char *bcc_compile_variable(char *prog, char *position, char var_type) {
     if(type == BP_STR_ADDR) BCC_NEW_ADDR(bcc_string_id);
     else BCC_NEW_ADDR(bcc_var_id);
     *(p++) = (type == BP_STR_ADDR) ? bcc_string_id : bcc_var_id;
-    for(unsigned int i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
+    for(uint8_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
       if(BCC_IS_KEYWORD(*p)) {
         str[n++] = *p;
         *p = BP_SPACE;
@@ -337,9 +341,9 @@ char *bcc_find_longest_keyword(char *prog, int t) {
     return NULL;
   }
   char *p = prog, *p2, *longest = NULL;
-  unsigned char result = 0;
+  uint8_t result = 0;
   do {
-    unsigned char i = 0;
+    uint8_t i = 0;
     p = strstr(p, t ? BP_FUN_DEF_HUMAN : BP_MACRO_DEF_HUMAN);
     if(!p || !*p) return longest;
     if(bcc_in_string(prog, p)) {
@@ -382,22 +386,37 @@ int bcc_check_function_redefinitions(const char *prog) {
   const char *p = prog;
   while((p = strstr(p, BP_FUN_DEF_HUMAN))) {
     if(!bcc_in_string(prog, p)) {
+      const char *fn_start = p + strlen(BP_FUN_DEF_HUMAN);
+      while(*fn_start && BCC_SUGAR(fn_start)) fn_start++;
       char fn_name[BP_KEYWORD_MAX] = {0};
-      uint8_t name_len = bcc_extract_keyword_name(p, BP_FUN_DEF_HUMAN, fn_name, BP_KEYWORD_MAX);
-      
-      if(name_len > 0) {
-        uint16_t count = bcc_count_keyword_occurrences(prog, BP_FUN_DEF_HUMAN, fn_name, name_len);
-        if(count > 1) {
-          char error_msg[BP_KEYWORD_MAX + 32];
-          sprintf(error_msg, "function %s redefined", fn_name);
-          bcc_error(bcc_line(prog, p), p, error_msg);
-          return 0;
+      uint8_t i = 0;
+      while(
+        *fn_start && 
+        BCC_IS_KEYWORD(*fn_start) && 
+        (i < BP_KEYWORD_MAX - 1)
+      ) fn_name[i++] = *fn_start++;
+      fn_name[i] = 0;
+      if(i > 0) {
+        uint16_t count = 0;
+        const char *search_pos = prog;
+        while((search_pos = strstr(search_pos, BP_FUN_DEF_HUMAN))) {
+          if(!bcc_in_string(prog, search_pos)) {
+            const char *check_name = search_pos + strlen(BP_FUN_DEF_HUMAN);
+            while(*check_name && BCC_SUGAR(check_name)) check_name++;
+            uint8_t match = 1;
+            for(uint8_t j = 0; j < i; j++) 
+              if(check_name[j] != fn_name[j] && !(match = 0)) break;
+            if(match && !BCC_IS_KEYWORD(check_name[i]))
+              count++;
+            if(count > 1) {
+              bcc_error(bcc_line(prog, p), p, BP_ERROR_FUNCTION_REDEF);
+              return 0;
+            }
+          } search_pos++;
         }
       }
-    }
-    p++;
-  }
-  return 1;
+    } p++;
+  } return 1;
 }
 
 /* Compiles a single user-defined function (longest name first):
@@ -413,7 +432,7 @@ int bcc_compile_function_step(char *prog) {
   }
   char fn_keyword[BP_KEYWORD_MAX] = {0}, fn_address[3];
   char *p = bcc_find_longest_keyword(prog, 1), *p2 = p, *p3 = NULL;
-  unsigned char keyword_length = 0, f_id;
+  uint8_t keyword_length = 0, f_id;
   if(p && *p) {
     f_id = bcc_fun_id;
     BCC_NEW_ADDR(bcc_fun_id);
@@ -429,8 +448,12 @@ int bcc_compile_function_step(char *prog) {
         fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
       }
-    } // Remove commas from definition
+    } 
+    fn_keyword[keyword_length] = 0;
+    
     *p = BP_SPACE;
+    p2 = prog; // Reset p2 for next operations
+    // Remove commas from definition
     while(p && *p && (*p != BP_R_RPARENT) || (*(p - 1) == BP_VAR_ADDR)) {
       if((*p == BP_COMMA) && !((*(p - 1)) == BP_VAR_ADDR)) *p = BP_SPACE;
       p++;
@@ -439,7 +462,7 @@ int bcc_compile_function_step(char *prog) {
     if(p && *p) {
       while(*p && p && *p != BP_CR && *p != BP_LF) p++;
       fn_keyword[keyword_length] = 0;
-      unsigned char count = 0;
+      uint8_t count = 0;
       p3 = prog; // Delete the definition if the function is never called
       while(((p3 = strstr(p3 + 1, fn_keyword)) != NULL) && (count <= 1))
         if(!bcc_in_string(prog, p3)) count++;
@@ -479,13 +502,13 @@ void bcc_compile_for(char *prog) {
   while((p = strstr(p, c))) {
     if(bcc_in_string(prog, p++)) continue;
     p2 = p;
-    int8_t n = 0; // Find the end of the for
-    while((++p && *p) && (n >= 0)) {
+    uint8_t n = 1; // Find the end of the for
+    while((++p && *p) && (n >= 1)) {
       if(BCC_IS_ADDR(*(p-1)) || bcc_in_string(prog, p)) continue;
       if(*p == BP_FOR) n++;
       if(*p == BP_NEXT) n--;
     }
-    if(n != -1) {
+    if(n != 0) {
       bcc_error(bcc_line(prog, p), p, BP_ERROR_NEXT);
       return;
     }
@@ -509,7 +532,7 @@ int bcc_compile_macro(char *prog) {
   if(!p || !*p) return 0;
   while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
   bcc_IGNORE_SUGAR(p);
-  unsigned int i;
+  uint16_t i;
   for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
     macro_name[i] = *p;
     *(p++) = BP_SPACE;
@@ -548,7 +571,7 @@ char *bcc_compile_include(char *prog, char *pos) {
   while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
   bcc_IGNORE_SUGAR(p);
   *(p++) = BP_SPACE;
-  unsigned int i;
+  uint16_t i;
   for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
     include_path[i] = *p;
     *p = BP_SPACE;
