@@ -575,7 +575,7 @@ void bcc_compile_includes(char *prog) {
 }
 
 /* Undefined function check ------------------------------------------------ */
-void bcc_check_definitions(const char *prog) {
+void bcc_check_undefined_functions(const char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   const char *p = prog, *p2, *p3;
   while(p && *p) {
@@ -623,7 +623,7 @@ void bcc_check_definitions(const char *prog) {
 /* Pre-compilation checks -------------------------------------------------- */
 int bcc_pre_compilation_checks(const char *prog) {
   if(bcc_fail) return bcc_fail;
-  bcc_check_definitions(prog);
+  bcc_check_undefined_functions(prog);
   if(!bcc_check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT, 1))
     bcc_error(0, NULL, BP_ERROR_ROUND_PARENTHESIS);
   if(!bcc_check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, 1))
@@ -651,71 +651,39 @@ void bcc_post_compilation_checks(const char *prog) {
 /* Run compilation process ------------------------------------------------- */
 int bcc_run(char *prog) {
   bcc_find_end(prog);
+  /* Comments are removed twice to first permit the parsing of the includes
+     (comments could be present before them) and then remove the comments 
+     present in the included files. */ 
   bcc_remove_comments(prog);
   bcc_compile_includes(prog);
   bcc_remove_comments(prog);
-  bcc_check_redefinition(prog, 1); // Check function redefinition
   bcc_check_redefinition(prog, 0); // Check macro redefinition
   bcc_compile_macros(prog);
+  bcc_check_redefinition(prog, 1); // Check function redefinition
   bcc_compile(prog, "'\\''", "39", 0, 0, 0);
   bcc_compile_char_constants(prog);
   if(!bcc_pre_compilation_checks(prog)) return 0;
-  bcc_compile_char(prog, BP_STR_ACC_HUMAN, BP_STR_ACC, 0, 0);
-  bcc_compile_char(prog, BP_VAR_ACC_HUMAN, BP_VAR_ACC, 0, 0);
-  bcc_compile_char(prog, BP_MEM_ACC_HUMAN, BP_MEM_ACC, 0, 0);
-  bcc_compile_char(prog, BP_EQ_HUMAN, BP_EQ, 0, 0);
-  bcc_compile_char(prog, BP_NOT_EQ_HUMAN, BP_NOT_EQ, 0, 0);
-  bcc_compile_char(prog, BP_GTOEQ_HUMAN, BP_GTOEQ, 0, 0);
-  bcc_compile_char(prog, BP_LTOEQ_HUMAN, BP_LTOEQ, 0, 0);
-  bcc_compile_char(prog, BP_LOGIC_OR_HUMAN, BP_LOGIC_OR, 0, 0);
-  bcc_compile_char(prog, BP_LOGIC_AND_HUMAN, BP_LOGIC_AND, 0, 0);
-  bcc_compile_char(prog, BP_R_SHIFT_HUMAN, BP_R_SHIFT, 0, 0);
-  bcc_compile_char(prog, BP_L_SHIFT_HUMAN, BP_L_SHIFT, 0, 0);
-  bcc_compile_char(prog, "=", BP_SPACE, 0, 0);
-  bcc_compile_char(prog, BP_INCREMENT_HUMAN, BP_INCREMENT, 0, 0);
-  bcc_compile_char(prog, BP_DECREMENT_HUMAN, BP_DECREMENT, 0, 0);
-  bcc_compile_char(prog, BP_BITWISE_NOT_HUMAN, BP_BITWISE_NOT, 0, 0);
+  // Compile language syntax
+  for(uint8_t i = 0; bcc_syntax[i].human != NULL; i++)
+    bcc_compile_char(
+      prog, bcc_syntax[i].human, bcc_syntax[i].code, 0, 0
+    );
+  // Compile functions, global numeric and string variables
   bcc_compile_functions(prog);
   bcc_var_id = BP_OFFSET;
   bcc_find_end(prog);
   bcc_compile_variables(prog, BP_GLOBAL_HUMAN);
   bcc_compile_variables(prog, BP_STR_ADDR);
-  bcc_compile_char(prog, BP_RND_HUMAN, BP_RND, 0, 0);
-  bcc_compile_char(prog, BP_MILLIS_HUMAN, BP_MILLIS, 0, 0);
-  bcc_compile_char(prog, BP_DELAY_HUMAN, BP_DELAY, 0, 0);
-  bcc_compile_char(prog, BP_SERIAL_HUMAN, BP_SERIAL, 0, 0);
-  bcc_compile_char(prog, BP_CONTINUE_HUMAN, BP_CONTINUE, 0, 0);
-  bcc_compile_char(prog, BP_RESTART_HUMAN, BP_RESTART, 0, 0);
-  bcc_compile_char(prog, BP_RETURN_HUMAN, BP_RETURN, 0, 0);
-  bcc_compile_char(prog, BP_SYSTEM_HUMAN, BP_SYSTEM, 0, 0);
-  bcc_compile_char(prog, BP_CURSOR_HUMAN, BP_CURSOR, 0, 0);
+  // Compile system functions
+  for(uint8_t i = 0; bcc_system_functions[i].human != NULL; i++)
+    bcc_compile_char(
+      prog, bcc_system_functions[i].human, bcc_system_functions[i].code, 0, 0
+    );
+  // Compile sugar and constants
   bcc_compile_char(prog, "locals:", BP_SPACE, 0, 0);
-  bcc_compile_char(prog, BP_LTOA_HUMAN, BP_LTOA, 0, 0);
-  bcc_compile_char(prog, BP_ATOL_HUMAN, BP_ATOL, 0, 0);
-  bcc_compile_char(prog, BP_INPUT_HUMAN, BP_INPUT, 0, 0);
-  bcc_compile_char(prog, BP_BREAK_HUMAN, BP_BREAK, 0, 0);
-  bcc_compile_char(prog, BP_PRINT_HUMAN, BP_PRINT, 0, 0);
-  bcc_compile_char(prog, BP_WHILE_HUMAN, BP_WHILE, 0, 0);
-  bcc_compile_char(prog, BP_ENDIF_HUMAN, BP_ENDIF, 0, 0);
-  bcc_compile_char(prog, BP_SIZEOF_HUMAN, BP_SIZEOF, 0, 0);
-  bcc_compile_char(prog, BP_WRITE_HUMAN, BP_WRITE, 0, 0);
-  bcc_compile_char(prog, BP_INDEX_HUMAN, BP_INDEX, 0, 0);
-  bcc_compile_char(prog, BP_CLOSE_HUMAN, BP_CLOSE, 0, 0);
-  bcc_compile_char(prog, BP_READ_HUMAN, BP_READ, 0, 0);
-  bcc_compile_char(prog, BP_OPEN_HUMAN, BP_OPEN, 0, 0);
-  bcc_compile_char(prog, BP_NEXT_HUMAN, BP_NEXT, 0, 0);
-  bcc_compile_char(prog, BP_FILE_HUMAN, BP_FILE, 0, 0);
-  bcc_compile_char(prog, BP_CHAR_HUMAN, BP_CHAR, 0, 0);
-  bcc_compile_char(prog, BP_ELSE_HUMAN, BP_ELSE, 0, 0);
-  bcc_compile_char(prog, BP_END_HUMAN, BP_END, 0, 0);
-  bcc_compile_char(prog, BP_FOR_HUMAN, BP_FOR, 0, 0);
-  bcc_compile_char(prog, BP_ADC_HUMAN, BP_ADC, 0, 0);
   bcc_compile(prog, "args[", "S", 0, 0, 0);
   bcc_compile_char(prog, "step", BP_COMMA, 0, 0);
   bcc_compile(prog, "not", "1-", 0, 0, 0);
-  bcc_compile_char(prog, BP_IF_HUMAN, BP_IF, 0, 0);
-  bcc_compile_char(prog, BP_IO_HUMAN, BP_IO, 0, 0);
-  bcc_compile_char(prog, BP_TO_HUMAN, BP_COMMA, 0, 0);
   bcc_compile_for(prog);
   bcc_compile(prog, "OUTPUT", "1", 0, 0, 0);
   bcc_compile(prog, "INPUT", "0", 0, 0, 0);
