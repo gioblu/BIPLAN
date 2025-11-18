@@ -1,6 +1,4 @@
-
 /* BIPLAN CR.1 (Byte coded Interpreted Programming Language)
-
       _____              _________________________
      |   | |            |_________________________|
      |   | |_______________||__________   \___||_________ |
@@ -11,7 +9,10 @@
                                            (O)
 
   Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
-  BIP bytecode interpreter */
+  BIP bytecode interpreter 
+  
+  NOTE: despite its .c extension this file may be compiled as C++ if required
+  by the interface used. */
 
 #pragma once
 #include "BIPLAN.h"
@@ -25,7 +26,7 @@ char               bip_strings       [BP_STRINGS][BP_STRING_MAX];
 struct bip_cycle_t bip_cycles        [BP_CYCLE_DEPTH];
 struct bip_fun_t   bip_functions     [BP_FUN_DEPTH];
 struct bip_def_t   bip_definitions   [BP_FUN_MAX];
-bip_files_t        bip_files         [BP_FILES_MAX];
+struct bip_files_t bip_files         [BP_FILES_MAX];
 /* STATE ------------------------------------------------------------------- */
 char              *bip_program_start  = NULL;
 uint8_t            bip_fw_id          = 0;
@@ -34,7 +35,7 @@ int                bip_arg_id         = 0;
 bool               bip_ended          = false;
 uint8_t            bip_return_type    = 0;
 /* CALLBACKS --------------------------------------------------------------- */
-bip_error_t        bip_error_fun = NULL;
+bip_error_t        bip_error_fun      = NULL;
 BPM_PRINT_T        bip_print_fun;
 BPM_INPUT_T        bip_data_in_fun;
 BPM_SERIAL_T       bip_serial_fun;
@@ -81,9 +82,7 @@ BPM_SERIAL_T       bip_serial_fun;
   F(bip_sys_exp, bip_expression());
 
 /* EMPTY STRING ------------------------------------------------------------ */
-#define BP_EMPTY_STRING \
-  for(BP_VAR_T emptstr = 0; emptstr < BP_STRING_MAX; emptstr++) \
-    bip_string[emptstr] = 0;
+#define BP_EMPTY_STRING memset(bip_string, 0, BP_STRING_MAX);
 
 /* EXPECT A CERTAIN CODE, OTHERWISE THROW ERROR ---------------------------- */
 #define BP_EXPECT(C) \
@@ -229,12 +228,13 @@ void bip_init(
 
 void bip_set_default() {
   bip_fw_id = 0, bip_fn_id = 0, bip_ended = false, bip_arg_id = 0;
-  for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
-  for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
-  for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
-    for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
+  memset(bip_memory, 0, BP_MEM_SIZE);
+  memset(bip_variables, 0, sizeof(bip_variables));
+  memset(bip_strings, 0, sizeof(bip_strings));
+  memset(bip_cycles, 0, sizeof(bip_cycles));
+  for(uint16_t i = 0; i < BP_CYCLE_DEPTH; i++) bip_cycles[i].var_id = BP_VARIABLES;
   for(uint16_t i = 0; i < BP_FILES_MAX; i++) bip_files[i].free = true;
-  BP_EMPTY_STRING;
+  memset(bip_string, 0, BP_STRING_MAX);
 };
 
 /* IGNORE A CERTAIN CODE --------------------------------------------------- */
