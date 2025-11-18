@@ -56,7 +56,7 @@ char *bcc_stop = NULL;
   }
 
 /* Ignores syntactic sugar ------------------------------------------------- */
-#define bcc_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
+#define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
 
 /* Function called in case of compilation error ---------------------------- */
 void bcc_error(uint16_t line, const char *position, const char *string) {
@@ -187,7 +187,7 @@ char *bcc_compile_step(
     }
     if(end) {
       uint8_t i = kl;
-      bcc_IGNORE_SUGAR(p);
+      BCC_IGNORE_SUGAR(p);
       if(*(p + i) != end) {
         if((p = strstr(p + kl, key))) return p;
         return NULL;
@@ -209,7 +209,7 @@ char *bcc_compile_step(
       // *(stop + cl) = 0;
     }
     if(post) {
-      bcc_IGNORE_SUGAR(p);
+      BCC_IGNORE_SUGAR(p);
       if(*p == post) *p = BP_SPACE;
     }
     return p;
@@ -331,7 +331,7 @@ char *bcc_find_longest_keyword(char *prog, int t) {
       return NULL;
     }
     while(BCC_IS_KEYWORD(*p)) p++;
-    bcc_IGNORE_SUGAR(p);
+    BCC_IGNORE_SUGAR(p);
     while((p && *p) && (t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p))) {
       i++;
       p++;
@@ -500,14 +500,14 @@ int bcc_compile_macro(char *prog) {
   char *p = bcc_find_longest_keyword(prog, 0);
   if(!p || !*p) return 0;
   while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
-  bcc_IGNORE_SUGAR(p);
+  BCC_IGNORE_SUGAR(p);
   uint16_t i;
   for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
     macro_name[i] = *p;
     *(p++) = BP_SPACE;
   }
   macro_name[i] = 0;
-  bcc_IGNORE_SUGAR(p);
+  BCC_IGNORE_SUGAR(p);
   for(i = 0; p && *p && (i < (BP_MACRO_MAX - 1)); i++) {
     macro_code[i] = *p;
     *(p++) = BP_SPACE;
@@ -535,7 +535,7 @@ char *bcc_compile_include(char *prog, char *pos) {
   if(!p || !*p) return NULL;
   if(bcc_in_string(pos, p)) return bcc_compile_include(prog, p + 1);
   while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
-  bcc_IGNORE_SUGAR(p);
+  BCC_IGNORE_SUGAR(p);
   *(p++) = BP_SPACE;
   uint16_t i;
   for(i = 0; (*p != BP_STRING) && (i < BP_INCLUDE_PATH_MAX); i++, p++) {
