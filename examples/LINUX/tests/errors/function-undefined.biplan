@@ -1,0 +1,6 @@
+// Function is undefined.
+// The compiler should notice it and return an error.
+
+undefinedFun()
+
+stop

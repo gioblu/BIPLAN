@@ -1,0 +1,11 @@
+// Function name uses reserved system function name.
+// Compiler should notice it and return an error.
+
+if()
+
+stop
+
+
+function if()
+    print "Hello"
+return 0

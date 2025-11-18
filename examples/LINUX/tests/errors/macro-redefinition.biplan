@@ -1,0 +1,9 @@
+
+// Macro redefinition, 2 different macro definitions 
+// with the same name are provided.
+print "test"
+macro TEST print "test"
+macro TEST print "test2"
+
+TEST
+stop
