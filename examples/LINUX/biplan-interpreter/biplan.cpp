@@ -9,12 +9,12 @@ long   p_size;
 size_t result;
 
 void error_callback(const char *position, const char *string) {
-  printf("\nerror: ");
+  printf("\n\033[31m⚠️ Error: ");
   printf("%s ", string);
   if(position) {
     printf("%c", *position);
-    printf(" at position ");
-    printf("%d \n ", position);
+    printf(" at position: ");
+    printf("%s \033[m\n\n", position);
   }
   error = true;
   exit(EXIT_FAILURE);
@@ -24,7 +24,7 @@ void init_program(char *path) {
   if(verbose) printf("Source: %s", path);
   p_file = fopen(path, "r");
   if(p_file == NULL) {
-    printf("\nFile error\n");
+    printf("\n\033[31m⚠️ Error: File error\033[m");
     exit(-3);
   } // Obtain file size:
   fseek(p_file, 0, SEEK_END);
@@ -36,7 +36,7 @@ void init_program(char *path) {
     printf("B \n");
   }
   if((sizeof(char) * p_size) >= BCC_MAX_PROGRAM_SIZE) {
-    printf(" Program too big, configure BCC_MAX_PROGRAM_SIZE. ");
+    printf("\n\033[31m⚠️ Error: Program too long, configure BCC_MAX_PROGRAM_SIZE\033[m");
     exit(-2);
   } // Copy the file into the buffer:
   result = fread(program, 1, p_size, p_file);
@@ -61,18 +61,18 @@ int main(int argc, char *argv[]) {
         printf("\n-i: Path to the program to be interpreted (example: biplan -i fib.bip) \n\n");
         exit(1);
         break;
-      case '?': printf("\nInvalid argument received");
+      case '?': printf("\n\033[31m⚠️ Invalid argument received\033[m");
       break;
     }
   }
-  if(verbose) printf("BIPLAN interpreter by Giovanni Blu Mitolo \n");
+  if(verbose) printf("\nBIPLAN (Byte-coded Interpreted Programming Language) interpreter\nGiovanni Blu Mitolo 2025\n\n");
   bip_init(program, error_callback, 0, 0, 0);
   // Initialize interpreter using cout as print and stdin as input
-  if(verbose) printf("\nInterpreter output: \n\n");
+  if(verbose) printf("Interpreter output: \n\n");
   uint32_t t = BPM_MICROS();
   while(bip_run());
   t = BPM_MICROS() - t;
-  if(verbose) printf("\n\nExecution duration: %u microseconds \n", t);
+  if(verbose) printf("\n\n\033[32m✅ Terminated without errors\033[m\nExecution duration: %u microseconds \n\n", t);
   else printf("\n");
   exit(EXIT_SUCCESS);
 }
