@@ -574,9 +574,56 @@ void bcc_compile_includes(char *prog) {
   while(pos) pos = bcc_compile_include(prog, pos);
 }
 
+/* Undefined function check ------------------------------------------------ */
+void bcc_check_definitions(const char *prog) {
+  BCC_RETURN_IF_FAILED(!prog, );
+  const char *p = prog, *p2, *p3;
+  while(p && *p) {
+    if(!bcc_in_string(prog, p) && BCC_IS_KEYWORD(*p)) {
+      p2 = p;
+      char name[BP_KEYWORD_MAX] = {0};
+      uint8_t i = 0;
+      while(BCC_IS_KEYWORD(*p) && (i < BP_KEYWORD_MAX - 1)) 
+        name[i++] = *(p++);
+      name[i] = 0;
+      p3 = p;
+      while(p3 && BCC_SUGAR(p3)) p3++;
+      if(p3 && *p3 == BP_L_RPARENT) { 
+        bool is_system = false; // Check if it's a system function
+        for(int j = 0; bcc_system_functions[j].human != NULL; j++)
+          if(strcmp(name, bcc_system_functions[j].human) == 0) {
+            is_system = 1;
+            break;
+          }
+        bool is_defined = 0;
+        p3 = prog; // Check if defined
+        while((p3 = strstr(p3, BP_FUN_DEF_HUMAN))) {
+          if(!bcc_in_string(prog, p3)) {
+            p3 = p3 + strlen(BP_FUN_DEF_HUMAN);
+            while(p3 && BCC_SUGAR(p3)) p3++;
+            if(strncmp(p3, name, strlen(name)) == 0) {
+              p3 = p3 + strlen(name);
+              if(!BCC_IS_KEYWORD(*p3)) {
+                is_defined = 1;
+                break;
+              }
+            }
+          }
+          p3++;
+        }
+        if(!is_system && !is_defined) 
+          return bcc_error(bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_UNDEF);
+        if(is_system && is_defined)
+          return bcc_error(bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_SYSTEM);
+      }
+    } p++;
+  }
+}
+
 /* Pre-compilation checks -------------------------------------------------- */
 int bcc_pre_compilation_checks(const char *prog) {
   if(bcc_fail) return bcc_fail;
+  bcc_check_definitions(prog);
   if(!bcc_check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT, 1))
     bcc_error(0, NULL, BP_ERROR_ROUND_PARENTHESIS);
   if(!bcc_check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, 1))
