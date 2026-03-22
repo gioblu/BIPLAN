@@ -5,16 +5,16 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
 # All examples to be tested in this run
 declare -a tests=(
-	"bcc-compiler/fib" 
-	"x-drawer/x-drawer" 
-	"mem-test/mem-test" 
-	"read-file/read-file" 
-	"notes/notes" 
-	"graphics/graphics" 
-	"strings/strings" 
-	"draw-line/draw-line" 
+	"bcc-compiler/fib"
+	"x-drawer/x-drawer"
+	"mem-test/mem-test"
+	"read-file/read-file"
+	"notes/notes"
+	"graphics/graphics"
+	"strings/strings"
+	"draw-line/draw-line"
 	"date-epoch/date-epoch"
-	"math/math" 
+	"math/math"
 	"calc/calc"
 	"../OSX/matrix/matrix"
 	"../OSX/ASCII-table/ASCII-table"
@@ -44,12 +44,12 @@ do
 	error="unknown"
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
 	[ $code -eq 1 ] && ((fail++))
-	[ $code -eq 0 ] && 
-		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}.biplan" || 
+	[ $code -eq 0 ] &&
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}.biplan" ||
 	    echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}.biplan ($error)"
 done
 
 plural=""
-[ $fail -gt 1 ] && plural="s" || plural="" 
-[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  || 
-				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m"
+[ $fail -gt 1 ] && plural="s" || plural=""
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  ||
+				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m\n"

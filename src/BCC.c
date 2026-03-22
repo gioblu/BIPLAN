@@ -8,8 +8,8 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com 
-  
+  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
+
   NOTE: despite its .c extension this file may be compiled as C++ if required
   by the interface used. */
 
@@ -47,16 +47,16 @@ char *bcc_stop = NULL;
 #define BCC_SUGAR(P) \
   (*(P) == BP_SPACE) || (*(P) == BP_CR) || (*(P) == BP_LF) || (*(P) == BP_TAB)
 
-/* Returns the value received and calls error if the program is 
+/* Ignores syntactic sugar ------------------------------------------------- */
+#define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
+
+/* Returns the value received and calls error if the program is
    terminated/not accessible or if something else failed previously -------- */
 #define BCC_RETURN_IF_FAILED(C, V) \
   if((C) || bcc_fail) { \
     if(!bcc_fail) bcc_error(0, NULL, BP_ERROR_PROGRAM_GET); \
     return V; \
   }
-
-/* Ignores syntactic sugar ------------------------------------------------- */
-#define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
 
 /* Function called in case of compilation error ---------------------------- */
 void bcc_error(uint16_t line, const char *position, const char *string) {
@@ -72,7 +72,7 @@ uint16_t bcc_line(const char *prog, const char *pos) {
   while((p && *p) && (p <= pos)) {
     if(!bcc_in_string(prog, p) && (*p == BP_LF)) i++;
     p++;
-  } 
+  }
   return i;
 }
 
@@ -83,7 +83,7 @@ int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
   const char *p = prog;
   while(p && *p) {
     if(
-      !bcc_in_string(prog, p) && 
+      !bcc_in_string(prog, p) &&
       (ignore || p == prog || (p > prog && !BCC_IS_ADDR(*(p - 1))))
     ) {
       if((a == b) && (*p == a)) ia = !ia;
@@ -91,9 +91,9 @@ int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
         if(*p == a) ia++;
         if(*p == b) ib++;
       }
-    } 
+    }
     p++;
-  } 
+  }
   return (ia == ib);
 }
 
@@ -117,7 +117,7 @@ int bcc_in_string(const char *prog, const char *pos) {
       if(*p == BP_STRING) in_str = !in_str;
       p++;
     }
-  } 
+  }
   return in_str;
 }
 
@@ -128,13 +128,12 @@ void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
   int in_str = 0;
   while(p2 && *p2) {
     *p = *p2++;
-    if(*p == BP_STRING) {
+    if(*p == BP_STRING)
       if(!in_str || (in_str && p > prog && (*(p - 1) != BP_BACKSLASH)))
         in_str = !in_str;
-    }
     if((*p != v1) && (*p != v2) && (*p != v3) && (*p != v4)) p++;
     else if(in_str) p++;
-  } 
+  }
   *p = 0;
 }
 
@@ -143,9 +142,9 @@ void bcc_remove_comments(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   char *p;
   while((p = strstr(prog, BP_COMMENT)))
-    if(!bcc_in_string(prog, p)) {
+    if(!bcc_in_string(prog, p))
       while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
-    } else p++;
+    else p++;
 }
 
 /* Compiles character constants such as '@' into 64 (its decimal value) ---- */
@@ -168,12 +167,12 @@ void bcc_compile_char_constants(char *prog) {
 
 /* Compiles a single occurrence of a keyword into bytecode ----------------- */
 char *bcc_compile_step(
-  char *prog, 
-  char *pos, 
-  const char *key, 
-  const char *code, 
-  char post, 
-  int addr, 
+  char *prog,
+  char *pos,
+  const char *key,
+  const char *code,
+  char post,
+  int addr,
   char end
 ) {
   BCC_RETURN_IF_FAILED(!prog || !pos || !key || !code, NULL);
@@ -213,16 +212,16 @@ char *bcc_compile_step(
       if(*p == post) *p = BP_SPACE;
     }
     return p;
-  } 
+  }
   return NULL;
 }
 
 void bcc_compile(
-  char *prog, 
-  const char *key, 
-  const char *code, 
-  char post, 
-  int addr, 
+  char *prog,
+  const char *key,
+  const char *code,
+  char post,
+  int addr,
   char end
 ) {
   if(bcc_fail) return;
@@ -231,10 +230,10 @@ void bcc_compile(
 }
 
 void bcc_compile_char(
-  char *prog, 
-  const char *key, 
-  char code, 
-  char post, 
+  char *prog,
+  const char *key,
+  char code,
+  char post,
   int addr
 ) {
   if(bcc_fail) return;
@@ -265,7 +264,7 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
       longest = p - (i + 1);
       result = i;
     }
-  } 
+  }
   return (result) ? longest : NULL;
 }
 
@@ -273,7 +272,7 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
 char *bcc_compile_variable(char *prog, char *position, char var_type) {
   BCC_RETURN_IF_FAILED(!prog || !position, NULL);
   char type = var_type;
-  if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN)) 
+  if((var_type == BP_VAR_ADDR_HUMAN) || (var_type == BP_GLOBAL_HUMAN))
     type = BP_VAR_ADDR;
   char *p, str[BP_KEYWORD_MAX] = {0}, code[4] = {type, 0, 0, 0};
   uint8_t n = 0;
@@ -298,9 +297,9 @@ char *bcc_compile_variable(char *prog, char *position, char var_type) {
       p = strstr(position, str);
       if((p && *p) && !bcc_in_string(prog, p)) return p;
       return position;
-    } 
+    }
     return p;
-  } 
+  }
   return NULL;
 }
 
@@ -363,8 +362,8 @@ int bcc_check_redefinition(const char *prog, int type) {
       uint8_t i = 0;
       while(
         *name_start && (
-          type ? 
-            BCC_IS_KEYWORD(*name_start) : 
+          type ?
+            BCC_IS_KEYWORD(*name_start) :
             BCC_IS_CAP_KEYWORD(*name_start)
         ) && (i < BP_KEYWORD_MAX - 1)
       ) name[i++] = *name_start++;
@@ -377,19 +376,19 @@ int bcc_check_redefinition(const char *prog, int type) {
             const char *check_name = search_pos + strlen(keyword);
             while(*check_name && BCC_SUGAR(check_name)) check_name++;
             uint8_t match = 1;
-            for(uint8_t j = 0; j < i; j++) 
+            for(uint8_t j = 0; j < i; j++)
               if(check_name[j] != name[j] && !(match = 0)) break;
             if(
               match && !(
-                type ? 
-                  BCC_IS_KEYWORD(check_name[i]) : 
+                type ?
+                  BCC_IS_KEYWORD(check_name[i]) :
                   BCC_IS_CAP_KEYWORD(check_name[i])
               )
             ) count++;
             if(count > 1) {
               bcc_error(
-                bcc_line(prog, p), 
-                p, 
+                bcc_line(prog, p),
+                p,
                 type ? BP_ERROR_FUNCTION_REDEF : BP_ERROR_MACRO_REDEF
               );
               return 0;
@@ -406,7 +405,6 @@ int bcc_check_redefinition(const char *prog, int type) {
 Funtion parameters are stored at the end of the address space.
 Each function uses the same addresses for its parameters consuming only
 BP_PARAMS addresses for all parameters present in the program. ------------- */
-
 int bcc_compile_function_step(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, 0);
   char fn_keyword[BP_KEYWORD_MAX] = {0}, fn_address[3];
@@ -419,8 +417,8 @@ int bcc_compile_function_step(char *prog) {
     *(p++) = bcc_fun_id;
     while(!BCC_SUGAR(p)) *(p++) = BP_SPACE;
     while(
-      (++p && *p) && 
-      (*p != BP_L_RPARENT) && 
+      (++p && *p) &&
+      (*p != BP_L_RPARENT) &&
       (keyword_length < (BP_KEYWORD_MAX - 1))
     ) {
       if(!BCC_SUGAR(p)) { // Ignore sugar postfix
@@ -456,7 +454,7 @@ int bcc_compile_function_step(char *prog) {
       bcc_compile(prog, fn_keyword, fn_address, BP_L_RPARENT, 1, '(');
       return 1;
     } bcc_error(0, NULL, BP_ERROR_RETURN);
-  } 
+  }
   return 0;
 }
 
@@ -583,12 +581,12 @@ void bcc_check_undefined_functions(const char *prog) {
       p2 = p;
       char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
-      while(BCC_IS_KEYWORD(*p) && (i < BP_KEYWORD_MAX - 1)) 
+      while(BCC_IS_KEYWORD(*p) && (i < BP_KEYWORD_MAX - 1))
         name[i++] = *(p++);
       name[i] = 0;
       p3 = p;
       while(p3 && BCC_SUGAR(p3)) p3++;
-      if(p3 && *p3 == BP_L_RPARENT) { 
+      if(p3 && *p3 == BP_L_RPARENT) {
         bool is_system = false; // Check if it's a system function
         for(int j = 0; bcc_system_functions[j].human != NULL; j++)
           if(strcmp(name, bcc_system_functions[j].human) == 0) {
@@ -611,7 +609,7 @@ void bcc_check_undefined_functions(const char *prog) {
           }
           p3++;
         }
-        if(!is_system && !is_defined) 
+        if(!is_system && !is_defined)
           return bcc_error(bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_UNDEF);
         if(is_system && is_defined)
           return bcc_error(bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_SYSTEM);
@@ -652,8 +650,8 @@ void bcc_post_compilation_checks(const char *prog) {
 int bcc_run(char *prog) {
   bcc_find_end(prog);
   /* Comments are removed twice to first permit the parsing of the includes
-     (comments could be present before them) and then remove the comments 
-     present in the included files. */ 
+     (comments could be present before them) and then remove the comments
+     present in the included files. */
   bcc_remove_comments(prog);
   bcc_compile_includes(prog);
   bcc_remove_comments(prog);
@@ -696,6 +694,8 @@ int bcc_run(char *prog) {
   bcc_compile(prog, "CR", "13", 0, 0, 0);
   bcc_remove(prog, BP_CR, BP_LF, BP_SPACE, BP_TAB);
   bcc_post_compilation_checks(prog);
-  bcc_var_id = BP_OFFSET, bcc_string_id = BP_OFFSET + BP_ARGS, bcc_fun_id = BP_OFFSET;
+  bcc_var_id = BP_OFFSET;
+  bcc_string_id = BP_OFFSET + BP_ARGS;
+  bcc_fun_id = BP_OFFSET;
   return !bcc_fail;
 };

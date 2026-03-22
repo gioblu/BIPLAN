@@ -9,8 +9,8 @@
                                            (O)
 
   Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
-  BIP bytecode interpreter 
-  
+  BIP bytecode interpreter
+
   NOTE: despite its .c extension this file may be compiled as C++ if required
   by the interface used. */
 
@@ -333,9 +333,9 @@ BP_FUN_T BP_VAR_T bip_term() {
     f2 = bip_factor();
     switch(op) {
       case BP_MULT: f1 = f1 * f2; break;
-      case BP_DIV:  
+      case BP_DIV:
         if(!f2 && (op == BP_DIV)) bip_error(dcd_ptr, BP_ERROR_DIV_ZERO);
-        else f1 = f1 / f2; 
+        else f1 = f1 / f2;
         break;
       case BP_MOD:  f1 = f1 % f2; break;
     } op = dcd_current;
@@ -590,7 +590,7 @@ void bip_for_call() {
 
 /* NEXT -------------------------------------------------------------------- */
 BP_FUN_T void bip_next_call() {
-  if(bip_fw_id) { 
+  if(bip_fw_id) {
     if(bip_cycles[bip_fw_id - 1].var_id == BP_VARIABLES) {
       char *bp_while_next_addr = dcd_ptr;
       DCD_GOTO(bip_cycles[bip_fw_id - 1].address);

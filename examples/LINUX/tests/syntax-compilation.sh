@@ -40,14 +40,14 @@ do
 	result=$(bcc "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.bip")
 	code=$?
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
-	[ $code -eq 0 ] && 
-		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan" || 
+	[ $code -eq 0 ] &&
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan" ||
 	    echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan ($error)"
 	[ $code -gt 0 ] && ((fail++))
 done
 
 plural=""
 
-[ $fail -gt 1 ] && plural="s" || plural="" 
-[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  || 
-				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m\n"
+[ $fail -gt 1 ] && plural="s" || plural=""
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  ||
+				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m"
