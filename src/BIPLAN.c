@@ -111,6 +111,82 @@ BPM_SERIAL_T       bip_serial_fun;
     DCD_NEXT; \
   }
 
+/* Bytecode dispatch table - optimized dispatch for fast execution */
+typedef void (*bip_dispatch_fn_t)(void);
+
+#ifdef BIP_DISPATCH_TABLE
+/* Dispatch handler implementations */
+static void bip_dispatch_var_addr()   { bip_var_addr_call(); }
+static void bip_dispatch_str_addr()   { bip_string_assignment_call(); }
+static void bip_dispatch_function()   { bip_function_call(); DCD_NEXT; }
+static void bip_dispatch_factor()     { bip_factor(); }
+static void bip_dispatch_next()       { DCD_NEXT; bip_next_call(); }
+static void bip_dispatch_for()        { DCD_NEXT; bip_for_call(); }
+static void bip_dispatch_if()         { DCD_NEXT; bip_if_call(); }
+static void bip_dispatch_else()       { DCD_NEXT; bip_skip_block(); }
+static void bip_dispatch_endif()      { DCD_NEXT; }
+static void bip_dispatch_mem_acc()    { bip_mem_assignment_call(); }
+static void bip_dispatch_while()      { DCD_NEXT; bip_while_call(); }
+static void bip_dispatch_break()      { --bip_fw_id; bip_break_call(); }
+static void bip_dispatch_continue()   { bip_continue_call(); }
+static void bip_dispatch_io()         { DCD_NEXT; bip_io_set_call(); }
+static void bip_dispatch_delay()      { DCD_NEXT; BPM_DELAY(bip_expression()); }
+static void bip_dispatch_print()      { DCD_NEXT; bip_print_call(); }
+static void bip_dispatch_file()       { bip_file_set_call(); }
+static void bip_dispatch_serial()     { bip_serial_call(); }
+static void bip_dispatch_ltoa()       { bip_ltoa_call(); }
+static void bip_dispatch_restart()    { bip_restart_call(); }
+static void bip_dispatch_end()        { bip_end_call(); }
+static void bip_dispatch_error()      { bip_error(dcd_ptr, BP_ERROR_STATEMENT); }
+
+/* Dispatch table: indexed by bytecode value */
+static bip_dispatch_fn_t bip_dispatch_table[256] = {0};
+static bool bip_dispatch_table_initialized = false;
+
+static void bip_init_dispatch_table() {
+  if(bip_dispatch_table_initialized) return;
+
+  /* Initialize null handlers for safety */
+  for(int i = 0; i < 256; i++)
+    bip_dispatch_table[i] = bip_dispatch_error;
+
+  /* Map bytecode values to handlers */
+  bip_dispatch_table[BP_FOR_ADDR]  = bip_dispatch_var_addr;
+  bip_dispatch_table[BP_VAR_ACC]   = bip_dispatch_var_addr;
+  bip_dispatch_table[BP_VAR_ADDR]  = bip_dispatch_var_addr;
+  bip_dispatch_table[BP_STR_ACC]   = bip_dispatch_str_addr;
+  bip_dispatch_table[BP_STR_ADDR]  = bip_dispatch_str_addr;
+  bip_dispatch_table[BP_FUNCTION]  = bip_dispatch_function;
+  bip_dispatch_table[BP_INCREMENT] = bip_dispatch_factor;
+  bip_dispatch_table[BP_DECREMENT] = bip_dispatch_factor;
+  bip_dispatch_table[BP_NEXT]      = bip_dispatch_next;
+  bip_dispatch_table[BP_FOR]       = bip_dispatch_for;
+  bip_dispatch_table[BP_IF]        = bip_dispatch_if;
+  bip_dispatch_table[BP_ELSE]      = bip_dispatch_else;
+  bip_dispatch_table[BP_ENDIF]     = bip_dispatch_endif;
+  bip_dispatch_table[BP_MEM_ACC]   = bip_dispatch_mem_acc;
+  bip_dispatch_table[BP_WHILE]     = bip_dispatch_while;
+  bip_dispatch_table[BP_BREAK]     = bip_dispatch_break;
+  bip_dispatch_table[BP_CONTINUE]  = bip_dispatch_continue;
+  bip_dispatch_table[BP_IO]        = bip_dispatch_io;
+  bip_dispatch_table[BP_DELAY]     = bip_dispatch_delay;
+  bip_dispatch_table[BP_PRINT]     = bip_dispatch_print;
+  bip_dispatch_table[BP_FILE]      = bip_dispatch_file;
+  bip_dispatch_table[BP_SERIAL]    = bip_dispatch_serial;
+  bip_dispatch_table[BP_LTOA]      = bip_dispatch_ltoa;
+  bip_dispatch_table[BP_RESTART]   = bip_dispatch_restart;
+  bip_dispatch_table[BP_END]       = bip_dispatch_end;
+
+  bip_dispatch_table_initialized = true;
+}
+
+/* Optimized dispatch using jump table */
+BP_FUN_T void bip_statement_dispatch() {
+  bip_dispatch_table[(unsigned char)dcd_current]();
+}
+
+#define BP_STATEMENT bip_statement_dispatch()
+#else
 #define BP_STATEMENT \
   switch(dcd_current) { \
     case BP_FOR_ADDR: ; \
@@ -140,6 +216,7 @@ BPM_SERIAL_T       bip_serial_fun;
     case BP_END:        bip_end_call(); break; \
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT); \
   }
+#endif
 
 /* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
 BP_FUN_T void bip_var_addr_call() {

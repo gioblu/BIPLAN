@@ -39,6 +39,10 @@ void bip_init(char *, bip_error_t, BPM_PRINT_T, BPM_INPUT_T, BPM_SERIAL_T);
 
 void bip_set_default();
 
+#ifdef BIP_JUMP_TABLE
+static void bip_statement_jump_table();
+#endif
+
 static bool bip_ignore(char c);
 
 static BP_VAR_T bip_get_variable(int n);
