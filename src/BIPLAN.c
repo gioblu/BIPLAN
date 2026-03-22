@@ -468,18 +468,22 @@ BP_FUN_T BP_VAR_T bip_relation() {
 };
 
 /* READ SAFELY A STRING ---------------------------------------------------- */
-void bip_read_string(char *s, uint16_t o = 0) {
-  if(!decoder_string(s, sizeof(bip_string), o))
+void bip_read_string(char *s) {
+  if(!decoder_string(s, sizeof(bip_string)))
     bip_error(dcd_ptr, BP_ERROR_STRING_END);
   else BP_EXPECT(BP_STRING);
   while(bip_ignore(BP_PLUS)) {
-    o = strlen(s);
+    uint16_t o = strlen(s);
     if(bip_ignore(BP_STR_ADDR)) {
       uint8_t ci = *(dcd_ptr - 1) - BP_OFFSET;
       for(uint16_t i = 0; bip_strings[ci][i]; i++)
         *(s + o + i) = bip_strings[ci][i];
     }
-    if(dcd_current == BP_STRING) bip_read_string(s, o);
+    if(dcd_current == BP_STRING) {
+      if(!decoder_string(s + o, sizeof(bip_string)))
+        bip_error(dcd_ptr, BP_ERROR_STRING_END);
+      else BP_EXPECT(BP_STRING);
+    }
   }
 };
 

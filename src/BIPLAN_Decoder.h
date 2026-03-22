@@ -89,7 +89,7 @@ void remove_backslash(char *s) {
 };
 
 /* Decodes a string -------------------------------------------------------- */
-bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
+bool decoder_string(char *d, uint16_t l) {
   char *string_end;
   uint16_t string_length;
   bool bs = false;
@@ -100,7 +100,7 @@ bool decoder_string(char *d, uint16_t l, uint16_t o = 0) {
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
   if(l < string_length) string_length = l;
-  memcpy(d + o, dcd_ptr + 1, string_length - o);
+  memcpy(d, dcd_ptr + 1, string_length);
   d[string_length] = 0;
   if(bs) remove_backslash(d);
   return true;
