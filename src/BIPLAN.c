@@ -301,6 +301,9 @@ void bip_init(
   bip_error_fun = error;
   bip_print_fun = print;
   bip_data_in_fun = data_input;
+  #ifdef BIP_DISPATCH_TABLE
+  bip_init_dispatch_table();
+  #endif
 };
 
 void bip_set_default() {
