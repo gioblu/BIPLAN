@@ -1,0 +1,136 @@
+
+// Very crude library to simplify the use of ANSI sequences.
+// Simplifies the set-up of basic graphic rendition in terminal applications.
+// Giovanni Blu Mitolo 2025
+
+// NOTE: This is very slow, it calls system!
+// (each call may last more than 1 millisecond)
+
+// ANSI sequences were implemented in the early 1970s to replace
+// vendor-specific sequences in hardware text terminals and by
+// the early 1980s became a widespread standard in computer systems.
+// Today, most terminal emulators and consoles interpret at least
+// a portion of the ANSI standard.
+
+// Biplan labels for colors and rendition parameters
+
+macro BLACK     0
+macro RED       1
+macro GREEN     2
+macro YELLOW    3
+macro BLUE      4
+macro PURPLE    5
+macro CYAN      6
+macro WHITE     7
+
+macro REGULAR   0
+macro BOLD      1
+macro ITALIC    2
+macro UNDERLINE 3
+macro BLINK     4
+
+// ANSI escape codes for text color
+
+macro TXT_BLACK  system "echo -n '\033[30m'"
+macro TXT_RED    system "echo -n '\033[31m'"
+macro TXT_GREEN  system "echo -n '\033[32m'"
+macro TXT_YELLOW system "echo -n '\033[33m'"
+macro TXT_BLUE   system "echo -n '\033[34m'"
+macro TXT_PURPLE system "echo -n '\033[35m'"
+macro TXT_CYAN   system "echo -n '\033[36m'"
+macro TXT_WHITE  system "echo -n '\033[37m'"
+
+// ANSI escape codes for text formatting
+
+macro TXT_BOLD              system "echo -n '\033[1m'"
+macro TXT_BOLD_NONE         system "echo -n '\033[22m'"
+macro TXT_ITALIC            system "echo -n '\033[3m'"
+macro TXT_ITALIC_NONE       system "echo -n '\033[23m'"
+macro TXT_UNDERLINE         system "echo -n '\033[4m'"
+macro TXT_UNDERLINE_NONE    system "echo -n '\033[24m'"
+macro TXT_BLINK             system "echo -n '\033[5m'"
+macro TXT_BLINK_NONE        system "echo -n '\033[25m'"
+
+// Reset all formatting
+
+macro TXT_RESET             system "echo -n '\033[0m'"
+
+// ANSI escape codes for background color
+
+macro BG_BLACK  system "echo -n '\033[0;40m'"
+macro BG_RED    system "echo -n '\033[0;41m'"
+macro BG_GREEN  system "echo -n '\033[0;42m'"
+macro BG_YELLOW system "echo -n '\033[0;43m'"
+macro BG_BLUE   system "echo -n '\033[0;44m'"
+macro BG_PURPLE system "echo -n '\033[0;45m'"
+macro BG_CYAN   system "echo -n '\033[0;46m'"
+macro BG_WHITE  system "echo -n '\033[0;47m'"
+
+// ANSI escape codes for cursor visibility
+
+macro SHOW_CURSOR system "echo -n '\e[?25h'"
+macro HIDE_CURSOR system "echo -n '\e[?25l'"
+
+// Set text color
+
+function ansi_color($color, locals: $v)
+  if $color == BLACK $v = TXT_BLACK
+  else if $color == RED $v = TXT_RED
+    else if $color == GREEN $v = TXT_GREEN
+      else if $color == YELLOW $v = TXT_YELLOW
+        else if $color == BLUE $v = TXT_BLUE
+          else if $color == PURPLE $v = TXT_PURPLE
+            else if $color == CYAN $v = TXT_CYAN
+              else
+                if $color == WHITE  $v = TXT_WHITE end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+done
+
+// Set background
+
+function ansi_background($color, locals: $v)
+  if $color == BLACK $v = BG_BLACK
+  else if $color == RED $v = BG_RED
+    else if $color == GREEN $v = BG_GREEN
+      else if $color == YELLOW $v = BG_YELLOW
+        else if $color == BLUE $v = BG_BLUE
+          else if $color == PURPLE $v = BG_PURPLE
+            else if $color == CYAN $v = BG_CYAN
+              else
+                if $color == WHITE $v = BG_WHITE end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+done
+
+// Set style
+
+function ansi_style($style, locals: $v)
+  if $style == REGULAR $v = TXT_RESET
+  else if $style == BOLD $v = TXT_BOLD
+    else if $style == ITALIC $v = TXT_ITALIC
+      else if $style == UNDERLINE $v = TXT_UNDERLINE
+        else
+          if $style == BLINK $v = TXT_BLINK end
+        end
+      end
+    end
+  end
+done
+
+// Set cursor visibility
+
+function ansi_cursor($state, locals: $v)
+  if $state == 1 $v = SHOW_CURSOR
+  else $v = HIDE_CURSOR end
+done
