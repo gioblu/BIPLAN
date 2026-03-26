@@ -43,10 +43,6 @@
 
   /* Maximum length of a number (represented as a string) ----------------- */
 
-  #ifndef BP_NUM_MAX
-    #define BP_NUM_MAX 20 // Handle 64 bits machine limit
-  #endif
-
   uint32_t micros();
 
   uint32_t millis();

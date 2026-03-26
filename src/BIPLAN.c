@@ -8,7 +8,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2026 - gioscarab@gmail.com
   BIP bytecode interpreter
 
   NOTE: despite its .c extension this file may be compiled as C++ if required
@@ -500,18 +500,20 @@ void bip_print_call() {
     if(dcd_current == BP_STR_ACC) {
       v = bip_access(BP_STR_ACC);
       if(dcd_current == BP_ACCESS)
-        BPM_PRINT_WRITE(bip_print_fun, bip_strings[v][bip_access(BP_ACCESS)]);
-      else BPM_PRINT_WRITE(bip_print_fun, bip_strings[v]);
+        BPM_PRINT_WRITE(bip_strings[v][bip_access(BP_ACCESS)]);
+      else BPM_PRINT_WRITE(bip_strings[v]);
     } else if(dcd_current == BP_STRING) {
       bip_read_string(bip_string);
-      BPM_PRINT_WRITE(bip_print_fun, bip_string);
+      BPM_PRINT_WRITE(bip_string);
       BP_EMPTY_STRING;
     } else if(dcd_current == BP_STR_ADDR) {
       v = bip_factor();
       if(bip_return_type == BP_ACCESS) {
-        if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
-        else BPM_PRINT_WRITE(bip_print_fun, v);
-      } else BPM_PRINT_WRITE(bip_print_fun, bip_strings[v]);
+        if(is_char) BPM_PRINT_WRITE((char)v);
+        else BPM_PRINT_WRITE(v);
+      } else {
+        BPM_PRINT_WRITE(bip_strings[v]);
+      }
     } else if(dcd_current == BP_RESTART) {
       BPM_PRINT_CLEAR;
       DCD_NEXT;
@@ -520,9 +522,9 @@ void bip_print_call() {
     } else {
       v = bip_relation();
       if(bip_return_type == BP_STR_ADDR)
-        BPM_PRINT_WRITE(bip_print_fun, bip_strings[v]);
-      else if(is_char) BPM_PRINT_WRITE(bip_print_fun, (char)v);
-      else BPM_PRINT_WRITE(bip_print_fun, v);
+        BPM_PRINT_WRITE(bip_strings[v]);
+      else if(is_char) BPM_PRINT_WRITE((char)v);
+      else BPM_PRINT_WRITE(v);
     }
   } while(dcd_current == BP_COMMA);
 };

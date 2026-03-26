@@ -10,7 +10,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2026 - gioscarab@gmail.com
   BIP bytecode interpreter */
 
 #pragma once
@@ -77,7 +77,7 @@ static BP_VAR_T bip_return_call();
 
 static BP_VAR_T bip_function_call();
 
-static void bip_next_call(); 
+static void bip_next_call();
 
 static void bip_var_addr_call();
 

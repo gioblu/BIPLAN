@@ -14,14 +14,13 @@
   BIP interpreter bounds and bytecode dictionary */
 
 #pragma once
-
 #include "utils/errors/BIPLAN_Errors.h"
 #include "interfaces/BIPLAN_Interfaces.h"
 
 #ifdef BIP_FAST
   #define BP_FUN_T static inline
 #else
-  #define BP_FUN_T static 
+  #define BP_FUN_T
 #endif
 
 /* BIP and BIPLAN language syntax ------------------------------------------ */

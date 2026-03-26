@@ -39,16 +39,16 @@
   #define BP_OFFSET 35
 #endif
 
-/* Maximum amount of variables is 91 (87 effectively used). The end of the 
+/* Maximum amount of variables is 91 (87 effectively used). The end of the
    variable address-space is used by parameters and for variables. Consider
-   that the function parameters are stored in the same address space, so the 
+   that the function parameters are stored in the same address space, so the
    amount of user-defined global variables is: 87 - BP_PARAMS -------------- */
 
 #ifndef BP_VARIABLES
   #define BP_VARIABLES 91
 #endif
 
-/* Maximum amount of for variables is 91 (87 effectively used). For now for 
+/* Maximum amount of for variables is 91 (87 effectively used). For now for
    variables addressess are compiled infecciently, Each gets a new address.  */
 
 #ifndef BP_FOR_VARIABLES
@@ -60,8 +60,8 @@
   #define BP_ARGS 5
 #endif
 
-/* Maximum amount of strings is 91 (87 effectively used). Consider that the 
-   program arguments are stored in the same address space, so the 
+/* Maximum amount of strings is 91 (87 effectively used). Consider that the
+   program arguments are stored in the same address space, so the
    amount of user-defined strings is: 87 - BP_ARGS ------------------------- */
 
 #ifndef BP_STRINGS
@@ -95,7 +95,8 @@
 /* Maximum length of a number (represented as a string) -------------------- */
 
 #ifndef BP_NUM_MAX
-  #define BP_NUM_MAX 20 // Handle 64 bits machine limit
+  // Handle 64 bits machine limit
+  #define BP_NUM_MAX 20
 #endif
 
 /* Maximum length of a string. --------------------------------------------- */
