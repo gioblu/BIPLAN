@@ -37,4 +37,3 @@
 #define BP_ERROR_MACRO_REDEF         "macro redefinition"
 #define BP_ERROR_INCLUDE_PATH        "included file not found"
 #define BP_ERROR_INCLUDE_READ        "included file read failure"
-

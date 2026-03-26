@@ -2,21 +2,21 @@
 
 // Get number of days in a month
 // $m must be an integer, returns an integer
-function days($m, locals: $r)
+function days($m)
   if ($m == 0) || ($m == 2) || ($m == 4) ||
-    ($m == 6) || ($m == 7) || ($m == 9) || ($m == 11) $r =  31
+    ($m == 6) || ($m == 7) || ($m == 9) || ($m == 11) return 31
   else
-    if ($m == 3) || ($m == 5) || ($m == 8) || ($m == 10) $r = 30
-    else $r = 28 end
+    if ($m == 3) || ($m == 5) || ($m == 8) || ($m == 10) return 30
+    else return 28 end
   end
-return $r
+done
 
 // Get if a given year is a leap year or not
 // $y must be an integer, returns an integer
-function leap_year($y, locals: $r)
-  if $y % 4 && $y % 100 && $y % 400 $r = false
-  else $r = true end
-return $r
+function leap_year($y)
+  if $y % 4 && $y % 100 && $y % 400 return false
+  else return true end
+done
 
 // Get number of seconds since 1 Jan 1970
 // All parameters must be integers, returns an integer
@@ -31,7 +31,9 @@ function epoch($D, $M, $Y, $h, $m, $s, locals: $r)
   $r = ($r + (($D - 1) * 86400) + ($h * 3600) + ($m * 60) + $s)
   // If is January and is a leap year subtract one day (still not occurred)
   if $M == 1 && leap_year($Y) $r = $r - 86400 end
-return $r
+  return $r
+done
+
 
 // Format 2 digits portions of a date (days, months, hours, minutes and seconds)
 // All parameters must be integers, returns an integer
@@ -43,7 +45,8 @@ function format($day, $dest, $n)
     :[$dest][$n] = '0' + (($day / 10) % 10)
     :[$dest][$n + 1] = '0' + ($day % 10)
   end
-return 0
+  return 0
+done
 
 // Generate date from epoch
 // $e must be an integer, $str must be a reference to a string
@@ -91,4 +94,5 @@ function date($e, $str, locals: $D, $M, $Y, $h, $m, $s, $r)
   format($m, $str, 14)
   :[$str][16] = ':'
   format($s, $str, 17)
-return $str
+  return $str
+done

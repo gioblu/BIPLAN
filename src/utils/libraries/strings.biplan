@@ -5,14 +5,15 @@
 function find_substring($haystack, $needle, locals: $r)
 	$r = -1
 	for #h = 0 to size :[$haystack]
-	  	for #n = 0 to size :[$needle]
-	  		if :[$haystack][#h + #n] == :[$needle][#n]
-	  			$r = #h
-			  else $r = -1 break end
-	  	next
-	  	if $r != -1 break end
-  	next
-return $r
+    for #n = 0 to size :[$needle]
+      if :[$haystack][#h + #n] == :[$needle][#n]
+        $r = #h
+      else $r = -1 break end
+    next
+    if $r != -1 return $r end
+  next
+  return $r
+done
 
 // Searches for the first occurrence of a character within a string
 // Returns -1 if no occurrence is found or a numeric index if found
@@ -20,12 +21,13 @@ return $r
 function find_char($str, $chr)
 	$r = - 1
 	for #i = 0 to size :[$str]
-		if :[$str][#i] == $chr $r = #i end
+		if :[$str][#i] == $chr return #i end
 	next
-return $r
+  return $r
+done
 
 // Gets string from input (blocks until terminator character is found)
-// $index: string index where to write data coming from input 
+// $index: string index where to write data coming from input
 // $terminator: character at which the string should terminate
 // $output: when set to 1 prints out input and handles character deletion
 // Returns 0
@@ -46,4 +48,4 @@ function string_from_input($index, $terminator, $output)
       end
     end
   next
-return 0
+done

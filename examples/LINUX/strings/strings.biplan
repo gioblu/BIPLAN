@@ -4,7 +4,6 @@ include "/usr/local/BIPLAN/strings.biplan"
 
 print "Printing entire string: ", :s, char LF
 
-
 print "Printing string character by character: "
 
 for #i = 0 to size :s

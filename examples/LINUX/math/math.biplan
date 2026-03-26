@@ -12,9 +12,9 @@ print "17 is a prime number: ", prime(17), char LF
 
 @sign = sign(-2)
 
-if @sign 
+if @sign
 	@sign = '+'
-else 
+else
 	@sign = '-'
 end
 
@@ -22,7 +22,7 @@ print "Sign of -2: ", char @sign, char LF
 
 @prime = prime(10)
 
-print "10 is a prime number: " 
+print "10 is a prime number: "
 
 if @prime print "true"
 else print "false" end

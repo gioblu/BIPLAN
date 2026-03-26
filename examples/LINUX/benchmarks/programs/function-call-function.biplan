@@ -8,7 +8,9 @@ next
 stop
 
 function op($a, $b)
-return sum($a, $b)
+  return sum($a, $b)
+done
 
 function sum($a, $b)
-return $a + $b
+  return $a + $b
+done

@@ -7,7 +7,8 @@ stop
 
 function factorial($n, locals: $r)
    $r = 1
-   for #i = 2 to $n + 1 
+   for #i = 2 to $n + 1
       $r = $r * #i
    next
-return $r 
+   return $r
+done

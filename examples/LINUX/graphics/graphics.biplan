@@ -1,18 +1,20 @@
 include "/usr/local/BIPLAN/graphics.biplan"
+include "/usr/local/BIPLAN/ansi.biplan"
 
-macro HINT "Press WASD to move the rectangle, press Q to terminate the program"
+macro HINT "Press WASD to move the rectangle, press Q to terminate the program."
 
-@x = 5
+@x = 10
 @y = 5
 
-@c = HIDE_CURSOR
-
+ansi_cursor(false)
+ansi_background(PURPLE)
+ansi_color(BLACK)
 print restart, HINT
 draw_rect(@x, @y, 10, 5, 'X')
 
 while true
   @k = input read
-  if @k == 'q' 
+  if @k == 'q'
     break
   end
   if @k != 0
@@ -21,11 +23,10 @@ while true
      if (@k == 'a') && (@x > 2) --@x end
      if (@k == 'w') && (@y > 2) --@y end
      if @k == 's' ++@y end
-
      draw_rect(@x, @y, 10, 5, 'X')
   end
 next
 
-@c = SHOW_CURSOR
-
+ansi_cursor(true)
+ansi_style(REGULAR)
 stop
