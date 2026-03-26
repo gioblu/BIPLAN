@@ -82,7 +82,9 @@ BPM_SERIAL_T       bip_serial_fun;
   F(bip_sys_exp, bip_expression());
 
 /* EMPTY STRING ------------------------------------------------------------ */
-#define BP_EMPTY_STRING memset(bip_string, 0, BP_STRING_MAX);
+#define BP_EMPTY_STRING \
+  for(BP_VAR_T emptstr = 0; emptstr < BP_STRING_MAX; emptstr++) \
+    bip_string[emptstr] = 0;
 
 /* EXPECT A CERTAIN CODE, OTHERWISE THROW ERROR ---------------------------- */
 #define BP_EXPECT(C) \
@@ -308,13 +310,14 @@ void bip_init(
 
 void bip_set_default() {
   bip_fw_id = 0, bip_fn_id = 0, bip_ended = false, bip_arg_id = 0;
-  memset(bip_memory, 0, BP_MEM_SIZE);
-  memset(bip_variables, 0, sizeof(bip_variables));
-  memset(bip_strings, 0, sizeof(bip_strings));
-  memset(bip_cycles, 0, sizeof(bip_cycles));
-  for(uint16_t i = 0; i < BP_CYCLE_DEPTH; i++) bip_cycles[i].var_id = BP_VARIABLES;
+  for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
+  for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
+  for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
+    for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
   for(uint16_t i = 0; i < BP_FILES_MAX; i++) bip_files[i].free = true;
-  memset(bip_string, 0, BP_STRING_MAX);
+  for(BP_VAR_T i = 0; i < BP_CYCLE_DEPTH; i++)
+    bip_cycles[i].var_id = BP_VARIABLES;
+  BP_EMPTY_STRING;
 };
 
 /* IGNORE A CERTAIN CODE --------------------------------------------------- */
