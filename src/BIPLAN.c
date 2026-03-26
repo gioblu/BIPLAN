@@ -574,31 +574,6 @@ void bip_mem_assignment_call() {
   else bip_error(dcd_ptr, BP_ERROR_MEM_SET);
 };
 
-/* RETURN ------------------------------------------------------------------ */
-BP_FUN_T BP_VAR_T bip_return_call() {
-  BP_VAR_T rel = 0;
-  DCD_NEXT;
-  if(bip_fn_id > 0) {
-    rel = bip_relation();
-    bip_fn_id--;
-    for(int i = 0; i < BP_PARAMS; i++)
-      if(bip_functions[bip_fn_id].params[i].id != BP_VARIABLES) {
-        BP_SET_VARIABLE( // Set back global bip_variables;
-          bip_functions[bip_fn_id].params[i].id,
-          bip_functions[bip_fn_id].params[i].value
-        );
-        bip_functions[bip_fn_id].params[i].id = BP_VARIABLES;
-        bip_functions[bip_fn_id].params[i].value = 0;
-      } else break;
-    DCD_GOTO(bip_functions[bip_fn_id].address);
-    bip_fw_id = bip_functions[bip_fn_id].cid;
-    return rel;
-  } else {
-    bip_error(dcd_ptr, BP_ERROR_RETURN);
-    return 0;
-  }
-};
-
 /* FUNCTION ---------------------------------------------------------------- */
 BP_FUN_T BP_VAR_T bip_function_call() {
   bip_functions[bip_fn_id].cid = bip_fw_id;
@@ -625,14 +600,30 @@ BP_FUN_T BP_VAR_T bip_function_call() {
 
   bip_functions[bip_fn_id++].address = dcd_ptr;
   DCD_GOTO(bip_definitions[f].address);
-  while(dcd_current != BP_RETURN) {
+  while((dcd_current != BP_RETURN) && (dcd_current != BP_DONE)) {
     #ifdef BIP_FAST
     BP_STATEMENT;
     #else
     bip_statement();
     #endif
   }
-  return bip_return_call();
+  BP_VAR_T rel = 0;
+  bool return_type = dcd_current == BP_RETURN;
+  DCD_NEXT;
+  if(return_type) rel = bip_relation();
+  bip_fn_id--;
+  for(uint8_t i = 0; i < BP_PARAMS; i++) {
+    if(bip_functions[bip_fn_id].params[i].id == BP_VARIABLES) break;
+    BP_SET_VARIABLE( // Set back global bip_variables;
+      bip_functions[bip_fn_id].params[i].id,
+      bip_functions[bip_fn_id].params[i].value
+    );
+    bip_functions[bip_fn_id].params[i].id = BP_VARIABLES;
+    bip_functions[bip_fn_id].params[i].value = 0;
+  }
+  DCD_GOTO(bip_functions[bip_fn_id].address);
+  bip_fw_id = bip_functions[bip_fn_id].cid;
+  return rel;
 };
 
 /* CONTINUE ---------------------------------------------------------------- */

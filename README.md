@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Mega.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. It is so compact that the BIPLAN interpreter fits in an Arduino Mega.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -17,7 +17,7 @@ In 2017 I built a couple of standalone programmable computers with a screen and 
 
 ### How?
 
-The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 5 years of experiments I wrote `BCC`, a pre-processor and multi-pass compiler capable of syntax and lexical analysis (649 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (784 lines of code).
+The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 9 years of experiments I wrote `BCC`, a pre-processor and a deterministic multi-pass compiler capable of syntax and lexical analysis (701 lines of code), and `BIPLAN`, a deterministic register-based virtual machine implemented with a recursive descent parser (874 lines of code).
 
 ### Code example
 
@@ -40,11 +40,11 @@ p~$40)xf$}j}k}l)}k1@$0,}j}j}k}k}l}l}j+}k;r}l
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025 
-Source: fib.biplan 
-Target: fib.bip 
-Source length: 149B, BIP length: 44B, reduction: 70.469803% 
-Compilation time: 294 microseconds 
+BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025
+Source: fib.biplan
+Target: fib.bip
+Source length: 149B, BIP length: 44B, reduction: 70.469803%
+Compilation time: 294 microseconds
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```

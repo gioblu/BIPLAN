@@ -5,7 +5,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- **[Functions](/documentation/functions.md)** [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- **[Functions](/documentation/functions.md)** [`task`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`emit`](/documentation/functions.md)  [`done`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
@@ -15,55 +15,52 @@
 
 ## Functions
 ```
-function [name]([parameter], [parameter], locals: [parameter], [parameter])
-  [statement]
-return [expression]
-```
-A function is a group of statements identified by a unique name that together perform a task and can return a value. Each function is just an entry of a global array of up to 87 functions, each function stores up to 87 parameters and local variables. A function can be defined using the `function` keyword, defining its name and a parameters' list delimited by parentheses used to define which variables are used for function computation. The name of functions and parameters must not start with a number, must be composed by lowercase and or uppercase letters and or the symbol `_` and or numbers. The parameters listed in the function's definition are identified by `$` and are set with the value passed by the call.
 
-```c
 // Call
-print sum(1, 1)
 
-stop // end of the program
+[name]([function call, relation, expression, term or factor])
 
 // Definition
-function sum($a, $b)
-return $a + $b
+
+task [name]([parameter], [parameter], ..., locals: [local], [local], ...)
+  [statement]
+  emit [function call, relation, expression, term or factor]
+done
 ```
+A function is a reusable group of statements identified by a unique name that perform a task and can return a value. BIPLAN supports up to 87 functions, each capable of hosting up to 87 parameters and local variables. Function definitions must be defined after the `stop` keyword.
 
-All statements contained in the function definition are executed until `return` is encountered. The `return` statement must be one and must be the last statement of the function. Function definitions must be placed after `stop`.
+Function definitions are identified by the `task` keyword followed by a unique name; parameters and local variables are defined within the following parentheses, local variables are defined after the `locals:` keyword. Names of functions and parameters must not start with a number, must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. The value of uninitialized parameters and local variables is guaranteed to be `0`.
 
-The following function `fibonacci` prints the Fibonacci series. As you can see the local variables must be defined along with the function parameters after the `locals:` keyword. The value of uninitialized parameters and local variables is guaranteed to be `0`.
+When the `emit` keyword is encountered the function returns the result of the following function call, relation, expression, term or factor. All statements contained in the function definition are executed until `done` is encountered. The `done` statement must be one and must be the last statement of the function.
+
 ```c
-fibonacci(10) // Prints 0 1 1 2 3 5 8
 
-stop
+// Call
 
-function fibonacci($a, locals: $b, $c)
-  $b = 1
-  for #r = 0 to $a
-    $a = $b
-    $b = $c
-    $c = $a + $b
-  next
-return $c
+average(10, 20); // Returns 15
+
+// Definition
+
+task average($a, $b, locals: $sum)
+  $sum = $a + $b
+  emit $sum / 2
+done
 ```
 
-Functions receive numeric parameters, each parameter can represent a numeric value, a reference to a variable or a reference to a string:
+Functions can receive only numeric parameters, each parameter can represent a numeric value, a reference to a variable or a reference to a string:
 
 ```c
 :test = "test"
 
-@result = cap(index :test)
+capitalize(index :test)
 
-print :[@result], " ", :test // Prints "Test Test"
+print :test // Prints "Test"
 
 stop
 
-function cap($s)
-  :[$s][0] = 'T'
-return $s
+task capitalize($string_addr)
+  :[$string_addr][0] = :[$string_addr][0] - 32
+done
 ```
 
-In the example above the reference to the string `:test` is passed to the `cap` function. The reference is then used to modify the first character. 
+In the example above the reference to the string `:test` is passed to the `capitalize` function. The reference is then used to modify the first character.

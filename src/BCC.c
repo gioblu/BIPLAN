@@ -431,7 +431,7 @@ int bcc_compile_function_step(char *prog) {
       if((*p == BP_COMMA) && !((*(p - 1)) == BP_VAR_ADDR)) *p = BP_SPACE;
       p++;
     } // Find the return keyword at the end of the function
-    while((p = strstr(p, BP_RETURN_HUMAN)) && bcc_in_string(prog, p));
+    while((p = strstr(p, BP_DONE_HUMAN)) && bcc_in_string(prog, p));
     if(p && *p) {
       while(*p && p && *p != BP_CR && *p != BP_LF) p++;
       fn_keyword[keyword_length] = 0;
@@ -636,7 +636,7 @@ void bcc_post_compilation_checks(const char *prog) {
   if(bcc_fail) return;
   if(!bcc_check_delimeter(prog, BP_IF, BP_ENDIF, 0))
     bcc_error(0, NULL, BP_ERROR_BLOCK);
-  if(!bcc_check_delimeter(prog, BP_FUN_DEF, BP_RETURN, 0))
+  if(!bcc_check_delimeter(prog, BP_FUN_DEF, BP_DONE, 0))
     bcc_error(0, NULL, BP_ERROR_RETURN);
   if((bcc_fun_id - BP_OFFSET) >= BP_FUN_MAX)
     bcc_error(0, NULL, BP_ERROR_FUNCTION_MAX);

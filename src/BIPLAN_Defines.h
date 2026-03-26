@@ -236,7 +236,8 @@ __________________________________________________|_____________|______| */
 #define BP_CONTINUE          'c'                  // 99         | used |
 #define BP_CONTINUE_HUMAN    "continue"           //            |      |
 //______________________________________________________________|______|
-                          // 'd'                  // 100        | used |
+#define BP_DONE              'd'                  // 100        | used |
+#define BP_DONE_HUMAN        "done"               //            |      |
 //______________________________________________________________|______|
 #define BP_INPUT             'e'                  // 101        | used |
 #define BP_INPUT_HUMAN       "input"              //            |      |
