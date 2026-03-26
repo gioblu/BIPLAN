@@ -1,6 +1,6 @@
 
-// When the compiler is built BIPLAN the standard library 
-// is copied in /usr/local/BIPLAN 
+// When the compiler is built BIPLAN the standard library
+// is copied in /usr/local/BIPLAN
 // You can include it from there
 
 include "/usr/local/BIPLAN/time.biplan"

@@ -1,4 +1,11 @@
-#include <BIPLAN.c>
+
+/* Although it is considered an anti-pattern to include BIPLAN.c inside
+   a .c or .cpp file this is an intentional performance optimization.
+   This approach operates with a single compilation units and
+   enables aggressive inlining and IPO (IntraProcedural Optimization)
+   for interpreter performance.  */
+
+#include "BIPLAN.c"
 
 bool   verbose = false;
 char   program[BCC_MAX_PROGRAM_SIZE];
