@@ -1,10 +1,10 @@
 all:
 	$(info BIPLAN compilation started!)
 	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -g
-fast: 
+fast:
 	$(info BIPLAN compilation started! (target: fast))
-	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -O2 -DBIP_FAST -march=native -mtune=native -DBIP_DISPATCH_TABLE
-compact: 
+	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -O2 -DBIP_FAST -march=native -mtune=native -DBIP_DISPATCH_TABLE -flto -DNDEBUG -fno-exceptions
+compact:
 	$(info BIPLAN compilation started! (target: compact))
 	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
 install:
