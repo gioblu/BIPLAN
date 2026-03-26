@@ -319,17 +319,17 @@ __________________________________________________|_____________|______| */
 
 /* Data types -------------------------------------------------------------- */
 
-typedef void (*bip_error_t)(char *position, const char *string);
+typedef void (*bip_error_t)(const char *position, const char *string);
 
 struct bip_param_t {
   BP_VAR_T value;
-  uint8_t id = BP_VARIABLES;
+  uint8_t id;
 };
 
 struct bip_fun_t {
   char *address;
   uint8_t cid;
-  bip_param_t params[BP_PARAMS];
+  struct bip_param_t params[BP_PARAMS];
 };
 
 struct bip_def_t {
@@ -339,13 +339,13 @@ struct bip_def_t {
 
 struct bip_cycle_t {
   char *address;
-  BP_VAR_T var = 0;
-  uint8_t var_id = BP_VARIABLES;
-  BP_VAR_T step = 0;
-  BP_VAR_T to = 0;
+  BP_VAR_T var;
+  uint8_t var_id;
+  BP_VAR_T step;
+  BP_VAR_T to;
 };
 
 struct bip_files_t {
   BPM_FILE_T *file;
-  bool free = true;
+  bool free;
 };
