@@ -74,63 +74,42 @@ macro HIDE_CURSOR system "echo -n '\e[?25l'"
 // Set text color
 
 function ansi_color($color, locals: $v)
-  if $color == BLACK $v = TXT_BLACK
-  else if $color == RED $v = TXT_RED
-    else if $color == GREEN $v = TXT_GREEN
-      else if $color == YELLOW $v = TXT_YELLOW
-        else if $color == BLUE $v = TXT_BLUE
-          else if $color == PURPLE $v = TXT_PURPLE
-            else if $color == CYAN $v = TXT_CYAN
-              else
-                if $color == WHITE  $v = TXT_WHITE end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
+  if $color == BLACK $v = TXT_BLACK return end
+  if $color == RED $v = TXT_RED return end
+  if $color == GREEN $v = TXT_GREEN return end
+  if $color == YELLOW $v = TXT_YELLOW return end
+  if $color == BLUE $v = TXT_BLUE return end
+  if $color == PURPLE $v = TXT_PURPLE return end
+  if $color == CYAN $v = TXT_CYAN return end
+  if $color == WHITE  $v = TXT_WHITE return end
 done
 
 // Set background
 
 function ansi_background($color, locals: $v)
-  if $color == BLACK $v = BG_BLACK
-  else if $color == RED $v = BG_RED
-    else if $color == GREEN $v = BG_GREEN
-      else if $color == YELLOW $v = BG_YELLOW
-        else if $color == BLUE $v = BG_BLUE
-          else if $color == PURPLE $v = BG_PURPLE
-            else if $color == CYAN $v = BG_CYAN
-              else
-                if $color == WHITE $v = BG_WHITE end
-              end
-            end
-          end
-        end
-      end
-    end
-  end
+  if $color == BLACK $v = BG_BLACK return end
+  if $color == RED $v = BG_RED return end
+  if $color == GREEN $v = BG_GREEN return end
+  if $color == YELLOW $v = BG_YELLOW return end
+  if $color == BLUE $v = BG_BLUE return end
+  if $color == PURPLE $v = BG_PURPLE return end
+  if $color == CYAN $v = BG_CYAN return end
+  if $color == WHITE $v = BG_WHITE return end
 done
 
 // Set style
 
 function ansi_style($style, locals: $v)
-  if $style == REGULAR $v = TXT_RESET
-  else if $style == BOLD $v = TXT_BOLD
-    else if $style == ITALIC $v = TXT_ITALIC
-      else if $style == UNDERLINE $v = TXT_UNDERLINE
-        else
-          if $style == BLINK $v = TXT_BLINK end
-        end
-      end
-    end
-  end
+  if $style == REGULAR $v = TXT_RESET return end
+  if $style == BOLD $v = TXT_BOLD return end
+  if $style == ITALIC $v = TXT_ITALIC return end
+  if $style == UNDERLINE $v = TXT_UNDERLINE return end
+  if $style == BLINK $v = TXT_BLINK return end
 done
 
 // Set cursor visibility
 
 function ansi_cursor($state, locals: $v)
-  if $state == 1 $v = SHOW_CURSOR
-  else $v = HIDE_CURSOR end
+  if $state == 1 $v = SHOW_CURSOR return end
+  $v = HIDE_CURSOR
 done
