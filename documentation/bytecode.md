@@ -5,7 +5,7 @@
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
 - [Cycles](/documentation/cycles.md) [`for`](/documentation/cycles.md#for) [`while`](/documentation/cycles.md#while) [`next`](/documentation/cycles.md#next) [`break`](/documentation/cycles.md#break) [`continue`](/documentation/cycles.md#continue)
-- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)
+- [Functions](/documentation/functions.md) [`function`](/documentation/functions.md) [`locals`](/documentation/functions.md) [`return`](/documentation/functions.md)  [`done`](/documentation/functions.md)
 - [Macros](/documentation/macros.md) [`macro`](/documentation/macros.md#pre-processor-macros)
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
@@ -14,7 +14,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Bytecode
-When you compile a BIPLAN program with `bcc`, you are just translating your program in a more compact form designed to be efficiently interpreted. 
+When you compile a BIPLAN program with `bcc`, you are just translating your program in a more compact form designed to be efficiently interpreted.
 
 For example, this is a short BIPLAN program of 45 characters:
 ```c
@@ -40,9 +40,9 @@ The BIP bytecode is just an ASCII string saved in a `.bip` file that can be brow
 | `@a`   | `}$`|
 | `stop` | `x` |
 
-After removing `LF`, `CR`, `TAB` and `SPACE` the final BIP bytecode is obtained. 
+After removing `LF`, `CR`, `TAB` and `SPACE` the final BIP bytecode is obtained.
 
-The variable `@a` is compiled in `}$`, where `}` is the numeric variable identifier and `$` is the address (`36`, or `$` means address 0). 
+The variable `@a` is compiled in `}$`, where `}` is the numeric variable identifier and `$` is the address (`36`, or `$` means address 0).
 
 BIPLAN supports up to 87 functions, variables, parameters, strings and cycles. Using the ASCII encoding and representing addresses with one character restricts their number to 87 (the first 35 characters and `:`, `f`, `~`, `}`, `@` are reserved).
 
