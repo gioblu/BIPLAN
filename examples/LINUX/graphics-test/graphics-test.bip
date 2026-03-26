@@ -1,0 +1,23 @@
+p"Testing graphics.biplan functionality
+
+Testing ansi_color function:
+"~%0)p"Executing: ansi_color(BLACK)
+"~%1)p"Executing: ansi_color(RED)
+"~%2)p"Executing: ansi_color(GREEN)
+"~%3)p"Executing: ansi_color(YELLOW)
+"~%4)p"Executing: ansi_color(BLUE)
+"~%5)p"Executing: ansi_color(PURPLE)
+"~%6)p"Executing: ansi_color(CYAN)
+"~%7)p"Executing: ansi_color(WHITE)
+"p"
+Testing ansi_background() function:
+
+"~$0)~%7)p"Executing: ansi_background(BLACK) ansi_color(WHITE)"~&0)pb10~$1)~%7)p"Executing: ansi_background(RED) ansi_color(WHITE)"~&0)pb10~$2)~%0)p"Executing: ansi_background(GREEN) ansi_color(BLACK)"~&0)pb10~$3)~%0)p"Executing: ansi_background(YELLOW) ansi_color(BLACK)"~&0)pb10~$4)~%7)p"Executing: ansi_background(BLUE) ansi_color(WHITE)"~&0)pb10~$5)~%7)p"Executing: ansi_background(PURPLE) ansi_color(WHITE)"~&0)pb10~$6)~%0)p"Executing: ansi_background(CYAN) ansi_color(BLACK)"~&0)pb10~$7)~%0)p"Executing: ansi_background(WHITE) ansi_color(BLACK)"~&0)pb10p"Executing: ansi_style(REGULAR)
+"p"
+Testing ansi_style() function:
+
+"~&1)p"Executing: ansi_style(BOLD)
+"~&0)~&2)p"Executing: ansi_style(ITALIC)
+"~&0)~&3)p"Executing: ansi_style(UNDERLINE)
+"~&0)~&4)p"Executing: ansi_style(BLINK)
+"~&0)xf%}j}k)?}jQ0}kk"echo -n '\033[30m'"!?}jQ1}kk"echo -n '\033[31m'"!?}jQ2}kk"echo -n '\033[32m'"!?}jQ3}kk"echo -n '\033[33m'"!?}jQ4}kk"echo -n '\033[34m'"!?}jQ5}kk"echo -n '\033[35m'"!?}jQ6}kk"echo -n '\033[36m'"!?}jQ7}kk"echo -n '\033[37m'"FFFFFFFFdf$}j}k)?}jQ0}kk"echo -n '\033[0;40m'"!?}jQ1}kk"echo -n '\033[0;41m'"!?}jQ2}kk"echo -n '\033[0;42m'"!?}jQ3}kk"echo -n '\033[0;43m'"!?}jQ4}kk"echo -n '\033[0;44m'"!?}jQ5}kk"echo -n '\033[0;45m'"!?}jQ6}kk"echo -n '\033[0;46m'"!?}jQ7}kk"echo -n '\033[0;47m'"FFFFFFFFdf&}j}k)?}jQ0}kk"echo -n '\033[0m'"!?}jQ1}kk"echo -n '\033[1m'"!?}jQ2}kk"echo -n '\033[3m'"!?}jQ3}kk"echo -n '\033[4m'"!?}jQ4}kk"echo -n '\033[5m'"FFFFFd
