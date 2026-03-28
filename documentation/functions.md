@@ -22,14 +22,14 @@
 
 // Definition
 
-task [name]([parameter], [parameter], ..., locals: [local], [local], ...)
+function [name]([parameter], [parameter], ..., locals: [local], [local], ...)
   [statement]
   emit [function call, relation, expression, term or factor]
 done
 ```
 A function is a reusable group of statements identified by a unique name that perform a task and can return a value. BIPLAN supports up to 87 functions, each capable of hosting up to 87 parameters and local variables. Function definitions must be defined after the `stop` keyword.
 
-Function definitions are identified by the `task` keyword followed by a unique name; parameters and local variables are defined within the following parentheses, local variables are defined after the `locals:` keyword. Names of functions and parameters must not start with a number, must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. The value of uninitialized parameters and local variables is guaranteed to be `0`.
+Function definitions are identified by the `function` keyword followed by a unique name; parameters and local variables are defined within the following parentheses, local variables are defined after the `locals:` keyword. Names of functions and parameters must not start with a number, must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. The value of uninitialized parameters and local variables is guaranteed to be `0`.
 
 When the `emit` keyword is encountered the function returns the result of the following function call, relation, expression, term or factor. All statements contained in the function definition are executed until `done` is encountered. The `done` statement must be one and must be the last statement of the function.
 
@@ -41,9 +41,9 @@ average(10, 20); // Returns 15
 
 // Definition
 
-task average($a, $b, locals: $sum)
+function average($a, $b, locals: $sum)
   $sum = $a + $b
-  emit $sum / 2
+  return $sum / 2
 done
 ```
 
@@ -58,7 +58,7 @@ print :test // Prints "Test"
 
 stop
 
-task capitalize($string_addr)
+function capitalize($string_addr)
   :[$string_addr][0] = :[$string_addr][0] - 32
 done
 ```

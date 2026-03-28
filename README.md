@@ -32,19 +32,22 @@ function fibonacci($a, locals: $b, $c)
     $b = $c
     $c = $a + $b
   next
-return $c
+  return $c
+done
 ```
-Compiled in 44 bytes of BIP bytecode by the [`BCC`](/src/BCC.h) class:
+Compiled in 45 bytes of BIP bytecode by the [`BCC`](/src/BCC.h) class:
 ```
-p~$40)xf$}j}k}l)}k1@$0,}j}j}k}k}l}l}j+}k;r}l
+p~$40)xf$}j}k}l)}k1@$0,}j}j}k}k}l}l}j+}k;r}ld
 ```
 Compiler output:
 ```
-BCC (BIP Compiler Collection) Giovanni Blu Mitolo 2025
-Source: fib.biplan
-Target: fib.bip
-Source length: 149B, BIP length: 44B, reduction: 70.469803%
-Compilation time: 294 microseconds
+BCC (BIP Compiler Collection)
+Giovanni Blu Mitolo 2025
+
+| Source   | BIPLAN/examples/LINUX/bcc-compiler/fib.biplan (156B)
+| Target   | BIPLAN/examples/LINUX/bcc-compiler/fib.bip (45B)
+| Duration | 0.09 milliseconds
+| State    | ✅ Success
 ```
 Interpreted at run time by the [`BIPLAN_Interpreter`](/src/BIPLAN.c) class:
 ```
