@@ -183,11 +183,13 @@ char *bcc_compile_step(
   const char *code,
   char post,
   int addr,
-  char end
+  char end,
+  uint8_t kl
 ) {
   BCC_RETURN_IF_FAILED(!prog || !pos || !key || !code, NULL);
   char *p;
-  uint8_t kl = strlen(key), cl = strlen(code);
+  if(!kl) kl = strlen(key);
+  uint8_t cl = strlen(code);
   p = strstr(pos, key);
   if(p && *p && (p < bcc_stop)) {
     if(bcc_in_string(prog, p) || (addr && p > prog && BCC_IS_ADDR(*(p - 1)))) {
@@ -236,7 +238,7 @@ void bcc_compile(
 ) {
   if(bcc_fail) return;
   char *p = prog;
-  while(p && *p) p = bcc_compile_step(prog, p, key, code, post, addr, end);
+  while(p && *p) p = bcc_compile_step(prog, p, key, code, post, addr, end, 0);
 }
 
 void bcc_compile_char(
@@ -249,7 +251,7 @@ void bcc_compile_char(
   if(bcc_fail) return;
   char *p = prog;
   char c[2] = {code, 0};
-  while(p && *p) p = bcc_compile_step(prog, p, key, c, post, addr, 0);
+  while(p && *p) p = bcc_compile_step(prog, p, key, c, post, addr, 0, 0);
 }
 
 /* Finds longest variable name  -------------------------------------------- */
@@ -661,6 +663,30 @@ void bcc_post_compilation_checks(const char *prog) {
     bcc_error(0, NULL, BP_ERROR_VARIABLE_MAX);
 }
 
+/* Compile syntax keywords using precomputed lengths ----------------------- */
+void bcc_compile_syntax_table(char *prog) {
+  if(bcc_fail) return;
+  for(uint8_t i = 0; bcc_syntax[i].human != NULL; i++) {
+    if(bcc_fail) return;
+    char *p = prog;
+    char c[2] = {bcc_syntax[i].code, 0};
+    while(p && *p)
+      p = bcc_compile_step(prog, p, bcc_syntax[i].human, c, 0, 0, 0, bcc_syntax[i].len);
+  }
+}
+
+/* Compile system functions using precomputed lengths ---------------------- */
+void bcc_compile_system_functions_table(char *prog) {
+  if(bcc_fail) return;
+  for(uint8_t i = 0; bcc_system_functions[i].human != NULL; i++) {
+    if(bcc_fail) return;
+    char *p = prog;
+    char c[2] = {bcc_system_functions[i].code, 0};
+    while(p && *p)
+      p = bcc_compile_step(prog, p, bcc_system_functions[i].human, c, 0, 0, 0, bcc_system_functions[i].len);
+  }
+}
+
 /* Run compilation process ------------------------------------------------- */
 int bcc_run(char *prog) {
   bcc_find_end(prog);
@@ -677,10 +703,7 @@ int bcc_run(char *prog) {
   bcc_compile_char_constants(prog);
   if(!bcc_pre_compilation_checks(prog)) return 0;
   // Compile language syntax
-  for(uint8_t i = 0; bcc_syntax[i].human != NULL; i++)
-    bcc_compile_char(
-      prog, bcc_syntax[i].human, bcc_syntax[i].code, 0, 0
-    );
+  bcc_compile_syntax_table(prog);
   // Compile functions, global numeric and string variables
   bcc_compile_functions(prog);
   bcc_var_id = BP_OFFSET;
@@ -688,10 +711,7 @@ int bcc_run(char *prog) {
   bcc_compile_variables(prog, BP_GLOBAL_HUMAN);
   bcc_compile_variables(prog, BP_STR_ADDR);
   // Compile system functions
-  for(uint8_t i = 0; bcc_system_functions[i].human != NULL; i++)
-    bcc_compile_char(
-      prog, bcc_system_functions[i].human, bcc_system_functions[i].code, 0, 0
-    );
+  bcc_compile_system_functions_table(prog);
   // Compile sugar and constants
   bcc_compile_char(prog, "locals:", BP_SPACE, 0, 0);
   bcc_compile(prog, "args[", "S", 0, 0, 0);
