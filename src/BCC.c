@@ -604,8 +604,8 @@ void bcc_check_undefined_functions(const char *prog) {
       while(p3 && BCC_SUGAR(p3)) p3++;
       if(p3 && *p3 == BP_L_RPARENT) {
         bool is_system = false; // Check if it's a system function
-        for(int j = 0; bcc_system_functions[j].human != NULL; j++)
-          if(strcmp(name, bcc_system_functions[j].human) == 0) {
+        for(int j = 0; bcc_sys_functions[j].human != NULL; j++)
+          if(strcmp(name, bcc_sys_functions[j].human) == 0) {
             is_system = 1;
             break;
           }
@@ -664,26 +664,37 @@ void bcc_post_compilation_checks(const char *prog) {
 }
 
 /* Compile syntax keywords using precomputed lengths ----------------------- */
-void bcc_compile_syntax_table(char *prog) {
+void bcc_compile_syntax(char *prog) {
   if(bcc_fail) return;
   for(uint8_t i = 0; bcc_syntax[i].human != NULL; i++) {
     if(bcc_fail) return;
     char *p = prog;
     char c[2] = {bcc_syntax[i].code, 0};
     while(p && *p)
-      p = bcc_compile_step(prog, p, bcc_syntax[i].human, c, 0, 0, 0, bcc_syntax[i].len);
+      p = bcc_compile_step(
+        prog, p, bcc_syntax[i].human, c, 0, 0, 0, bcc_syntax[i].len
+      );
   }
 }
 
 /* Compile system functions using precomputed lengths ---------------------- */
-void bcc_compile_system_functions_table(char *prog) {
+void bcc_compile_system_functions(char *prog) {
   if(bcc_fail) return;
-  for(uint8_t i = 0; bcc_system_functions[i].human != NULL; i++) {
+  for(uint8_t i = 0; bcc_sys_functions[i].human != NULL; i++) {
     if(bcc_fail) return;
     char *p = prog;
-    char c[2] = {bcc_system_functions[i].code, 0};
+    char c[2] = {bcc_sys_functions[i].code, 0};
     while(p && *p)
-      p = bcc_compile_step(prog, p, bcc_system_functions[i].human, c, 0, 0, 0, bcc_system_functions[i].len);
+      p = bcc_compile_step(
+        prog,
+        p,
+        bcc_sys_functions[i].human,
+        c,
+        0,
+        0,
+        0,
+        bcc_sys_functions[i].len
+      );
   }
 }
 
@@ -703,7 +714,7 @@ int bcc_run(char *prog) {
   bcc_compile_char_constants(prog);
   if(!bcc_pre_compilation_checks(prog)) return 0;
   // Compile language syntax
-  bcc_compile_syntax_table(prog);
+  bcc_compile_syntax(prog);
   // Compile functions, global numeric and string variables
   bcc_compile_functions(prog);
   bcc_var_id = BP_OFFSET;
@@ -711,7 +722,7 @@ int bcc_run(char *prog) {
   bcc_compile_variables(prog, BP_GLOBAL_HUMAN);
   bcc_compile_variables(prog, BP_STR_ADDR);
   // Compile system functions
-  bcc_compile_system_functions_table(prog);
+  bcc_compile_system_functions(prog);
   // Compile sugar and constants
   bcc_compile_char(prog, "locals:", BP_SPACE, 0, 0);
   bcc_compile(prog, "args[", "S", 0, 0, 0);

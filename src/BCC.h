@@ -30,8 +30,8 @@ char *bcc_compile_include(char *prog, char *pos);
 void bcc_compile_includes(char *prog);
 int bcc_pre_compilation_checks(const char *prog);
 void bcc_post_compilation_checks(const char *prog);
-void bcc_compile_syntax_table(char *prog);
-void bcc_compile_system_functions_table(char *prog);
+void bcc_compile_syntax(char *prog);
+void bcc_compile_system_functions(char *prog);
 int bcc_run(char *prog);
 
 /* State ------------------------------------------------------------------- */
@@ -49,7 +49,7 @@ struct bcc_keyword_char_code {
 };
 
 /* System functions table with human-readable and compiled versions -------- */
-static const struct bcc_keyword_char_code bcc_system_functions[] = {
+static const struct bcc_keyword_char_code bcc_sys_functions[] = {
   {BP_RND_HUMAN, BP_RND, 6},
   {BP_MILLIS_HUMAN, BP_MILLIS, 6},
   {BP_DELAY_HUMAN, BP_DELAY, 5},
