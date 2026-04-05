@@ -146,17 +146,12 @@ void bcc_remove_comments(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   char *p = prog;
   int in_str = 0;
-
   while(p && *p) {
     BCC_IS_STRING(in_str, p, prog);
-
     if(!in_str && *p == BP_COMMENT[0] && *(p + 1) == BP_COMMENT[1]) {
-      while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) {
+      while((p && *p) && (*p != BP_CR) && (*p != BP_LF))
         *(p++) = BP_SPACE;
-      }
-    } else {
-      p++;
-    }
+    } else p++;
   }
 }
 
@@ -165,10 +160,8 @@ void bcc_compile_char_constants(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   char *p = prog, b[3] = {0};
   int in_str = 0;
-
   while(p && *p) {
     BCC_IS_STRING(in_str, p, prog);
-
     if(!in_str && (*p == BP_SINGLE_QUOTE)) {
       if(*(p + 2) != BP_SINGLE_QUOTE) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
@@ -178,9 +171,7 @@ void bcc_compile_char_constants(char *prog) {
       p--;
       for(uint8_t i = 0; i < 3; i++)
         *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
-    } else {
-      p++;
-    }
+    } else p++;
   }
 }
 
