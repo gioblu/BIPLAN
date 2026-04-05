@@ -116,12 +116,25 @@ With the `include` keyword it is possible to add at the end of the program the c
 ```
 include [string literal]
 ```
-The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.biplan` that contains the line `function hello_world() print "Hello World!" return 0` is included in the program. When executed the program prints "Hello World!" and stops.
+The `include` statement receives a string literal that must contain the path, file name and extension of the file to be included. In the example below `hello_world.biplan` that contains the line `function hello_world() print "Hello World!" return 0` is included at the end of the program. When executed the program prints "Hello World!" and stops.
 
 ```c
 include "hello_world.biplan"
 hello_world()
 stop
+```
+You can include files from the current directory or use relative paths:
+
+```c
+include "mylib.biplan"                      // File in current directory
+include "../libs/mylib.biplan"              // Relative path from current directory
+```
+Standard libraries are installed in `/usr/local/BIPLAN/`. To include a standard library, use the absolute path:
+
+```c
+include "/usr/local/BIPLAN/math.biplan"
+include "/usr/local/BIPLAN/cordic.biplan"
+include "/usr/local/BIPLAN/graphics.biplan"
 ```
 
 ---

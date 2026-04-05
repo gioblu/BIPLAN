@@ -1,7 +1,7 @@
 #include <BCC.h>
 
 char program[BCC_MAX_PROGRAM_SIZE];
-bcc_error_t bcc_error_callback = NULL; 
+bcc_error_t bcc_error_callback = NULL;
 
 void error_handler(uint16_t line, const char *position, const char *string) {
   printf("| State    |\033[31m ⚠️ Error: %s Line: %d", string, line);
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
   fseek(p_file, 0, SEEK_END);
   p_size = ftell(p_file);
   rewind(p_file);
-  
+
   if((sizeof(char) * p_size) >= BCC_MAX_PROGRAM_SIZE) {
     printf("| State    |\033[31m ⚠️ Error: ");
     printf(
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     rewind(o_file);
     fclose(o_file);
   }
-  
+
   printf("| Target   | %s (%dB)\n", argv[2], o_size);
   printf("| Duration | %.2f milliseconds \n", (float)(t) / 1000);
   printf("| State    |\033[32m ✅ Success\033[m\n\n");

@@ -22,7 +22,7 @@ declare -a tests=(
     "write-string"
     "read-string"
     "prime"
-	"fib" 
+	"fib"
     "factorial"
     #"date-epoch"
     #"bubble-sort"
@@ -74,6 +74,7 @@ declare -a iters=(
     "100000"
     "100000"
     "100000"
+    "10000 "
 )
 
 iterations=1
@@ -111,7 +112,7 @@ do
 
     duration_py=$((end_py - start_py))
 
-    
+
     total_bip=$((total_bip + duration_bip))
     total_py=$((total_py + duration_py))
 
@@ -125,7 +126,7 @@ do
     bip_ms=$(format_ms $duration_bip)
     py_ms=$(format_ms $duration_py)
     space=""
-    [ $i -lt 10 ] && space=" " 
+    [ $i -lt 10 ] && space=" "
     echo -e "| ${space}$i. ${descs[$i - 1]}  | ${color_bip}$bip_ms ${color_py}  | $py_ms   | ${iters[$i - 1]}     |"
     result=$(rm "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip")
 done
@@ -134,7 +135,7 @@ echo "|_______________________________________|_____________|_____________|_____
 
 color_bip="\033[31m"
 color_py="\033[31m"
-[ $total_bip -lt $total_py ] && color_bip="\033[32m" || color_py="\033[32m" 
+[ $total_bip -lt $total_py ] && color_bip="\033[32m" || color_py="\033[32m"
 
 bip_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_bip/1000" | bc)")
 py_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_py/1000" | bc)")

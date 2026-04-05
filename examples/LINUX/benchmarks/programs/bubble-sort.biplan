@@ -12,11 +12,12 @@ function bubble_sort($s, locals: $n, $swap, $t)
         for #n = 0 to ($n - #i) - 1
             if :[$s][#n] > :[$s][#n + 1]
                 $t = :[$s][#n]
-                :[$s][#n] = :[$s][#n + 1] 
+                :[$s][#n] = :[$s][#n + 1]
                 :[$s][#n + 1] = $t
                 $swap = true
             end
         next
         if not $swap break end
     next
-return 0
+    return 0
+done

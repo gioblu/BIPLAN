@@ -15,7 +15,7 @@ void end(bool e) {
 }
 
 void error_callback(char *position, const char *string) {
-  printf("\033[0;31m\nerror: ");
+  printf("\033[0;31m\n Error: ");
   printf("%s ", string);
   if(position) {
     printf("%c", *position);

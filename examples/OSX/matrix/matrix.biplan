@@ -1,5 +1,6 @@
 
 include "/usr/local/BIPLAN/graphics.biplan"
+include "/usr/local/BIPLAN/ansi.biplan"
 
 macro WIDTH  99
 macro HEIGHT 33
@@ -10,21 +11,21 @@ next
 
 print restart
 
-@t = TXT_GREEN  
-@c = HIDE_CURSOR
+@t = ansi_color(GREEN)
+@c = ansi_cursor(false)
 
-for #z = 0 to HEIGHT 
+for #z = 0 to HEIGHT
   for #x = 0 to WIDTH
     for #y = 0 to random #z + 1
       print cursor #x, #y
       print char mem[#x + (#y * WIDTH)]
-    next 
+    next
     delay 1
   next
 next
 
-@c = SHOW_CURSOR
-@c = BT_RESET
+ansi_cursor(true)
+ansi_style(REGULAR)
 
 print cursor 0, 35
 
