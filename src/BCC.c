@@ -50,6 +50,12 @@ char *bcc_stop = NULL;
 /* Ignores syntactic sugar ------------------------------------------------- */
 #define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
 
+/* Checks if the actual character is a string delimeter -------------------- */
+#define BCC_IS_STRING(S, P, PP) \
+  if(*P == BP_STRING) \
+  if(!S || (S && P > PP && (*(P - 1) != BP_BACKSLASH))) \
+    S = !S;
+
 /* Returns the value received and calls error if the program is
    terminated/not accessible or if something else failed previously -------- */
 #define BCC_RETURN_IF_FAILED(C, V) \
@@ -128,9 +134,7 @@ void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
   int in_str = 0;
   while(p2 && *p2) {
     *p = *p2++;
-    if(*p == BP_STRING)
-      if(!in_str || (in_str && p > prog && (*(p - 1) != BP_BACKSLASH)))
-        in_str = !in_str;
+    BCC_IS_STRING(in_str, p, prog);
     if((*p != v1) && (*p != v2) && (*p != v3) && (*p != v4)) p++;
     else if(in_str) p++;
   }
@@ -140,19 +144,32 @@ void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
 /* Remove comments from program -------------------------------------------- */
 void bcc_remove_comments(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
-  char *p;
-  while((p = strstr(prog, BP_COMMENT)))
-    if(!bcc_in_string(prog, p))
-      while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) *(p++) = BP_SPACE;
-    else p++;
+  char *p = prog;
+  int in_str = 0;
+
+  while(p && *p) {
+    BCC_IS_STRING(in_str, p, prog);
+
+    if(!in_str && *p == BP_COMMENT[0] && *(p + 1) == BP_COMMENT[1]) {
+      while((p && *p) && (*p != BP_CR) && (*p != BP_LF)) {
+        *(p++) = BP_SPACE;
+      }
+    } else {
+      p++;
+    }
+  }
 }
 
 /* Compiles character constants such as '@' into 64 (its decimal value) ---- */
 void bcc_compile_char_constants(char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   char *p = prog, b[3] = {0};
+  int in_str = 0;
+
   while(p && *p) {
-    if(!bcc_in_string(prog, p) && (*p == BP_SINGLE_QUOTE)) {
+    BCC_IS_STRING(in_str, p, prog);
+
+    if(!in_str && (*p == BP_SINGLE_QUOTE)) {
       if(*(p + 2) != BP_SINGLE_QUOTE) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
         return;
@@ -161,7 +178,9 @@ void bcc_compile_char_constants(char *prog) {
       p--;
       for(uint8_t i = 0; i < 3; i++)
         *(p++) = (((b + i) == NULL) || !b[i]) ? BP_SPACE : b[i];
-    } else p++;
+    } else {
+      p++;
+    }
   }
 }
 
@@ -576,8 +595,12 @@ void bcc_compile_includes(char *prog) {
 void bcc_check_undefined_functions(const char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   const char *p = prog, *p2, *p3;
+  int in_str = 0;
+
   while(p && *p) {
-    if(!bcc_in_string(prog, p) && BCC_IS_KEYWORD(*p)) {
+    BCC_IS_STRING(in_str, p, prog);
+
+    if(!in_str && BCC_IS_KEYWORD(*p)) {
       p2 = p;
       char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
@@ -614,7 +637,8 @@ void bcc_check_undefined_functions(const char *prog) {
         if(is_system && is_defined)
           return bcc_error(bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_SYSTEM);
       }
-    } p++;
+    }
+    p++;
   }
 }
 
