@@ -10,7 +10,7 @@
 - [Numeric variables](/documentation/numeric-variables.md) [`@`](/documentation/numeric-variables.md) [`@[]`](/documentation/numeric-variables.md)
 - [Operators](/documentation/operators.md) [`+`](/documentation/operators.md) [`-`](/documentation/operators.md) [`*`](/documentation/operators.md) [`/`](/documentation/operators.md) [`%`](/documentation/operators.md) [`==`](/documentation/operators.md) [`!=`](/documentation/operators.md) [`>`](/documentation/operators.md) [`>=`](/documentation/operators.md) [`<`](/documentation/operators.md) [`<=`](/documentation/operators.md) [`&&`](/documentation/operators.md) [`||`](/documentation/operators.md) [`&`](/documentation/operators.md) [`|`](/documentation/operators.md) [`^`](/documentation/operators.md) [`>>`](/documentation/operators.md) [`<<`](/documentation/operators.md) [`++`](/documentation/operators.md) [`--`](/documentation/operators.md) [`~`](/documentation/operators.md) [`not`](/documentation/operators.md)
 - [Strings](/documentation/strings.md) [`:`](/documentation/strings.md) [`:[]`](/documentation/strings.md)
-- **[System functions](/documentation/system-functions.md)** [`adc read`](/documentation/system-functions.md#adc-read) [`args`](/documentation/system-functions.md#args) [`char`](/documentation/system-functions.md#print) [`cursor`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`file close`](/documentation/system-functions.md#file-close) [`file open`](/documentation/system-functions.md#file-open) [`file read`](/documentation/system-functions.md#file-read) [`file write`](/documentation/system-functions.md#file-write) [`include`](/documentation/system-functions.md#include) [`index`](/documentation/system-functions.md#index) [`input`](/documentation/system-functions.md#input) [`io open`](/documentation/system-functions.md#io-open) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`mem`](/documentation/system-functions.md#mem)  [`millis`](/documentation/system-functions.md#millis) [`number`](/documentation/system-functions.md#number) [`numeric`](/documentation/system-functions.md#numeric) [`print`](/documentation/system-functions.md#print) [`random`](/documentation/system-functions.md#random) [`restart`](/documentation/system-functions.md#restart) [`serial open`](/documentation/system-functions.md#serial-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`size`](/documentation/system-functions.md#size)  [`stop`](/documentation/system-functions.md#stop) [`string`](/documentation/system-functions.md#string) [`system`](/documentation/system-functions.md#system)
+- **[System functions](/documentation/system-functions.md)** [`adc read`](/documentation/system-functions.md#adc-read) [`args`](/documentation/system-functions.md#args) [`char`](/documentation/system-functions.md#print) [`cursor`](/documentation/system-functions.md#print) [`delay`](/documentation/system-functions.md#delay) [`file close`](/documentation/system-functions.md#file-close) [`file open`](/documentation/system-functions.md#file-open) [`file read`](/documentation/system-functions.md#file-read) [`file write`](/documentation/system-functions.md#file-write) [`pipe close`](/documentation/system-functions.md#pipe-close) [`pipe open`](/documentation/system-functions.md#pipe-open) [`pipe read`](/documentation/system-functions.md#pipe-read) [`pipe write`](/documentation/system-functions.md#pipe-write) [`include`](/documentation/system-functions.md#include) [`index`](/documentation/system-functions.md#index) [`input`](/documentation/system-functions.md#input) [`io open`](/documentation/system-functions.md#io-open) [`io read`](/documentation/system-functions.md#io-read) [`io write`](/documentation/system-functions.md#digitalWrite) [`mem`](/documentation/system-functions.md#mem)  [`millis`](/documentation/system-functions.md#millis) [`number`](/documentation/system-functions.md#number) [`numeric`](/documentation/system-functions.md#numeric) [`print`](/documentation/system-functions.md#print) [`random`](/documentation/system-functions.md#random) [`restart`](/documentation/system-functions.md#restart) [`serial open`](/documentation/system-functions.md#serial-open) [`serial read`](/documentation/system-functions.md#serial-read) [`serial write`](/documentation/system-functions.md#serial-write) [`size`](/documentation/system-functions.md#size)  [`stop`](/documentation/system-functions.md#stop) [`string`](/documentation/system-functions.md#string)
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## System functions
@@ -107,6 +107,50 @@ It receives two parameters, the file pointer and the value to be written in the 
 
 ```c
 file write @f, "Hello world!" // Writes Hello world! test.txt
+```
+---
+
+### `pipe`
+Using the `pipe` keyword along with `open`, `read`, `write` and `close` it is possible to execute a shell command and stream its I/O.
+
+#### `pipe open`
+```
+pipe open [string or string literal], [number or variable]
+```
+It receives the command to execute and an optional mode. It returns a handle that can be used with `pipe read`, `pipe write` and `pipe close`.
+
+```c
+@pipe = pipe open "curl -s https://httpbin.org/get"
+```
+
+#### `pipe read`
+```
+pipe read [handle]
+```
+It receives a single parameter, the pipe handle, and returns one character from the command output or `-1` when the pipe is closed.
+
+```c
+@c = pipe read @pipe
+```
+
+#### `pipe write`
+```
+pipe write [handle], [number or variable]
+```
+It receives two parameters: the pipe handle and the character code to write to the command's stdin.
+
+```c
+pipe write @pipe, 'A'
+```
+
+#### `pipe close`
+```
+pipe close [handle]
+```
+It receives a single parameter, the pipe handle. It closes the pipe and terminates the associated subprocess.
+
+```c
+pipe close @pipe
 ```
 ---
 
@@ -380,13 +424,3 @@ string @test, :str
 print :str // Prints 123
 ```
 
----
-
-### `system`
-```
-system [string or string literal]
-```
-Passes a command or program name to the host environment, returns after the command has been completed.
-```c
-system "ls" // On Linux prints list of files and directories
-```
