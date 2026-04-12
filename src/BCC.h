@@ -57,7 +57,7 @@ static const struct bcc_keyword_char_code bcc_sys_functions[] = {
   {BP_CONTINUE_HUMAN, BP_CONTINUE, 8},
   {BP_RESTART_HUMAN, BP_RESTART, 7},
   {BP_RETURN_HUMAN, BP_RETURN, 6},
-  {BP_SYSTEM_HUMAN, BP_SYSTEM, 6},
+  {BP_PIPE_HUMAN, BP_PIPE, 4},
   {BP_CURSOR_HUMAN, BP_CURSOR, 6},
   {BP_LTOA_HUMAN, BP_LTOA, 6},
   {BP_ATOL_HUMAN, BP_ATOL, 6},

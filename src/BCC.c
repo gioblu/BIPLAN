@@ -351,7 +351,7 @@ char *bcc_find_longest_keyword(char *prog, int t) {
       longest = p2;
       result = i;
     }
-    if(i >= BP_KEYWORD_MAX) {
+    if(i > BP_KEYWORD_MAX - 1) {
       bcc_error(
         bcc_line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME
       );
@@ -597,8 +597,13 @@ void bcc_check_undefined_functions(const char *prog) {
       p2 = p;
       char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
-      while(BCC_IS_KEYWORD(*p) && (i < BP_KEYWORD_MAX - 1))
+      while(BCC_IS_KEYWORD(*p)) {
+        if(i > BP_KEYWORD_MAX - 1)
+          return bcc_error(
+            bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_NAME
+          );
         name[i++] = *(p++);
+      }
       name[i] = 0;
       p3 = p;
       while(p3 && BCC_SUGAR(p3)) p3++;
@@ -700,6 +705,9 @@ void bcc_compile_system_functions(char *prog) {
 
 /* Run compilation process ------------------------------------------------- */
 int bcc_run(char *prog) {
+  bcc_var_id = BP_OFFSET;
+  bcc_string_id = BP_OFFSET + BP_ARGS;
+  bcc_fun_id = BP_OFFSET;
   bcc_find_end(prog);
   /* Comments are removed twice to first permit the parsing of the includes
      (comments could be present before them) and then remove the comments
@@ -740,8 +748,5 @@ int bcc_run(char *prog) {
   bcc_compile(prog, "CR", "13", 0, 0, 0);
   bcc_remove(prog, BP_CR, BP_LF, BP_SPACE, BP_TAB);
   bcc_post_compilation_checks(prog);
-  bcc_var_id = BP_OFFSET;
-  bcc_string_id = BP_OFFSET + BP_ARGS;
-  bcc_fun_id = BP_OFFSET;
   return !bcc_fail;
 };
