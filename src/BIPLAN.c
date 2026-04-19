@@ -41,10 +41,19 @@ BPM_PRINT_T        bip_print_fun;
 BPM_INPUT_T        bip_data_in_fun;
 BPM_SERIAL_T       bip_serial_fun;
 
-#define BP_SYS_BOUNDS(R, B, E) \
+#define BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(R, B, E) \
   DCD_NEXT; \
   R = bip_relation(); \
   if((R < 0) || (R >= B)) { bip_error(dcd_ptr, E); }
+
+#define BP_GET_ID(V, B, L, E) \
+  for(uint16_t i = 0, V = L; i < L; i++) \
+    if(B[i].free) { \
+      B[i].free = false; \
+      V = i; \
+      break; \
+    } \
+  if(V == L) bip_error(dcd_ptr, E);
 
 /* SYSTEM CALL WITH 1 RELATION PARAMETER ----------------------------------- */
 
@@ -73,6 +82,28 @@ BPM_SERIAL_T       bip_serial_fun;
   } else if(dcd_current == BP_STR_ACC) \
     V = F(bip_strings[bip_access(dcd_current)]); \
   return V;
+
+/* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
+
+#define  BP_SYS_STRING_2(F, B) \
+  BP_VAR_T bip_sys_str_2; \
+  DCD_NEXT; \
+  if(dcd_current == BP_STRING) { \
+    bip_read_string(bip_string); \
+    bip_sys_str_2 = bip_ignore(BP_COMMA) ? bip_relation() : 0; \
+    F(B, bip_string, bip_sys_str_2); \
+    BP_EMPTY_STRING; \
+  } else if(bip_ignore(BP_STR_ADDR)) { \
+    BP_VAR_T bip_sys_str_2_addr = *(dcd_ptr - 1) - BP_OFFSET; \
+    bip_sys_str_2 = bip_ignore(BP_COMMA) ? bip_relation() : 0; \
+    F(B, bip_strings[bip_sys_str_2_addr], bip_sys_str_2); \
+  } else if(dcd_current == BP_STR_ACC) { \
+    BP_VAR_T si = bip_access(BP_STR_ACC); \
+    bip_sys_str_2 = bip_ignore(BP_COMMA) ? bip_relation() : 0; \
+    if((si < 0) || (si >= BP_STRINGS)) \
+      bip_error(dcd_ptr, BP_ERROR_STRING_GET); \
+    F(B, bip_strings[si], bip_sys_str_2); \
+  } else bip_error(dcd_ptr, BP_ERROR_SYMBOL); \
 
 /* SYSTEM CALL WITH 2 EXPRESSION PARAMETER --------------------------------- */
 #define BP_SYS_EXPRESSION_2(F) \
@@ -134,6 +165,7 @@ static void bip_dispatch_io()         { DCD_NEXT; bip_io_set_call(); }
 static void bip_dispatch_delay()      { DCD_NEXT; BPM_DELAY(bip_expression()); }
 static void bip_dispatch_print()      { DCD_NEXT; bip_print_call(); }
 static void bip_dispatch_file()       { bip_file_set_call(); }
+static void bip_dispatch_pipe()       { bip_pipe_call(0); }
 static void bip_dispatch_serial()     { bip_serial_call(); }
 static void bip_dispatch_ltoa()       { bip_ltoa_call(); }
 static void bip_dispatch_restart()    { bip_restart_call(); }
@@ -173,6 +205,7 @@ static void bip_init_dispatch_table() {
   bip_dispatch_table[BP_DELAY]     = bip_dispatch_delay;
   bip_dispatch_table[BP_PRINT]     = bip_dispatch_print;
   bip_dispatch_table[BP_FILE]      = bip_dispatch_file;
+  bip_dispatch_table[BP_PIPE]      = bip_dispatch_pipe;
   bip_dispatch_table[BP_SERIAL]    = bip_dispatch_serial;
   bip_dispatch_table[BP_LTOA]      = bip_dispatch_ltoa;
   bip_dispatch_table[BP_RESTART]   = bip_dispatch_restart;
@@ -211,6 +244,7 @@ BP_FUN_T void bip_statement_dispatch() {
     case BP_DELAY:      DCD_NEXT; BPM_DELAY(bip_expression()); break; \
     case BP_PRINT:      DCD_NEXT; bip_print_call(); break; \
     case BP_FILE:       bip_file_set_call(); break; \
+    case BP_PIPE:       bip_pipe_call(0); break; \
     case BP_SERIAL:     bip_serial_call(); break; \
     case BP_LTOA:       bip_ltoa_call(); break; \
     case BP_RESTART:    bip_restart_call(); break; \
@@ -314,6 +348,7 @@ void bip_set_default() {
   for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
     for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
   for(uint16_t i = 0; i < BP_FILES_MAX; i++) bip_files[i].free = true;
+  for(uint16_t i = 0; i < BP_PIPES_MAX; i++) bip_pipes[i].free = true;
   for(BP_VAR_T i = 0; i < BP_CYCLE_DEPTH; i++)
     bip_cycles[i].var_id = BP_VARIABLES;
   BP_EMPTY_STRING;
@@ -400,7 +435,7 @@ BP_FUN_T BP_VAR_T bip_factor() {
     case BP_SERIAL: v = bip_serial_call(); break;
     case BP_INPUT: v = input_call(); break;
     case BP_SIZEOF: v = bip_sizeof_call(); break;
-    case BP_SYSTEM: v = bip_system_call(0); break;
+    case BP_PIPE: v = bip_pipe_call(0); break;
     case BP_ATOL: v = bip_atol_call(0); break;
   } v = (minus) ? -v : v;
   return (bitwise_not) ? ~v : v;
@@ -737,46 +772,30 @@ void bip_file_set_call() {
   DCD_NEXT;
   BP_VAR_T r;
   if(dcd_current == BP_CLOSE) {
-    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
-      BPM_FILE_CLOSE(bip_files[r].file);
-      bip_files[r].free = true;
-    }
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    BPM_FILE_CLOSE(bip_files[r].file);
+    bip_files[r].free = true;
   } else {
-    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX) else {
-      BP_EXPECT(BP_COMMA);
-      BP_VAR_T result = 0;
-      BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, result);
-    }
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    BP_EXPECT(BP_COMMA);
+    BP_VAR_T result = 0;
+    BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, result);
   }
 };
 
 BP_VAR_T bip_file_get_call() {
   DCD_NEXT;
   if(dcd_current == BP_OPEN) {
-    DCD_NEXT;
-    BP_VAR_T f = bip_get_file_id(), id = BP_FILES_MAX;
+    BP_VAR_T f;
+    BP_GET_ID(f, bip_files, BP_FILES_MAX, BP_ERROR_FILE_MAX);
     if(f == BP_FILES_MAX) return BP_FILES_MAX;
-    if(dcd_current == BP_STRING) {
-      bip_read_string(bip_string);
-      BP_EXPECT(BP_COMMA);
-      BP_VAR_T v = bip_relation();
-      BPM_FILE_OPEN(bip_files[f].file, bip_string, v);
-      BP_EMPTY_STRING;
-    } else {
-      if(bip_ignore(BP_STR_ADDR)) id = *(dcd_ptr - 1) - BP_OFFSET;
-      else if(dcd_current == BP_STR_ACC) id = bip_access(BP_STR_ACC);
-      if(id != BP_FILES_MAX) {
-        BP_EXPECT(BP_COMMA);
-        BP_VAR_T v = bip_relation();
-        BPM_FILE_OPEN(bip_files[f].file, bip_strings[id], v);
-      }
-    }
+      BP_SYS_STRING_2(BPM_FILE_OPEN, bip_files[f].file);
     if(bip_files[f].file == NULL) bip_error(dcd_ptr, BP_ERROR_FILE_OPEN);
     return f;
   } else if(dcd_current == BP_READ) {
     BP_VAR_T r;
-    BP_SYS_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX)
-    else return BPM_FILE_READ(bip_files[r].file);
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
+    return BPM_FILE_READ(bip_files[r].file);
   } return 0;
 };
 
@@ -839,8 +858,35 @@ BP_VAR_T bip_random_call() {
   return b;
 };
 
-/* SYSTEM (Passes a :string or string literal to the environment) ---------- */
-BP_VAR_T bip_system_call(BP_VAR_T v) { BP_SYS_STRING(BPM_SYSTEM, v); };
+BP_VAR_T bip_pipe_call(BP_VAR_T v) {
+  DCD_NEXT;
+  if(dcd_current == BP_OPEN) {
+    BP_VAR_T p;
+    BP_GET_ID(p, bip_pipes, BP_PIPES_MAX, BP_ERROR_PIPE_MAX);
+    if(p == BP_PIPES_MAX) return BP_PIPES_MAX;
+      BP_SYS_STRING_2(BPM_PIPE_OPEN, bip_pipes[p].pipe);
+    if(bip_pipes[p].pipe == NULL) {
+      bip_pipes[p].free = true;
+      bip_error(dcd_ptr, BP_ERROR_PIPE_OPEN);
+    }
+    return p;
+  }
+  if(dcd_current == BP_READ) {
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(v, BP_PIPES_MAX, BP_ERROR_PIPE_MAX);
+    return BPM_PIPE_READ(bip_pipes[v].pipe);
+  }
+  if(dcd_current == BP_WRITE) {
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(v, BP_PIPES_MAX, BP_ERROR_PIPE_MAX);
+    BP_EXPECT(BP_COMMA);
+    return BPM_PIPE_WRITE(bip_pipes[v].pipe, bip_expression());
+  }
+  if(dcd_current == BP_CLOSE) {
+    BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(v, BP_PIPES_MAX, BP_ERROR_PIPE_MAX);
+    BPM_PIPE_CLOSE(bip_pipes[v].pipe);
+    bip_pipes[v].free = true;
+  }
+  return 0;
+};
 
 /* STATEMENTS: (print, if, return, for, while...) -------------------------- */
 void bip_statement() {

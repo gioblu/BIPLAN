@@ -226,6 +226,28 @@
     #define BPM_FILE_CLOSE(T) fclose(T);
   #endif
 
+  /* Pipes --------------------------------------------------------------- */
+
+  #ifndef BPM_PIPE_T
+    #define BPM_PIPE_T FILE
+  #endif
+
+  #ifndef BPM_PIPE_OPEN
+    #define BPM_PIPE_OPEN(T, P, M) T = popen(P, ((M) == 1) ? "w" : "r");
+  #endif
+
+  #ifndef BPM_PIPE_WRITE
+    #define BPM_PIPE_WRITE(T, V) fputc(V, T)
+  #endif
+
+  #ifndef BPM_PIPE_READ
+    #define BPM_PIPE_READ(T) fgetc(T)
+  #endif
+
+  #ifndef BPM_PIPE_CLOSE
+    #define BPM_PIPE_CLOSE(T) pclose(T)
+  #endif
+
   /* System --------------------------------------------------------------- */
 
   #ifndef BPM_SYSTEM

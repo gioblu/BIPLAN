@@ -113,7 +113,7 @@ void bip_file_set_call();
 
 BP_VAR_T bip_sizeof_call();
 
-BP_VAR_T bip_system_call(BP_VAR_T v);
+BP_VAR_T bip_pipe_call(BP_VAR_T v);
 
 BP_VAR_T bip_atol_call(BP_VAR_T v);
 

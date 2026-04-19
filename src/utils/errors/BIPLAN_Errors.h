@@ -22,6 +22,8 @@
 #define BP_ERROR_WHILE_MAX           "too many nested while"
 #define BP_ERROR_FILE_OPEN           "file open failure"
 #define BP_ERROR_FILE_MAX            "file write failure"
+#define BP_ERROR_PIPE_OPEN           "pipe open failure"
+#define BP_ERROR_PIPE_MAX            "pipe handle failure"
 #define BP_ERROR_STRING_MAX          "too many strings"
 #define BP_ERROR_STRING_END          "string end not found"
 #define BP_ERROR_STRING_GET          "string read failure"

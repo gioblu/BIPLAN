@@ -33,6 +33,12 @@
   #define BP_FILES_MAX 10
 #endif
 
+/* Maximum amount of pipes ------------------------------------------------- */
+
+#ifndef BP_PIPES_MAX
+  #define BP_PIPES_MAX 10
+#endif
+
 /* ASCII addresses offset (avoid the first 34 ASCII characters) ------------ */
 
 #ifndef BP_OFFSET
