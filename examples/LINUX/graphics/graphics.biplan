@@ -7,8 +7,8 @@ macro HINT "Press WASD to move the rectangle, press Q to terminate the program."
 @y = 5
 
 ansi_cursor(false)
-ansi_background(PURPLE)
-ansi_color(BLACK)
+ansi_background(ANSI_PURPLE)
+ansi_color(ANSI_BLACK)
 print restart, HINT
 draw_rect(@x, @y, 10, 5, 'X')
 
@@ -28,5 +28,5 @@ while true
 next
 
 ansi_cursor(true)
-ansi_style(REGULAR)
+ansi_style(ANSI_REGULAR)
 stop

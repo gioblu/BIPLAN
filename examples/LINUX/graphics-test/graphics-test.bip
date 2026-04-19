@@ -1,23 +1,23 @@
 p"Testing graphics.biplan functionality
 
 Testing ansi_color function:
-"~%0)p"Executing: ansi_color(BLACK)
-"~%1)p"Executing: ansi_color(RED)
-"~%2)p"Executing: ansi_color(GREEN)
-"~%3)p"Executing: ansi_color(YELLOW)
-"~%4)p"Executing: ansi_color(BLUE)
-"~%5)p"Executing: ansi_color(PURPLE)
-"~%6)p"Executing: ansi_color(CYAN)
-"~%7)p"Executing: ansi_color(WHITE)
+"~%0)p"Executing: ansi_color(ANSI_BLACK)
+"~%1)p"Executing: ansi_color(ANSI_RED)
+"~%2)p"Executing: ansi_color(ANSI_GREEN)
+"~%3)p"Executing: ansi_color(ANSI_YELLOW)
+"~%4)p"Executing: ansi_color(ANSI_BLUE)
+"~%5)p"Executing: ansi_color(ANSI_PURPLE)
+"~%6)p"Executing: ansi_color(ANSI_CYAN)
+"~%7)p"Executing: ansi_color(ANSI_WHITE)
 "p"
 Testing ansi_background() function:
 
-"~$0)~%7)p"Executing: ansi_background(BLACK) ansi_color(WHITE)"~&0)pb10~$1)~%7)p"Executing: ansi_background(RED) ansi_color(WHITE)"~&0)pb10~$2)~%0)p"Executing: ansi_background(GREEN) ansi_color(BLACK)"~&0)pb10~$3)~%0)p"Executing: ansi_background(YELLOW) ansi_color(BLACK)"~&0)pb10~$4)~%7)p"Executing: ansi_background(BLUE) ansi_color(WHITE)"~&0)pb10~$5)~%7)p"Executing: ansi_background(PURPLE) ansi_color(WHITE)"~&0)pb10~$6)~%0)p"Executing: ansi_background(CYAN) ansi_color(BLACK)"~&0)pb10~$7)~%0)p"Executing: ansi_background(WHITE) ansi_color(BLACK)"~&0)pb10p"Executing: ansi_style(REGULAR)
+"~$0)~%7)p"Executing: ansi_background(ANSI_BLACK) ansi_color(ANSI_WHITE)"~&0)pb10~$1)~%7)p"Executing: ansi_background(ANSI_RED) ansi_color(ANSI_WHITE)"~&0)pb10~$2)~%0)p"Executing: ansi_background(ANSI_GREEN) ansi_color(ANSI_BLACK)"~&0)pb10~$3)~%0)p"Executing: ansi_background(ANSI_YELLOW) ansi_color(ANSI_BLACK)"~&0)pb10~$4)~%7)p"Executing: ansi_background(ANSI_BLUE) ansi_color(ANSI_WHITE)"~&0)pb10~$5)~%7)p"Executing: ansi_background(ANSI_PURPLE) ansi_color(ANSI_WHITE)"~&0)pb10~$6)~%0)p"Executing: ansi_background(ANSI_CYAN) ansi_color(ANSI_BLACK)"~&0)pb10~$7)~%0)p"Executing: ansi_background(ANSI_WHITE) ansi_color(ANSI_BLACK)"~&0)pb10p"Executing: ansi_style(ANSI_REGULAR)
 "p"
 Testing ansi_style() function:
 
-"~&1)p"Executing: ansi_style(BOLD)
-"~&0)~&2)p"Executing: ansi_style(ITALIC)
-"~&0)~&3)p"Executing: ansi_style(UNDERLINE)
-"~&0)~&4)p"Executing: ansi_style(BLINK)
-"~&0)xf%}j}k)?}jQ0}kk"echo -n '\033[30m'"rF?}jQ1}kk"echo -n '\033[31m'"rF?}jQ2}kk"echo -n '\033[32m'"rF?}jQ3}kk"echo -n '\033[33m'"rF?}jQ4}kk"echo -n '\033[34m'"rF?}jQ5}kk"echo -n '\033[35m'"rF?}jQ6}kk"echo -n '\033[36m'"rF?}jQ7}kk"echo -n '\033[37m'"rFdf$}j}k)?}jQ0}kk"echo -n '\033[0;40m'"rF?}jQ1}kk"echo -n '\033[0;41m'"rF?}jQ2}kk"echo -n '\033[0;42m'"rF?}jQ3}kk"echo -n '\033[0;43m'"rF?}jQ4}kk"echo -n '\033[0;44m'"rF?}jQ5}kk"echo -n '\033[0;45m'"rF?}jQ6}kk"echo -n '\033[0;46m'"rF?}jQ7}kk"echo -n '\033[0;47m'"rFdf&}j}k)?}jQ0}kk"echo -n '\033[0m'"rF?}jQ1}kk"echo -n '\033[1m'"rF?}jQ2}kk"echo -n '\033[3m'"rF?}jQ3}kk"echo -n '\033[4m'"rF?}jQ4}kk"echo -n '\033[5m'"rFd
+"~&1)p"Executing: ansi_style(ANSI_BOLD)
+"~&0)~&2)p"Executing: ansi_style(ANSI_ITALIC)
+"~&0)~&3)p"Executing: ansi_style(ANSI_UNDERLINE)
+"~&0)~&4)p"Executing: ansi_style(ANSI_BLINK)
+"~&0)xf%}j}k)?}jQ0pb27,"[30m"rF?}jQ1pb27,"[31m"rF?}jQ2pb27,"[32m"rF?}jQ3pb27,"[33m"rF?}jQ4pb27,"[34m"rF?}jQ5pb27,"[35m"rF?}jQ6pb27,"[36m"rF?}jQ7pb27,"[37m"rFpb27,"[0m"df$}j}k)?}jQ0pb27,"[0;40m"rF?}jQ1pb27,"[0;41m"rF?}jQ2pb27,"[0;42m"rF?}jQ3pb27,"[0;43m"rF?}jQ4pb27,"[0;44m"rF?}jQ5pb27,"[0;45m"rF?}jQ6pb27,"[0;46m"rF?}jQ7pb27,"[0;47m"rFpb27,"[0m"df&}j}k)?}jQ0pb27,"[0m"rF?}jQ1pb27,"[1m"rF?}jQ2pb27,"[3m"rF?}jQ3pb27,"[4m"rF?}jQ4pb27,"[5m"rFpb27,"[0m"d

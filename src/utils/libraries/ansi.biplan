@@ -1,10 +1,6 @@
-
-// Very crude library to simplify the use of ANSI sequences.
-// Simplifies the set-up of basic graphic rendition in terminal applications.
+// Very crude library to simplify the set-up of basic graphic
+// rendition in terminal applications.
 // Giovanni Blu Mitolo 2025
-
-// NOTE: This is very slow, it calls system!
-// (each call may last more than 1 millisecond)
 
 // ANSI sequences were implemented in the early 1970s to replace
 // vendor-specific sequences in hardware text terminals and by
@@ -14,102 +10,108 @@
 
 // Biplan labels for colors and rendition parameters
 
-macro BLACK     0
-macro RED       1
-macro GREEN     2
-macro YELLOW    3
-macro BLUE      4
-macro PURPLE    5
-macro CYAN      6
-macro WHITE     7
+macro ANSI_BLACK     0
+macro ANSI_RED       1
+macro ANSI_GREEN     2
+macro ANSI_YELLOW    3
+macro ANSI_BLUE      4
+macro ANSI_PURPLE    5
+macro ANSI_CYAN      6
+macro ANSI_WHITE     7
 
-macro REGULAR   0
-macro BOLD      1
-macro ITALIC    2
-macro UNDERLINE 3
-macro BLINK     4
+macro ANSI_REGULAR   0
+macro ANSI_BOLD      1
+macro ANSI_ITALIC    2
+macro ANSI_UNDERLINE 3
+macro ANSI_BLINK     4
+
+macro ANSI_ESC char 27
+macro ANSI_SET print ANSI_ESC,
 
 // ANSI escape codes for text color
 
-macro TXT_BLACK  system "echo -n '\033[30m'"
-macro TXT_RED    system "echo -n '\033[31m'"
-macro TXT_GREEN  system "echo -n '\033[32m'"
-macro TXT_YELLOW system "echo -n '\033[33m'"
-macro TXT_BLUE   system "echo -n '\033[34m'"
-macro TXT_PURPLE system "echo -n '\033[35m'"
-macro TXT_CYAN   system "echo -n '\033[36m'"
-macro TXT_WHITE  system "echo -n '\033[37m'"
+macro ANSI_TXT_BLACK  "[30m"
+macro ANSI_TXT_RED    "[31m"
+macro ANSI_TXT_GREEN  "[32m"
+macro ANSI_TXT_YELLOW "[33m"
+macro ANSI_TXT_BLUE   "[34m"
+macro ANSI_TXT_PURPLE "[35m"
+macro ANSI_TXT_CYAN   "[36m"
+macro ANSI_TXT_WHITE  "[37m"
 
 // ANSI escape codes for text formatting
 
-macro TXT_BOLD              system "echo -n '\033[1m'"
-macro TXT_BOLD_NONE         system "echo -n '\033[22m'"
-macro TXT_ITALIC            system "echo -n '\033[3m'"
-macro TXT_ITALIC_NONE       system "echo -n '\033[23m'"
-macro TXT_UNDERLINE         system "echo -n '\033[4m'"
-macro TXT_UNDERLINE_NONE    system "echo -n '\033[24m'"
-macro TXT_BLINK             system "echo -n '\033[5m'"
-macro TXT_BLINK_NONE        system "echo -n '\033[25m'"
+macro ANSI_TXT_BOLD           "[1m"
+macro ANSI_TXT_BOLD_NONE      "[22m"
+macro ANSI_TXT_ITALIC         "[3m"
+macro ANSI_TXT_ITALIC_NONE    "[23m"
+macro ANSI_TXT_UNDERLINE      "[4m"
+macro ANSI_TXT_UNDERLINE_NONE "[24m"
+macro ANSI_TXT_BLINK          "[5m"
+macro ANSI_TXT_BLINK_NONE     "[25m"
 
 // Reset all formatting
 
-macro TXT_RESET             system "echo -n '\033[0m'"
+macro ANSI_TXT_RESET          "[0m"
 
 // ANSI escape codes for background color
 
-macro BG_BLACK  system "echo -n '\033[0;40m'"
-macro BG_RED    system "echo -n '\033[0;41m'"
-macro BG_GREEN  system "echo -n '\033[0;42m'"
-macro BG_YELLOW system "echo -n '\033[0;43m'"
-macro BG_BLUE   system "echo -n '\033[0;44m'"
-macro BG_PURPLE system "echo -n '\033[0;45m'"
-macro BG_CYAN   system "echo -n '\033[0;46m'"
-macro BG_WHITE  system "echo -n '\033[0;47m'"
+macro ANSI_BG_BLACK  "[0;40m"
+macro ANSI_BG_RED    "[0;41m"
+macro ANSI_BG_GREEN  "[0;42m"
+macro ANSI_BG_YELLOW "[0;43m"
+macro ANSI_BG_BLUE   "[0;44m"
+macro ANSI_BG_PURPLE "[0;45m"
+macro ANSI_BG_CYAN   "[0;46m"
+macro ANSI_BG_WHITE  "[0;47m"
 
 // ANSI escape codes for cursor visibility
 
-macro SHOW_CURSOR system "echo -n '\e[?25h'"
-macro HIDE_CURSOR system "echo -n '\e[?25l'"
+macro ANSI_SHOW_CURSOR "[?25h"
+macro ANSI_HIDE_CURSOR "[?25l"
 
 // Set text color
 
 function ansi_color($color, locals: $v)
-  if $color == BLACK $v = TXT_BLACK return end
-  if $color == RED $v = TXT_RED return end
-  if $color == GREEN $v = TXT_GREEN return end
-  if $color == YELLOW $v = TXT_YELLOW return end
-  if $color == BLUE $v = TXT_BLUE return end
-  if $color == PURPLE $v = TXT_PURPLE return end
-  if $color == CYAN $v = TXT_CYAN return end
-  if $color == WHITE  $v = TXT_WHITE return end
+  if $color == ANSI_BLACK  ANSI_SET ANSI_TXT_BLACK  return end
+  if $color == ANSI_RED    ANSI_SET ANSI_TXT_RED    return end
+  if $color == ANSI_GREEN  ANSI_SET ANSI_TXT_GREEN  return end
+  if $color == ANSI_YELLOW ANSI_SET ANSI_TXT_YELLOW return end
+  if $color == ANSI_BLUE   ANSI_SET ANSI_TXT_BLUE   return end
+  if $color == ANSI_PURPLE ANSI_SET ANSI_TXT_PURPLE return end
+  if $color == ANSI_CYAN   ANSI_SET ANSI_TXT_CYAN   return end
+  if $color == ANSI_WHITE  ANSI_SET ANSI_TXT_WHITE  return end
+  ANSI_SET ANSI_TXT_RESET
 done
 
 // Set background
 
 function ansi_background($color, locals: $v)
-  if $color == BLACK $v = BG_BLACK return end
-  if $color == RED $v = BG_RED return end
-  if $color == GREEN $v = BG_GREEN return end
-  if $color == YELLOW $v = BG_YELLOW return end
-  if $color == BLUE $v = BG_BLUE return end
-  if $color == PURPLE $v = BG_PURPLE return end
-  if $color == CYAN $v = BG_CYAN return end
-  if $color == WHITE $v = BG_WHITE return end
+  if $color == ANSI_BLACK  ANSI_SET ANSI_BG_BLACK  return end
+  if $color == ANSI_RED    ANSI_SET ANSI_BG_RED    return end
+  if $color == ANSI_GREEN  ANSI_SET ANSI_BG_GREEN  return end
+  if $color == ANSI_YELLOW ANSI_SET ANSI_BG_YELLOW return end
+  if $color == ANSI_BLUE   ANSI_SET ANSI_BG_BLUE   return end
+  if $color == ANSI_PURPLE ANSI_SET ANSI_BG_PURPLE return end
+  if $color == ANSI_CYAN   ANSI_SET ANSI_BG_CYAN   return end
+  if $color == ANSI_WHITE  ANSI_SET ANSI_BG_WHITE  return end
+  ANSI_SET ANSI_TXT_RESET
 done
 
 // Set style
 
 function ansi_style($style, locals: $v)
-  if $style == REGULAR $v = TXT_RESET return end
-  if $style == BOLD $v = TXT_BOLD return end
-  if $style == ITALIC $v = TXT_ITALIC return end
-  if $style == UNDERLINE $v = TXT_UNDERLINE return end
-  if $style == BLINK $v = TXT_BLINK return end
+  if $style == ANSI_REGULAR   ANSI_SET ANSI_TXT_RESET     return end
+  if $style == ANSI_BOLD      ANSI_SET ANSI_TXT_BOLD      return end
+  if $style == ANSI_ITALIC    ANSI_SET ANSI_TXT_ITALIC    return end
+  if $style == ANSI_UNDERLINE ANSI_SET ANSI_TXT_UNDERLINE return end
+  if $style == ANSI_BLINK     ANSI_SET ANSI_TXT_BLINK     return end
+  ANSI_SET ANSI_TXT_RESET
 done
 
 // Set cursor visibility
 
 function ansi_cursor($state, locals: $v)
-  if $state == 1 $v = SHOW_CURSOR return end
-  $v = HIDE_CURSOR
+  if $state == 1 ANSI_SET ANSI_SHOW_CURSOR return end
+  ANSI_SET ANSI_HIDE_CURSOR
 done
