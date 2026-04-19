@@ -1,0 +1,8 @@
+
+
+// else syntax check, this program contains a dangling else.
+// Compiler should return "non matching if else end" error
+
+print "Hi!"
+else
+stop

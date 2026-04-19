@@ -1,0 +1,7 @@
+
+// For syntax check, the program contains a dangling next.
+// Compiler should return "non matching next" error
+
+print "Hi!"
+next
+stop
