@@ -2,7 +2,7 @@ all:
 	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o bcc -O1
 	$(info bcc compiler compilation started!)
 fast:
-	g++	-DLINUX	-I.	-I	../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o bcc -lm -lrt -O2 -DBIP_FAST -march=native -mtune=native -flto=auto -DNDEBUG
+	g++	-DLINUX	-I.	-I	../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o bcc -lm -lrt -O2 -DBIP_FAST -march=native -mtune=native -flto=auto -DNDEBUG -fno-exceptions
 	$(info bcc compiler compilation started! (target: fast))
 compact:
 	g++	-DLINUX	-I.	-I ../../../src -std=gnu++11 bcc.cpp ../../../src/BCC.c -o	bcc	-Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
