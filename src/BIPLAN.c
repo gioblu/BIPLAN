@@ -27,6 +27,7 @@ struct bip_cycle_t bip_cycles        [BP_CYCLE_DEPTH];
 struct bip_fun_t   bip_functions     [BP_FUN_DEPTH];
 struct bip_def_t   bip_definitions   [BP_FUN_MAX];
 struct bip_files_t bip_files         [BP_FILES_MAX];
+struct bip_pipes_t bip_pipes         [BP_PIPES_MAX];
 /* STATE ------------------------------------------------------------------- */
 char              *bip_program_start  = NULL;
 uint8_t            bip_fw_id          = 0;
@@ -63,9 +64,7 @@ BPM_SERIAL_T       bip_serial_fun;
 
 #define BP_SYS_STRING(F, V) \
   DCD_NEXT; \
-  if(bip_ignore(BP_VAR_ADDR)) { \
-    V = bip_get_variable(*(dcd_ptr - 1) - BP_OFFSET) - 48;\
-  } else if(bip_ignore(BP_STR_ADDR)) { \
+  if(bip_ignore(BP_STR_ADDR)) { \
     V = F(bip_strings[*(dcd_ptr - 1) - BP_OFFSET]); \
   } else if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \

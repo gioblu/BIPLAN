@@ -257,11 +257,13 @@ void bcc_compile_char(
 /* Finds longest variable name  -------------------------------------------- */
 char *bcc_find_longest_var_name(char *prog, char var_type) {
   BCC_RETURN_IF_FAILED(!prog, NULL);
+  bool in_str = false;
   char *p = prog, *longest = NULL;
   uint8_t result = 0;
   while(p && *p && (p < bcc_stop)) {
     if(*(p++) == var_type) {
-      if(bcc_in_string(prog, p - 1)) continue;
+      BCC_IS_STRING(in_str, p, prog);
+      if(in_str) continue;
       if(BCC_IS_NUM(*p)) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
         return NULL;
