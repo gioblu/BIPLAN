@@ -27,6 +27,7 @@
 #define BP_ERROR_STRING_MAX          "too many strings"
 #define BP_ERROR_STRING_END          "string end not found"
 #define BP_ERROR_STRING_GET          "string read failure"
+#define BP_ERROR_STRING_CONCAT       "string concat failure"
 #define BP_ERROR_SINGLE_QUOTE        "non matching ''"
 #define BP_ERROR_ROUND_PARENTHESIS   "non matching ()"
 #define BP_ERROR_SQUARE_PARENTHESIS  "non matching []"

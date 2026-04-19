@@ -99,7 +99,7 @@ bool decoder_string(char *d, uint16_t l) {
     string_end = strchr(string_end + 1, BP_STRING);
   if(string_end == NULL) return false;
   string_length = string_end - dcd_ptr - 1;
-  if(l < string_length) string_length = l;
+  if(l == 0 || string_length >= l) return false;
   memcpy(d, dcd_ptr + 1, string_length);
   d[string_length] = 0;
   if(bs) remove_backslash(d);
