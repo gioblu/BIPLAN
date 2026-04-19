@@ -19,5 +19,4 @@ function bubble_sort($s, locals: $n, $swap, $t)
         next
         if not $swap break end
     next
-    return 0
 done

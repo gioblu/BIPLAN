@@ -22,8 +22,9 @@ declare -a tests=(
     "write-string"
     "read-string"
     "prime"
-	"fib" 
+	"fib"
     "factorial"
+    "pipes"
     #"date-epoch"
     #"bubble-sort"
 )
@@ -49,34 +50,12 @@ declare -a descs=(
     "For computing prime numbers     "
     "Non-recursive fibonacci         "
     "Factorial 20                    "
+    "Pipes                           "
     #"Date from Epoch                 "
     #"Bubble sort array               "
 )
 
-declare -a iters=(
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "10000 "
-    "10000 "
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-    "100000"
-)
-
-iterations=3
+iterations=2
 tests_length=${#tests[@]}
 total_bip=0
 total_py=0
@@ -86,11 +65,11 @@ if ! command -v php >/dev/null 2>&1; then
     exit 1
 fi
 
-echo " ________________________________________________________________________________"
-echo "|                                       |             |             |            |"
-echo "| Benchmark                             | biplan      | php         | Iterations |"
-echo "|_______________________________________|_____________|_____________|____________|"
-echo "|                                       |             |             |            |"
+echo " ___________________________________________________________________"
+echo "|                                       |             |             |"
+echo "| Benchmark                             | biplan      | php         |"
+echo "|_______________________________________|_____________|_____________|"
+echo "|                                       |             |             |"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
     start_bip=$(date +%s%6N)
@@ -111,7 +90,7 @@ do
 
     duration_py=$((end_py - start_py))
 
-    
+
     total_bip=$((total_bip + duration_bip))
     total_py=$((total_py + duration_py))
 
@@ -125,16 +104,16 @@ do
     bip_ms=$(format_ms $duration_bip)
     py_ms=$(format_ms $duration_py)
     space=""
-    [ $i -lt 10 ] && space=" " 
-    echo -e "| ${space}$i. ${descs[$i - 1]}  | ${color_bip}$bip_ms ${color_py}  | $py_ms   | ${iters[$i - 1]}     |"
+    [ $i -lt 10 ] && space=" "
+    echo -e "| ${space}$i. ${descs[$i - 1]}  | ${color_bip}$bip_ms ${color_py}  | $py_ms   |"
     result=$(rm "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip")
 done
 
-echo "|_______________________________________|_____________|_____________|____________|"
+echo "|_______________________________________|_____________|_____________|"
 
 color_bip="\033[31m"
 color_py="\033[31m"
-[ $total_bip -lt $total_py ] && color_bip="\033[32m" || color_py="\033[32m" 
+[ $total_bip -lt $total_py ] && color_bip="\033[32m" || color_py="\033[32m"
 
 bip_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_bip/1000" | bc)")
 py_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_py/1000" | bc)")

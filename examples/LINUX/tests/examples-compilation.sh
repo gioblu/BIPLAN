@@ -18,6 +18,8 @@ declare -a tests=(
 	"calc/calc"
 	"../OSX/matrix/matrix"
 	"../OSX/ASCII-table/ASCII-table"
+	"pipes-read/pipes-read"
+	"pipes-write/pipes-write"
 )
 
 # All expected errors from the compiler

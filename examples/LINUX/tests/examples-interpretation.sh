@@ -10,6 +10,8 @@ declare -a tests=(
 	"read-file/read-file.bip"
 	"date-epoch/date-epoch.bip"
 	"mem-test/mem-test.bip"
+	"pipes-read/pipes-read.bip"
+	"pipes-write/pipes-write.bip"
 )
 
 declare -a results=(
@@ -18,6 +20,8 @@ declare -a results=(
 	'}%oY"read-file.bip",0l}$}&oX}%?}&T-1pb}&j}$FoZ}%x'
 	"Epoch: 1665434120 Date: 10/10/2022 20:35:20"
 	"Simplicity is best."
+	"HELLO"
+	"PIPE_WRITE_TEST"
 )
 
 echo " "
@@ -34,15 +38,15 @@ do
 	result=$(biplan -i "$SCRIPT_DIR/../${tests[$i - 1]}" 2>&1)
 	code=$?
 	expected=${results[$i - 1]}
-	
-	[ "$result" == "$expected" ] && 
+
+	[ "$result" == "$expected" ] &&
 		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}" ||
 		echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}"
 	[ $code != 0 ] && ((fail++))
 done
 
 plural=""
-[ $fail -gt 1 ] && plural="s" || plural="" 
+[ $fail -gt 1 ] && plural="s" || plural=""
 
-[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  || 
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m"  ||
 echo -e "\nTest result:\033[31m $fail test$plural failed\033[m"

@@ -1,0 +1,9 @@
+:message = "This is a test string.\n"
+@pipe = pipe open "cat > /tmp/biplan-benchmark-pipes.txt", 1
+for #n = 0 to 999
+  for #i = 0 to size :message
+    pipe write @pipe, :message[#i]
+  next
+next
+pipe close @pipe
+stop
