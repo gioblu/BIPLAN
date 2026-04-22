@@ -1,0 +1,8 @@
+@pipe = pipe open "ls -lah"
+@c = pipe read @pipe
+while @c >= 0
+  print char @c
+  @c = pipe read @pipe
+next
+pipe close @pipe
+stop

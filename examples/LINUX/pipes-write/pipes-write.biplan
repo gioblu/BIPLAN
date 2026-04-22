@@ -1,0 +1,15 @@
+@pipe = pipe open "sudo cat > biplan-pipe-write-test.txt", 1
+:b = "PIPE_WRITE_TEST"
+for #i = 0 to size :b
+  @c = :b[#i]
+  pipe write @pipe, @c
+next
+pipe close @pipe
+@f = file open "biplan-pipe-write-test.txt", 0
+@c = file read @f
+while @c >= 0
+  print char @c
+  @c = file read @f
+next
+file close @f
+stop
