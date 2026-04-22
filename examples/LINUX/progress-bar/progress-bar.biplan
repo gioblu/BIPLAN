@@ -1,0 +1,15 @@
+include "/usr/local/BIPLAN/progress.biplan"
+
+print restart
+progress_init(30, ANSI_CYAN, ANSI_BOLD)
+
+for #i = 0 to 101
+  print cursor 1, 5
+  progress_draw(#i, 30)
+  delay 66
+next
+
+progress_finish()
+
+print "Download completed!"
+stop
