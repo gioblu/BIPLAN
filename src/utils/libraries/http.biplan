@@ -1,0 +1,105 @@
+
+// HTTP helper macros and functions for pipe-based requests.
+// These macros create a shell command string that is opened by pipe open.
+// Use the resulting pipe handle with pipe read / pipe write / pipe close.
+
+// Simple GET request
+macro HTTP_GET pipe open "curl -s " +
+// Alias for HTTP_GET for shorter usage
+macro HTTP_REQ HTTP_GET
+// GET request that requests JSON response headers
+macro HTTP_GET_JSON pipe open "curl -s -H 'Accept: application/json' " +
+// HEAD request to fetch response headers only
+macro HTTP_HEAD pipe open "curl -s -I " +
+// Only return HTTP status code and close stdin/stdout
+macro HTTP_STATUS pipe open "curl -s -o /dev/null -w '%{http_code}' " +
+// Follow redirects automatically
+macro HTTP_FOLLOW pipe open "curl -s -L " +
+// Set a maximum timeout in seconds for the request
+macro HTTP_TIMEOUT pipe open "curl -s --max-time " +
+// Allow insecure SSL connections (-k)
+macro HTTP_INSECURE pipe open "curl -s -k " +
+// Basic HTTP auth with user:pass
+macro HTTP_BASIC pipe open "curl -s -u " +
+// Bearer token authorization header
+macro HTTP_BEARER pipe open "curl -s -H 'Authorization: Bearer " +
+// HTTP_AUTH is a generic alias for bearer authentication
+macro HTTP_AUTH HTTP_BEARER
+
+// Read all bytes from an open HTTP pipe and copy them into a destination string.
+// Returns the reference to the destination string when EOF is reached.
+function http_read_all($pipe, $dst, locals: $c, $pos)
+  $pos = 0
+  while true
+    $c = pipe read $pipe
+    if $c < 0 break end
+    :[$dst][$pos] = $c
+    ++$pos
+  next
+  :[$dst][$pos] = 0
+  return $dst
+done
+
+// Perform an HTTP GET request and read the entire response body.
+function http_get($url, $dst, locals: $pipe)
+  $pipe = HTTP_GET $url
+  return http_read_all($pipe, $dst)
+done
+
+// Perform an HTTP GET request with JSON accept headers and read the response.
+function http_get_json($url, $dst, locals: $pipe)
+  $pipe = HTTP_GET_JSON $url
+  return http_read_all($pipe, $dst)
+done
+
+// Perform an HTTP request that returns only the response status code.
+// Reads all digits from the pipe, converts them to an integer, then closes the pipe.
+function http_status_code($url, locals: $pipe, $c, $code)
+  $pipe = HTTP_STATUS $url
+  $code = 0
+  $c = pipe read $pipe
+  while $c >= 0
+    $code = ($code * 10) + ($c - 48)
+    $c = pipe read $pipe
+  next
+  pipe close $pipe
+  return $code
+done
+
+// --- JSON parsing functions (requires jq installed on the host) ---
+
+// Run a jq filter on a JSON string, store the raw output in a destination string.
+// $src: reference to string containing JSON data
+// $filter: reference to string with the jq filter (e.g. ".name", ".data[0]")
+// $dst: reference to destination string for the result
+// Returns the destination string reference.
+function json_query($src, $filter, $dst, locals: $wp, $rp, $c, $pos)
+  $wp = pipe open "cat > /tmp/.biplan_jq", 1
+  for #i = 0 to size :[$src]
+    pipe write $wp, :[$src][#i]
+  next
+  pipe close $wp
+  :[$dst] = "jq -r '" + :[$filter] + "' /tmp/.biplan_jq"
+  $rp = pipe open :[$dst]
+  $pos = 0
+  $c = pipe read $rp
+  while $c >= 0
+    :[$dst][$pos] = $c
+    ++$pos
+    $c = pipe read $rp
+  next
+  if ($pos > 0) && (:[$dst][$pos - 1] == 10) --$pos end
+  :[$dst][$pos] = 0
+  pipe close $rp
+  return $dst
+done
+
+// Run a jq filter on a JSON string and return the numeric result.
+// $src: reference to string containing JSON data
+// $filter: reference to string with the jq filter
+// $tmp: reference to a scratch string for intermediate storage
+// Returns the numeric value of the jq output.
+function json_get_num($src, $filter, $tmp)
+  json_query($src, $filter, $tmp)
+  return number :[$tmp]
+done

@@ -1,0 +1,13 @@
+
+// Pipe HTTP request example
+// Requires curl installed on the host.
+
+include "/usr/local/BIPLAN/http.biplan"
+
+@pipe = HTTP_GET "https://httpbin.org/get"
+while  @c != -1
+  @c = pipe read @pipe
+  if @c print char @c end
+next
+pipe close @pipe
+stop
