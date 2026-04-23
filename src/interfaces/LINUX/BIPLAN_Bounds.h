@@ -24,7 +24,7 @@
 /* Maximum length of keywords ---------------------------------------------- */
 
 #ifndef BP_KEYWORD_MAX
-  #define BP_KEYWORD_MAX 20
+  #define BP_KEYWORD_MAX 100
 #endif
 
 /* Maximum amount of files ------------------------------------------------- */

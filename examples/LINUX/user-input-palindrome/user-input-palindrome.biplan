@@ -1,0 +1,23 @@
+include "/usr/local/BIPLAN/strings.biplan"
+include "/usr/local/BIPLAN/ansi.biplan"
+
+:user_input = ""
+print "WELCOME TO DEXXTER'S PALINDROME CHECKER", char LF, "Enter Text: "
+string_from_input(:user_input, LF, 0)
+
+isPalindrome(:user_input)
+stop
+
+function isPalindrome($s)
+    for #i=0 to size:[$s]
+        if :[$s][#i] != :[$s][(size:[$s]-1) - #i]
+            ansi_color(ANSI_RED)
+            print "❌ Failure!", char LF, "Reason: Indices (", #i, " and ", size:[$s]-#i, ") Do not match."
+            return false
+        end
+    next
+    ansi_color(ANSI_GREEN)
+    print "✅ Success!"
+    return true
+    ansi_color(ANSI_TXT_RESET)
+done
