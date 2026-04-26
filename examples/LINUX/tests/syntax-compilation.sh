@@ -15,6 +15,12 @@ declare -a tests=(
 	"variable-in-string"
 	"while"
 	"math"
+	"include-dupe"
+	"num-vars-10"
+	"num-vars-20"
+	"num-vars-30"
+	"num-vars-50"
+	"num-vars-86"
 )
 
 # All expected errors from the compiler

@@ -1,0 +1,29 @@
+
+// This test checks that the compiler can handle at least 20 variables in a program.
+// Test should output 27, the sum of all variables.
+
+@a = 1
+@b = 1
+@c = 1
+@d = 1
+@e = 1
+@f = 7
+@g = 1
+@h = 1
+@i = 1
+@j = 1
+@k = 1
+@l = 1
+@m = 1
+@n = 1
+@o = 1
+@p = 1
+@q = 1
+@r = 2
+@s = 1
+@t = 1
+
+
+print @a + @b + @c + @d + @e + @f + @g + @h + @i + @j + @k +
+      @l + @m + @n + @o + @p + @q + @r + @s + @t, char LF
+stop

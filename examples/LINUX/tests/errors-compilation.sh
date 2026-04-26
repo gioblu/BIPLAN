@@ -5,20 +5,20 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
 # All examples to be tested in this run
 declare -a tests=(
-	"char-const-missing-separator" 
-	"for-missing-next" 
+	"char-const-missing-separator"
+	"for-missing-next"
 	"function-redefinition"
 	"function-name-reserved"
-	"function-missing-return" 
-	"function-too-long" 
+	"function-missing-return"
+	"function-too-long"
 	"function-undefined"
-	"if-missing-end" 
+	"if-missing-end"
 	"macro-redefinition"
-	"round-parent-missing" 
-	"square-parent-missing" 
-	"string-missing-separator" 
+	"round-parent-missing"
+	"square-parent-missing"
+	"string-missing-separator"
 	"variable-too-long"
-	"wrong-include-path" 
+	"wrong-include-path"
 )
 
 # All expected errors from the compiler
@@ -44,13 +44,13 @@ do
 	result=$(bcc "$SCRIPT_DIR/errors/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/errors/test.bip")
 	code=$?
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
-	[ $code -eq 1 ] && 
-		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan" || 
+	[ $code -eq 1 ] &&
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan" ||
 	    echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ${tests[$i - 1]}.biplan ($error)"
 	[ $code -eq 0 ] && ((fail++))
 done
 
 plural=""
-[ $fail -gt 1 ] && plural="s" || plural="" 
-[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  || 
+[ $fail -gt 1 ] && plural="s" || plural=""
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  ||
 				   echo -e "\nTest result:\033[31m $fail test$plural failed\033[m\n"

@@ -1,0 +1,63 @@
+
+
+// This test checks that the compiler can handle at least 50 variables in a program.
+// Test should output 74, the sum of all variables.
+
+@a = 1
+@b = 1
+@c = 1
+@d = 1
+@e = 1
+@f = 1
+@g = 1
+@h = 1
+@i = 1
+@j = 1
+@k = 9
+@l = 1
+@m = 1
+@n = 1
+@o = 1
+@p = 1
+@q = 1
+@r = 1
+@s = 1
+@t = 1
+@u = 1
+@v = 1
+@w = 9
+@x = 1
+@y = 1
+@z = 1
+@aa = 1
+@ab = 1
+@ac = 1
+@ad = 1
+@ae = 1
+@af = 1
+@ag = 1
+@ah = 1
+@ai = 1
+@aj = 1
+@ak = 1
+@al = 1
+@am = 1
+@an = 1
+@ao = 1
+@ap = 1
+@aq = 1
+@ar = 1
+@as = 1
+@at = 1
+@au = 1
+@av = 1
+@aw = 1
+@ax = 9
+
+print @a + @b + @c + @d + @e + @f + @g + @h + @i + @j + @k +
+      @l + @m + @n + @o + @p + @q + @r + @s + @t + @u +
+      @v + @w + @x + @y + @z + @aa + @ab + @ac + @ad + @ae +
+      @af + @ag + @ah + @ai + @aj + @ak + @al + @am + @an +
+      @ao + @ap + @aq + @ar + @as + @at + @au + @av + @aw +
+      @ax, char LF
+stop

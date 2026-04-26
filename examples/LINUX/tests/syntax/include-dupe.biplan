@@ -1,0 +1,9 @@
+include "/usr/local/BIPLAN/strings.biplan"
+include "/usr/local/BIPLAN/strings.biplan"
+
+:s = "This is a test string"
+
+@p = find_char(:s, 'a')
+
+print char :s[@p]
+stop

@@ -1,4 +1,4 @@
-@pipe = pipe open "ls -lah"
+@pipe = pipe open "echo HELLO"
 @c = pipe read @pipe
 while @c >= 0
   print char @c

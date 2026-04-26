@@ -14,6 +14,12 @@ declare -a tests=(
 	"function.bip"
 	"while.bip"
 	"math.bip"
+	"include-dupe.bip"
+	"num-vars-10.bip"
+	"num-vars-20.bip"
+	"num-vars-30.bip"
+	"num-vars-50.bip"
+	"num-vars-86.bip"
 )
 
 declare -a results=(
@@ -26,6 +32,12 @@ declare -a results=(
 	"2"
 	"9876543210"
 	"12 102334155 10 0 9 144 1 -1 0 20 90 10 100 100 0 0"
+	"a"
+	"17"
+	"27"
+	"46"
+	"74"
+	"103"
 )
 
 echo " "
@@ -42,9 +54,9 @@ do
 	result=$(biplan -i "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}" 2>&1)
 	code=$?
 	expected=${results[$i - 1]}
-	
-	[ "$result" == "$expected" ] && 
-		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}" || 
+
+	[ "$result" == "$expected" ] &&
+		echo -e "| $i.$space | Result: \033[32mpassed \033[m| Exit code: $code | ../${tests[$i - 1]}" ||
 		echo -e "| $i.$space | Result: \033[31mfailed \033[m| Exit code: $code | ../${tests[$i - 1]}"
 
 	[ $code != 0 ] && ((fail++))
@@ -53,5 +65,5 @@ done
 plural=""
 [ $fail -gt 1 ] && plural="s" || plural=""
 
-[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  || 
+[ $fail -lt 1 ] && echo -e "\nTest result:\033[32m passed\033[m\n"  ||
 echo -e "\nTest result:\033[31m $fail test$plural failed\033[m\n"
