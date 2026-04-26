@@ -7,7 +7,7 @@ typedef void (*bcc_error_t)(uint16_t line, const char *p, const char *s);
 extern bcc_error_t bcc_error_callback;
 void bcc_error(uint16_t line, const char *position, const char *string);
 uint16_t bcc_line(const char *prog, const char *pos);
-void bcc_check_undefined_functions(const char *prog);
+void bcc_check_syntax(const char *prog);
 int bcc_check_delimeter(const char *prog, char a, char b, int ignore);
 void bcc_find_end(char *prog);
 int bcc_in_string(const char *prog, const char *pos);

@@ -264,10 +264,6 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
     BCC_IS_STRING(in_str, p, prog);
     if(*(p++) == var_type) {
       if(in_str) continue;
-      if(BCC_IS_NUM(*p)) {
-        bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
-        return NULL;
-      }
       uint8_t  i = 0;
       while(BCC_IS_KEYWORD(*p) && (p && *(p++))) i++;
       if(i >= BP_KEYWORD_MAX) {
@@ -587,14 +583,20 @@ void bcc_compile_includes(char *prog) {
 }
 
 /* Undefined function check ------------------------------------------------ */
-void bcc_check_undefined_functions(const char *prog) {
+void bcc_check_syntax(const char *prog) {
   BCC_RETURN_IF_FAILED(!prog, );
   const char *p = prog, *p2, *p3;
   int in_str = 0;
-
   while(p && *p) {
     BCC_IS_STRING(in_str, p, prog);
-
+    if( // Variable names cannot start with a number
+      !in_str &&(
+        (*p == BP_VAR_ADDR_HUMAN) ||
+        (*p == BP_STR_ADDR) ||
+        (*p == BP_FOR_ADDR)
+      ) && BCC_IS_NUM(*(p + 1))
+    ) return bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
+    // Look for undefined functions
     if(!in_str && BCC_IS_KEYWORD(*p)) {
       p2 = p;
       char name[BP_KEYWORD_MAX] = {0};
@@ -645,7 +647,7 @@ void bcc_check_undefined_functions(const char *prog) {
 /* Pre-compilation checks -------------------------------------------------- */
 int bcc_pre_compilation_checks(const char *prog) {
   if(bcc_fail) return bcc_fail;
-  bcc_check_undefined_functions(prog);
+  bcc_check_syntax(prog);
   if(!bcc_check_delimeter(prog, BP_L_RPARENT, BP_R_RPARENT, 1))
     bcc_error(0, NULL, BP_ERROR_ROUND_PARENTHESIS);
   if(!bcc_check_delimeter(prog, BP_ACCESS, BP_ACCESS_END, 1))
