@@ -261,8 +261,8 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
   char *p = prog, *longest = NULL;
   uint8_t result = 0;
   while(p && *p && (p < bcc_stop)) {
+    BCC_IS_STRING(in_str, p, prog);
     if(*(p++) == var_type) {
-      BCC_IS_STRING(in_str, p, prog);
       if(in_str) continue;
       if(BCC_IS_NUM(*p)) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
