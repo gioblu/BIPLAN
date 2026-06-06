@@ -99,9 +99,8 @@ All you need to build BIPLAN is `g++`.
 - [OSX examples](/examples/OSX/)
 - [Arduino examples](/examples/ARDUINO/)
 
-#### Notes on AI assisted development
-
-Considering that the whole interpreter and compiler source is less than 90KB, LLMs can keep the whole toolchain in context and perform incredibly well in debugging and extending the implementation or write BIPLAN source code. The [AGENTS.md](AGENTS.md) file is my personal setup. After almost 10 years of developing BIPLAN by hand, line by line, I perfectly know how each functionality is implemented and where it is stored, so for me LLMs can be useful to speed up debugging or the implementation of the standard library. AI-generated slop will not be reviewed: contributions to this project will be reviewed only if well detailed, throughly designed, efficient and minimalistic.
+### Notes on AI assisted development
+Considering that the whole interpreter and compiler source is less than 90KB, LLMs can keep the whole toolchain in context and perform incredibly well debugging, porting the implementation or write BIPLAN source code. The [AGENTS.md](AGENTS.md) file is my personal setup. AI-generated slop will not be reviewed: contributions to this project are evaluated only if well detailed, throughly designed, efficient and minimalistic.
 
 ### License
 The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License:
