@@ -72,7 +72,7 @@ macro ANSI_HIDE_CURSOR "[?25l"
 
 // Set text color
 
-function ansi_color($color, locals: $v)
+function ansi_color($color)
   if $color == ANSI_BLACK  ANSI_SET ANSI_TXT_BLACK  return end
   if $color == ANSI_RED    ANSI_SET ANSI_TXT_RED    return end
   if $color == ANSI_GREEN  ANSI_SET ANSI_TXT_GREEN  return end
@@ -86,7 +86,7 @@ done
 
 // Set background
 
-function ansi_background($color, locals: $v)
+function ansi_background($color)
   if $color == ANSI_BLACK  ANSI_SET ANSI_BG_BLACK  return end
   if $color == ANSI_RED    ANSI_SET ANSI_BG_RED    return end
   if $color == ANSI_GREEN  ANSI_SET ANSI_BG_GREEN  return end
@@ -100,7 +100,7 @@ done
 
 // Set style
 
-function ansi_style($style, locals: $v)
+function ansi_style($style)
   if $style == ANSI_REGULAR   ANSI_SET ANSI_TXT_RESET     return end
   if $style == ANSI_BOLD      ANSI_SET ANSI_TXT_BOLD      return end
   if $style == ANSI_ITALIC    ANSI_SET ANSI_TXT_ITALIC    return end
@@ -111,7 +111,7 @@ done
 
 // Set cursor visibility
 
-function ansi_cursor($state, locals: $v)
+function ansi_cursor($state)
   if $state == 1 ANSI_SET ANSI_SHOW_CURSOR return end
   ANSI_SET ANSI_HIDE_CURSOR
 done

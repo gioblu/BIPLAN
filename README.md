@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. The compiler and the interpreter do not use dynamic memory allocation and are deterministic, avoiding garbage collection, non-blocking threads and time-dependent or randomized optimization.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. Both the compiler and interpreter do not use dynamic memory allocation, garbage collection, non-blocking threads or randomized optimization, for this reason BIPLAN is deterministic and guarantees execution reproducibility.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -69,7 +69,7 @@ The table below contains the results of the [benchmarks](/examples/LINUX/benchma
 3. `biplan` starts up **6.8 times faster** than `python3`
 3. `biplan` interprets **1.3 times faster** than `python3`
 
-BIPLAN is more efficient than Python and many other interpreted languages. It is particularry well suited for applications that require very fast startup time, efficiency, minimal resource footprint and small binary sizes.
+BIPLAN is more efficient than Python; it is well suited for applications that require low power and resource consumption, fast startup time and minimal bytecode size.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
