@@ -138,10 +138,11 @@ following conditions:
    OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
    EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
 
-Commercial Licensing Notice:
+Commercial Licensing Notice
 
-Companies, corporations, and institutions interested in obtaining a commercial or institutional license for BIPLAN may submit an official inquiry directly to the
-author via email at: gioscarab@gmail.com
+Companies, corporations, and institutions interested in obtaining a commercial or
+institutional license for BIPLAN may submit an official inquiry directly to the
+author via email at gioscarab@gmail.com
 ```
 
 The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
