@@ -1,13 +1,28 @@
 
-// Pipe HTTP request example
-// Requires curl installed on the host.
+// This example accomplishes the following:
+
+// 1. sends an HTTP request to httpbin.org using http_get
+// 2. saves the JSON response in a string
+// 3. uses the json_get to extract the value of "Host" in the header
+// 4. prints the response and the value of "Host" it in the terminal
+
+// NOTE: Requires curl and jq installed on the host.
 
 include "/usr/local/BIPLAN/http.biplan"
+include "/usr/local/BIPLAN/json.biplan"
 
-@pipe = HTTP_GET "https://httpbin.org/get"
-while  @c != -1
-  @c = pipe read @pipe
-  if @c print char @c end
-next
-pipe close @pipe
+:url = "https://httpbin.org/get"
+:body = ""
+
+:path = ".headers.Host"
+:result = ""
+
+http_get(:url, :body)
+
+print "Full response:", char LF, :body, char LF
+
+json_get(:body, :path, :result)
+
+print "Extracted .headers.Host: ", :result, char LF
+
 stop
