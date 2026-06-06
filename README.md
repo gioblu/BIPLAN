@@ -69,7 +69,7 @@ The table below contains the results of the [benchmarks](/examples/LINUX/benchma
 3. `biplan` starts up **6.8 times faster** than `python3`
 3. `biplan` interprets **1.3 times faster** than `python3`
 
-BIPLAN is more efficient than Python and it is well suited for applications that require low power and resource consumption, fast startup time and minimal bytecode size.
+BIPLAN is more efficient than Python and it is well suited for applications that require fast startup time, minimal bytecode size and low power consumption.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
