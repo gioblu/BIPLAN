@@ -1,6 +1,6 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. Both the compiler and the interpreter reject dynamic memory allocation, garbage collection, non-blocking threads or randomized optimization, for this reason they are deterministic and guarantee execution reproducibility.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. Both the compiler and the interpreter reject dynamic memory allocation, garbage collection, non-blocking threads or randomized optimization, for this reason they are deterministic and guarantee execution reproducibility.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
@@ -13,11 +13,11 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental prog
 The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 ### Why?
-In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards and running software I could more or less understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation I was able to install because of memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement a new viable option for such a use case, a programming language that is simple, portable, modern, efficient but at the same time small enough to run even on limited micro-controllers.
+In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could more or less understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation I was able to install due to memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement a new viable option for such a use case, a programming language that is simple, portable, modern, efficient, but at the same time small enough to run even on limited micro-controllers.
 
 ### How?
 
-The development of BIPLAN started in 2017, I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 9 years of experiments I wrote `BCC`, a pre-processor and a multi-pass compiler capable of syntax and lexical analysis (701 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (874 lines of code).
+The development of BIPLAN started in 2017. I wrote both the compiler and the interpreter from scratch avoiding external libraries, frameworks and the influence of compiler and interpreter design studies, learning by doing and evaluating results. In 9 years of experiments I wrote `BCC`, a pre-processor and a multi-pass compiler capable of syntax and lexical analysis (701 lines of code), and `BIPLAN`, a register-based virtual machine implemented with a recursive descent parser (874 lines of code).
 
 ### Code example
 
@@ -99,6 +99,10 @@ All you need to build BIPLAN is `g++`.
 - [OSX examples](/examples/OSX/)
 - [Arduino examples](/examples/ARDUINO/)
 
+#### Notes on AI assisted development
+
+Considering that the whole interpreter and compiler source is less than 90KB, LLMs can keep the whole toolchain in context and perform incredibly well in debugging and extending the implementation or write BIPLAN source code. The [AGENTS.md](AGENTS.md) file is my personal setup. After almost 10 years of developing BIPLAN by hand, line by line, I perfectly know how each functionality is implemented and where it is stored, so for me LLMs can be useful to speed up debugging or the implementation of the standard library. AI-generated slop will not be reviewed: contributions to this project will be reviewed only if well detailed, throughly designed, efficient and minimalistic.
+
 ### License
 The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License:
 
@@ -116,7 +120,7 @@ distribute the Software as defined by Section 1 through 3 of this document.
 
 BIPLAN Experimenter's License
 
-Copyright 2022 Giovanni Blu Mitolo
+Copyright 2026 Giovanni Blu Mitolo
 
 Permission is hereby granted to You, free of charge, the rights to use, copy,
 modify, merge, publish or distribute copies of the Software, subject to the
