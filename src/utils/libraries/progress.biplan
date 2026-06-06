@@ -1,28 +1,25 @@
 // Progress bar library by Giovanni Blu Mitolo 2026
-
 // A simple text-mode progress bar for console applications.
-// This library stores its internal state in reserved numeric variables
-// so the progress state persists across function calls.
 
 include "/usr/local/BIPLAN/ansi.biplan"
 
-macro PROGRESS_FILL "#"
-macro PROGRESS_EMPTY " "
-macro PROGRESS_PREFIX "["
-macro PROGRESS_SUFFIX "]"
-macro PROGRESS_PHASE_1 "🌑"
-macro PROGRESS_PHASE_2 "🌒"
-macro PROGRESS_PHASE_3 "🌓"
-macro PROGRESS_PHASE_4 "🌔"
-macro PROGRESS_PHASE_5 "🌕"
-macro PROGRESS_PHASE_6 "🌖"
-macro PROGRESS_PHASE_7 "🌗"
-macro PROGRESS_PHASE_8 "🌘"
+macro PROGRESS_FILL    "■"
+macro PROGRESS_EMPTY   " "
+macro PROGRESS_PREFIX  "["
+macro PROGRESS_SUFFIX  "]"
+macro PROGRESS_PHASE_1 "|"
+macro PROGRESS_PHASE_2 "/"
+macro PROGRESS_PHASE_3 "-"
+macro PROGRESS_PHASE_4 "'"
+macro PROGRESS_PHASE_5 "|"
+macro PROGRESS_PHASE_6 "/"
+macro PROGRESS_PHASE_7 "-"
+macro PROGRESS_PHASE_8 "`"
 
 // Initializes the progress bar state
 // $width is the number of characters used to render the bar
 // $color and $style are ANSI color parameters (see ansi.biplan library)
-function progress_init($width, $color, $style)
+function progress_init($color, $style)
   ansi_color($color)
   ansi_style($style)
 done
@@ -61,7 +58,7 @@ function progress_draw($value, $width, locals: $filled, $i, $perc, $phase)
 done
 
 // Complete the bar and advance to end
-function progress_finish($width, locals: $previous)
+function progress_finish()
   ANSI_SET ANSI_SHOW_CURSOR
   ANSI_SET ANSI_TXT_RESET
 done

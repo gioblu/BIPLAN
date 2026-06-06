@@ -15,7 +15,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Comments
-Comments are human-readable notes present in the source-code. They will be ignored by the compiler. The `#` symbol signals the start of a comment. A comment can make use of an entire line:
+Comments are human-readable notes present in the source-code. They will be ignored by the compiler. The `//` symbol signals the start of a comment. A comment can make use of an entire line:
 ```c
 // This is a comment
 ```
