@@ -10,7 +10,7 @@ This is the BIPLAN programming language repository. It is a novel programming la
 6. Code you output must be syntactically correct and must not add any vulnerability, bug, off-by-one or memory leak
 7. When you write code and tests follow the DRY (Don't Repeat Yourself) principle
 8. Do not generate code that is incomplete and it does not build
-9. Follow the codestyle guidelines at the end of this document
+9. You must use only static memory allocation, dynamic memory allocation is outlawed
 10. Code you output must be tested compiling it with `bcc` and interpreting it with `biplan`, tests must focus on testing functionality, not code
 
 # Important things to know for working on this codebase
