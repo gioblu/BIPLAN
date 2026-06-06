@@ -20,4 +20,4 @@ Testing ansi_style() function:
 "~&0)~&2)p"Executing: ansi_style(ANSI_ITALIC)
 "~&0)~&3)p"Executing: ansi_style(ANSI_UNDERLINE)
 "~&0)~&4)p"Executing: ansi_style(ANSI_BLINK)
-"~&0)xf%}j}k)?}jQ0pb27,"[30m"rF?}jQ1pb27,"[31m"rF?}jQ2pb27,"[32m"rF?}jQ3pb27,"[33m"rF?}jQ4pb27,"[34m"rF?}jQ5pb27,"[35m"rF?}jQ6pb27,"[36m"rF?}jQ7pb27,"[37m"rFpb27,"[0m"df$}j}k)?}jQ0pb27,"[0;40m"rF?}jQ1pb27,"[0;41m"rF?}jQ2pb27,"[0;42m"rF?}jQ3pb27,"[0;43m"rF?}jQ4pb27,"[0;44m"rF?}jQ5pb27,"[0;45m"rF?}jQ6pb27,"[0;46m"rF?}jQ7pb27,"[0;47m"rFpb27,"[0m"df&}j}k)?}jQ0pb27,"[0m"rF?}jQ1pb27,"[1m"rF?}jQ2pb27,"[3m"rF?}jQ3pb27,"[4m"rF?}jQ4pb27,"[5m"rFpb27,"[0m"d
+"~&0)xf%}j)?}jQ0pb27,"[30m"rF?}jQ1pb27,"[31m"rF?}jQ2pb27,"[32m"rF?}jQ3pb27,"[33m"rF?}jQ4pb27,"[34m"rF?}jQ5pb27,"[35m"rF?}jQ6pb27,"[36m"rF?}jQ7pb27,"[37m"rFpb27,"[0m"df$}j)?}jQ0pb27,"[0;40m"rF?}jQ1pb27,"[0;41m"rF?}jQ2pb27,"[0;42m"rF?}jQ3pb27,"[0;43m"rF?}jQ4pb27,"[0;44m"rF?}jQ5pb27,"[0;45m"rF?}jQ6pb27,"[0;46m"rF?}jQ7pb27,"[0;47m"rFpb27,"[0m"df&}j)?}jQ0pb27,"[0m"rF?}jQ1pb27,"[1m"rF?}jQ2pb27,"[3m"rF?}jQ3pb27,"[4m"rF?}jQ4pb27,"[5m"rFpb27,"[0m"d

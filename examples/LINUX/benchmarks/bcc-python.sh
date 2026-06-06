@@ -124,8 +124,8 @@ if [ "$total_bcc" -eq 0 ] || [ "$total_py" -eq 0 ]; then
     echo -e "\nError: Calculation failed due to missing execution durations.\n"
 elif [ $total_bcc -lt $total_py ]; then
     ratio=$(awk "BEGIN {printf \"%.2f\", $total_py/$total_bcc}")
-    echo -e "\nbcc is $ratio times faster than python3 compile.\n"
+    echo -e "\nbcc compiles $ratio times faster than python3.\n"
 else
     ratio=$(awk "BEGIN {printf \"%.2f\", $total_bcc/$total_py}")
-    echo -e "\npython3 compile is $ratio times faster than bcc.\n"
+    echo -e "\npython3 compiles $ratio times faster than bcc.\n"
 fi

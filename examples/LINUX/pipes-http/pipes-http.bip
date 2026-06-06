@@ -1,1 +1,1 @@
-}$kY"curl -s "+"https://httpbin.org/get"w}%T-1}%kX}$?}%pb}%F;kZ}$xf$}j}k}m}l)}l0w1}mkX}j?}m<0BFS}k][}l]}m`}l;S}k][}l]0r}kd
+:,"https://httpbin.org/get":*"":+".headers.Host":)""~%:,,:*)p"Full response:",b10,:*,b10~&:*,:+,:))p"Extracted .headers.Host: ",:),b10xf$}j}k}m}l)}l0w1}mkX}j?}m<0BFS}k][}l]}m`}l;S}k][}l]0r}kdf%}k}l}j)}jkY"curl -s "+"'"+S}k]+"'"r~$}j,}l)df&}j}k}m}l}o}n)}lkY"printf '%s' '"+S}j]+"' | jq -r '"+S}k]+"' 2>/dev/null"}n0}okX}lw}oH0S}m][}n]}o`}n}okX}l;S}m][}n]0?(}n>0)A(S}m][}n-1]Q10)S}m][}n-1]0FkZ}lr}md

@@ -134,8 +134,8 @@ if [ "$total_bip" -eq 0 ] || [ "$total_pyc" -eq 0 ]; then
     echo -e "\nError: One of the language compilers failed to yield target files.\n"
 elif [ "$total_bip" -lt "$total_pyc" ]; then
     ratio=$(awk "BEGIN {printf \"%.2f\", $total_pyc/$total_bip}")
-    echo -e "\nFootprint: bip is $ratio times smaller than pyc.\n"
+    echo -e "\nbip bytecode is $ratio times more compact than pyc.\n"
 else
     ratio=$(awk "BEGIN {printf \"%.2f\", $total_bip/$total_pyc}")
-    echo -e "\nFootprint: pyc is $ratio times smaller than bip.\n"
+    echo -e "\npyc bytecode is $ratio times more compact than bip.\n"
 fi
