@@ -1,19 +1,19 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. Both the compiler and interpreter do not use dynamic memory allocation, garbage collection, non-blocking threads or randomized optimization, for this reason BIPLAN is deterministic and guarantees execution reproducibility.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental programming language for micro-controllers and real-time operating systems that fits in less than 48KB of program memory and it is implemented in less than 2000 lines of code. BIPLAN is a very compact language, even more compact than Wasm3, MicroPython or Lua. Both the compiler and the interpreter reject dynamic memory allocation, garbage collection, non-blocking threads or randomized optimization, for this reason they are deterministic and guarantee execution reproducibility.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
 | TinyBasicPlus        |  11KB ROM,  1KB RAM  |
 | BIPLAN               |  48KB ROM,  5KB RAM  |
 | Wasm3                |  64kB ROM, 10kB RAM  |
-| MycroPython          | 256KB ROM, 16KB RAM  |
+| MicroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
 The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics and file handling.
 
 ### Why?
-In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards and running software I could more or less understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation I was able to install because of memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement a new viable option for this use case, a programming language that is simple, portable, modern, efficient but at the same time small enough to run even on limited micro-controllers.
+In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards and running software I could more or less understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only implementation I was able to install because of memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?". I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement a new viable option for such a use case, a programming language that is simple, portable, modern, efficient but at the same time small enough to run even on limited micro-controllers.
 
 ### How?
 
@@ -67,7 +67,7 @@ The table below contains the results of the [benchmarks](/examples/LINUX/benchma
 1. The BIP bytecode format is **7.32 times more compact** than python's `pyc`
 2. `bcc` compiles **3.7 times faster** than `python3`
 3. `biplan` starts up **6.8 times faster** than `python3`
-3. `biplan` interprets **1.3 times faster** than `python3`
+4. `biplan` interprets **1.3 times faster** than `python3`
 
 BIPLAN is more efficient than Python and it is well suited for applications that require fast startup time, minimal bytecode size and low power consumption.
 
@@ -122,21 +122,26 @@ Permission is hereby granted to You, free of charge, the rights to use, copy,
 modify, merge, publish or distribute copies of the Software, subject to the
 following conditions:
 
-1.Use, copy, modify, merge, publish or distribute the Software only for
-  experimental or educational purposes.
+1. Use, copy, modify, merge, publish or distribute the Software only for
+   non-commercial, experimental or educational purposes.
 
-2.Companies, institutions, organizations and corporations don't have the right
-  to use, copy, modify, merge, publish or distribute the Software.
+2. Companies, institutions, organizations and corporations don't have the right
+   to use, copy, modify, merge, publish or distribute the Software.
 
-3.THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  YOU ARE SOLELY RESPONSIBLE FOR USING, COPYING, MODIFYING, MERGING, PUBLISHING
-  OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
-  EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
+3. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   YOU ARE SOLELY RESPONSIBLE FOR USING, COPYING, MODIFYING, MERGING, PUBLISHING
+   OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
+   EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
+
+Commercial Licensing Notice:
+
+Companies, corporations, and institutions interested in obtaining a commercial or institutional license for BIPLAN may submit an official inquiry directly to the
+author via email at: gioscarab@gmail.com
 ```
 
 The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
