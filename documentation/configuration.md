@@ -1,5 +1,6 @@
 ### Documentation
 - **[Configuration](/documentation/configuration.md)**
+- [Performance](/documentation/performance.md)
 - [Comments](/documentation/comments.md) [`//`](/documentation/comments.md)
 - [Conditions](/documentation/conditions.md) [`if`](/documentation/conditions.md) [`else`](/documentation/conditions.md) [`end`](/documentation/conditions.md)
 - [Constants](/documentation/constants.md) [`true`](/documentation/constants.md) [`false`](/documentation/constants.md) [`HIGH`](/documentation/constants.md) [`LOW`](/documentation/constants.md) [`INPUT`](/documentation/constants.md) [`OUTPUT`](/documentation/constants.md)
