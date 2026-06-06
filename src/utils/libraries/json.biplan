@@ -1,0 +1,33 @@
+
+// JSON helper functions
+
+// I here declare being ashamed of writing a standard library function that
+// only works on linux, but, being LINUX the only target for version CR.1
+// it is probably OK for now. This is the only way I could find to extract
+// JSON values in BIPLAN without writing a full JSON parser in BIPLAN itself.
+
+// Requires jq to be installed on the host system.
+
+// Extract a JSON value by jq path from a BIPLAN string.
+// $json: reference to a string containing the JSON data.
+// $path: reference to a string containing the jq path
+//        e.g. ".key", ".parent.child", ".array[0].field"
+// $dst:  reference to a string where the result will be stored.
+// Returns the reference to $dst on success.
+
+function json_get($json, $path, $dst, locals: $pipe, $c, $pos)
+  $pipe = pipe open "printf '%s' '" + :[$json] + "' | jq -r '" + :[$path] + "' 2>/dev/null"
+  $pos = 0
+  $c = pipe read $pipe
+  while $c >= 0
+    :[$dst][$pos] = $c
+    ++$pos
+    $c = pipe read $pipe
+  next
+  :[$dst][$pos] = 0
+  if ($pos > 0) && (:[$dst][$pos - 1] == 10)
+    :[$dst][$pos - 1] = 0
+  end
+  pipe close $pipe
+  return $dst
+done
