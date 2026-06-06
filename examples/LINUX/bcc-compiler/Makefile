@@ -16,6 +16,8 @@ install:
 	@./../tests/examples-compilation.sh
 	@./../tests/syntax-compilation.sh
 	@./../tests/errors-compilation.sh
+	@./../benchmarks/bcc-python.sh
+	@./../benchmarks/bip-pyc.sh
 clean:
 	rm bcc
 	rm -rf /usr/local/BIPLAN

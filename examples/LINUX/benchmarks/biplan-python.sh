@@ -67,7 +67,7 @@ fi
 
 echo " ___________________________________________________________________"
 echo "|                                       |             |             |"
-echo "| Benchmark                             | biplan      | python3     |"
+echo "| Benchmark: Interpretation speed       | biplan      | python3     |"
 echo "|_______________________________________|_____________|_____________|"
 echo "|                                       |             |             |"
 for ((i=1; i<${tests_length} + 1; i++ ));
