@@ -1,12 +1,12 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems (RTOS). It is engineered to fit in less than 48KB of program memory and is implemented in less than 2000 lines of code; its footprint is significantly more compact than Wasm3, MicroPython, or Lua. By explicitly outlawing dynamic memory allocation, garbage collection, threads and speculative optimizations, BIPLAN is immune to runtime volatility, avoids a lot of architectural complexity and guarantees deterministic execution during both the compilation and interpretation phases.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 56KB of program memory and are implemented in less than 2000 lines of code; its footprint is significantly more compact than Wasm3, MicroPython, or Lua. By explicitly outlawing dynamic memory allocation, garbage collection, threads and speculative optimizations, BIPLAN is immune to runtime volatility, avoids a lot of architectural complexity and guarantees deterministic execution during both the compilation and interpretation phases.
 
 | Programming language | Minimum requirements |
 | -------------------- | -------------------- |
 | TinyBasicPlus        |  11KB ROM,  1KB RAM  |
-| BIPLAN               |  48KB ROM,  5KB RAM  |
-| Wasm3                |  64kB ROM, 10kB RAM  |
+| BIPLAN               |  56KB ROM,  5KB RAM  |
+| Wasm3 interpreter    |  64kB ROM, 10kB RAM  |
 | MicroPython          | 256KB ROM, 16KB RAM  |
 | Lua                  | 256KB ROM, 64kB RAM  |
 
@@ -63,11 +63,6 @@ The table below contains the results of the [benchmarks](/examples/LINUX/benchma
 | -------- | ------------- | ----------- | -------------- | ------- |
 | BIPLAN   | 1.12KB        | 431.58ms    | 2366.70ms      | 7ms     |
 | Python   | 8.17KB        | 1631.59ms   | 3172.99ms      | 48ms    |
-
-1. The BIP bytecode format is **7.32 times more compact** than python's `pyc`
-2. `bcc` compiles **3.7 times faster** than `python3`
-3. `biplan` starts up **6.8 times faster** than `python3`
-4. `biplan` interprets **1.3 times faster** than `python3`
 
 BIPLAN is more efficient than Python and it is well suited for applications that require fast startup time, minimal bytecode size and low power consumption.
 
