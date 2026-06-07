@@ -12,7 +12,7 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental inte
 
 BIPLAN is one of the few modern programming languages that provide a compiler and an interpreter in 56KB.
 
-BIPLAN's virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
+BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
 ### Why?
 In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming and the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself. A programming language that is simple, portable, modern, efficient, but at the same time small enough to run even on limited micro-controllers.
@@ -97,7 +97,7 @@ All you need to build BIPLAN is `g++`.
 - [Arduino examples](/examples/ARDUINO/)
 
 ### Notes on AI assisted development
-Considering that the entire interpreter and compiler source code totals less than 90KB, LLMs can retain the complete toolchain within a single context window. This enables AI models to perform exceptionally well when debugging, porting or optimizing BIPLAN's source code. The [AGENTS.md]() file contains my personal configuration for this workflow.
+Considering that the entire interpreter and compiler source code is very compact, LLMs can generally store the entire toolchain in their context window, for this reason AI models perform exceptionally well when generating, debugging, porting or optimizing BIPLAN's source code. The [AGENTS.md](AGENTS.md) file contains my personal configuration for this workflow.
 
 ### Contribute
 Feel free to send a pull request sharing something you have made that could help, if you want to support this project you can also try to solve an issue. AI-generated slop will not be reviewed: contributions to this project are evaluated only if well detailed, throughly designed, minimalistic and efficient. Thanks to support, expertise, kindness and talent of the following contributors, BIPLAN has been strongly tested, enhanced and verified:
@@ -146,8 +146,8 @@ following conditions:
 Commercial Licensing Notice
 
 Companies, corporations, and institutions interested in obtaining a commercial or
-institutional license for BIPLAN may submit an official inquiry directly to the
-author via email at gioscarab@gmail.com
+institutional license may submit an official inquiry directly to the author
+via email at gioscarab@gmail.com
 ```
 
 The version name CR.1 was chosen to honour the italian [FIAT CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft. It was designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [Sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of Wood-and-fabric construction.
