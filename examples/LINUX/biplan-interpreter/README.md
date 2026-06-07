@@ -1,36 +1,35 @@
 ### biplan interpreter
-The `biplan.cpp` file is a complete and ready to use BIP machine language interpreter.
+The `biplan.cpp` file is a complete and ready to use BIP machine language compiler and interpreter.
 
 #### How to build it
-1. Open the console
-2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. You can choose to build the compact interpreter using `sudo make compact` which is optimized for size (~26KB), or build the executable optimized for performance using `sudo make fast`, the resulting binary will be larger in size (~82KB) but around twice as fast if compared to the `compact` target. 
-4. Digit `sudo make install`
-5. Digit `sudo make clean` to remove the executable from the `usr/local/bin` directory
+1. Open the console in the `BIPLAN/examples/LINUX/biplan-interpreter` directory
+2. You can choose to build the compact interpreter using `sudo make compact` which is optimized for size (~47KB), or build the executable optimized for performance using `sudo make fast`, the resulting binary will be larger in size (~105KB) but around twice as fast if compared to the `compact` target.
+3. Digit `sudo make install`
 
 #### How to use it
-The `bcc` executable is copied in `usr/local/bin` to be reachable everywhere within your system. You can use it to interpret BIP machine language. In this directory you find [`fib.bip`](fib.bip), this file contains a program in BIP machine language that computes the 40th number of the Fibonacci sequence 100.000 times (the human-readable version is [fib.biplan](../bcc-compiler/fib.biplan)). You can use the `biplan` executable to interpret [`fib.bip`](fib.bip) or any other BIPLAN program. To do so:
+The `biplan` executable is copied in `usr/local/bin` to be reachable everywhere within your system. You can use it to interpret BIPLAN source code or BIP machine language:
 
-1. Open the console
-2. Locate the `BIPLAN/examples/LINUX/biplan-interpreter` directory
-3. Digit `biplan -i fib.bip -d`
+Open the console in the `BIPLAN/examples/LINUX/fib` directory and digit `biplan fib.biplan`.
 
 Expected output:
 ```
-BIPLAN interpreter - Giovanni Blu Mitolo 2025 
-Source: fib.bip
-Source length: 57B 
+102334155
+```
 
-Interpreter output: 
+`biplan -d fib.biplan` prints additional debug information:
+```
+BIPLAN interpreter - Giovanni Blu Mitolo 2026
+Source: fib.bip
+Source length: 57B
+
+Interpreter output:
 
 102334155
 
-Execution duration: 648949 microseconds 
+Execution duration: 648949 microseconds
 ```
 
-You can now write a BIPLAN program, play with the [bcc-compiler](../bcc-compiler) and use the `biplan` executable to interpret it. 
+For additional details, see the information printed by `biplan -h`.
 
-`biplan` supports additional arguments:
-- `-a` passes an argument to the program
-- `-d` prints debug information
-- `-h` prints help 
+#### How to get rid of it
+To remove the executable from the `usr/local/bin` directory digit `sudo make clean`.

@@ -1,0 +1,14 @@
+
+// This progrm calculates the 40th Fibonacci number
+
+print fibonacci(40)
+stop
+function fibonacci($a, locals: $b, $c)
+  $b = 1
+  for #r = 0 to $a
+    $a = $b
+    $b = $c
+    $c = $a + $b
+  next
+  return $c
+done
