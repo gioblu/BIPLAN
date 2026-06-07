@@ -1,5 +1,5 @@
-## biplan interpreter
-The `biplan.cpp` file is a complete and ready to use BIP machine language compiler and interpreter.
+## `biplan`
+The `biplan.cpp` file is a complete and ready to use BIPLAN compiler and interpreter.
 
 ### How to build it
 1. Open the console in the `BIPLAN/examples/LINUX/biplan-interpreter` directory
