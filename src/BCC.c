@@ -261,8 +261,8 @@ char *bcc_compile_step(
       }
       memmove(p + ofs, p, strlen(p) + 1);
       for(uint8_t i = 0; i < cl; i++, p++) *p = code[i];
-      bcc_stop = bcc_stop + cl;
-      // *(stop + cl) = 0;
+      bcc_stop = bcc_stop + ofs;
+      *bcc_stop = 0;
     }
     if(post) {
       BCC_IGNORE_SUGAR(p);
