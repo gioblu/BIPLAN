@@ -1,16 +1,16 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 56KB of program memory and are implemented in less than 2000 lines of code; it is significantly more compact than Wasm3, MicroPython, or Lua. By explicitly outlawing dynamic memory allocation, garbage collection, threads and speculative optimizations, BIPLAN is immune to runtime volatility, avoids a lot of architectural complexity and guarantees deterministic execution during both the compilation and interpretation phases.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 48KB of program memory and are implemented in less than 2000 lines of code; it is significantly more compact than Wasm3, MicroPython, or Lua. By explicitly outlawing dynamic memory allocation, garbage collection, threads and speculative optimizations, BIPLAN is immune to runtime volatility, avoids a lot of architectural complexity and guarantees deterministic execution during both the compilation and interpretation phases.
 
 | Programming language | Compiler | Interpreter | Minimum requirements |
 | -------------------- | -------- | ----------- |-------------------- |
 | TinyBasicPlus        |    ❌ (interprets source)    |     ✅     | 11KB ROM,  1KB RAM  |
-| BIPLAN               |    ✅    |     ✅     | 56KB ROM,  5KB RAM  |
+| BIPLAN               |    ✅    |     ✅     | 48KB ROM,  5KB RAM  |
 | Wasm3                |    ❌ (interprets bytecode)   |     ✅     | 64kB ROM, 10kB RAM  |
 | MicroPython          |    ✅    |     ✅     | 256KB ROM, 16KB RAM  |
 | Lua                  |    ✅    |     ✅     | 256KB ROM, 64kB RAM  |
 
-BIPLAN is one of the few modern programming languages that provide a compiler and an interpreter in 56KB.
+BIPLAN is one of the few modern programming languages that provide a compiler and an interpreter in 48KB.
 
 BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
