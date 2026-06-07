@@ -2,15 +2,17 @@
 ## BIPLAN CR.1
 BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 56KB of program memory and are implemented in less than 2000 lines of code; its footprint is significantly more compact than Wasm3, MicroPython, or Lua. By explicitly outlawing dynamic memory allocation, garbage collection, threads and speculative optimizations, BIPLAN is immune to runtime volatility, avoids a lot of architectural complexity and guarantees deterministic execution during both the compilation and interpretation phases.
 
-| Programming language | Minimum requirements |
-| -------------------- | -------------------- |
-| TinyBasicPlus        |  11KB ROM,  1KB RAM  |
-| BIPLAN               |  56KB ROM,  5KB RAM  |
-| Wasm3 interpreter    |  64kB ROM, 10kB RAM  |
-| MicroPython          | 256KB ROM, 16KB RAM  |
-| Lua                  | 256KB ROM, 64kB RAM  |
+| Programming language | Compiler | Interpreter | Minimum requirements |
+| -------------------- | -------- | ----------- |-------------------- |
+| TinyBasicPlus        |    ❌ (interprets source)    |     ✅     | 11KB ROM,  1KB RAM  |
+| BIPLAN               |    ✅    |     ✅     | 56KB ROM,  5KB RAM  |
+| Wasm3                |    ❌ (interprets bytecode)   |     ✅     | 64kB ROM, 10kB RAM  |
+| MicroPython          |    ✅    |     ✅     | 256KB ROM, 16KB RAM  |
+| Lua                  |    ✅    |     ✅     | 256KB ROM, 64kB RAM  |
 
-The BIPLAN virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
+BIPLAN is the only modern programming language that provides a compiler and an interpreter in 56KB of program memory and few kilobytes of RAM.
+
+BIPLAN's virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
 ### Why?
 In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming and the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself. A programming language that is simple, portable, modern, efficient, but at the same time small enough to run even on limited micro-controllers.
