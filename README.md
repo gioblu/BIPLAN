@@ -10,7 +10,7 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental inte
 | MicroPython          |    ✅    |     ✅     | 256KB ROM, 16KB RAM  |
 | Lua                  |    ✅    |     ✅     | 256KB ROM, 64kB RAM  |
 
-BIPLAN is one of the few modern programming languages that provides a compiler and an interpreter in 56KB of program memory and a few kilobytes of RAM.
+BIPLAN is one of the few modern programming languages that provide a compiler and an interpreter in 56KB.
 
 BIPLAN's virtual machine implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
