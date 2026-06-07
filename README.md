@@ -75,7 +75,7 @@ BIPLAN is more efficient than Python and it is well suited for applications that
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ### Building BIPLAN
-The only pre-requisite to build BIPLAN is `g++` but if you want to use the full standard library also `curl` and `jq` are required:
+To build BIPLAN you only need `g++`, the standard library requires also `curl` and `jq`:
 ```
 sudo apt-get install jq
 sudo apt-get install curl

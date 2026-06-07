@@ -2,6 +2,14 @@
 The `biplan.cpp` file is a complete and ready to use BIPLAN compiler and interpreter.
 
 ### How to build it
+To build BIPLAN you only need `g++`, the standard library requires also `curl` and `jq`:
+```
+sudo apt-get install jq
+sudo apt-get install curl
+sudo apt-get install g++
+```
+
+Once done:
 1. Open the console in the `BIPLAN/examples/LINUX/biplan-interpreter` directory
 2. You can choose to build the compact interpreter using `sudo make compact` which is optimized for size (~47KB), or build the executable optimized for performance using `sudo make fast`, the resulting binary will be larger in size (~105KB) but around twice as fast if compared to the `compact` target.
 3. Digit `sudo make install`
