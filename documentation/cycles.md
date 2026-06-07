@@ -103,7 +103,7 @@ print "Button pressed!"
 
 // Prints Button pressed when pin 12 is HIGH
 ```
-When `break` is encountered within a `for`, the iteration is interrupted and all following statements part of the `for` are ignored.
+When `break` is encountered within a `while`, the iteration is interrupted and all following statements part of the `while` are ignored.
 
 #### `continue`
 The BIPLAN `while` supports `continue` as other programming languages do:
@@ -119,4 +119,4 @@ next
 
 // Prints Alert if the reading is less than 512
 ```
-When `continue` is encountered within a `for`, all following statements part of the `for` are ignored and the next iteration is initiated.
+When `continue` is encountered within a `while`, all following statements part of the `while` are ignored and the next iteration is initiated.
