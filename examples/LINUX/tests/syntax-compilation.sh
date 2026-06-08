@@ -43,7 +43,7 @@ echo -e "$info\n"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(bcc "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.bip")
+	result=$(biplan -c "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../tests/syntax/${tests[$i - 1]}.bip")
 	code=$?
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}
 	[ $code -eq 0 ] &&

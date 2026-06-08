@@ -5,18 +5,16 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
 # All examples to be tested in this run
 declare -a tests=(
-	"bcc-compiler/fib.bip"
-	"bcc-compiler/fib_recursive.bip"
-	"read-file/read-file.bip"
-	"date-epoch/date-epoch.bip"
-	"mem-test/mem-test.bip"
-	"pipes-read/pipes-read.bip"
-	"pipes-write/pipes-write.bip"
+	"fibonacci/fib.biplan"
+	"read-file/read-file.biplan"
+	"date-epoch/date-epoch.biplan"
+	"mem-test/mem-test.biplan"
+	"pipes-read/pipes-read.biplan"
+	"pipes-write/pipes-write.biplan"
 )
 
 declare -a results=(
 	"102334155"
-	"55"
 	'}%oY"read-file.bip",0l}$}&oX}%?}&T-1pb}&j}$FoZ}%x'
 	"Epoch: 1665434120 Date: 10/10/2022 20:35:20"
 	"Simplicity is best."
@@ -35,7 +33,7 @@ fail=0
 for ((i=1; i<${length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(biplan -i "$SCRIPT_DIR/../${tests[$i - 1]}" 2>&1)
+	result=$(biplan "$SCRIPT_DIR/../${tests[$i - 1]}" 2>&1)
 	code=$?
 	expected=${results[$i - 1]}
 

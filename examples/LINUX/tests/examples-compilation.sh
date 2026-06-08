@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
 # All examples to be tested in this run
 declare -a tests=(
-	"bcc-compiler/fib"
+	"fibonacci/fib"
 	"x-drawer/x-drawer"
 	"mem-test/mem-test"
 	"read-file/read-file"
@@ -41,7 +41,7 @@ echo -e "\n$info\n"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
 	space=$([ $i -lt 10 ] && echo " " || echo "")
-	result=$(bcc "$SCRIPT_DIR/../${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../${tests[$i - 1]}.bip")
+	result=$(biplan -c "$SCRIPT_DIR/../${tests[$i - 1]}.biplan" "$SCRIPT_DIR/../${tests[$i - 1]}.bip")
 	code=$?
 	error="unknown"
 	[ $code -lt $errors_length ] && error=${errors[$(($code - 1))]}

@@ -94,7 +94,7 @@ for ((i=1; i<=tests_length; i++)); do
 
     # Compile Biplan
     for ((it=0; it<iterations; it++)); do
-        bcc "$biplan_src" "$bip_out" > /dev/null 2>&1
+        biplan -c "$biplan_src" "$bip_out" > /dev/null 2>&1
     done
     if [ -f "$bip_out" ]; then
         bip_size=$(get_file_size "$bip_out")

@@ -73,10 +73,9 @@ echo "|                                       |             |             |"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
     start_bip=$(date +%s%6N)
-    bcc "$SCRIPT_DIR/programs/${tests[$i - 1]}.biplan" "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
     for ((it=0; it<${iterations}; it++ ));
     do
-        biplan -i "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip"  > /dev/null 2>&1
+        biplan "$SCRIPT_DIR/programs/${tests[$i - 1]}.biplan"  > /dev/null 2>&1
     done
     end_bip=$(date +%s%6N)
     duration_bip=$((end_bip - start_bip))
@@ -106,7 +105,6 @@ do
     space=""
     [ $i -lt 10 ] && space=" "
     echo -e "| ${space}$i. ${descs[$i - 1]}  | ${color_bip}$bip_ms ${color_py}  | $py_ms   |"
-    result=$(rm "$SCRIPT_DIR/programs/${tests[$i - 1]}.bip")
 done
 
 echo "|_______________________________________|_____________|_____________|"

@@ -80,7 +80,7 @@ for ((i=1; i<=tests_length; i++)); do
     # Profile bcc
     start_bcc=$(get_time_us)
     for ((it=0; it<iterations; it++)); do
-        bcc "$biplan_src" "$biplan_out" > /dev/null 2>&1
+        biplan -c "$biplan_src" "$biplan_out" > /dev/null 2>&1
     done
     end_bcc=$(get_time_us)
     duration_bcc=$((end_bcc - start_bcc))

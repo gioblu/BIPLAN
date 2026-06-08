@@ -9,8 +9,13 @@ compact:
 	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
 install:
 	cp biplan /usr/local/bin
+	@./../tests/examples-compilation.sh
+	@./../tests/syntax-compilation.sh
+	@./../tests/errors-compilation.sh
 	@./../tests/examples-interpretation.sh
 	@./../tests/syntax-interpretation.sh
+	@./../benchmarks/bcc-python.sh
+	@./../benchmarks/bip-pyc.sh
 	@./../benchmarks/biplan-python.sh
 	@echo "biplan installation completed, digit biplan -h to learn more. Have fun! \n\n"
 clean:
