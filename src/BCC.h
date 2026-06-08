@@ -77,12 +77,12 @@ static const struct bcc_keyword_char_code bcc_sys_functions[] = {
   {BP_CHAR_HUMAN, BP_CHAR, 5},
   {BP_ELSE_HUMAN, BP_ELSE, 4},
   {BP_END_HUMAN, BP_END, 4},
+  {BP_DONE_HUMAN, BP_DONE, 4},
   {BP_FOR_HUMAN, BP_FOR, 3},
   {BP_ADC_HUMAN, BP_ADC, 3},
   {BP_IF_HUMAN, BP_IF, 2},
   {BP_IO_HUMAN, BP_IO, 2},
   {BP_TO_HUMAN, BP_COMMA, 2},
-  {BP_DONE_HUMAN, BP_DONE, 4},
   {NULL, 0, 0}
 };
 

@@ -23,51 +23,61 @@ char bcc_string_id = BP_OFFSET + BP_ARGS;
 char bcc_fun_id = BP_OFFSET;
 char *bcc_stop = NULL;
 
-/* Checks if the character is an acceptable numeric symbol ----------------- */
-#define BCC_IS_NUM(C) ((C) >= '0' && (C) <= '9')
-
 /* Checks if the character is an acceptable keyword symbol ----------------- */
-#define BCC_IS_KEYWORD(C) ( \
-  ((C) >= 'a' && (C) <= 'z') || ((C) >= 'A' && (C) <= 'Z') || \
-  ((C) == '_') || ((C) >= '0' && (C) <= '9') )
+static inline int bcc_is_keyword(char c) {
+  return ((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z') ||
+         ((c) == '_') || ((c) >= '0' && (c) <= '9');
+}
 
 /* Checks if the character is an acceptable capitalized keyword symbol ------*/
-#define BCC_IS_CAP_KEYWORD(C) ( \
-  ((C) >= 'A' && (C) <= 'Z') || ((C) == '_') || ((C) >= '0' && (C) <= '9') )
+static inline int bcc_is_cap_keyword(char c) {
+  return ((c) >= 'A' && (c) <= 'Z') || ((c) == '_') || ((c) >= '0' && (c) <= '9');
+}
 
 /* Checks if the character passed is an acceptable address ----------------- */
-#define BCC_IS_ADDR(C) ( \
-  ((C) == BP_VAR_ADDR) || ((C) == BP_STR_ADDR) || ((C) == BP_FOR_ADDR) || \
-  ((C) == BP_FOR) || ((C) == BP_FUNCTION) || ((C) == BP_FUN_DEF) )
+static inline int bcc_is_addr(char c) {
+  return ((c) == BP_VAR_ADDR) || ((c) == BP_STR_ADDR) || ((c) == BP_FOR_ADDR) ||
+         ((c) == BP_FOR) || ((c) == BP_FUNCTION) || ((c) == BP_FUN_DEF);
+}
 
-/* Sets A to the next available address (avoiding reserved characters) ----- */
-#define BCC_NEW_ADDR_VAR(A) \
-  do { (A)++; } while(BCC_IS_ADDR(A)); \
-  if((A - BP_OFFSET) >= BP_VARIABLES) { \
-    bcc_error(0, NULL, BP_ERROR_VARIABLE_MAX); }
+/* Sets next variable available address (avoiding reserved characters) ----- */
+static inline void bcc_new_addr_var(char *a) {
+  do { (*a)++; } while(bcc_is_addr(*a));
+  if(((*a) - BP_OFFSET) >= BP_VARIABLES)
+    bcc_error(0, NULL, BP_ERROR_VARIABLE_MAX);
+}
 
-#define BCC_NEW_ADDR_STR(A) \
-  do { (A)++; } while(BCC_IS_ADDR(A)); \
-  if((A - (BP_OFFSET + BP_ARGS)) >= BP_STRINGS) { \
-    bcc_error(0, NULL, BP_ERROR_STRING_MAX); }
+/* Sets next string available address (avoiding reserved characters) ------- */
+static inline void bcc_new_addr_str(char *a) {
+  do { (*a)++; } while(bcc_is_addr(*a));
+  if(((*a) - (BP_OFFSET + BP_ARGS)) >= BP_STRINGS)
+    bcc_error(0, NULL, BP_ERROR_STRING_MAX);
+}
 
-#define BCC_NEW_ADDR_FUN(A) \
-  do { (A)++; } while(BCC_IS_ADDR(A)); \
-  if((A - BP_OFFSET) >= BP_FUN_MAX) { \
-    bcc_error(0, NULL, BP_ERROR_FUNCTION_MAX); }
+/* Sets next function available address (avoiding reserved characters) ----- */
+static inline void bcc_new_addr_fun(char *a) {
+  do { (*a)++; } while(bcc_is_addr(*a));
+  if(((*a) - BP_OFFSET) >= BP_FUN_MAX)
+    bcc_error(0, NULL, BP_ERROR_FUNCTION_MAX);
+}
 
 /*  Checks if the character passed is syntactic sugar ---------------------- */
-#define BCC_SUGAR(P) \
-  (*(P) == BP_SPACE) || (*(P) == BP_CR) || (*(P) == BP_LF) || (*(P) == BP_TAB)
+static inline int bcc_sugar(const char *p) {
+  return (*p == BP_SPACE) || (*p == BP_CR) || (*p == BP_LF) || (*p == BP_TAB);
+}
 
 /* Ignores syntactic sugar ------------------------------------------------- */
-#define BCC_IGNORE_SUGAR(P) while(BCC_SUGAR(P)) (P)++
+static inline void bcc_ignore_sugar(char **p) {
+  while(bcc_sugar(*p)) (*p)++;
+}
 
 /* Checks if the actual character is a string delimeter -------------------- */
-#define BCC_IS_STRING(S, P, PP) \
-  if(*P == BP_STRING) \
-  if(!S || (S && P > PP && (*(P - 1) != BP_BACKSLASH))) \
-    S = !S;
+static inline int bcc_is_string(int in_str, const char *p, const char *pp) {
+  if(*p == BP_STRING)
+    if(!in_str || (in_str && p > pp && (*(p - 1) != BP_BACKSLASH)))
+      return !in_str;
+  return in_str;
+}
 
 /* Returns the value received and calls error if the program is
    terminated/not accessible or if something else failed previously -------- */
@@ -103,7 +113,7 @@ int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
   while(p && *p) {
     if(
       !bcc_in_string(prog, p) &&
-      (ignore || p == prog || (p > prog && !BCC_IS_ADDR(*(p - 1))))
+      (ignore || p == prog || (p > prog && !bcc_is_addr(*(p - 1))))
     ) {
       if((a == b) && (*p == a)) ia = !ia;
       else {
@@ -118,7 +128,7 @@ int bcc_check_delimeter(const char *prog, char a, char b, int ignore) {
 
 /* Finds the end of a program ---------------------------------------------- */
 void bcc_find_end(char *prog) {
-  BCC_RETURN_IF_FAILED(!prog, );
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
   if(strlen(prog) >= BCC_MAX_PROGRAM_SIZE)
     bcc_error(0, NULL, BP_ERROR_PROGRAM_LENGTH);
   for(bcc_stop = prog; *bcc_stop != 0; bcc_stop++);
@@ -142,8 +152,8 @@ int bcc_in_string(const char *prog, const char *pos) {
 
 static bool bcc_parse_include_path(char *p, char *include_path, bool blank) {
   BCC_RETURN_IF_FAILED(!p || !*p, false);
-  while(BCC_IS_KEYWORD(*p)) if(blank) *(p++) = BP_SPACE; else p++;
-  BCC_IGNORE_SUGAR(p);
+  while(bcc_is_keyword(*p)) if(blank) *(p++) = BP_SPACE; else p++;
+  bcc_ignore_sugar(&p);
   if(*p != BP_STRING) return false;
   if(blank) *(p++) = BP_SPACE; else p++;
 
@@ -174,12 +184,12 @@ static bool bcc_include_dupe(const char *prog, char *p, const char *path) {
 
 /* Remove a given symbol from the program ---------------------------------- */
 void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
-  BCC_RETURN_IF_FAILED(!prog, );
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
   char *p = prog, *p2 = prog;
   int in_str = 0;
   while(p2 && *p2) {
     *p = *p2++;
-    BCC_IS_STRING(in_str, p, prog);
+    in_str = bcc_is_string(in_str, p, prog);
     if((*p != v1) && (*p != v2) && (*p != v3) && (*p != v4)) p++;
     else if(in_str) p++;
   }
@@ -188,11 +198,11 @@ void bcc_remove(char *prog, char v1, char v2, char v3, char v4) {
 
 /* Remove comments from program -------------------------------------------- */
 void bcc_remove_comments(char *prog) {
-  BCC_RETURN_IF_FAILED(!prog, );
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
   char *p = prog;
   int in_str = 0;
   while(p && *p) {
-    BCC_IS_STRING(in_str, p, prog);
+    in_str = bcc_is_string(in_str, p, prog);
     if(!in_str && *p == BP_COMMENT[0] && *(p + 1) == BP_COMMENT[1]) {
       while((p && *p) && (*p != BP_CR) && (*p != BP_LF))
         *(p++) = BP_SPACE;
@@ -202,11 +212,11 @@ void bcc_remove_comments(char *prog) {
 
 /* Compiles character constants such as '@' into 64 (its decimal value) ---- */
 void bcc_compile_char_constants(char *prog) {
-  BCC_RETURN_IF_FAILED(!prog, );
-  char *p = prog, b[3] = {0};
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
+  char *p = prog, b[BP_NUM_MAX] = {0};
   int in_str = 0;
   while(p && *p) {
-    BCC_IS_STRING(in_str, p, prog);
+    in_str = bcc_is_string(in_str, p, prog);
     if(!in_str && (*p == BP_SINGLE_QUOTE)) {
       if(*(p + 2) != BP_SINGLE_QUOTE) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_SINGLE_QUOTE);
@@ -237,13 +247,13 @@ char *bcc_compile_step(
   uint8_t cl = strlen(code);
   p = strstr(pos, key);
   if(p && *p && (p < bcc_stop)) {
-    if(bcc_in_string(prog, p) || (addr && p > prog && BCC_IS_ADDR(*(p - 1)))) {
+    if(bcc_in_string(prog, p) || (addr && p > prog && bcc_is_addr(*(p - 1)))) {
       if((p = strstr(p + kl, key))) return p;
       return NULL;
     }
     if(end) {
       uint8_t i = kl;
-      BCC_IGNORE_SUGAR(p);
+      bcc_ignore_sugar(&p);
       if(*(p + i) != end) {
         if((p = strstr(p + kl, key))) return p;
         return NULL;
@@ -265,7 +275,7 @@ char *bcc_compile_step(
       *bcc_stop = 0;
     }
     if(post) {
-      BCC_IGNORE_SUGAR(p);
+      bcc_ignore_sugar(&p);
       if(*p == post) *p = BP_SPACE;
     }
     return p;
@@ -306,11 +316,11 @@ char *bcc_find_longest_var_name(char *prog, char var_type) {
   char *p = prog, *longest = NULL;
   uint8_t result = 0;
   while(p && *p && (p < bcc_stop)) {
-    BCC_IS_STRING(in_str, p, prog);
+    in_str = bcc_is_string(in_str, p, prog);
     if(*(p++) == var_type) {
       if(in_str) continue;
       uint8_t  i = 0;
-      while(BCC_IS_KEYWORD(*p) && (p && *(p++))) i++;
+      while(bcc_is_keyword(*p) && (p && *(p++))) i++;
       if(i >= BP_KEYWORD_MAX) {
         bcc_error(bcc_line(prog, p), p, BP_ERROR_VARIABLE_NAME);
         return NULL;
@@ -337,11 +347,11 @@ char *bcc_compile_variable(char *prog, char *position, char var_type) {
     *p = type;
     str[n++] = *(++p);
     if(type == BP_STR_ADDR) {
-      BCC_NEW_ADDR_STR(bcc_string_id);
-    } else BCC_NEW_ADDR_VAR(bcc_var_id);
+      bcc_new_addr_str(&bcc_string_id);
+    } else bcc_new_addr_var(&bcc_var_id);
     *(p++) = (type == BP_STR_ADDR) ? bcc_string_id : bcc_var_id;
     for(uint8_t i = 0; i < BP_KEYWORD_MAX - 1; i++, p++) {
-      if(BCC_IS_KEYWORD(*p)) {
+      if(bcc_is_keyword(*p)) {
         str[n++] = *p;
         *p = BP_SPACE;
       } else break;
@@ -380,15 +390,9 @@ char *bcc_find_longest_keyword(char *prog, int t) {
       continue;
     }
     p2 = p;
-    if(BCC_IS_NUM(*p)) {
-      bcc_error(
-        bcc_line(prog, p), p, t ? BP_ERROR_FUNCTION_NAME : BP_ERROR_MACRO_NAME
-      );
-      return NULL;
-    }
-    while(BCC_IS_KEYWORD(*p)) p++;
-    BCC_IGNORE_SUGAR(p);
-    while((p && *p) && (t ? BCC_IS_KEYWORD(*p) : BCC_IS_CAP_KEYWORD(*p))) {
+    while(bcc_is_keyword(*p)) p++;
+    bcc_ignore_sugar(&p);
+    while((p && *p) && (t ? bcc_is_keyword(*p) : bcc_is_cap_keyword(*p))) {
       i++;
       p++;
     }
@@ -414,14 +418,14 @@ int bcc_check_redefinition(const char *prog, int type) {
   while((p = strstr(p, keyword))) {
     if(!bcc_in_string(prog, p)) {
       const char *name_start = p + strlen(keyword);
-      while(*name_start && BCC_SUGAR(name_start)) name_start++;
+      while(*name_start && bcc_sugar(name_start)) name_start++;
       char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
       while(
         *name_start && (
           type ?
-            BCC_IS_KEYWORD(*name_start) :
-            BCC_IS_CAP_KEYWORD(*name_start)
+            bcc_is_keyword(*name_start) :
+            bcc_is_cap_keyword(*name_start)
         ) && (i < BP_KEYWORD_MAX - 1)
       ) name[i++] = *name_start++;
       name[i] = 0;
@@ -431,15 +435,15 @@ int bcc_check_redefinition(const char *prog, int type) {
         while((search_pos = strstr(search_pos, keyword))) {
           if(!bcc_in_string(prog, search_pos)) {
             const char *check_name = search_pos + strlen(keyword);
-            while(*check_name && BCC_SUGAR(check_name)) check_name++;
+            while(*check_name && bcc_sugar(check_name)) check_name++;
             uint8_t match = 1;
             for(uint8_t j = 0; j < i; j++)
               if(check_name[j] != name[j] && !(match = 0)) break;
             if(
               match && !(
                 type ?
-                  BCC_IS_KEYWORD(check_name[i]) :
-                  BCC_IS_CAP_KEYWORD(check_name[i])
+                  bcc_is_keyword(check_name[i]) :
+                  bcc_is_cap_keyword(check_name[i])
               )
             ) count++;
             if(count > 1) {
@@ -469,16 +473,16 @@ int bcc_compile_function_step(char *prog) {
   uint8_t keyword_length = 0, f_id;
   if(p && *p) {
     f_id = bcc_fun_id;
-    BCC_NEW_ADDR_FUN(bcc_fun_id);
+    bcc_new_addr_fun(&bcc_fun_id);
     *(p++) = BP_FUN_DEF;
     *(p++) = bcc_fun_id;
-    while(!BCC_SUGAR(p)) *(p++) = BP_SPACE;
+    while(!bcc_sugar(p)) *(p++) = BP_SPACE;
     while(
       (++p && *p) &&
       (*p != BP_L_RPARENT) &&
       (keyword_length < (BP_KEYWORD_MAX - 1))
     ) {
-      if(!BCC_SUGAR(p)) { // Ignore sugar postfix
+      if(!bcc_sugar(p)) { // Ignore sugar postfix
         fn_keyword[keyword_length++] = *p;
         *p = BP_SPACE;
       }
@@ -522,7 +526,7 @@ void bcc_compile_functions(char *prog) {
 
 /* Compile for (inefficient compilation, each for gets a new address) ------ */
 void bcc_compile_for(char *prog) {
-  BCC_RETURN_IF_FAILED(!prog, );
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
   char *p = prog, *p2 = prog;
   bcc_var_id = BP_OFFSET; // Reset variable address
   char c[2] = {BP_FOR, 0}; // While you find a for
@@ -531,7 +535,7 @@ void bcc_compile_for(char *prog) {
     p2 = p;
     uint8_t n = 1; // Find the end of the for
     while((++p && *p) && (n >= 1)) {
-      if(BCC_IS_ADDR(*(p-1)) || bcc_in_string(prog, p)) continue;
+      if(bcc_is_addr(*(p-1)) || bcc_in_string(prog, p)) continue;
       if(*p == BP_FOR) n++;
       if(*p == BP_NEXT) n--;
     }
@@ -554,15 +558,15 @@ int bcc_compile_macro(char *prog) {
   char macro_code[BP_MACRO_MAX];
   char *p = bcc_find_longest_keyword(prog, 0);
   if(!p || !*p) return 0;
-  while(BCC_IS_KEYWORD(*p)) *(p++) = BP_SPACE;
-  BCC_IGNORE_SUGAR(p);
+  while(bcc_is_keyword(*p)) *(p++) = BP_SPACE;
+  bcc_ignore_sugar(&p);
   uint16_t i;
-  for(i = 0; BCC_IS_CAP_KEYWORD(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
+  for(i = 0; bcc_is_cap_keyword(*p) && (i < (BP_KEYWORD_MAX - 1)); i++) {
     macro_name[i] = *p;
     *(p++) = BP_SPACE;
   }
   macro_name[i] = 0;
-  BCC_IGNORE_SUGAR(p);
+  bcc_ignore_sugar(&p);
   for(i = 0; p && *p && (i < (BP_MACRO_MAX - 1)); i++) {
     macro_code[i] = *p;
     *(p++) = BP_SPACE;
@@ -625,24 +629,17 @@ void bcc_compile_includes(char *prog) {
 
 /* Undefined function check ------------------------------------------------ */
 void bcc_check_syntax(const char *prog) {
-  BCC_RETURN_IF_FAILED(!prog, );
+  BCC_RETURN_IF_FAILED(!prog, (void)0);
   const char *p = prog, *p2, *p3;
   int in_str = 0;
   while(p && *p) {
-    BCC_IS_STRING(in_str, p, prog);
-    if( // Variable names cannot start with a number
-      !in_str &&(
-        (*p == BP_VAR_ADDR_HUMAN) ||
-        (*p == BP_STR_ADDR_HUMAN) ||
-        (*p == BP_FOR_ADDR)
-      ) && BCC_IS_NUM(*(p + 1))
-    ) return bcc_error(bcc_line(prog, p), p, BP_ERROR_KEYWORD);
+    in_str = bcc_is_string(in_str, p, prog);
     // Look for undefined functions
-    if(!in_str && BCC_IS_KEYWORD(*p)) {
+    if(!in_str && bcc_is_keyword(*p)) {
       p2 = p;
       char name[BP_KEYWORD_MAX] = {0};
       uint8_t i = 0;
-      while(BCC_IS_KEYWORD(*p)) {
+      while(bcc_is_keyword(*p)) {
         if(i > BP_KEYWORD_MAX - 1)
           return bcc_error(
             bcc_line(prog, p2), p2, BP_ERROR_FUNCTION_NAME
@@ -651,7 +648,7 @@ void bcc_check_syntax(const char *prog) {
       }
       name[i] = 0;
       p3 = p;
-      while(p3 && BCC_SUGAR(p3)) p3++;
+      while(p3 && bcc_sugar(p3)) p3++;
       if(p3 && *p3 == BP_L_RPARENT) {
         bool is_system = false; // Check if it's a system function
         for(int j = 0; bcc_sys_functions[j].human != NULL; j++)
@@ -664,10 +661,10 @@ void bcc_check_syntax(const char *prog) {
         while((p3 = strstr(p3, BP_FUN_DEF_HUMAN))) {
           if(!bcc_in_string(prog, p3)) {
             p3 = p3 + strlen(BP_FUN_DEF_HUMAN);
-            while(p3 && BCC_SUGAR(p3)) p3++;
+            while(p3 && bcc_sugar(p3)) p3++;
             if(strncmp(p3, name, strlen(name)) == 0) {
               p3 = p3 + strlen(name);
-              if(!BCC_IS_KEYWORD(*p3)) {
+              if(!bcc_is_keyword(*p3)) {
                 is_defined = 1;
                 break;
               }
