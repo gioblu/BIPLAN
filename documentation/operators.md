@@ -30,7 +30,14 @@
 
 ### Operator precedence
 
-BIPLAN implements a recursive descent parser for this reason there is no operator precedence and calculations are executed in the order specified by the user.
+BIPLAN uses a layered recursive descent parser that naturally enforces standard mathematical hierarchy that perfectly mirrors standard C precedence:
+
+1. Factor: Parentheses, numbers, constants, variables, function calls and system functions
+2. Term: `*`, `/`, `%`
+3. Expression: `+`, `-`, `&`, `|`, `^`, `<<`, `>>`
+4. Relation: `==`, `!=`, `<`, `>`, `<=`, `>=`, `&&`, `||`
+
+For this reason this expression `2 + 3 * 4` evaluates to `14`; multiplication has a higher precedence than addition.
 
 ### Operator syntax
 
