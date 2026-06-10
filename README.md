@@ -4,13 +4,12 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental inte
 
 | Programming language | Compiler | Interpreter | Minimum requirements |
 | -------------------- | -------- | ----------- |-------------------- |
-| TinyBasicPlus        |    ❌ (interprets source)    |     ✅     | 11KB ROM,  1KB RAM  |
-| BIPLAN               |    ✅    |     ✅     | 48KB ROM,  5KB RAM  |
-| Wasm3                |    ❌ (interprets bytecode)   |     ✅     | 64kB ROM, 10kB RAM  |
-| MicroPython          |    ✅    |     ✅     | 256KB ROM, 16KB RAM  |
-| Lua                  |    ✅    |     ✅     | 256KB ROM, 64kB RAM  |
-
-BIPLAN is one of the few modern programming languages that provide a compiler and an interpreter in 48KB.
+| TinyBasicPlus        |    ❌ (interprets source)    |     ✔️     | 11KB ROM,  1KB RAM  |
+| BIPLAN               |    ✔️    |     ✔️     | 48KB ROM,  5KB RAM  |
+| Wasm3                |    ❌ (interprets bytecode)   |     ✔️     | 64kB ROM, 10kB RAM  |
+| Wren                 |    ✔️    |     ✔️     | 160KB ROM, 16KB RAM  |
+| Lua 5.2              |    ✔️    |     ✔️     | 175KB ROM, 64kB RAM  |
+| MicroPython          |    ✔️    |     ✔️     | 256KB ROM, 16KB RAM  |
 
 BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
@@ -86,9 +85,6 @@ Once done see:
 
 - [How to build it on Linux](/examples/LINUX/biplan-interpreter/)
 - [Linux examples](/examples/LINUX/)
-
-### Notes on AI assisted development
-Considering that the entire interpreter and compiler source code is very compact, LLMs can generally store the entire toolchain in their context window, for this reason AI models perform exceptionally well when generating, debugging, porting or optimizing BIPLAN's source code. The [AGENTS.md](AGENTS.md) file contains my personal configuration for this workflow.
 
 ### Contribute
 Feel free to send a pull request sharing something you have made that could help, if you want to support this project you can also try to solve an issue. AI-generated slop will not be reviewed: contributions to this project are evaluated only if well detailed, throughly designed, minimalistic and efficient. Thanks to support, expertise, kindness and talent of the following contributors, BIPLAN has been strongly tested, enhanced and verified:
