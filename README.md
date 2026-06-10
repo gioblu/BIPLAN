@@ -1,12 +1,12 @@
 
 ## BIPLAN CR.1
-BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 48KB of program memory and are implemented in less than 2000 lines of code; it is significantly more compact than Wasm3, MicroPython, or Lua.
+BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental interpreted language designed for microcontrollers and real-time operating systems. Both the interpreter and the compiler fit in less than 48KB of program memory and are implemented in less than 2,000 lines of code; it is significantly more compact than Wasm3, MicroPython, or Lua. BIPLAN is simple, portable, modern, efficient, yet small enough to run on micro-controllers and vintage computers.
 
 | Programming language | Compiler | Interpreter | Minimum requirements |
 | -------------------- | -------- | ----------- |-------------------- |
 | TinyBasicPlus        |    ❌ (interprets source)    |     ✔️     | 11KB ROM,  1KB RAM  |
 | BIPLAN               |    ✔️    |     ✔️     | 48KB ROM,  5KB RAM  |
-| Wasm3                |    ❌ (interprets bytecode)   |     ✔️     | 64kB ROM, 10kB RAM  |
+| Wasm3                |    ❌ (interprets bytecode)   |     ✔️     | 64kB ROM, 10KB RAM  |
 | Wren                 |    ✔️    |     ✔️     | 160KB ROM, 16KB RAM  |
 | Lua 5.2              |    ✔️    |     ✔️     | 175KB ROM, 64kB RAM  |
 | MicroPython          |    ✔️    |     ✔️     | 256KB ROM, 16KB RAM  |
@@ -16,7 +16,7 @@ BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates w
 The version name CR.1 was chosen to honour the Italian [Fiat CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of wood-and-fabric construction.
 
 ### Why?
-In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming and the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself. A programming language that is simple, portable, modern, efficient, but at the same time small enough to run even on limited micro-controllers.
+In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming and the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself.
 
 ### How?
 
