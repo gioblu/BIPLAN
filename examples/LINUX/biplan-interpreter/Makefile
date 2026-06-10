@@ -8,6 +8,9 @@ compact:
 	$(info BIPLAN compilation started! (target: compact))
 	g++	-DLINUX	-I.	-I	../../../src -std=c++17 biplan.cpp -o biplan -lm -lrt -Os -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--strip-all
 install:
+	rm -rf /usr/local/BIPLAN
+	cp -R ../../../src/utils/libraries/ /usr/local/BIPLAN
+	cp -R ../../../src/interfaces/ /usr/local/BIPLAN
 	cp biplan /usr/local/bin
 	@./../tests/examples-compilation.sh
 	@./../tests/syntax-compilation.sh
