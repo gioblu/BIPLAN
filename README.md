@@ -92,35 +92,58 @@ Feel free to send a pull request sharing something you have made that could help
 [Fred Larsen](https://github.com/fredilarsen), [Kevin Mathis](https://github.com/KMathisGit)
 
 ### License
-The license grants permission to use, copy, modify, merge, publish and distribute BIPLAN, only to individuals, for experimental purposes. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. You are solely responsible for using, copying, modifying, merging, publishing or redistributing BIPLAN and assume any risks associated with your exercise of permissions under this License:
+The goal of this license is to make the language free for hobbyists, experimenters, and small businesses, while requiring a paid commercial agreement from larger entities that can easily afford it. Licensing revenue will be reinvested into optimizing BIPLAN, making it more efficient and reliable.
+
+To ensure long-term trust, exactly 1,278 days (3.5 years) after the release of BIPLAN CR.1, the license automatically converts into a standard, fully open-source MIT License. The same approach will be applied to all subsequent versions.
+
+Considering BIPLAN CR.1 is still unreleased a future fictitious date to freeze...
 
 ```
 Definitions.
 
-"You" (or "Your") shall mean an individual, human, exercising
-permissions granted by this License.
+"You" (or "Your") shall mean an individual or entity exercising permissions
+granted by this License.
 
-"Software" shall mean the source code, associated documentation
-and configuration files included in the BIPLAN directory.
+"Release Date" shall mean the specific calendar date on which this Version
+of the Software was officially published by the Author, which for this Version
+is explicitly defined as: [DD/MM/YYYY - TO BE FIXED UPON OFFICIAL RELEASE].
 
-"License" shall mean the conditions for use, copy, modify, merge, publish or
-distribute the Software as defined by Section 1 through 3 of this document.
+"Software" shall mean the source code, associated documentation, examples and
+configuration files included in this directory.
+
+"Version" shall mean a distinct, identifiable release of the Software
+labelled with a unique version alphanumeric identifier.
+
+"License" shall mean the conditions for use, copy, modify, merge, publish, or
+distribute the Software as defined by Sections 1 through 4 of this document.
 
 BIPLAN Experimenter's License
 
-Copyright 2026 Giovanni Blu Mitolo
+Copyright 2017-2026 Giovanni Blu Mitolo
 
 Permission is hereby granted to You, free of charge, the rights to use, copy,
 modify, merge, publish or distribute copies of the Software, subject to the
 following conditions:
 
-1. Use, copy, modify, merge, publish or distribute the Software only for
-   non-commercial, experimental or educational purposes.
+1. Use, copy, modify, merge, publish or distribute the Software only for:
+   a) Experimental or educational purposes.
+   b) Commercial purposes by You, provided Your total, aggregate gross
+      revenue from all operating sources in the preceding calendar year
+      was less than $100,000 USD.
 
-2. Companies, institutions, organizations and corporations don't have the right
-   to use, copy, modify, merge, publish or distribute the Software.
+2. Exactly 1278 days after the Release Date of this Version of the
+   Software this License shall permanently expire and this Version of the
+   Software shall automatically be licensed under the standard MIT License
+   (SPDX-License-Identifier: MIT). Any commercial revenue restrictions under
+   Section 1 shall cease to apply after this transition period, but this
+   transition does not retroactively cure copyright infringements committed
+   prior to the expiration date.
 
-3. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+3. This License, the above copyright notice, this permission notice, and the
+   explicit Release Date must be included in all copies or portions of the
+   Software, including any derivative works or modifications distributed by You.
+
+4. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
@@ -132,9 +155,9 @@ following conditions:
 
 Commercial Licensing Notice
 
-Companies, corporations, and institutions interested in obtaining a commercial or
-institutional license may submit an official inquiry directly to the author
-via email at gioscarab@gmail.com
+Companies, associations, institutions and corporations interested in
+obtaining a commercial or institutional license may submit an official
+inquiry directly to the author via email at gioscarab@gmail.com
 ```
 
 ### Safety warning
