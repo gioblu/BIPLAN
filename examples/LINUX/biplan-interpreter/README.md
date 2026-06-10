@@ -4,9 +4,7 @@ The `biplan.cpp` file is a complete and ready to use BIPLAN compiler and interpr
 ### How to build it
 To build BIPLAN you only need `g++`, the standard library requires also `curl` and `jq`:
 ```
-sudo apt-get install jq
-sudo apt-get install curl
-sudo apt-get install g++
+sudo apt-get update && sudo apt-get install -y g++ jq curl
 ```
 
 Once done:

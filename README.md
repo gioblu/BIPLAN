@@ -16,7 +16,7 @@ BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates w
 The version name CR.1 was chosen to honour the Italian [Fiat CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of wood-and-fabric construction.
 
 ### Why?
-In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming and the source of billions of lines of spaghetti code, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself.
+In 2017 I built a couple of standalone [programmable computers](https://www.youtube.com/watch?v=xRZ9abs5ywA) with a screen and a keyboard using Arduino boards to run software I could understand. I was forced to use [TinyBasicPlus](https://github.com/BleuLlama/TinyBasicPlus/blob/master/TinyBasicPlus/TinyBasicPlus.ino) because it was the only interpreted language that could fit into such tight memory constraints. The result was a machine with features comparable to an IBM 5150 booted into BASIC. Looking at it I asked myself: "How can BASIC, the first attempt to popularize programming, now 57 years old, still be the only viable option?" I just needed a simple interpreted programming language implemented in C, with very few dependencies and layers of abstraction. After some experiments I decided to design and implement that myself.
 
 ### How?
 
@@ -78,9 +78,7 @@ BIPLAN is more efficient than Python and it is well suited for applications that
 ### Building BIPLAN
 To build BIPLAN you only need `g++`, the standard library requires also `curl` and `jq`:
 ```
-sudo apt-get install jq
-sudo apt-get install curl
-sudo apt-get install g++
+sudo apt-get update && sudo apt-get install -y g++ jq curl
 ```
 
 Once done see:
