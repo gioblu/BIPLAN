@@ -92,73 +92,12 @@ Feel free to send a pull request sharing something you have made that could help
 [Fred Larsen](https://github.com/fredilarsen), [Kevin Mathis](https://github.com/KMathisGit)
 
 ### License
-The goal of this license is to make the language free for hobbyists, experimenters, and small businesses, while requiring a paid commercial agreement from larger entities that can easily afford it. Licensing revenue will be reinvested into optimizing BIPLAN, making it more efficient and reliable.
+BIPLAN CR.1 is dual-licensed under the [GNU Affero General Public License v3 (AGPLv3)](LICENSE) or a premium commercial agreement.
 
-To ensure long-term trust, exactly 1,278 days (3.5 years) after the release of BIPLAN CR.1, the license automatically converts into a standard, fully open-source MIT License. The same approach will be applied to all subsequent versions.
+- Fully free to use, modify, and distribute under the strict terms of the AGPLv3.
+- Companies, corporations, and institutions wishing to embed BIPLAN into closed-source commercial products, proprietary devices, or environments where copyleft terms cannot be met must secure a commercial license.
 
-Considering BIPLAN CR.1 is still unreleased a future fictitious date to freeze...
-
-```
-Definitions.
-
-"You" (or "Your") shall mean an individual or entity exercising permissions
-granted by this License.
-
-"Release Date" shall mean the specific calendar date on which this Version
-of the Software was officially published by the Author, which for this Version
-is explicitly defined as: [DD/MM/YYYY - TO BE FIXED UPON OFFICIAL RELEASE].
-
-"Software" shall mean the source code, associated documentation, examples and
-configuration files included in this directory.
-
-"Version" shall mean a distinct, identifiable release of the Software
-labelled with a unique version alphanumeric identifier.
-
-"License" shall mean the conditions for use, copy, modify, merge, publish, or
-distribute the Software as defined by Sections 1 through 4 of this document.
-
-BIPLAN Experimenter's License
-
-Copyright 2017-2026 Giovanni Blu Mitolo
-
-Permission is hereby granted to You, free of charge, the rights to use, copy,
-modify, merge, publish or distribute copies of the Software, subject to the
-following conditions:
-
-1. Use, copy, modify, merge, publish or distribute the Software only for:
-   a) Experimental or educational purposes.
-   b) Commercial purposes by You, provided Your total, aggregate gross
-      revenue from all operating sources in the preceding calendar year
-      was less than $100,000 USD.
-
-2. Exactly 1278 days after the Release Date of this Version of the
-   Software this License shall permanently expire and this Version of the
-   Software shall automatically be licensed under the standard MIT License
-   (SPDX-License-Identifier: MIT). Any commercial revenue restrictions under
-   Section 1 shall cease to apply after this transition period, but this
-   transition does not retroactively cure copyright infringements committed
-   prior to the expiration date.
-
-3. This License, the above copyright notice, this permission notice, and the
-   explicit Release Date must be included in all copies or portions of the
-   Software, including any derivative works or modifications distributed by You.
-
-4. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-   YOU ARE SOLELY RESPONSIBLE FOR USING, COPYING, MODIFYING, MERGING, PUBLISHING
-   OR REDISTRIBUTING THE SOFTWARE AND ASSUME ANY RISKS ASSOCIATED WITH YOUR
-   EXERCISE OF PERMISSIONS UNDER THIS LICENSE.
-
-Commercial Licensing Notice
-
-Companies, associations, institutions and corporations interested in
-obtaining a commercial or institutional license may submit an official
-inquiry directly to the author via email at gioscarab@gmail.com
-```
+For commercial licensing inquiries, contact the author directly via email at: gioscarab@gmail.com
 
 ### Safety warning
 
