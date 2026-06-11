@@ -11,7 +11,7 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental inte
 | Lua 5.2              |    ✔️    |     ✔️     | 175KB ROM, 64kB RAM  |
 | MicroPython          |    ✔️    |     ✔️     | 256KB ROM, 16KB RAM  |
 
-BIPLAN implements the "fictional" BIP CR.1 computer architecture that operates with the BIP ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
+BIPLAN implements a compact virtual architecture (BIP CR.1) that uses ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
 The version name CR.1 was chosen to honour the Italian [Fiat CR.1](https://en.wikipedia.org/wiki/Fiat_CR.1) biplane fighter aircraft designed by Celestino Rosatelli, from whom it gained the 'CR' designation. The CR.1 was a [sesquiplane](https://en.wikipedia.org/wiki/Biplane#Sesquiplane) of wood-and-fabric construction.
 
@@ -86,19 +86,24 @@ Once done see:
 - [How to build it on Linux](/examples/LINUX/biplan-interpreter/)
 - [Linux examples](/examples/LINUX/)
 
+### Quickstart
+The following commands clone this repository, compile `biplan`, and execute the `fib.biplan` example to verify everything is working as expected:
+
+```bash
+git clone https://github.com/gioblu/BIPLAN.git
+cd BIPLAN/examples/LINUX
+make fast
+sudo make install
+biplan ../fibonacci/fib.biplan # Prints 102334155
+```
+
 ### Contribute
-Feel free to send a pull request sharing something you have made that could help, if you want to support this project you can also try to solve an issue. AI-generated slop will not be reviewed: contributions to this project are evaluated only if well detailed, throughly designed, minimalistic and efficient. Thanks to support, expertise, kindness and talent of the following contributors, BIPLAN has been strongly tested, enhanced and verified:
+Feel free to send a pull request sharing something you have made that could help, if you want to support this project you can also try to solve an issue. AI-generated slop will not be reviewed: contributions to this project are evaluated only if well detailed, thoroughly designed, minimalistic and efficient. Thanks to support, expertise, kindness and talent of the following contributors, BIPLAN has been strongly tested, enhanced and verified:
 
 [Fred Larsen](https://github.com/fredilarsen), [Kevin Mathis](https://github.com/KMathisGit)
 
 ### License
-BIPLAN CR.1 is dual-licensed under the [GNU Affero General Public License v3 (AGPLv3)](LICENSE) or a premium commercial agreement.
-
-- Fully free to use, modify, and distribute under the strict terms of the AGPLv3.
-- Companies, corporations, and institutions wishing to embed BIPLAN into closed-source commercial products, proprietary devices, or environments where copyleft terms cannot be met must secure a commercial license.
-
-For commercial licensing inquiries, contact the author directly via email at: gioscarab@gmail.com
+BIPLAN CR.1 is licensed under the [GNU Affero General Public License v3 (AGPLv3)](LICENSE), and commercial or closed-source licenses are available on request. AGPLv3 permits commercial use if you comply with its copyleft terms (including source disclosure for network use).
 
 ### Safety warning
-
 When testing BIPLAN, take extreme care to avoid any danger. The implementation is experimental and may not behave as expected; use it at your own risk.
