@@ -18,7 +18,7 @@
 
 char    *dcd_ptr;
 char    *dcd_next_ptr;
-uint8_t  dcd_current = BP_ERROR;
+uint8_t  dcd_current = BP_ENDOFINPUT;
 
 /* Get next code from BIP code --------------------------------------------- */
 BP_FUN_T void dcd_next_code() {
@@ -41,8 +41,6 @@ BP_FUN_T void dcd_next_code() {
         dcd_current = BP_NUMBER;
         break;
       }
-    if(dcd_current != BP_NUMBER)
-      dcd_current = BP_ERROR;
   }
   else if(*dcd_ptr == BP_STRING) {
     dcd_next_ptr = dcd_ptr;
@@ -51,11 +49,10 @@ BP_FUN_T void dcd_next_code() {
     } while(*dcd_next_ptr != BP_STRING);
     ++dcd_next_ptr;
     dcd_current = BP_STRING;
-  }
-  else if(*dcd_ptr > 0) {
-    dcd_next_ptr = dcd_ptr + 1;
+  } else {
     dcd_current = *dcd_ptr;
-  } else dcd_current = BP_ENDOFINPUT;
+    if(*dcd_ptr > 0) dcd_next_ptr = dcd_ptr + 1;
+  }
 };
 
 /* Moves decoder to a certain position in the program ---------------------- */
