@@ -352,7 +352,7 @@ BP_FUN_T char bip_string_char(int s, int c) {
 
 /* ACCESS MEMORY VIA INDEX [ ] --------------------------------------------- */
 BP_FUN_T BP_VAR_T bip_access(BP_VAR_T v) {
-  BP_EXPECT(v);
+  DCD_NEXT;
   v = bip_relation();
   BP_EXPECT(BP_ACCESS_END);
   return v;
@@ -480,7 +480,7 @@ BP_FUN_T BP_VAR_T bip_relation() {
 };
 
 /* HANDLE STRING CONCATENATION ---------------------------------------------- */
-static void bip_string_concat(char *s) {
+BP_FUN_T void bip_string_concat(char *s) {
   while(bip_ignore(BP_PLUS)) {
     uint16_t o = strlen(s);
     uint8_t ci = 0;
@@ -489,7 +489,7 @@ static void bip_string_concat(char *s) {
       ci = bip_expression();
       BP_EXPECT(BP_ACCESS_END);
     } else if(dcd_current == BP_STRING) {
-      if(!decoder_string(s + o, sizeof(bip_string)))
+      if(!decoder_string(s + o, BP_STRING_MAX - o))
         bip_error(dcd_ptr, BP_ERROR_STRING_END);
       else BP_EXPECT(BP_STRING);
       continue;
@@ -501,7 +501,7 @@ static void bip_string_concat(char *s) {
 };
 
 /* READ SAFELY A STRING ---------------------------------------------------- */
-void bip_read_string(char *s) {
+BP_FUN_T void bip_read_string(char *s) {
   if(!decoder_string(s, sizeof(bip_string)))
     bip_error(dcd_ptr, BP_ERROR_STRING_END);
   else BP_EXPECT(BP_STRING);
@@ -548,7 +548,7 @@ void bip_print_call() {
 };
 
 /* BLOCK CALL -------------------------------------------------------------- */
-void bip_skip_block() {
+BP_FUN_T void bip_skip_block() {
   uint16_t id = 1;
   do {
     if(dcd_current == BP_IF) id++;
@@ -560,7 +560,7 @@ void bip_skip_block() {
 };
 
 /* IF ---------------------------------------------------------------------- */
-void bip_if_call() {
+BP_FUN_T void bip_if_call() {
   if((BP_VAR_T)(bip_relation()) > 0) return;
   bip_skip_block();
   if(dcd_current == BP_ELSE) DCD_NEXT;

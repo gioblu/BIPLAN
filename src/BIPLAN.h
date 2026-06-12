@@ -19,7 +19,7 @@
 
 /* DEFINITIONS ------------------------------------------------------------- */
 
-static bool bip_run();
+BP_FUN_T bool bip_run();
 
 void bip_restart_call();
 
@@ -43,43 +43,43 @@ void bip_set_default();
 static void bip_statement_jump_table();
 #endif
 
-static bool bip_ignore(char c);
+BP_FUN_T bool bip_ignore(char c);
 
-static BP_VAR_T bip_get_variable(int n);
+BP_FUN_T BP_VAR_T bip_get_variable(int n);
 
-static char bip_string_char(int s, int c);
+BP_FUN_T char bip_string_char(int s, int c);
 
-static BP_VAR_T bip_var_factor();
+BP_FUN_T BP_VAR_T bip_var_factor();
 
-static BP_VAR_T bip_access(BP_VAR_T v);
+BP_FUN_T BP_VAR_T bip_access(BP_VAR_T v);
 
-static BP_VAR_T bip_factor();
+BP_FUN_T BP_VAR_T bip_factor();
 
-static BP_VAR_T bip_term();
+BP_FUN_T BP_VAR_T bip_term();
 
-static BP_VAR_T bip_expression();
+BP_FUN_T BP_VAR_T bip_expression();
 
-static BP_VAR_T bip_relation();
+BP_FUN_T BP_VAR_T bip_relation();
 
-void bip_read_string(char *s);
+BP_FUN_T void bip_read_string(char *s);
 
 void bip_print_call();
 
-void bip_skip_block();
+BP_FUN_T void bip_skip_block();
 
-void bip_if_call();
+BP_FUN_T void bip_if_call();
 
 void bip_string_assignment_call();
 
 void bip_mem_assignment_call();
 
-static BP_VAR_T bip_return_call();
+BP_FUN_T BP_VAR_T bip_return_call();
 
-static BP_VAR_T bip_function_call();
+BP_FUN_T BP_VAR_T bip_function_call();
 
-static void bip_next_call();
+BP_FUN_T void bip_next_call();
 
-static void bip_var_addr_call();
+BP_FUN_T void bip_var_addr_call();
 
 void bip_continue_call();
 
