@@ -40,8 +40,8 @@ tests_length=${#tests[@]}
 total_bip=0
 total_pyc=0
 
-if ! command -v bcc >/dev/null 2>&1 ; then
-    echo "bcc not found, please install it!"
+if ! command -v biplan >/dev/null 2>&1 ; then
+    echo "biplan not found, please install it!"
     exit 1
 fi
 
