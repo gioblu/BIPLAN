@@ -210,7 +210,7 @@ done
 ```
 A function is a reusable group of statements identified by a unique name that perform a task and can return a value. BIPLAN supports up to 88 functions, each capable of hosting up to 88 parameters and local variables. Function definitions must be defined after the `stop` keyword.
 
-Function definitions are identified by the `function` keyword followed by a unique name; parameters and local variables are defined within the following parentheses, local variables are defined after the `locals:` keyword. Names of functions and parameters must not start with a number, must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. The value of uninitialized parameters and local variables is guaranteed to be `0`.
+Function definitions are identified by the `function` keyword followed by a unique name; parameters and local variables are defined within the following parentheses, local variables are defined after the `locals:` keyword. Names of functions and parameters must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. The value of uninitialized parameters and local variables is guaranteed to be `0`.
 
 When the `return` keyword is encountered the function returns the result of the following function call, relation, expression, term or factor. All statements contained in the function definition are executed until `done` is encountered. The `done` statement must be one and must be the last statement of the function.
 
@@ -276,7 +276,7 @@ Macros are useful to associate a keyword with an integer constant or a string li
 
 
 ## Numeric variables
-BIPLAN supports only one signed numeric variable type, that is by default `long` (if a different type is required see [configuration](/documentation/configuration.md)). Numeric variables are identified by `@`. The name of variables must not start with a number, must be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. Each variable is just an entry of a global array of variables. BIPLAN supports up to 88 variables.
+BIPLAN supports only one signed numeric variable type, that is by default `long` (if a different type is required see [configuration](/documentation/configuration.md)). Numeric variables are identified by `@`. The name of variables be composed by lowercase and or uppercase letters, numbers and or the symbol `_`. Each variable is just an entry of a global array of variables. BIPLAN supports up to 88 variables.
 
 See below how to define a variable:
 
@@ -334,7 +334,7 @@ if (1 == 1) || (0 == 0) print "OK" end
 Parenthesis are required for the interpreter to detect a nested relation and compute it before the primary relation.
 
 ## Strings
-String are identified by `:`, their name must not start with a number, must be composed by lowercase and or uppercase letters and or the symbol `_` and or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 88 strings of 2^31 or 2^63 bits length. A string can be declared:
+String are identified by `:`, their name must be composed by lowercase and or uppercase letters and or the symbol `_` and or numbers. Each string is just an entry of a global array of strings. BIPLAN supports up to 88 strings of 2^31 or 2^63 bits length. A string can be declared:
 ```
 :test = "Hello world!"
 ```

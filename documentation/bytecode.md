@@ -15,7 +15,7 @@
 - [Unary operators](/documentation/unary-operators.md) [`++`](/documentation/unary-operators.md) [`--`](/documentation/unary-operators.md)
 
 ## Bytecode
-When you compile a BIPLAN program with `bcc`, you are just translating your program in a more compact form designed to be efficiently interpreted.
+When you compile a BIPLAN program with [`biplan`](/examples/LINUX/biplan-interpreter), you are just translating your program in a more compact form designed to be efficiently interpreted.
 
 For example, this is a short BIPLAN program of 45 characters:
 ```c
