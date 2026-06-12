@@ -57,7 +57,7 @@ BPM_SERIAL_T       bip_serial_fun;
 
 /* SYSTEM CALL WITH 1 RELATION PARAMETER ----------------------------------- */
 
-#define BP_SYS_RELATION(F, T, R) \
+#define BP_SYS_CALL_STRING(F, T, R) \
   if(dcd_current == BP_STRING) { \
     bip_read_string(bip_string); \
     for(uint16_t i = 0; bip_string[i] != 0; i++) \
@@ -71,21 +71,7 @@ BPM_SERIAL_T       bip_serial_fun;
 
 /* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
 
-#define BP_SYS_STRING(F, V) \
-  DCD_NEXT; \
-  if(bip_ignore(BP_STR_ADDR)) { \
-    V = F(bip_strings[*(dcd_ptr - 1) - BP_OFFSET]); \
-  } else if(dcd_current == BP_STRING) { \
-    bip_read_string(bip_string); \
-    V = F(bip_string); \
-    BP_EMPTY_STRING; \
-  } else if(dcd_current == BP_STR_ACC) \
-    V = F(bip_strings[bip_access(dcd_current)]); \
-  return V;
-
-/* SYSTEM CALL WITH 1 STRING PARAMETER ------------------------------------- */
-
-#define  BP_SYS_STRING_2(F, B) \
+#define  BP_SYS_CALL_STRING_RELATION(F, B) \
   BP_VAR_T bip_sys_str_2; \
   DCD_NEXT; \
   if(dcd_current == BP_STRING) { \
@@ -306,17 +292,6 @@ void bip_index_definitions(char* program) {
 void bip_process_argument(char *a) {
   for(uint16_t s = 0; s < strlen(a); s++) bip_strings[bip_arg_id][s] = a[s];
   if(++bip_arg_id >= BP_ARGS) bip_error(dcd_ptr, BP_ERROR_ARGS_MAX);
-};
-
-/* GET FILE ID ------------------------------------------------------------- */
-BP_VAR_T bip_get_file_id() {
-  for(uint16_t i = 0; i < BP_FILES_MAX; i++)
-    if(bip_files[i].free) {
-      bip_files[i].free = false;
-      return i;
-    }
-  bip_error(dcd_ptr, BP_ERROR_FILE_MAX);
-  return BP_FILES_MAX;
 };
 
 /* INITIALIZE INTERPRETER -------------------------------------------------- */
@@ -795,7 +770,7 @@ void bip_file_set_call() {
     BP_READ_THEN_ABORT_IF_OUT_OF_BOUNDS(r, BP_FILES_MAX, BP_ERROR_FILE_MAX);
     BP_EXPECT(BP_COMMA);
     BP_VAR_T result = 0;
-    BP_SYS_RELATION(BPM_FILE_WRITE, bip_files[r].file, result);
+    BP_SYS_CALL_STRING(BPM_FILE_WRITE, bip_files[r].file, result);
   }
 };
 
@@ -805,7 +780,7 @@ BP_VAR_T bip_file_get_call() {
     BP_VAR_T f;
     BP_GET_ID(f, bip_files, BP_FILES_MAX, BP_ERROR_FILE_MAX);
     if(f == BP_FILES_MAX) return BP_FILES_MAX;
-      BP_SYS_STRING_2(BPM_FILE_OPEN, bip_files[f].file);
+      BP_SYS_CALL_STRING_RELATION(BPM_FILE_OPEN, bip_files[f].file);
     if(bip_files[f].file == NULL) bip_error(dcd_ptr, BP_ERROR_FILE_OPEN);
     return f;
   } else if(dcd_current == BP_READ) {
@@ -823,7 +798,7 @@ BP_VAR_T bip_serial_call() {
   DCD_NEXT;
   if(c == BP_WRITE) {
     BP_VAR_T r = 0;
-    BP_SYS_RELATION(BPM_SERIAL_WRITE, bip_serial_fun, r);
+    BP_SYS_CALL_STRING(BPM_SERIAL_WRITE, bip_serial_fun, r);
     return r;
   } else if(c == BP_READ) {
     return BPM_SERIAL_READ(bip_serial_fun);
@@ -852,7 +827,18 @@ BP_VAR_T bip_sizeof_call() {
 };
 
 /* ATOL - LTOA ------------------------------------------------------------- */
-BP_VAR_T bip_atol_call(BP_VAR_T v) { BP_SYS_STRING(BPM_ATOL, v); };
+BP_VAR_T bip_atol_call(BP_VAR_T v) {
+  DCD_NEXT;
+  if(bip_ignore(BP_STR_ADDR)) {
+    v = BPM_ATOL(bip_strings[*(dcd_ptr - 1) - BP_OFFSET]);
+  } else if(dcd_current == BP_STRING) {
+    bip_read_string(bip_string);
+    v = BPM_ATOL(bip_string);
+    BP_EMPTY_STRING;
+  } else if(dcd_current == BP_STR_ACC)
+    v = BPM_ATOL(bip_strings[bip_access(dcd_current)]);
+  return v;
+};
 
 void bip_ltoa_call() {
   DCD_NEXT;
@@ -880,7 +866,7 @@ BP_VAR_T bip_pipe_call(BP_VAR_T v) {
     BP_VAR_T p;
     BP_GET_ID(p, bip_pipes, BP_PIPES_MAX, BP_ERROR_PIPE_MAX);
     if(p == BP_PIPES_MAX) return BP_PIPES_MAX;
-      BP_SYS_STRING_2(BPM_PIPE_OPEN, bip_pipes[p].pipe);
+      BP_SYS_CALL_STRING_RELATION(BPM_PIPE_OPEN, bip_pipes[p].pipe);
     if(bip_pipes[p].pipe == NULL) {
       bip_pipes[p].free = true;
       bip_error(dcd_ptr, BP_ERROR_PIPE_OPEN);
