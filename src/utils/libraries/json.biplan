@@ -8,7 +8,7 @@
 
 // Requires jq to be installed on the host system.
 
-// Extract a JSON value by jq path from a BIPLAN string.
+// Extracts a JSON value by jq path from a BIPLAN string.
 // $json: reference to a string containing the JSON data.
 // $path: reference to a string containing the jq path
 //        e.g. ".key", ".parent.child", ".array[0].field"
