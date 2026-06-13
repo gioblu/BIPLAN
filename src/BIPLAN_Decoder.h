@@ -74,33 +74,42 @@ BP_FUN_T void dcd_next_code() {
   dcd_ptr = dcd_next_ptr; \
   dcd_next_code();
 
-/* Removes backslashes from strings ---------------------------------------- */
-void remove_backslash(char *s) {
-  char *src = s;
-  char *dst = s;
-  while(*src != 0) {
-    if((uint8_t)*src == BP_BACKSLASH && (uint8_t)*(src + 1) == BP_STRING) {
-      src++;
+/* Decodes a string from BIP bytecode in memory ---------------------------- */
+bool decoder_string(char *destination, uint32_t length) {
+  if(length == 0) return false;
+
+  char *source = dcd_ptr + 1;
+  uint32_t dst = 0;
+  bool escaped = false;
+
+  for(uint32_t i = 0; ; ++i) {
+    char c = source[i];
+    if(c == 0) return false;
+
+    if(escaped) {
+      char out;
+      if(c == 'n') out = BP_LF;
+      else if(c == 'r') out = BP_CR;
+      else if(c == 't') out = '\t';
+      else if(c == BP_BACKSLASH) out = BP_BACKSLASH;
+      else if(c == BP_STRING) out = BP_STRING;
+      else out = c;
+
+      if(dst + 1 >= length) return false;
+      destination[dst++] = out;
+      escaped = false;
       continue;
     }
-    *dst++ = *src++;
-  }
-  *dst = 0;
-}
 
-/* Decodes a string from BIP bytecode in memory ---------------------------- */
-bool decoder_string(char *d, uint16_t l) {
-  char *string_end = strchr(dcd_ptr + 1, BP_STRING);
-  bool backslash = false;
-  while(string_end && *(string_end - 1) == BP_BACKSLASH) {
-    backslash = true;
-    string_end = strchr(string_end + 1, BP_STRING);
+    if(c == BP_BACKSLASH) {
+      escaped = true;
+      continue;
+    }
+
+    if(c == BP_STRING) break;
+    if(dst + 1 >= length) return false;
+    destination[dst++] = c;
   }
-  if(!string_end) return false;
-  uint16_t string_length = string_end - dcd_ptr - 1;
-  if(l == 0 || string_length >= l) return false;
-  memcpy(d, dcd_ptr + 1, string_length);
-  d[string_length] = 0;
-  if(backslash) remove_backslash(d);
+  destination[dst] = 0;
   return true;
 }
