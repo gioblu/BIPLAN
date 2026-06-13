@@ -40,11 +40,6 @@ tests_length=${#tests[@]}
 total_bcc=0
 total_py=0
 
-if ! command -v biplan >/dev/null 2>&1 ; then
-    echo "biplan not found, please install bcc!"
-    exit 1
-fi
-
 if ! command -v python3 >/dev/null 2>&1 ; then
     echo "python3 not found, please install python3!"
     exit 1

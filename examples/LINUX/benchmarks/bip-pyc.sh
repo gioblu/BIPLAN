@@ -40,11 +40,6 @@ tests_length=${#tests[@]}
 total_bip=0
 total_pyc=0
 
-if ! command -v biplan >/dev/null 2>&1 ; then
-    echo "biplan not found, please install it!"
-    exit 1
-fi
-
 if ! command -v python3 >/dev/null 2>&1 ; then
     echo "python3 not found, please install it!"
     exit 1
@@ -52,10 +47,16 @@ fi
 
 # Cross-platform file size getter (Linux & macOS)
 get_file_size() {
-    if stat --version 2>/dev/null | grep -q GNU; then
+    if [ ! -f "$1" ]; then
+        return 1
+    fi
+
+    if stat -c%s "$1" >/dev/null 2>&1; then
         stat -c%s "$1"
-    else
+    elif stat -f%z "$1" >/dev/null 2>&1; then
         stat -f%z "$1"
+    else
+        python3 -c 'import os,sys; print(os.path.getsize(sys.argv[1]))' "$1"
     fi
 }
 

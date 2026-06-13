@@ -72,22 +72,22 @@ echo "|_______________________________________|_____________|_____________|"
 echo "|                                       |             |             |"
 for ((i=1; i<${tests_length} + 1; i++ ));
 do
-    start_bip=$(date +%s%6N)
+    start_bip=$(date +%s%N)
     for ((it=0; it<${iterations}; it++ ));
     do
         biplan "$SCRIPT_DIR/programs/${tests[$i - 1]}.biplan"  > /dev/null 2>&1
     done
-    end_bip=$(date +%s%6N)
-    duration_bip=$((end_bip - start_bip))
+    end_bip=$(date +%s%N)
+    duration_bip=$(( (end_bip - start_bip) / 1000 ))
 
-    start_py=$(date +%s%6N)
+    start_py=$(date +%s%N)
     for ((it=0; it<${iterations}; it++ ));
     do
         python3 "$SCRIPT_DIR/programs/${tests[$i - 1]}.py"  > /dev/null 2>&1
     done
-    end_py=$(date +%s%6N)
+    end_py=$(date +%s%N)
 
-    duration_py=$((end_py - start_py))
+    duration_py=$(( (end_py - start_py) / 1000 ))
 
 
     total_bip=$((total_bip + duration_bip))
@@ -97,7 +97,7 @@ do
         ms=$(( $1 / 1000 ))
         frac=$(( ($1 % 1000) / 10 ))
         num_str=$(printf "%-9s" "$(printf "%d.%02dms" "$ms" "$frac")")
-        printf "$num_str"
+        printf '%s' "$num_str"
     }
 
     bip_ms=$(format_ms $duration_bip)
@@ -113,8 +113,8 @@ color_bip="\033[31m"
 color_py="\033[31m"
 [ $total_bip -lt $total_py ] && color_bip="\033[32m" || color_py="\033[32m"
 
-bip_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_bip/1000" | bc)")
-py_total_ms=$(printf "%.2f" "$(echo "scale=3; $total_py/1000" | bc)")
+bip_total_ms=$(awk "BEGIN {printf \"%.2f\", $total_bip/1000}")
+py_total_ms=$(awk "BEGIN {printf \"%.2f\", $total_py/1000}")
 
 echo -e "                                         $color_bip ${bip_total_ms}ms\033[m    $color_py ${py_total_ms}ms\033[m"
 
