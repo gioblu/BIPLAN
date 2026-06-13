@@ -41,4 +41,4 @@ The reference of a variable can be obtained prepending its name with `index`:
 
 print index @var // Prints 2 or the index of $var
 ```
-The `bcc` compiler starts from the longest variable name, for this reason `@var` is the last to be compiled and acquires the reference 2.
+The `biplan` compiler starts from the longest variable name, for this reason `@var` is the last to be compiled and acquires the reference 2.

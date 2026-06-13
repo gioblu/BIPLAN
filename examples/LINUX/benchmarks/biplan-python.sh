@@ -83,7 +83,7 @@ do
     start_py=$(date +%s%N)
     for ((it=0; it<${iterations}; it++ ));
     do
-        python3 "$SCRIPT_DIR/programs/${tests[$i - 1]}.py"  > /dev/null 2>&1
+        python3 -B "$SCRIPT_DIR/programs/${tests[$i - 1]}.py"  > /dev/null 2>&1
     done
     end_py=$(date +%s%N)
 

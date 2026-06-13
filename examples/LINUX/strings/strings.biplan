@@ -2,15 +2,15 @@ include "/usr/local/BIPLAN/strings.biplan"
 
 :s = "This is a test string"
 
-print "Printing entire string: ", :s, char LF
+print "Printing entire string: ", :s
 
-print "Printing string character by character: "
+print "\nPrinting string character by character: "
 
 for #i = 0 to size :s
 	print char :s[#i]
 next
 
-print char LF, "Printing string from \"a\" onwards: "
+print "\nPrinting string from \"a\" onwards: "
 
 @p = find_char(:s, 'a')
 
@@ -18,6 +18,6 @@ for #i = @p to size :s
 	print char :s[#i]
 next
 
-print char LF
+print "\n"
 
 stop

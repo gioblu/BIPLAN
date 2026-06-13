@@ -25,5 +25,5 @@
 
 
 print @a + @b + @c + @d + @e + @f + @g + @h + @i + @j + @k +
-      @l + @m + @n + @o + @p + @q + @r + @s + @t, char LF
+      @l + @m + @n + @o + @p + @q + @r + @s + @t, "\n"
 stop

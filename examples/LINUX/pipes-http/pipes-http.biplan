@@ -19,10 +19,10 @@ include "/usr/local/BIPLAN/json.biplan"
 
 http_get(:url, :body)
 
-print "Full response:", char LF, :body, char LF
+print "Full response:\n", :body, "\n"
 
 json_get(:body, :path, :result)
 
-print "Extracted .headers.Host: ", :result, char LF
+print "Extracted .headers.Host: ", :result, "\n"
 
 stop

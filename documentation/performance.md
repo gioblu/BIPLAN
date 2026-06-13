@@ -24,45 +24,45 @@ The table below contains the results of the [benchmarks](/examples/LINUX/benchma
 | Python   | 8.17KB        | 1631.59ms   | 3172.99ms      | 48ms    |
 
 1. The BIP bytecode format is **7.32 times more compact** than python's `pyc`
-2. `bcc` compiles **3.7 times faster** than `python3`
+2. `biplan` compiles **3.7 times faster** than `python3`
 3. `biplan` starts up **6.8 times faster** than `python3`
 3. `biplan` interprets **1.3 times faster** than `python3`
 
 BIPLAN is more efficient than Python and many other interpreted languages. It is particularry well suited for applications that require very fast startup time, efficiency, minimal resource footprint and small binary sizes.
 
-When `bcc` is compiled using the target `fast` it is around 30 times faster than python and will compile to bip bytecode that is around 7 times more compact than pyc. To determine the performance of BCC I have implemented [benchmarks](/examples/LINUX/benchmarks/) that compare the compilation time and footprint of 20 different programs implemented in BIPLAN and Python, this is the output on my machine:
+When `biplan` is compiled using the target `fast` it is around 30 times faster than python and will compile to bip bytecode that is around 7 times more compact than pyc. To determine the performance of `biplan` I have implemented [benchmarks](/examples/LINUX/benchmarks/) that compare the compilation time and footprint of 20 different programs implemented in BIPLAN and Python, this is the output on my machine:
 
 ```
- ___________________________________________________________________
-|                                       |             |             |
-| Benchmark: Compilation time           | bcc compile | python3     |
-|_______________________________________|_____________|_____________|
-|                                       |             |             |
-|  1. Hello world!                      | 18.07ms     | 210.54ms    |
-|  2. For loop incrementing global      | 17.62ms     | 69.06ms     |
-|  3. For loop nested if                | 17.87ms     | 69.90ms     |
-|  4. For prints index                  | 17.66ms     | 69.60ms     |
-|  5. While loop incrementing global    | 25.53ms     | 79.40ms     |
-|  6. While increment and break         | 18.96ms     | 68.59ms     |
-|  7. Read elapsed time cyclically      | 17.86ms     | 69.72ms     |
-|  8. Get size of string                | 18.02ms     | 71.99ms     |
-|  9. Check if numeric                  | 34.97ms     | 69.32ms     |
-| 10. Basic math operations             | 23.40ms     | 82.58ms     |
-| 11. Bitwise operations                | 17.75ms     | 70.24ms     |
-| 12. Bitshift operations               | 18.43ms     | 69.51ms     |
-| 13. Function call within condition    | 19.29ms     | 69.93ms     |
-| 14. Function calls another function   | 19.00ms     | 70.61ms     |
-| 15. Function leap year                | 17.71ms     | 70.12ms     |
-| 16. Write character of string         | 19.17ms     | 69.50ms     |
-| 17. Read character of string          | 17.78ms     | 69.37ms     |
-| 18. For computing prime numbers       | 37.35ms     | 67.91ms     |
-| 19. Non-recursive fibonacci           | 17.93ms     | 70.75ms     |
-| 20. Factorial 20                      | 17.30ms     | 74.12ms     |
-| 21. Pipes                             | 19.91ms     | 68.81ms     |
-|_______________________________________|_____________|_____________|
-                                          431.58ms     1631.59ms
+ ______________________________________________________________________
+|                                       |                |             |
+| Benchmark: Compilation time           | biplan compile | python3     |
+|_______________________________________|________________|_____________|
+|                                       |                |             |
+|  1. Hello world!                      | 18.07ms        | 210.54ms    |
+|  2. For loop incrementing global      | 17.62ms        | 69.06ms     |
+|  3. For loop nested if                | 17.87ms        | 69.90ms     |
+|  4. For prints index                  | 17.66ms        | 69.60ms     |
+|  5. While loop incrementing global    | 25.53ms        | 79.40ms     |
+|  6. While increment and break         | 18.96ms        | 68.59ms     |
+|  7. Read elapsed time cyclically      | 17.86ms        | 69.72ms     |
+|  8. Get size of string                | 18.02ms        | 71.99ms     |
+|  9. Check if numeric                  | 34.97ms        | 69.32ms     |
+| 10. Basic math operations             | 23.40ms        | 82.58ms     |
+| 11. Bitwise operations                | 17.75ms        | 70.24ms     |
+| 12. Bitshift operations               | 18.43ms        | 69.51ms     |
+| 13. Function call within condition    | 19.29ms        | 69.93ms     |
+| 14. Function calls another function   | 19.00ms        | 70.61ms     |
+| 15. Function leap year                | 17.71ms        | 70.12ms     |
+| 16. Write character of string         | 19.17ms        | 69.50ms     |
+| 17. Read character of string          | 17.78ms        | 69.37ms     |
+| 18. For computing prime numbers       | 37.35ms        | 67.91ms     |
+| 19. Non-recursive fibonacci           | 17.93ms        | 70.75ms     |
+| 20. Factorial 20                      | 17.30ms        | 74.12ms     |
+| 21. Pipes                             | 19.91ms        | 68.81ms     |
+|_______________________________________|________________|_____________|
+                                          431.58ms         1631.59ms
 
-bcc is 3.78 times faster than python3 compile.
+biplan is 3.78 times faster than python3 compile.
 
  _________________________________________________________________
 |                                      |             |            |

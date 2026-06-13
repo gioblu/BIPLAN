@@ -1,7 +1,7 @@
 
 include "/usr/local/BIPLAN/strings.biplan"
 
-print "Notes 0.1 - Giovanni Blu Mitolo 2025", char LF, "Digit note's filename: "
+print "Notes 0.1 - Giovanni Blu Mitolo 2025\nDigit note's filename: "
 
 @i = 0 @c = 0
 :s = "" :n = ""
@@ -19,7 +19,7 @@ string_from_input(:s, LF, true)
 file write @f, :s
 file close @f
 
-print "Note saved successfully, bye.", char LF
+print "Note saved successfully, bye.\n"
 
 stop
 

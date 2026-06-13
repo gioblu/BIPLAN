@@ -13,5 +13,5 @@
 @i = 1
 @j = 5
 
-print @a + @b + @c + @d + @e + @f + @g + @h + @i + @j, char LF
+print @a + @b + @c + @d + @e + @f + @g + @h + @i + @j, "\n"
 stop

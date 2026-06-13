@@ -15,7 +15,7 @@ function draw_rect($x, $y, $w, $h, $c)
   next
 done
 
-// Draw a line with Bresenham's line algorithm
+// Draws a line with Bresenham's line algorithm
 function draw_line($x, $y, $xx, $yy, $c, locals: $dx, $sx, $dy, $sy, $e, $ee)
   $dx =  abs($xx - $x)
   if $x < $xx $sx = 1 else $sx = -1 end

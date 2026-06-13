@@ -1,106 +1,76 @@
 
 include "/usr/local/BIPLAN/ansi.biplan"
 
-print "Testing graphics.biplan functionality
-
-Testing ansi_color function:
-"
+print "Testing graphics.biplan functionality\n\nTesting ansi_color function:\n"
 
 ansi_color(ANSI_BLACK)
-print "Executing: ansi_color(ANSI_BLACK)
-"
+print "Executing: ansi_color(ANSI_BLACK)\n"
 ansi_color(ANSI_RED)
-print "Executing: ansi_color(ANSI_RED)
-"
+print "Executing: ansi_color(ANSI_RED)\n"
 ansi_color(ANSI_GREEN)
-print "Executing: ansi_color(ANSI_GREEN)
-"
+print "Executing: ansi_color(ANSI_GREEN)\n"
 ansi_color(ANSI_YELLOW)
-print "Executing: ansi_color(ANSI_YELLOW)
-"
+print "Executing: ansi_color(ANSI_YELLOW)\n"
 ansi_color(ANSI_BLUE)
-print "Executing: ansi_color(ANSI_BLUE)
-"
+print "Executing: ansi_color(ANSI_BLUE)\n"
 ansi_color(ANSI_PURPLE)
-print "Executing: ansi_color(ANSI_PURPLE)
-"
+print "Executing: ansi_color(ANSI_PURPLE)\n"
 ansi_color(ANSI_CYAN)
-print "Executing: ansi_color(ANSI_CYAN)
-"
+print "Executing: ansi_color(ANSI_CYAN)\n"
 ansi_color(ANSI_WHITE)
-print "Executing: ansi_color(ANSI_WHITE)
-"
+print "Executing: ansi_color(ANSI_WHITE)\n"
 
-print "
-Testing ansi_background() function:
-
-"
+print "\nTesting ansi_background() function:\n\n\n"
 ansi_background(ANSI_BLACK)
 ansi_color(ANSI_WHITE)
 print "Executing: ansi_background(ANSI_BLACK) ansi_color(ANSI_WHITE)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_RED)
 ansi_color(ANSI_WHITE)
-print "Executing: ansi_background(ANSI_RED) ansi_color(ANSI_WHITE)"
+print "\nExecuting: ansi_background(ANSI_RED) ansi_color(ANSI_WHITE)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_GREEN)
 ansi_color(ANSI_BLACK)
-print "Executing: ansi_background(ANSI_GREEN) ansi_color(ANSI_BLACK)"
+print "\nExecuting: ansi_background(ANSI_GREEN) ansi_color(ANSI_BLACK)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_YELLOW)
 ansi_color(ANSI_BLACK)
-print "Executing: ansi_background(ANSI_YELLOW) ansi_color(ANSI_BLACK)"
+print "\nExecuting: ansi_background(ANSI_YELLOW) ansi_color(ANSI_BLACK)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_BLUE)
 ansi_color(ANSI_WHITE)
-print "Executing: ansi_background(ANSI_BLUE) ansi_color(ANSI_WHITE)"
+print "\nExecuting: ansi_background(ANSI_BLUE) ansi_color(ANSI_WHITE)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_PURPLE)
 ansi_color(ANSI_WHITE)
-print "Executing: ansi_background(ANSI_PURPLE) ansi_color(ANSI_WHITE)"
+print "\nExecuting: ansi_background(ANSI_PURPLE) ansi_color(ANSI_WHITE)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_CYAN)
 ansi_color(ANSI_BLACK)
-print "Executing: ansi_background(ANSI_CYAN) ansi_color(ANSI_BLACK)"
+print "\nExecuting: ansi_background(ANSI_CYAN) ansi_color(ANSI_BLACK)"
 ansi_style(ANSI_REGULAR)
-print char LF
 ansi_background(ANSI_WHITE)
 ansi_color(ANSI_BLACK)
-print "Executing: ansi_background(ANSI_WHITE) ansi_color(ANSI_BLACK)"
+print "\nExecuting: ansi_background(ANSI_WHITE) ansi_color(ANSI_BLACK)"
 ansi_style(ANSI_REGULAR)
-print char LF
-print "Executing: ansi_style(ANSI_REGULAR)
-"
+print "\nExecuting: ansi_style(ANSI_REGULAR)\n"
 
-print "
-Testing ansi_style() function:
-
-"
+print "\nTesting ansi_style() function:\n"
 
 ansi_style(ANSI_BOLD)
-print "Executing: ansi_style(ANSI_BOLD)
-"
+print "Executing: ansi_style(ANSI_BOLD)\n"
 ansi_style(ANSI_REGULAR)
 
 ansi_style(ANSI_ITALIC)
-print "Executing: ansi_style(ANSI_ITALIC)
-"
+print "Executing: ansi_style(ANSI_ITALIC)\n"
 ansi_style(ANSI_REGULAR)
 
 ansi_style(ANSI_UNDERLINE)
-print "Executing: ansi_style(ANSI_UNDERLINE)
-"
+print "Executing: ansi_style(ANSI_UNDERLINE)\n"
 ansi_style(ANSI_REGULAR)
 
 ansi_style(ANSI_BLINK)
-print "Executing: ansi_style(ANSI_BLINK)
-"
+print "Executing: ansi_style(ANSI_BLINK)\n"
 ansi_style(ANSI_REGULAR)
 
 stop

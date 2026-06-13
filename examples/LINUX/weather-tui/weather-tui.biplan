@@ -4,60 +4,63 @@ include "/usr/local/BIPLAN/strings.biplan"
 
 @i = 0
 while size args[@i]
-    @weathercode = 0
-    :city = ""
-    :city_encoded = ""
-    :lat = ".results[0].latitude"
-    :lon = ".results[0].longitude"
-    :temperature = ".current_weather.temperature"
-    :weather_code = ".current_weather.weathercode"
-    :wind_speed = ".current_weather.windspeed"
-    :time = ".current_weather.time"
-    :is_day = ".current_weather.is_day"
+  @weathercode = 0
+  :city = ""
+  :city_encoded = ""
+  :lat = ".results[0].latitude"
+  :lon = ".results[0].longitude"
+  :temperature = ".current_weather.temperature"
+  :weather_code = ".current_weather.weathercode"
+  :wind_speed = ".current_weather.windspeed"
+  :time = ".current_weather.time"
+  :is_day = ".current_weather.is_day"
 
-    http_encode(args[@i], :city_encoded)
+  http_encode(args[@i], :city_encoded)
 
-    :geocode = "https://geocoding-api.open-meteo.com/v1/search?name=" +
-            :city_encoded + "&count=1&language=en&format=json"
+  :geocode =
+    "https://geocoding-api.open-meteo.com/v1/search?name=" +
+    :city_encoded +
+    "&count=1&language=en&format=json"
 
-    http_get(:geocode, :geocode)
+  http_get(:geocode, :geocode)
 
-    json_get(:geocode, :lat, :lat)
-    json_get(:geocode, :lon, :lon)
+  json_get(:geocode, :lat, :lat)
+  json_get(:geocode, :lon, :lon)
 
-    :weather =
-        "https://api.open-meteo.com/v1/forecast?latitude=" + :lat +
-        "&longitude=" + :lon + "&current_weather=true&temperature_unit=celsius&timezone=auto"
+  :weather =
+    "https://api.open-meteo.com/v1/forecast?latitude=" + :lat +
+    "&longitude=" + :lon +
+    "&current_weather=true&temperature_unit=celsius&timezone=auto"
 
-    http_get(:weather, :weather)
+  http_get(:weather, :weather)
 
-    json_get(:weather, :temperature, :temperature)
-    json_get(:weather, :wind_speed, :wind_speed)
-    json_get(:weather, :weather_code, :weather_code)
-    json_get(:weather, :time, :time)
-    json_get(:weather, :is_day, :is_day)
-    @weathercode = number :weather_code
+  json_get(:weather, :temperature, :temperature)
+  json_get(:weather, :wind_speed, :wind_speed)
+  json_get(:weather, :weather_code, :weather_code)
+  json_get(:weather, :time, :time)
+  json_get(:weather, :is_day, :is_day)
+  @weathercode = number :weather_code
 
-    print char LF
+  print char LF
 
-    print args[@i], " "
-    if @weathercode == 0 print "☀️" end
-    if @weathercode == 1 print "🌤️" end
-    if @weathercode == 2 print "⛅" end
-    if @weathercode == 3 print "☁️" end
-    if (@weathercode >= 45) && (@weathercode <= 48) print "🌫" end
-    if (@weathercode >= 51) && (@weathercode <= 65) print "🌧️" end
-    if (@weathercode >= 71) && (@weathercode <= 77) print "🌨️" end
-    if (@weathercode >= 80) && (@weathercode <= 82) print "⛅" end
-    if (@weathercode >= 85) && (@weathercode <= 86) print "🌨️" end
-    if @weathercode == 95 print "🌩️" end
-    if @weathercode == 99 print "⛈️" end
-    print "  ", :weather_code
-    print " 🌡 ", :temperature, " °C"
-    print " 🍃 ", :wind_speed, " km/h"
-    if :is_day[0] == '1' print " 🌇 " else print " 🌃 " end
-    print :time
-    ++@i
+  print args[@i], " "
+  if @weathercode == 0 print "☀️" end
+  if @weathercode == 1 print "🌤️" end
+  if @weathercode == 2 print "⛅" end
+  if @weathercode == 3 print "☁️" end
+  if (@weathercode >= 45) && (@weathercode <= 48) print "🌫" end
+  if (@weathercode >= 51) && (@weathercode <= 65) print "🌧️" end
+  if (@weathercode >= 71) && (@weathercode <= 77) print "🌨️" end
+  if (@weathercode >= 80) && (@weathercode <= 82) print "⛅" end
+  if (@weathercode >= 85) && (@weathercode <= 86) print "🌨️" end
+  if @weathercode == 95 print "🌩️" end
+  if @weathercode == 99 print "⛈️" end
+  print "  ", :weather_code
+  print " 🌡 ", :temperature, " °C"
+  print " 🍃 ", :wind_speed, " km/h"
+  if :is_day[0] == '1' print " 🌇 " else print " 🌃 " end
+  print :time
+  ++@i
 next
 print char LF
 stop
