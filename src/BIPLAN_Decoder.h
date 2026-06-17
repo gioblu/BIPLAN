@@ -34,20 +34,18 @@ BP_FUN_T void dcd_next_code() {
     dcd_current =  *dcd_ptr;
   }
   // if digit (0-9)
-  else if(*dcd_ptr >= 48 && *dcd_ptr <= 57) {
-    for(uint8_t i = 0; i < BP_NUM_MAX; ++i)
-      if(dcd_ptr[i] < 48 || dcd_ptr[i] > 57) { // If not digit (0-9)
-        dcd_next_ptr = dcd_ptr + i;
-        dcd_current = BP_NUMBER;
-        break;
-      }
-  }
-  else if(*dcd_ptr == BP_STRING) {
-    dcd_next_ptr = dcd_ptr;
-    do {
-      if(*dcd_next_ptr++ == BP_BACKSLASH) dcd_next_ptr++;
-    } while(*dcd_next_ptr != BP_STRING);
-    ++dcd_next_ptr;
+  else if(*dcd_ptr >= '0' && *dcd_ptr <= '9') {
+    char *p = dcd_ptr + 1;
+    while((*p >= '0') && (*p <= '9')) p++;
+    dcd_next_ptr = p;
+    dcd_current = BP_NUMBER;
+  } else if(*dcd_ptr == BP_STRING) {
+    char *p = dcd_ptr + 1;
+    while(*p && *p != BP_STRING) {
+      if(*p == BP_BACKSLASH && *(p + 1)) p += 2;
+      else p++;
+    }
+    dcd_next_ptr = (*p == BP_STRING) ? (p + 1) : p;
     dcd_current = BP_STRING;
   } else {
     dcd_current = *dcd_ptr;
@@ -77,15 +75,13 @@ BP_FUN_T void dcd_next_code() {
 /* Decodes a string from BIP bytecode in memory ---------------------------- */
 bool decoder_string(char *destination, uint32_t length) {
   if(length == 0) return false;
-
-  char *source = dcd_ptr + 1;
-  uint32_t dst = 0;
+  uint32_t d = 0;
   bool escaped = false;
-
-  for(uint32_t i = 0; ; ++i) {
+  char *source = dcd_ptr + 1;
+  
+  for(uint32_t i = 0; source[i]; i++) {
     char c = source[i];
-    if(c == 0) return false;
-
+    
     if(escaped) {
       char out;
       if(c == 'n') out = BP_LF;
@@ -94,9 +90,8 @@ bool decoder_string(char *destination, uint32_t length) {
       else if(c == BP_BACKSLASH) out = BP_BACKSLASH;
       else if(c == BP_STRING) out = BP_STRING;
       else out = c;
-
-      if(dst + 1 >= length) return false;
-      destination[dst++] = out;
+      if(d + 1 >= length) return false;
+      destination[d++] = out;
       escaped = false;
       continue;
     }
@@ -107,9 +102,9 @@ bool decoder_string(char *destination, uint32_t length) {
     }
 
     if(c == BP_STRING) break;
-    if(dst + 1 >= length) return false;
-    destination[dst++] = c;
+    if(d + 1 >= length) return false;
+    destination[d++] = c;
   }
-  destination[dst] = 0;
+  destination[d] = 0;
   return true;
 }
