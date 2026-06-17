@@ -62,7 +62,6 @@ BPM_SERIAL_T       bip_serial_fun;
     bip_read_string(bip_string); \
     for(uint16_t i = 0; bip_string[i] != 0; i++) \
       R = F(T, bip_string[i]); \
-    BP_EMPTY_STRING; \
   } else if(bip_ignore(BP_STR_ADDR)) { \
     uint8_t id = *(dcd_ptr - 1) - BP_OFFSET; \
     for(uint16_t i = 0; bip_strings[id][i] != 0; i++) \
@@ -78,7 +77,6 @@ BPM_SERIAL_T       bip_serial_fun;
     bip_read_string(bip_string); \
     bip_sys_str_2 = bip_ignore(BP_COMMA) ? bip_relation() : 0; \
     F(B, bip_string, bip_sys_str_2); \
-    BP_EMPTY_STRING; \
   } else if(bip_ignore(BP_STR_ADDR)) { \
     BP_VAR_T bip_sys_str_2_addr = *(dcd_ptr - 1) - BP_OFFSET; \
     bip_sys_str_2 = bip_ignore(BP_COMMA) ? bip_relation() : 0; \
@@ -523,7 +521,6 @@ void bip_print_call() {
     } else if(dcd_current == BP_STRING) {
       bip_read_string(bip_string);
       BPM_PRINT_WRITE(bip_string);
-      BP_EMPTY_STRING;
     } else if(dcd_current == BP_STR_ADDR) {
       v = bip_factor();
       if(bip_return_type == BP_ACCESS) {
@@ -834,7 +831,6 @@ BP_VAR_T bip_atol_call(BP_VAR_T v) {
   } else if(dcd_current == BP_STRING) {
     bip_read_string(bip_string);
     v = BPM_ATOL(bip_string);
-    BP_EMPTY_STRING;
   } else if(dcd_current == BP_STR_ACC)
     v = BPM_ATOL(bip_strings[bip_access(dcd_current)]);
   return v;
