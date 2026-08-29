@@ -4,12 +4,12 @@ BIPLAN CR.1 (Bytecoded Interpreted Programming Language) is an experimental inte
 
 | Programming language | Compiler | Interpreter | Minimum requirements |
 | -------------------- | -------- | ----------- |-------------------- |
-| TinyBasicPlus        |    ❌ (interprets source)    |     ✔️     | 11KB ROM,  1KB RAM  |
-| BIPLAN               |    ✔️    |     ✔️     | 48KB ROM,  5KB RAM  |
-| Wasm3                |    ❌ (interprets bytecode)   |     ✔️     | 64kB ROM, 10KB RAM  |
-| Wren                 |    ✔️    |     ✔️     | 160KB ROM, 16KB RAM  |
-| Lua 5.2              |    ✔️    |     ✔️     | 175KB ROM, 64kB RAM  |
-| MicroPython          |    ✔️    |     ✔️     | 256KB ROM, 16KB RAM  |
+| TinyBasicPlus        |    no (interprets source)    |     yes     | 11KB ROM,  1KB RAM  |
+| BIPLAN               |    yes    |     yes     | 48KB ROM,  5KB RAM  |
+| Wasm3                |    no (interprets bytecode)   |     yes     | 64kB ROM, 10KB RAM  |
+| Wren                 |    yes    |     yes     | 160KB ROM, 16KB RAM  |
+| Lua 5.2              |    yes    |     yes     | 175KB ROM, 64kB RAM  |
+| MicroPython          |    yes    |     yes     | 256KB ROM, 16KB RAM  |
 
 BIPLAN implements a compact virtual architecture (BIP CR.1) that uses ASCII bytecode. It includes a serial interface, input-output ports, analog-to-digital and digital-to-analog converters, mono sound, text mode graphics, file handling and inter-process communication pipes.
 
