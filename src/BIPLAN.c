@@ -13,9 +13,12 @@
 
   NOTE: despite its .c extension this file may be compiled as C++ if required
   by the interface used. */
-
+  
 #pragma once
 #include "BIPLAN.h"
+
+static struct { const char *ptr; BP_VAR_T val; } bip_n_cache[BP_CACHE];
+static struct { const char *ptr; char *target; } bip_i_cache[BP_CACHE];
 
 /* BUFFERS ----------------------------------------------------------------- */
 BP_VAR_T           bip_variables     [BP_VARIABLES];
@@ -302,6 +305,8 @@ void bip_init(
 ) {
   bip_program_start = program;
   bip_set_default();
+  memset(bip_n_cache, 0, sizeof bip_n_cache);
+  memset(bip_i_cache, 0, sizeof bip_i_cache);
   DCD_INIT(program);
   bip_index_definitions(program);
   DCD_INIT(program);
@@ -389,7 +394,17 @@ BP_FUN_T BP_VAR_T bip_factor() {
         bip_return_type = BP_ACCESS;
       } else bip_return_type = BP_STR_ADDR;
       break;
-    case BP_NUMBER: v = BPM_ATOL(dcd_ptr); BP_EXPECT(BP_NUMBER); break;
+    case BP_NUMBER: {
+      uint8_t h = ((uintptr_t)dcd_ptr >> 1) & (BP_CACHE - 1);
+      if(bip_n_cache[h].ptr == dcd_ptr) v = bip_n_cache[h].val;
+      else { 
+        v = BPM_ATOL(dcd_ptr); 
+        bip_n_cache[h].ptr = dcd_ptr; 
+        bip_n_cache[h].val = v; 
+      }
+      BP_EXPECT(BP_NUMBER);
+      break;
+    }
     case BP_VAR_ACC: v = bip_get_variable(bip_access(BP_VAR_ACC)); break;
     case BP_STR_ACC:
       v = bip_access(BP_STR_ACC);
@@ -546,15 +561,27 @@ void bip_print_call() {
 
 /* BLOCK CALL -------------------------------------------------------------- */
 BP_FUN_T void bip_skip_block() {
+  uint8_t h = ((uintptr_t)dcd_ptr >> 1) & (BP_CACHE - 1);
+  if(bip_i_cache[h].ptr == dcd_ptr) { 
+    DCD_GOTO(bip_i_cache[h].target); 
+    return; 
+  }
+  const char *start = dcd_ptr;
   uint16_t id = 1;
   do {
     if(dcd_current == BP_IF) id++;
     if(dcd_current == BP_ENDIF) id--;
-    if((dcd_current == BP_ELSE) && (id == 1)) return;
-    if(dcd_current == BP_ENDOFINPUT) bip_error(dcd_ptr, BP_ERROR_BLOCK);
+    if((dcd_current == BP_ELSE) && (id == 1)) {
+      bip_i_cache[h].ptr = start; 
+      bip_i_cache[h].target = dcd_ptr; 
+      return;
+    }
+    if(dcd_current == BP_ENDOFINPUT) 
+      bip_error(dcd_ptr, BP_ERROR_BLOCK);
     DCD_NEXT;
   } while(id >= 1);
-};
+  bip_i_cache[h].ptr = start; bip_i_cache[h].target = dcd_ptr;
+}
 
 /* IF ---------------------------------------------------------------------- */
 BP_FUN_T void bip_if_call() {

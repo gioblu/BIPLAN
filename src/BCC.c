@@ -8,7 +8,7 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2026 - gioscarab@gmail.com
 
   NOTE: despite its .c extension this file may be compiled as C++ if required
   by the interface used. */
