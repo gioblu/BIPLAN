@@ -52,12 +52,12 @@ On my linux computer [`biplan`](examples/LINUX/biplan-interpreter/) interprets t
 
 The table below contains the results of the [benchmarks](/examples/LINUX/benchmarks/) developed to compare 20 different programs implemented in BIPLAN and Python:
 
-| Language | Bytecode size | Compilation | Interpretation | Startup |
-| -------- | ------------- | ----------- | -------------- | ------- |
-| BIPLAN   | 1.12KB        | 431.58ms    | 2366.70ms      | 7ms     |
-| Python   | 8.17KB        | 1631.59ms   | 3172.99ms      | 48ms    |
+| Language | Bytecode size | Compilation | Interpretation |
+| -------- | ------------- | ----------- | -------------- |
+| BIPLAN   | 1.00KB        | 231.82ms    | 1479.64ms      |
+| Python   | 8.19KB        | 2077.46ms   | 1794.15ms      |
 
-BIPLAN is more efficient than Python and it is well suited for applications that require fast startup time, minimal bytecode size and low power consumption.
+BIPLAN is more efficient than Python and it is well suited for applications that require speed, minimal bytecode size and low power consumption.
 
 ### Documentation
 - [Bytecode](/documentation/bytecode.md)
