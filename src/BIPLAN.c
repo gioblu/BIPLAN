@@ -160,14 +160,30 @@ BPM_SERIAL_T       bip_serial_fun;
     case BP_END:        bip_end_call(); break; \
     default: bip_error(dcd_ptr, BP_ERROR_STATEMENT); \
   }
-#endif
+
+/* PRECEDENCE (1: > >= != == 2: + & >> 3: * / %) --------------------------- */
+static uint8_t bp_precedence(char c) {
+  switch(c) {
+    case BP_MULT: case BP_DIV: case BP_MOD: return 3;
+    case BP_PLUS: case BP_MINUS: case BP_AND: case BP_OR:
+    case BP_XOR: case BP_L_SHIFT: case BP_R_SHIFT: return 2;
+    case BP_EQ: case BP_NOT_EQ: case BP_LT: case BP_GT:
+    case BP_LTOEQ: case BP_GTOEQ: case BP_LOGIC_AND: 
+    case BP_LOGIC_OR: return 1;
+    default: return 0;
+  }
+}
 
 /* ASSIGN VALUE TO VARIABLE ------------------------------------------------ */
 BP_FUN_T void bip_var_addr_call() {
   if(dcd_current == BP_VAR_ADDR) {
     DCD_NEXT;
-    uint8_t bp_vac_var = *(dcd_ptr - 1) - BP_OFFSET;
-    BP_SET_VARIABLE(bp_vac_var, bip_relation());
+    uint8_t d = *(dcd_ptr - 1) - BP_OFFSET;
+    // Short-circuit (skip relation -> expression -> term -> factor)
+    if(dcd_current == BP_VAR_ADDR && !bp_precedence(dcd_ptr[2])) {
+      bip_variables[d] = bip_variables[dcd_ptr[1] - BP_OFFSET];
+      DCD_NEXT;
+    } else bip_variables[d] = bip_relation();
   } else if(dcd_current == BP_FOR_ADDR) {
     DCD_NEXT;
     uint8_t bp_vac_for = *(dcd_ptr - 1) - BP_OFFSET;
@@ -213,9 +229,13 @@ void bip_index_definitions(char* program) {
 
 /* PROCESS ARGUMENTS ------------------------------------------------------- */
 void bip_process_argument(char *a) {
-  for(uint16_t s = 0; s < strlen(a); s++) bip_strings[bip_arg_id][s] = a[s];
-  if(++bip_arg_id >= BP_ARGS) bip_error(dcd_ptr, BP_ERROR_ARGS_MAX);
-};
+  size_t len = strlen(a);
+  if(len >= BP_STRING_MAX) len = BP_STRING_MAX - 1;
+  memcpy(bip_strings[bip_arg_id], a, len);
+  bip_strings[bip_arg_id][len] = 0;
+  if(++bip_arg_id >= BP_ARGS) 
+    bip_error(dcd_ptr, BP_ERROR_ARGS_MAX);
+}
 
 /* INITIALIZE INTERPRETER -------------------------------------------------- */
 void bip_init(
@@ -236,23 +256,19 @@ void bip_init(
   bip_error_fun = error;
   bip_print_fun = print;
   bip_data_in_fun = data_input;
-  #ifdef BIP_DISPATCH_TABLE
-  bip_init_dispatch_table();
-  #endif
 };
 
 void bip_set_default() {
-  bip_fw_id = 0, bip_fn_id = 0, bip_ended = false, bip_arg_id = 0;
-  for(BP_VAR_T i = 0; i < BP_MEM_SIZE; i++) bip_memory[i] = 0;
-  for(BP_VAR_T i = 0; i < BP_VARIABLES; i++) bip_variables[i] = 0;
-  for(BP_VAR_T i = BP_ARGS; i < BP_STRINGS; i++)
-    for(BP_VAR_T c = 0; c < BP_STRING_MAX; c++) bip_strings[i][c] = 0;
+  bip_fw_id = 0; bip_fn_id = 0; bip_ended = false; bip_arg_id = 0;
+  memset(bip_memory, 0, sizeof bip_memory);
+  memset(bip_variables, 0, sizeof bip_variables);
+  memset(&bip_strings[BP_ARGS], 0, (BP_STRINGS - BP_ARGS) * BP_STRING_MAX);
   for(uint16_t i = 0; i < BP_FILES_MAX; i++) bip_files[i].free = true;
   for(uint16_t i = 0; i < BP_PIPES_MAX; i++) bip_pipes[i].free = true;
-  for(BP_VAR_T i = 0; i < BP_CYCLE_DEPTH; i++)
+  for(BP_VAR_T i = 0; i < BP_CYCLE_DEPTH; i++) 
     bip_cycles[i].var_id = BP_VARIABLES;
   BP_EMPTY_STRING;
-};
+}
 
 /* IGNORE A CERTAIN CODE --------------------------------------------------- */
 BP_FUN_T bool bip_ignore(char c) {
@@ -262,14 +278,14 @@ BP_FUN_T bool bip_ignore(char c) {
 
 /* GET VARIABLE ------------------------------------------------------------ */
 BP_FUN_T BP_VAR_T bip_get_variable(int n) {
-  if(n >= 0 && n <= BP_VARIABLES) return bip_variables[n];
+  if(n >= 0 && n < BP_VARIABLES) return bip_variables[n];
   bip_error(dcd_ptr, BP_ERROR_VARIABLE_GET);
   return 0;
 };
 
 /* GET ONE CHAR FROM STRING ------------------------------------------------ */
 BP_FUN_T char bip_string_char(int s, int c) {
-  if((c >= BP_STRING_MAX) || (s < 0 && s >= BP_STRINGS)) {
+  if((c >= BP_STRING_MAX) || (s < 0 || s >= BP_STRINGS)) {
     bip_error(dcd_ptr, BP_ERROR_STRING_GET);
     return 0;
   } return bip_strings[s][c];
@@ -278,10 +294,14 @@ BP_FUN_T char bip_string_char(int s, int c) {
 /* ACCESS MEMORY VIA INDEX [ ] --------------------------------------------- */
 BP_FUN_T BP_VAR_T bip_access(BP_VAR_T v) {
   DCD_NEXT;
-  v = bip_relation();
+  // Short-circuit (skip relation -> expression -> term -> factor)
+  if(dcd_current == BP_VAR_ADDR && !bp_precedence(dcd_ptr[2])) {
+    v = bip_variables[dcd_ptr[1] - BP_OFFSET];
+    DCD_NEXT;
+  } else v = bip_relation();
   BP_EXPECT(BP_ACCESS_END);
   return v;
-};
+}
 
 /* FACTOR: (n) ------------------------------------------------------------- */
 BP_FUN_T BP_VAR_T bip_factor() {
@@ -304,8 +324,8 @@ BP_FUN_T BP_VAR_T bip_factor() {
       DCD_NEXT;
       v = *(dcd_ptr - 1) - BP_OFFSET;
       if(index) return v;
-      if(pre != 0) BP_INCREMENT_VARIABLE(v, pre);
-      BP_GET_VARIABLE(v, v);
+      if(pre) bip_variables[v] += pre;
+      v = bip_variables[v];
       break;
     case BP_STR_ADDR:
       DCD_NEXT;
@@ -351,89 +371,76 @@ BP_FUN_T BP_VAR_T bip_factor() {
   return (bitwise_not) ? ~v : v;
 };
 
-/* TERM: *, /, % ------------------------------------------------------------*/
-BP_FUN_T BP_VAR_T bip_term() {
-  BP_VAR_T f1 = bip_factor(), f2 = 0;
-  uint8_t op = dcd_current;
-  while(op == BP_MULT || op == BP_DIV || op == BP_MOD) {
-    DCD_NEXT;
-    f2 = bip_factor();
-    switch(op) {
-      case BP_MULT: f1 = f1 * f2; break;
-      case BP_DIV:
-        if(!f2 && (op == BP_DIV)) bip_error(dcd_ptr, BP_ERROR_DIV_ZERO);
-        else f1 = f1 / f2;
-        break;
-      case BP_MOD:  f1 = f1 % f2; break;
-    } op = dcd_current;
-  } return f1;
-};
+static BP_VAR_T bp_apply(char op, BP_VAR_T a, BP_VAR_T b) {
+  switch(op) {
+    case BP_MULT: return a * b;
+    case BP_DIV:  if(!b) { 
+      bip_error(dcd_ptr, BP_ERROR_DIV_ZERO); 
+      return a; 
+    } return a / b;
+    case BP_MOD:  if(!b) { 
+      bip_error(dcd_ptr, BP_ERROR_DIV_ZERO); 
+      return a; 
+    } return a % b;
+    case BP_PLUS: return a + b;   
+    case BP_MINUS: return a - b;
+    case BP_AND: return a & b;   
+    case BP_OR: return a | b;   
+    case BP_XOR: return a ^ b;
+    case BP_L_SHIFT: return a << b; 
+    case BP_R_SHIFT: return a >> b;
+    case BP_EQ: return a == b;  
+    case BP_NOT_EQ: return a != b;
+    case BP_LT: return a < b;  
+    case BP_GT: return a > b;
+    case BP_LTOEQ: return a <= b; 
+    case BP_GTOEQ: return a >= b;
+    case BP_LOGIC_AND: return a && b; 
+    case BP_LOGIC_OR: return a || b;
+  }
+  return 0;
+}
 
-/* EXPRESSION +, -, &, | ----------------------------------------------------*/
-BP_FUN_T BP_VAR_T bip_expression() {
-  BP_VAR_T t1 = bip_term(), t2 = 0;
-  uint8_t op = dcd_current;
-  while(
-    op == BP_PLUS || op == BP_MINUS || op == BP_AND || op == BP_OR ||
-    op == BP_XOR || op == BP_L_SHIFT || op == BP_R_SHIFT
-  ) {
+static BP_VAR_T bip_eval(uint8_t min) {
+  BP_VAR_T a = bip_factor();
+  uint8_t p;
+  while((p = bp_precedence(dcd_current)) >= min) {
+    char op = dcd_current; 
     DCD_NEXT;
-    t2 = bip_term();
-    switch(op) {
-      case BP_PLUS:    t1 = t1 + t2;  break;
-      case BP_MINUS:   t1 = t1 - t2;  break;
-      case BP_AND:     t1 = t1 & t2;  break;
-      case BP_OR:      t1 = t1 | t2;  break;
-      case BP_XOR:     t1 = t1 ^ t2;  break;
-      case BP_L_SHIFT: t1 = t1 << t2; break;
-      case BP_R_SHIFT: t1 = t1 >> t2; break;
-    } op = dcd_current;
-  } return t1;
-};
+    a = bp_apply(op, a, bip_eval(p + 1));
+  }
+  return a;
+}
 
-/* RELATION <, >, = -------------------------------------------------------- */
-BP_FUN_T BP_VAR_T bip_relation() {
-  BP_VAR_T r1 = bip_expression(), r2 = 0;
-  uint8_t op = dcd_current;
-  while(
-    op == BP_EQ || op == BP_NOT_EQ || op == BP_LTOEQ || op == BP_GTOEQ ||
-    op == BP_LT || op == BP_GT || op == BP_LOGIC_OR || op == BP_LOGIC_AND
-  ) {
-    DCD_NEXT;
-    r2 = bip_expression();
-    switch(op) {
-      case BP_NOT_EQ:    r1 = r1 != r2; break;
-      case BP_EQ:        r1 = r1 == r2; break;
-      case BP_GTOEQ:     r1 = r1 >= r2; break;
-      case BP_LTOEQ:     r1 = r1 <= r2; break;
-      case BP_LOGIC_OR:  r1 = r1 || r2; break;
-      case BP_LOGIC_AND: r1 = r1 && r2; break;
-      case BP_LT:        r1 = r1 <  r2; break;
-      case BP_GT:        r1 = r1 >  r2; break;
-    } op = dcd_current;
-  } return r1;
-};
+BP_FUN_T BP_VAR_T bip_term()       { return bip_eval(3); }
+BP_FUN_T BP_VAR_T bip_expression() { return bip_eval(2); }
+BP_FUN_T BP_VAR_T bip_relation()   { return bip_eval(1); }
 
 /* HANDLE STRING CONCATENATION ---------------------------------------------- */
 BP_FUN_T void bip_string_concat(char *s) {
   while(bip_ignore(BP_PLUS)) {
     uint16_t o = strlen(s);
-    uint8_t ci = 0;
+    int ci = -1;
     if(bip_ignore(BP_STR_ADDR)) ci = *(dcd_ptr - 1) - BP_OFFSET;
-    else if(bip_ignore(BP_STR_ACC)) {
-      ci = bip_expression();
-      BP_EXPECT(BP_ACCESS_END);
+    else if(bip_ignore(BP_STR_ACC)) { 
+      ci = bip_expression(); 
+      BP_EXPECT(BP_ACCESS_END); 
     } else if(dcd_current == BP_STRING) {
-      if(!decoder_string(s + o, BP_STRING_MAX - o))
+      if(!decoder_string(s + o, BP_STRING_MAX - o)) 
         bip_error(dcd_ptr, BP_ERROR_STRING_END);
       else BP_EXPECT(BP_STRING);
       continue;
-    } else bip_error(dcd_ptr, BP_ERROR_STRING_CONCAT);
-    for(uint16_t i = 0; bip_strings[ci][i] && (i < (BP_STRING_MAX - o)); i++)
-      *(s + o + i) = bip_strings[ci][i];
-    *(s + o + strlen(bip_strings[ci])) = 0;
+    } else { 
+      bip_error(dcd_ptr, BP_ERROR_STRING_CONCAT); 
+      continue; 
+    }
+    if(o >= BP_STRING_MAX) continue;
+    uint16_t n = strlen(bip_strings[ci]);
+    if(n > BP_STRING_MAX - 1 - o) n = BP_STRING_MAX - 1 - o;
+    memcpy(s + o, bip_strings[ci], n);
+    s[o + n] = 0;
   }
-};
+}
 
 /* READ SAFELY A STRING ---------------------------------------------------- */
 BP_FUN_T void bip_read_string(char *s) {
@@ -512,36 +519,36 @@ BP_FUN_T void bip_if_call() {
   if(dcd_current == BP_ELSE) DCD_NEXT;
 };
 
-/* ASSIGN VALUE TO STRING -------------------------------------------------- */
 void bip_string_assignment_call() {
-  int ci = BP_STRING_MAX, si, o = 0;
+  int ci = BP_STRING_MAX, si;
   bool str_acc = (dcd_current == BP_STR_ACC);
   DCD_NEXT;
-  if(str_acc) {
-    si = bip_expression();
-    BP_EXPECT(BP_ACCESS_END);
-  } else si = *(dcd_ptr - 1) - BP_OFFSET;
+  if(str_acc) { si = bip_expression(); BP_EXPECT(BP_ACCESS_END); }
+  else si = *(dcd_ptr - 1) - BP_OFFSET;
   if(dcd_current == BP_ACCESS) ci = bip_access(BP_ACCESS);
-  if(ci == BP_STRING_MAX) {
-    if(dcd_current == BP_STRING) bip_read_string(bip_strings[si]);
-    else if(bip_ignore(BP_STR_ADDR)) {
-      ci = *(dcd_ptr - 1) - BP_OFFSET;
-      for(uint16_t i = 0; bip_strings[ci][i] && (i < BP_STRING_MAX); i++)
-        bip_strings[si][i] = bip_strings[ci][i];
-      bip_string_concat(bip_strings[si]);
-    } else if(bip_ignore(BP_STR_ACC)) {
-      ci = bip_expression();
-      BP_EXPECT(BP_ACCESS_END);
-      for(uint16_t i = 0; bip_strings[ci][i] && (i < BP_STRING_MAX); i++)
-        bip_strings[si][i] = bip_strings[ci][i];
-      bip_string_concat(bip_strings[si]);
-    }
-  } else {
-    if(bip_ignore(BP_STRING)) {
-      bip_strings[si][ci] = (char)(*(dcd_ptr - 2));
-    } else bip_strings[si][ci] = (uint8_t)bip_expression();
+  if(ci != BP_STRING_MAX) {
+    if(bip_ignore(BP_STRING)) bip_strings[si][ci] = (char)(*(dcd_ptr - 2));
+    else bip_strings[si][ci] = (uint8_t)bip_expression();
+    return;
   }
-};
+  if(dcd_current == BP_STRING) { 
+    bip_read_string(bip_strings[si]); 
+    return; 
+  }
+  int src = -1;
+  if(bip_ignore(BP_STR_ADDR)) src = *(dcd_ptr - 1) - BP_OFFSET;
+  else if(bip_ignore(BP_STR_ACC)) { 
+    src = bip_expression(); 
+    BP_EXPECT(BP_ACCESS_END); 
+  }
+  if(src >= 0) {
+    uint16_t i = 0;
+    for(; bip_strings[src][i] && i < BP_STRING_MAX; i++) 
+      bip_strings[si][i] = bip_strings[src][i];
+    bip_strings[si][i] = 0;
+    bip_string_concat(bip_strings[si]);
+  }
+}
 
 /* GENERAL PURPOSE MEMORY ASSIGNMENT --------------------------------------- */
 void bip_mem_assignment_call() {
