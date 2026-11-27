@@ -122,3 +122,9 @@
 #ifndef BP_INCLUDE_PATH_MAX
   #define BP_INCLUDE_PATH_MAX 256
 #endif
+
+/* Maximum length cache for literal numbers and if else  ------------------- */
+
+#ifndef BP_CACHE
+  #define BP_CACHE 16
+#endif

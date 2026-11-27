@@ -10,9 +10,8 @@
                                            \ /            |
                                            (O)
 
-  Giovanni Blu Mitolo 2017-2025 - gioscarab@gmail.com
+  Giovanni Blu Mitolo 2017-2026 - gioscarab@gmail.com
   BIP interpreter bounds and bytecode dictionary */
-
 #pragma once
 #include "utils/errors/BIPLAN_Errors.h"
 #include "interfaces/BIPLAN_Interfaces.h"

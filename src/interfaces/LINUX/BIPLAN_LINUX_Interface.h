@@ -146,7 +146,7 @@
   #endif
 
   #ifndef BPM_PRINT_WRITE
-    #define BPM_PRINT_WRITE(C) do { std::cerr << C; } while(0)
+    #define BPM_PRINT_WRITE(C) do { std::cout << C; } while(0)
   #endif
 
   #ifndef BPM_PRINT_CLEAR
